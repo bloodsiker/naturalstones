@@ -1,0 +1,78 @@
+Action: Действия
+Tag List: Теги
+Author List: Список авторов
+Author Create: Добавить автора
+Stone List: Список камней
+Stone Create: Добавить камни
+Colour List: Список цветов
+Colour Create: Добавить цвет
+Size List: Список размеров
+Size Create: Добавить размер
+
+form_group:
+    basic: Основные
+    additional: Дополнительные
+
+group:
+    share: Справочники
+    tag: Теги
+    social: Социальные сети
+    rtf_block: Текстовые блоки
+    author: Авторы
+    author_editor: Авторы
+    stone_editor: Камни
+    size_editor: Размеры
+    colour_editor: Цвета
+
+stone:
+    fields:
+        id: ID
+        name: Название
+        description: Описание
+        slug: Сегмент URL (slug)
+        is_active: Активен
+        created_at: Дата создания
+
+colour:
+    fields:
+        id: ID
+        name: Название
+        colour: Цвет
+        slug: Сегмент URL (slug)
+        is_active: Активен
+        created_at: Дата создания
+
+size:
+    fields:
+        id: ID
+        name: Название
+        slug: Сегмент URL (slug)
+        is_active: Активен
+        created_at: Дата создания
+
+tag:
+    fields:
+        id: ID
+        name: Название
+        meta_title: Meta-Title
+        meta_description: Meta-Description
+        meta_keywords: Meta-Keywords
+        slug: Сегмент URL (slug)
+        is_active: Активен
+    block:
+        breadcrumb_item: Теги
+        title:
+            last: Последние новости по запросу «%tag%»
+            all: Все новости по запросу «%tag%»
+
+author:
+    fields:
+        name: ФИО
+        is_active: Активен
+        is_allow_download: Разрешено для скачивания
+        created_at: Дата создания
+        photo: Фото
+        slug: Сегмент URL (slug)
+        biography: Биография
+        parent: Родительский жанр
+        id: ID

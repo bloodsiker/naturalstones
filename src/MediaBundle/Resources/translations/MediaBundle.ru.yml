@@ -1,0 +1,28 @@
+Action: Действия
+Comment List: Список файлов
+Comment Create: Добавить файл
+
+form_group:
+    basic: Основные
+    additional: Дополнительные
+
+group:
+    media: Медиа
+    media_file_editor: Файлы
+    media_image_editor: Изображения
+
+media:
+    fields:
+        extension: Разширение
+        resolution: Размеры
+        description: Описание
+        file: Файл
+        mime_type: Mime-type
+        size: Размер
+        width: Ширина
+        height: Высота
+        is_active: Активна
+        created_at: Дата создания
+        updated_at: Дата редактирования
+        created_by: Создан пользователем
+        id: ID

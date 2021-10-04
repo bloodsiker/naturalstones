@@ -1,0 +1,11 @@
+{% block breadcrumb %}
+    {% for entityWithoutTranslation in ['AppBundle:Article', 'AppBundle:TvVideo', 'AppBundle:Event'] %}
+        {% set withoutTranslationCount = without_translation_count(entityWithoutTranslation) %}
+        {% if withoutTranslationCount %}
+            <div class="alert alert-danger alert__without-translatable">
+                {{ ('admin.alert.no_translation_'~entityWithoutTranslation)|transchoice(withoutTranslationCount, {'%count%': withoutTranslationCount}, 'AppBundle')|raw }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+{% extends 'SonataAdminBundle::Core/dashboard.html.twig' %}

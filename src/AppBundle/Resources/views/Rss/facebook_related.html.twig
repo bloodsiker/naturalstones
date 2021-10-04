@@ -1,0 +1,22 @@
+{% set relatedArticles = article.getArticleHasRelatedArticles() %}
+{% set relatedTvVideos = article.getArticleHasRelatedTvVideos() %}
+
+{% if content_id and (relatedArticles or relatedTvVideos) %}
+    {% import 'AppBundle:Block:_articles_macro.html.twig' as article_macro %}
+    {% import 'AppBundle:Block:_videos_macro.html.twig' as video_macro %}
+
+    <ul class="op-related-articles" title="{{ 'frontend.article.read_more'|trans({}, 'AppBundle') }}">
+        {% for item in relatedArticles %}
+            {% if item.position == content_id and item.relatedArticle.isActive %}
+                {% set article_category = item.relatedArticle.articleHasCategories|first.category %}
+                <li><a href="{{ article_macro.article_url(item.relatedArticle, article_category, true) }}"></a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% for item in relatedTvVideos %}
+            {% if item.position == content_id and item.relatedTvVideo.isActive %}
+                <li><a href="{{ video_macro.video_url(item.relatedTvVideo, true) }}"></a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

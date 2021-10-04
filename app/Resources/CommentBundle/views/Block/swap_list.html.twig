@@ -1,0 +1,10 @@
+{% import "CommentBundle:Block/macros:item.html.twig" as item %}
+<div class="comments-items">
+    {% for swap in swaps %}
+        {{ item.swap(swap) }}
+    {% endfor %}
+
+    {% if swaps.getNbPages() > 1 %}
+        {{ pagerfanta(swaps, { 'omitFirstPage': true}) }}
+    {% endif %}
+</div>

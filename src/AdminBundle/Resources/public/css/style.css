@@ -1,0 +1,148 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,400italic,600italic&subset=latin,cyrillic);
+
+html,
+body {
+    overflow-x: hidden!important;
+    font-family: 'Open Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100%;
+    background: #f9f9f9;
+    margin-bottom: 0;
+}
+
+body > .header .logo {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.skin-black .main-header>.logo {
+    border: 1px solid #222d32;
+    background-color: #222d32;
+}
+.skin-black .main-header>.logo:hover {
+    background-color: #222d32;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+/*
+ * jQuery Spellchecker - v0.2.4
+ * https://github.com/badsyntax/jquery-spellchecker
+ *
+ * Copyright (c) 2012 Richard Willis
+ * Licensed under the MIT license.
+ */
+.spellchecker-suggestbox {
+    position: absolute;
+    display: none;
+    z-index: 9999;
+    overflow: none;
+    font: normal 13px arial;
+    box-shadow: 0 0 4px #aaa;
+    background: #fff;
+    border: 1px solid #bbb;
+}
+.spellchecker-suggestbox .loading {
+    padding: 3px 6px;
+    font-style: italic;
+}
+.spellchecker-suggestbox a {
+    outline: none;
+    cursor: pointer;
+    color: #333;
+    padding: 3px 6px;
+    display: block;
+    text-decoration: none;
+}
+.spellchecker-suggestbox a:hover {
+    color: #000;
+    background: #ddd;
+}
+.spellchecker-suggestbox .footer {
+    border-top: 1px solid #ddd;
+}
+.spellchecker-suggestbox .footer .ignore-all,
+.spellchecker-suggestbox .footer .ignore-forever {
+    display: none;
+}
+.spellchecker-word-highlight {
+    color: red;
+    cursor: pointer;
+    border-bottom: 1px dotted red;
+}
+.spellchecker-incorrectwords {
+    display: none;
+}
+.spellchecker-incorrectwords a {
+    display: inline-block;
+    margin-right: .5em;
+}
+.spellchecker-button-icon {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHtSURBVDjLY/j//z8DJZiBKgY49drM9J3idhLEtu+xjvea4nLNqsVspnWr2S6QmF6+Zol2ltpq5QSlmcpxijMxDABp9pjkuMuu28rIpsMi3rLZFKzIus38mm6OuqRxpf41nC5w7rOJd+i1ngnUXGLTbj7Tsskk3rbL8ppZreEu7Ry1mWpJSvHK8Uoz0TWK5U/nYIg8y8rgPsl+l12P1WqgbTPdJtk/AtoWb1CkBdagnqyyWilawVM/Rw/FBQyx540ZGm/eYIg8P43BdYLdSZiEcYXeTJB/TaoNroH8q5OldVIhXE5SKUqhXSNRfZdKvPKVkOrED+L9d/8wN998w+B4XIL40I48K8FQf/O6+7In/7mbb35hsD2qjBKNDLU3ExjKb7pi1Rx61ke89+6fwBVP/jPXXn/HYHlYGiMdMJTe1JJc/PgHQ/X1xQyplznBYuFnmRiiz062nPfof8DSJ/8ZSq8/ZzA9KIEzIQE1Vvuuf/6fufv2M4bgsz4MxVdPui8Cal4C1Jx/+RGDPqpmTANiz7MAvXI+bO2L/5ZzHvzP2Pjif8DCx/8ZMi/fY9DcL0FUUmbwPKkg3Hr7T+WOV//95j/8z5B6/jaD6l4JkvIC0J9FTtPu/2dIPn+PQXG3BFmZiUFzbweDLH7NVMmNAOGld33BRiNUAAAAAElFTkSuQmCC) !important;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.list-controls a {
+    padding-right: 15px;
+}
+
+.custom-preloader {
+    position: fixed;
+    z-index: 10000;
+    height: 42px;
+    width: 42px;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    font-size: 42px;
+    color: #222d32;
+}
+.custom-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2000;
+    background-color: #000;
+    opacity: .5;
+}
+.alert__no-translation {
+    font-weight: bold;
+    font-size: 20px;
+    color: red;
+    display: inline-block;
+    margin: 0 10px;
+}
+.alert__without-translatable {
+    margin:0 5px 5px 5px;
+    display: inline-block;
+}
+.alert__full-width {
+    margin-left: 15px;
+    margin-right: 15px;
+    /*display: inline-block;*/
+    /*width: 100%;*/
+}
+.colorpicker__preview {
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #ccc;
+    margin-left: 15px;
+    vertical-align: top;
+}

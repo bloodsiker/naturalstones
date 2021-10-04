@@ -1,0 +1,153 @@
+{% autoescape false %}
+    <!-- edit one related -->
+    <script type="text/javascript">
+
+        // handle the related link
+        var field_related_{{ id }} = function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var tags = [],
+                excludeIds  = [{{ sonata_admin.admin.root.id(sonata_admin.admin.root.subject) }}],
+                eventTarget = jQuery(event.target),
+                relatedArea = jQuery('#field_related_{{ id }}'),
+                statusClass = ['default','success','danger','warning','primary'];
+
+            eventTarget.attr('disabled', true);
+            relatedArea.html('');
+
+            jQuery('.sonata-ba-form form input[name*="[tags][]"]').each(function () {
+                tags.push(jQuery(this).val());
+            });
+
+            jQuery('.sonata-ba-form form input[name*="[relatedBook]"]').each(function () {
+                excludeIds.push(jQuery(this).val());
+            });
+
+            if (!tags.length) {
+                eventTarget.removeAttr('disabled');
+                relatedArea.html(
+                    '<p class="alert alert-warning text-center">' +
+                    '<i class="fa fa-remove"></i> ' +
+                    '{{ 'no_tags_selected'|trans({}, 'BookBundle') }}</p>'
+                );
+                relatedArea.find('p.alert').fadeOut( 5000, function () { jQuery(this).remove(); });
+
+                return false;
+            }
+
+            // the ajax post
+            jQuery.ajax({
+                url: '{{ sonata_admin.admin.generateUrl('related_by_tags', {
+                    'code':      sonata_admin.admin.root.code,
+                    'elementId': id,
+                    'objectId':  sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
+                    'uniqid':    sonata_admin.admin.root.uniqid,
+                    'subclass': app.request.query.get('subclass'),
+                } + sonata_admin.field_description.getOption('link_parameters', {})) }}',
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    _xml_http_request: true,
+                    tags: tags,
+                    exclude: excludeIds
+                },
+                beforeSend: function(xhr) {
+                    relatedArea.html(
+                        '<p class="text-center">' +
+                            '<img src="{{ asset('/bundles/sonataadmin/ajax-loader.gif') }}"> ' +
+                            '{{ 'loading_information'|trans({}, 'SonataAdminBundle') }}' +
+                        '</p>'
+                    );
+                },
+                success: function(related) {
+                    eventTarget.removeAttr('disabled');
+
+                    if (!related.length) {
+                        relatedArea.html(
+                            '<p class="alert alert-info text-center">' +
+                            '<i class="fa fa-check"></i> ' +
+                            '{{ 'not_found'|trans({}, 'BookBundle') }}</p>'
+                        );
+                        relatedArea.find('p.alert').fadeOut( 5000, function () { jQuery(this).remove(); });
+                    } else {
+                        relatedArea.html(
+                            '<table class="table table-bordered table-condensed table-hover" ' +
+                                    'id="table_related_{{ id }}"></table>'
+                        );
+
+                        var relatedTable = relatedArea.find('table');
+                        for (var book in related) {
+                            relatedTable.append(
+                                '<tr class="success">' +
+                                    '<td>' + related[book].id + '</td>' +
+                                    '<td width="130px">' + related[book].date + '</td>' +
+                                    '<td>' + related[book].name + '</td>' +
+                                    '<td>' + related[book].author + '</td>' +
+                                    '<td class="text-center"><i class="fa fa-eye"></i> ' + related[book].views + '</td>' +
+                                    '<td class="text-center"><i class="fa fa-download"></i> ' + related[book].download + '</td>' +
+                                    '<td class="text-center"><i class="fa fa-signal"></i> ' + related[book].rate + '</td>' +
+                                    '<td>' +
+                                        '<button ' +
+                                            'class="btn btn-sm btn-success" ' +
+                                            'data-id="' + related[book].id + '"' +
+                                            'onclick="return insert_related_{{ id }}(this);"' +
+                                        '>' +
+                                            '<i class="fa fa-plus"></i>' +
+                                        '</button>' +
+                                    '</td>' +
+                                '</tr>'
+                            );
+                        }
+                    }
+                }
+            });
+
+            return false;
+        };
+
+        function insert_related_{{ id }}(link) {
+            link.onclick = null;
+
+            var selector = jQuery(link);
+            selector.removeClass('btn-success').addClass('btn-warning').attr('disabled', true);
+            selector.find('i').removeClass('fa-plus').addClass('fa-refresh');
+
+            jQuery('#field_related_{{ id }} table button.btn-success').attr('disabled', true);
+            jQuery('#sonata-ba-field-container-{{ id }}').bind('sonata.add_element', function() {
+                selector.removeClass('btn-warning').addClass('btn-primary');
+                selector.find('i').removeClass('fa-refresh').addClass('fa-check');
+                jQuery(this).unbind('sonata.add_element');
+
+                jQuery('.sonata-ba-form form input[name*="[relatedBook]"]:not([value])')
+                    .first()
+                    .attr('value', selector.data('id')).trigger('change');
+
+                jQuery('#field_related_{{ id }} table button.btn-success').removeAttr('disabled');
+
+                return false;
+            });
+
+            jQuery('#field_actions_create_{{ id }}').click();
+            return false;
+        }
+
+        function start_field_related_{{ id }}(link) {
+            link.onclick = null;
+
+            if (jQuery('#field_related_{{ id }}').length === 0) {
+                jQuery('#field_container_{{ id }}')
+                    .after('<div id="field_related_{{ id }}" style="max-height: 300px;overflow: auto;"></div>');
+            }
+
+            // add the jQuery event to the a element
+            jQuery(link)
+                .click(field_related_{{ id }})
+                .trigger('click')
+            ;
+
+            return false;
+        }
+    </script>
+    <!-- / edit one related  -->
+{% endautoescape %}

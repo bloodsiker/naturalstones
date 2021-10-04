@@ -1,0 +1,10 @@
+sonata_seo:
+    encoding:         UTF-8
+    page:
+        title:            Topbook - скачать книги в fb2, epub, pdf, txt форматах
+        default:          sonata.seo.page.default
+        metas: ~
+
+        head:
+            'xmlns':              http://www.w3.org/1999/xhtml
+            'xmlns:og':           http://opengraphprotocol.org/schema/

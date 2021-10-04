@@ -1,0 +1,9 @@
+services:
+    genre.block.genre_list:
+        class: "GenreBundle\\Block\\ListGenreBlockService"
+        arguments:
+          - genre.block.genre_list
+          - '@templating'
+          - '@?doctrine'
+        tags:
+          - { name: sonata.block }

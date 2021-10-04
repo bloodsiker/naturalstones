@@ -1,0 +1,11 @@
+<ul class="top-liders">
+    {% for book in books %}
+        <li class="tops-item">
+            <a href="{{ path('book_view', { 'slug': book.slug, 'id': book.id }) }}">
+                <div class="tops-img img-box">
+                    <img class="lazyload" data-src="{{ asset(book.poster.path) }}" alt="{{ book.name }}"/>
+                </div>
+            </a>
+        </li>
+    {% endfor %}
+</ul>

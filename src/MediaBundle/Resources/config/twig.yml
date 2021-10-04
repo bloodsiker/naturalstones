@@ -1,0 +1,10 @@
+services:
+    media.twig_extension:
+        class: "MediaBundle\\Twig\\Extension\\MediaExtension"
+        tags:
+            - { name: twig.extension }
+
+    media.humanize.twig_extension:
+        class: "MediaBundle\\Twig\\Extension\\MediaHumanizeExtension"
+        tags:
+            - { name: twig.extension }

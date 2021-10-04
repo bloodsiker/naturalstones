@@ -1,0 +1,23 @@
+{% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+<form method="post" data-ajax-url="{{ block_ajax_path }}" id="add-order-board" style="display: none">
+    <div id="addcform">
+        <div class="add-com-form">
+            <div class="add-com-textarea">
+                <div class="add-comm">
+                    <div class="side-title">Добавить заказ <i class="fa fa-angle-down"></i></div>
+                    <div class="inputs">
+                        <input type="text" maxlength="35" name="name" placeholder="Ваше имя"/>
+                    </div>
+
+                    <div class="inputs">
+                        <input type="text" maxlength="255" name="book" placeholder="Название (книга, автор)"/>
+                    </div>
+
+                    <div class="ac-submit">
+                        <button name="submit" class="fbutton" type="submit">Отправить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

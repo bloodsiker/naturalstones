@@ -1,0 +1,31 @@
+# quiz ========================================================
+quiz_list:
+    path: /allvotes{page}.html
+    defaults:
+        page: /p1
+        _controller: QuizBundle:Quiz:list
+    requirements:
+        page: "(\\/p\\d+)?"
+
+quiz_list_view:
+    path: /allvotes/{id}.html
+    defaults:
+        _controller: QuizBundle:Quiz:view
+    requirements:
+        id: "\\d+"
+
+quiz_get:
+    path: /quiz_get/{id}.html
+    defaults:
+        _controller: QuizBundle:Quiz:get
+    requirements:
+        id: "\\d+"
+    #condition: "request.isXmlHttpRequest()"
+
+quiz_get_voted:
+    path: /quiz_get_voted/{id}.html
+    defaults:
+        _controller: QuizBundle:Quiz:getVoted
+    requirements:
+        id: "\\d+"
+    #condition: "request.isXmlHttpRequest()"

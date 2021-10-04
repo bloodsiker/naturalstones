@@ -1,0 +1,117 @@
+{% import 'AppBundle:Block:_articles_macro.html.twig' as article %}
+{% import 'AppBundle:Block:_blogs_macro.html.twig' as blog %}
+{% set base_url = app.request.getSchemeAndHttpHost() %}
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>{{ ('frontend.rss.ukrnet.articles.title')|trans({}, 'AppBundle') }}</title>
+        <description>{{ ('frontend.rss.ukrnet.articles.description')|trans({}, 'AppBundle') }}</description>
+        <link>{{ base_url }}</link>
+        <language>{{ app.request.locale != 'uk' ? app.request.locale : 'ua' }}</language>
+        {% for entity in [articles, blogs] %}
+            {% for item in entity %}
+                {% set is_article = item is instanceof('\\AppBundle\\Entity\\Article') %}
+                {% set is_blog = item is instanceof('\\AppBundle\\Entity\\Blog') %}
+                {%- if is_article -%}
+                    {% set category = item.articleHasCategories|first.category %}
+                    {% set category_title = category.translate.title %}
+                    {% set content = shortcode(item.translate.content, item, false)|striptags|raw %}
+                    {% set link = article.article_url(item, category) %}
+                {%- elseif is_blog -%}
+                    {% set category = null %}
+                    {% set category_title = 'Suzy Menkes Blog' %}
+                    {% set content = shortcode(item.translate.content, item, false)|striptags|raw %}
+                    {% set link = blog.suzy_blog_url(item.slug)|trim %}
+                {%- endif -%}
+
+                <item>
+                    <title>{{ item.translate.title|raw }}</title>
+                    {%- if is_article and item.html and item.html.isActive and item.html.path -%}
+                        <link>{{ html_page_path(item.html, app.request.scheme) }}</link>
+                    {%- else -%}
+                        <link>{{ base_url }}{{ link }}</link>
+                    {%- endif -%}
+                    <category>{{ category_title }}</category>
+                    <pubDate>{{ item.publishAt|date('D, d M y H:i:s O') }}</pubDate>
+                    <content:encoded>
+                        <![CDATA[
+                        <!doctype html>
+                        <html lang="en" prefix="op: http://media.facebook.com/op#">
+                        <head>
+                            <meta charset="utf-8">
+                            <meta property="op:markup_version" content="v1.0">
+
+                            <!-- The URL of the web version of your article -->
+                            {%- if is_article and item.html and item.html.isActive and item.html.path -%}
+                                <link rel="canonical" href="{{ html_page_path(item.html, app.request.scheme) }}">
+                            {%- else -%}
+                                <link rel="canonical" href="{{ base_url }}{{ link }}">
+                            {%- endif -%}
+
+                            <!-- The style to be used for this article -->
+                            <meta property="fb:article_style" content="default">
+                            <meta property="fb:use_automatic_ad_placement" content="true">
+                        </head>
+
+                        <body>
+                        <article>
+                            <header>
+                                <!-- The cover image shown inside your article -->
+                                {%- if is_article or is_blog -%}
+                                    {% set image = item.imageSocial ? item.imageSocial : null %}
+                                    {%- if image -%}<figure><img src="{{app.request.getSchemeAndHttpHost()~'/'~image }}" type="image/jpeg" ></figure>{%- endif -%}
+                                {% endif %}
+                                <!-- The title and subtitle shown in your article -->
+                                <h1>{{ item.translate.title|raw }}</h1>
+                                {% if item.translate.header %}<h2>{{ item.translate.header|raw }}</h2>{% endif %}
+
+                                <!-- A kicker for your article -->
+                                <h3 class="op-kicker">
+                                    {%- if is_article  -%}
+                                        {{ ('group.article')|trans({}, 'AppBundle') }}
+                                    {%- else -%}
+                                        {{ ('group.blog')|trans({}, 'AppBundle') }}
+                                    {%- endif -%}
+                                </h3>
+
+                                <!-- The published and last modified time stamps -->
+                                    <time class="op-published" dateTime="{{ item.publishAt|date('c') }}">{{ item.publishAt|date('F dS, H:iA') }}</time>
+                                    {%- if item.updatedAt.timestamp is defined and item.updatedAt.timestamp > 0 -%}
+                                        <time class="op-modified" dateTime="{{ item.updatedAt|date('c') }}">{{ item.updatedAt|date('F dS, H:iA') }}</time>
+                                    {%- else -%}
+                                        <time class="op-modified" dateTime="{{ item.publishAt|date('c') }}">{{ item.publishAt|date('F dS, H:iA') }}</time>
+                                    {%- endif -%}
+                                <figure class="op-ad">
+                                    <iframe width="300" height="250" style="border:0; margin:0;" src="https://www.facebook.com/adnw_request?placement=1049211948502634_1049211958502633&adtype=banner300x250"></iframe>
+                                </figure>
+
+                            </header>
+                            {{ item.translate.content|filter_tags(app.request.getSchemeAndHttpHost(), item)|raw }}
+                            <figure class="op-tracker">
+                                <iframe>
+                                    <script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">
+                                        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                                                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                                                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                                        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+                                        ga('create', 'UA-69396972-1', 'auto');
+                                        ga('require', 'displayfeatures');
+                                        ga('set', 'campaignSource', 'Facebook');
+                                        ga('set', 'campaignMedium', 'Social Instant Article');
+                                        ga('send', 'pageview');
+                                    </script>
+                                </iframe>
+                            </figure>
+
+                        </article>
+                        </body>
+                        </html>
+                        ]]>
+                    </content:encoded>
+                </item>
+            {% endfor %}
+        {% endfor %}
+    </channel>
+</rss>
+

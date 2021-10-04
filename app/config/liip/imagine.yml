@@ -1,0 +1,159 @@
+#parameters:
+#    liip_imagine.jpegoptim.binary: '%jpegoptim_binary%'
+# http://qaru.site/questions/1152042/liipimaginebundle-thumbnails-doesnt-work
+
+liip_imagine:
+    data_loader: filesystem #default
+    driver: gd #imagick
+
+    loaders:
+        default:
+            filesystem:
+                data_root: '%imagine_web_root%'
+
+    resolvers:
+        default:
+            web_path:
+                web_root: '%imagine_web_root%'
+                cache_prefix: '%imagine_cache_prefix%'
+
+    filter_sets:
+
+        # Admin sizes:
+        original: ~
+        admin_preview: ~
+        admin_preview_220x124:
+            jpeg_quality: 90
+            filters:
+                thumbnail: { size: [220, 124], mode: outbound }
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        # Image frontend sizes:
+        votes_40x40:
+            jpeg_quality: 90
+            filters:
+                relative_resize: { widen: 90 }
+                thumbnail: { size: [40, 40], mode: outbound, allow_upscale: true}
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        blogger_92x112:
+            jpeg_quality: 90
+            filters:
+                thumbnail: { size: [92, 112], mode: outbound, allow_upscale: true}
+
+        author_50x50:
+            jpeg_quality: 90
+            filters:
+                thumbnail: { size: [50, 50], mode: outbound, allow_upscale: true}
+
+        dossier_100x100:
+            jpeg_quality: 90
+            filters:
+                thumbnail: { size: [100, 100], mode: outbound, allow_upscale: true}
+
+        tv_160x94:
+            jpeg_quality: 90
+            filters:
+                thumbnail: { size: [160, 94], mode: outbound, allow_upscale: true}
+
+        informer_partner:
+            jpeg_quality: 90
+            filters:
+                relative_resize: { widen: 225 }
+                thumbnail: { size: [225, 150], mode: outbound }
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        gallery_big_640:
+            jpeg_quality: 90
+            filters:
+                relative_resize:
+                    widen: 640
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        gallery_small_113:
+            jpeg_quality: 90
+            filters:
+                relative_resize:
+                    heighten: 113
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        # fixed crop in admin tab
+        image_150x100:
+            jpeg_quality: 90
+            filters:
+                relative_resize: { widen: 150 }
+                thumbnail: { size: [150, 100], mode: outbound }
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        # fixed crop in admin tab
+        image_300x200:
+            jpeg_quality: 90
+            filters:
+                relative_resize: { widen: 300 }
+                thumbnail: { size: [300, 200], mode: outbound }
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        # fixed crop in admin tab
+        image_310x207:
+            jpeg_quality: 90
+            filters:
+                thumbnail: { size: [310, 207], mode: outbound, allow_upscale: true}
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        # fixed crop in admin tab
+        image_610x343:
+            jpeg_quality: 90
+            filters:
+                thumbnail: { size: [610, 343], mode: outbound, allow_upscale: true}
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        # fixed crop in admin tab
+        image_636x212:
+            jpeg_quality: 90
+            filters:
+                thumbnail: { size: [636, 212], mode: outbound, allow_upscale: true}
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        # fixed crop in admin tab
+        image_650x434:
+            jpeg_quality: 90
+            filters:
+                thumbnail: { size: [650, 434], mode: outbound, allow_upscale: true}
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        # fixed crop in admin tab
+        image_928x309:
+            jpeg_quality: 90
+            filters:
+                relative_resize: { widen: 928 }
+                thumbnail: { size: [928, 309], mode: outbound, allow_upscale: true}
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        # Video frontend sizes:
+        video_snapshot_poster:
+            data_loader: video_snapshot
+            jpeg_quality: 90
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }
+
+        # fixed crop in admin tab
+        video_snapshot_300x200:
+            jpeg_quality: 90
+            data_loader: video_snapshot
+            filters:
+                relative_resize: { widen: 300 }
+                thumbnail: { size: [300, 200], mode: outbound }
+            post_processors:
+                jpegoptim: { strip_all: true, progressive: true }

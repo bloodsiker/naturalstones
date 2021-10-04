@@ -1,0 +1,25 @@
+parameters:
+#    admin.ftpclient.class: AdminBundle\Controller\FTPClientController
+#    admin.helper.class: AdminBundle\Helper\AdminHelper
+#    admin.crud_subscriber.class: AdminBundle\EventListener\AdminCRUDSubscriber
+
+services:
+#    admin.ftpclient:
+#        class: '%admin.ftpclient.class%'
+#        shared: false
+#    admin.helper:
+#        class: '%admin.helper.class%'
+#
+#    app.form.type.image:
+#        class: AdminBundle\Form\Type\ImageType
+#        tags:
+#            - { name: form.type, alias: image }
+#
+#    admin.crud_subscriber:
+#        class: '%admin.crud_subscriber.class%'
+#        arguments:
+#            - '@annotations.reader'
+#            - '@upload.manager'
+#            - '%upload_parameters%'
+#        tags:
+#            - { name: doctrine.event_subscriber }

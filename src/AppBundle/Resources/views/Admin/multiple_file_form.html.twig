@@ -1,0 +1,225 @@
+{% extends 'SonataAdminBundle:CRUD:action.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-success">
+                <div class="box-header">
+                    <h3 class="box-title">{{ 'image.upload.upload_files'|trans({}, 'AppBundle') }}</h3>
+                </div>
+                <div class="box-body">
+                    <a href="{{ admin.generateUrl('list', {'mode': app.request.isXmlHttpRequest ? 'multiple' : null}) }}" class="btn btn-app">
+                        <i class="fa fa-list"></i>
+                        {{ 'image.btn.back_to_list'|trans({}, 'AppBundle') }}
+                    </a>
+
+                    <label>
+                        <form id="multi_upload" action="/" method="post" enctype="multipart/form-data">
+                            <span class="btn btn-app">
+                                <i class="fa fa-image"></i>
+                                {{ 'image.btn.choose_images'|trans({}, 'AppBundle') }}
+                            </span>
+                            <input name="multi_upload_files[]" type="file" multiple="multiple" accept="image/*" value="" style="display: none;">
+                        </form>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="file_tiles"></div>
+        <div class="col-xs-12" id="multisave-actions" style="display:none;">
+            <div class="well well-small form-actions">
+                {% if app.request.isXmlHttpRequest %}
+                    <a href="#" class="btn btn-success" id="btn_update_all_set_gallery">
+                        <i class="fa fa-save"></i> {{ 'image.upload.btn_update_all_set_gallery'|trans({}, 'AppBundle') }}
+                    </a>
+                {% else %}
+                    <a href="#" class="btn btn-success" id="btn_update_all">
+                        <i class="fa fa-save"></i> {{ 'image.upload.btn_update_all'|trans({}, 'AppBundle') }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        /*global $, jQuery, document, window, FileReader, console */
+        (function() {
+            'use strict';
+            var limit = 30,
+                uploadedImages = [],
+                modal = jQuery('#file_tiles').closest('.modal'),
+                ajaxEnabled = true;
+            if (modal.length) {
+                var elementParts = modal.attr('id').split('_'),
+                    elementGroup = elementParts[2] + '_' + elementParts[3];
+            } else {
+                var elementGroup = false;
+            }
+
+            function addPreloader() {
+                jQuery('body').append('<div class="custom-backdrop"><span class="custom-preloader fa fa-spinner fa-spin"></span></div>');
+            }
+
+            function removePreloader() {
+                jQuery('.custom-backdrop').remove();
+            }
+
+            function fileIsValid(file) {
+                return file.type.match(/image.*/);
+            }
+
+            function redirectToList() {
+                window.location = '{{ admin.generateUrl('list', {'mode': null}) }}';
+            }
+
+            jQuery('#multi_upload :file').change(function(event) {
+                event.preventDefault();
+                addPreloader();
+                this.getFileCount = function() {
+                    return this.files.length;
+                };
+                this.getFile = function(n) {
+                    return this.files.item(n);
+                };
+
+                if(this.getFileCount()) {
+                    var files = [];
+                    for (var n = 0; n < this.getFileCount(); n++) {
+                        if (n >= limit) {
+                            return;
+                        }
+                        var file = this.getFile(n);
+                        if (fileIsValid(file)) {
+                            files.push(file);
+                        }
+                    }
+                    renderForm(files, []);
+                } else {
+                    removePreloader();
+                }
+            });
+
+            function renderForm(files, images) {
+                if (files.length) {
+                    var file =  files[0];
+                    var formData = new FormData();
+                    formData.append('_xml_http_request', true);
+                    formData.append('file', file);
+                    jQuery.ajax({
+                        url: '{{ admin.generateUrl('ajaxUpload') }}',
+                        type: 'POST',
+                        async: true,
+                        data: formData,
+                        dataType: 'html',
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            var formBlock = jQuery('<div class="col-xs-12" />').html(response);
+                            formBlock.find('.form-actions').hide();
+                            images.push(formBlock);
+                            renderForm(files.slice(1), images);
+                        }
+                    });
+                } else {
+                    for (var i in images) {
+                        try {
+                            jQuery('#file_tiles').append(images[i]);
+                        } catch(err) {}
+                    }
+                    removePreloader();
+                    jQuery('#multisave-actions').show();
+                }
+            }
+
+            jQuery('#btn_update_all').click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                jQuery(jQuery('#file_tiles').find('form').get().reverse()).each(function(){
+                    sendForm(jQuery(this), 0, false);
+                });
+            });
+
+            jQuery('#btn_update_all_set_gallery').click(function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                // creating containers for more than one images in gallery
+                if (modal.length) {
+                    modal.modal('hide');
+                    addPreloader();
+                }
+                createImageContainers(jQuery('#file_tiles').find('form').length - findEmptyContainers().length);
+            });
+
+            function findEmptyContainers() {
+               return jQuery('input:text[id^="' + elementGroup + '"]').filter(function() { return jQuery(this).val() == ""; });
+            }
+
+            function createImageContainers(size) {
+                if (findEmptyContainers().length >= jQuery('#file_tiles').find('form').length - size ) {
+                    if (size > 0) {
+                        jQuery('#field_actions_' + elementGroup).find('a').trigger('click');
+                        createImageContainers(size - 1);
+                    } else {
+                        uploadedImages = findEmptyContainers();
+                        var count = 0;
+                        jQuery('#file_tiles').find('form').each(function(){
+                            insertGalleryImages(jQuery(this), uploadedImages[count]);
+                            count++;
+                        });
+                    }
+                } else {
+                    setTimeout(function(){createImageContainers(size);}, 200);
+                }
+            }
+
+            function insertGalleryImages(file, container) {
+                if (ajaxEnabled) {
+                    sendForm(file, 1, container);
+                } else {
+                    setTimeout(function(){insertGalleryImages(file, container);}, 200);
+                }
+            }
+
+
+            function sendForm(form, gallery, container) {
+                if (gallery) {
+                    ajaxEnabled = false;
+                }
+                form.ajaxSubmit({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: {
+                        _xml_http_request: true
+                    },
+                    success: function(data) {
+                        if (data.result === 'ok') {
+                            if (gallery) {
+                                jQuery(form).parent().remove();
+                                jQuery(container).val(data.objectId);
+                                jQuery(container).trigger('change');
+                                if(jQuery('#file_tiles').find('form').length === 0) {
+                                    jQuery('#multisave-actions').hide();
+                                    if (modal.length) {
+                                        $(modal).remove();
+                                        removePreloader();
+                                    }
+                                }
+                                ajaxEnabled = true;
+                            } else {
+                                form.remove();
+                                if (!jQuery('#file_tiles').find('form').length) {
+                                    redirectToList();
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }());
+    </script>
+{% endblock %}

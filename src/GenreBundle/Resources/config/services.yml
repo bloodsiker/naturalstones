@@ -1,0 +1,5 @@
+services:
+    genre.router.helper:
+        class: GenreBundle\Helper\GenreRouterHelper
+        arguments:
+          - '@router'

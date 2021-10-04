@@ -1,0 +1,23 @@
+vich_uploader:
+    db_driver: orm
+    storage: gaufrette
+    metadata:
+        auto_detection: true
+        cache: file
+
+    mappings:
+        media_file:
+            upload_destination: file
+            namer: media.upload_namer.file
+
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        media_image:
+            upload_destination: image
+            namer: media.upload_namer.image
+
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true

@@ -1,0 +1,33 @@
+services:
+    sonata.page.admin.site_variables:
+        class: "PageBundle\\Admin\\SiteVariableAdmin"
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'sonata_page', label: 'sonata_page.site_variables_editor' }
+        arguments:
+            - ~
+            - "PageBundle\\Entity\\SiteVariable"
+            - ~
+        calls:
+            - [ setTranslationDomain, ['SonataPageBundle'] ]
+
+    sonata.page.admin.site_variables_placement:
+        class: "PageBundle\\Admin\\SiteVariablePlacementAdmin"
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'sonata_page', label: 'sonata_page.site_variables_placement_editor' }
+        arguments:
+            - ~
+            - "PageBundle\\Entity\\SiteVariablePlacement"
+            - ~
+        calls:
+            - [ setTranslationDomain, ['SonataPageBundle'] ]
+
+    sonata.page.admin.page_redirect:
+        class: "PageBundle\\Admin\\PageRedirectAdmin"
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'sonata_page', label: 'sonata_page.page_redirect_editor' }
+        arguments:
+            - ~
+            - "PageBundle\\Entity\\PageRedirect"
+            - ~
+        calls:
+            - [ setTranslationDomain, ['SonataPageBundle'] ]

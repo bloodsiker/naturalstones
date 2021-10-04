@@ -1,0 +1,10 @@
+{% set fieldName = field_description.name %}
+{% set value = attribute( object, fieldName, [{ 'locale': app.request.locale }] ) %}
+
+{% if(value is empty) %}
+    {% if(field_description.options.field == 'title' and object.article) %}
+        {% set value = attribute( object.article, 'getTitle', [{ 'locale': app.request.locale }] ) %}
+    {% endif %}
+{% endif %}
+
+{% include 'SonataAdminBundle:CRUD:base_list_field.html.twig' with { 'value': value } %}

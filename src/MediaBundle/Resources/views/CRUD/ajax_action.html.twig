@@ -1,0 +1,16 @@
+{% extends 'MediaBundle:CRUD:action.html.twig' %}
+
+{% block content %}
+    {% block sonata_header %}{% endblock %}
+    {% block sonata_left_side %}{% endblock %}
+    {% block stylesheets %}
+        {{ parent() }}
+        <style>.skin-black .wrapper { background-color: unset;}</style>
+    {% endblock %}
+
+    {% block sonata_wrapper %}
+        <div style="margin: 15px;">
+            {{ block('select_type') }}
+        </div>
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,27 @@
+Action: Действия
+Series List: Список серий
+Series Create: Создать серию
+
+form_group:
+    basic: Основные
+    additional: Дополнительные
+
+group:
+    order: Заказы
+    order_board_editor: Стол заказов
+
+order_board:
+    fields:
+        book_title: Название книги
+        user: Пользователь
+        user_name: Имя пользователя
+        vote: Голосы
+        status: Статус
+        created_at: Дата создания
+        book: Книга
+        id: ID
+        statuses:
+            new: Новый заказ
+            completed: Заказ выполнен
+            cancel: Отказ
+            top: В топе

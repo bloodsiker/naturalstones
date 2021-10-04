@@ -1,0 +1,17 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% if object is instanceof('\\ShareBundle\\Entity\\Author') %}
+        {% if field_description.name == 'photo' %}
+            {% set v = asset('bundles/admin/images/person_no_foto.png') %}
+            {% set image_preview_path = value ? value.path : null %}
+            <img src="{{ image_preview_path|default(v) }}?{{ random() }}" style="max-height: 100px;"/>
+        {% endif %}
+    {% endif %}
+
+    {% if object is instanceof('\\ShareBundle\\Entity\\Colour') %}
+        {% if field_description.name == 'colour' %}
+            <span class="colorpicker__preview" style="background-color: {{ '#' ~ object.colour }}; margin: 0;"></span>
+        {% endif %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,54 @@
+services:
+  app.block.service.footer:
+      class: "AppBundle\\Block\\FooterBlockService"
+      arguments:
+        - app.block.service.footer
+        - '@templating'
+      tags:
+        - { name: sonata.block }
+
+  app.block.service.header:
+      class: "AppBundle\\Block\\HeaderBlockService"
+      arguments:
+        - app.block.service.header
+        - '@templating'
+        - '@app.entity_manager'
+      tags:
+        - { name: sonata.block }
+
+  app.block.service.search:
+      class: "AppBundle\\Block\\SearchBlockService"
+      arguments:
+        - app.block.service.search
+        - '@templating'
+        - '@app.entity_manager'
+        - '@request_stack'
+      tags:
+        - { name: sonata.block }
+
+  app.block.service.banner:
+       class: "AppBundle\\Block\\BannerBlockService"
+       arguments:
+         - app.block.service.banner
+         - '@templating'
+       tags:
+         - { name: sonata.block }
+
+  app.block.service.get_state_value:
+       class: "AppBundle\\Block\\GetStateValueBlockService"
+       arguments:
+        - app.block.service.get_state_value
+        - '@templating'
+       calls:
+        - [ 'setSaveStateService', ['@app.save.state.value']]
+       tags:
+        - { name: sonata.block }
+
+  app.block.service.breadcrumb:
+      class: "AppBundle\\Block\\BreadcrumbBlockService"
+      arguments:
+        - app.block.service.breadcrumb
+        - '@templating'
+        - '@app.breadcrumb'
+      tags:
+        - { name: sonata.block }

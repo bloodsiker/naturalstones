@@ -1,0 +1,9 @@
+{% set fieldName = 'get' ~ field_description.options.field %}
+{% set value = attribute( object, fieldName, [{ 'locale': app.request.locale }] ) %}
+{% if field_description.type == 'text' %}
+    {% include 'SonataAdminBundle:CRUD:base_list_field.html.twig' with { 'value': value } %}
+{% elseif field_description.type starts with 'orm_' %}
+    {% include 'SonataDoctrineORMAdminBundle:CRUD:list_' ~ field_description.type ~ '.html.twig' with { 'value': value } %}
+{% else %}
+    {% include 'SonataAdminBundle:CRUD:list_' ~ field_description.type ~ '.html.twig' with { 'value': value } %}
+{% endif %}

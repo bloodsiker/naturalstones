@@ -1,0 +1,27 @@
+{% if shortcode_data.read_also_content_id and (shortcode_data.read_also_articles or shortcode_data.read_also_videos) %}
+    {% import 'AppBundle:Block:_articles_macro.html.twig' as article_macro %}
+    {% import 'AppBundle:Block:_videos_macro.html.twig' as video_macro %}
+
+    <div class="read-also">
+        {% if shortcode_data.read_also_title is not empty %}
+            <h5>{{ shortcode_data.read_also_title }}:</h5>
+        {% endif %}
+
+        {% for item in shortcode_data.read_also_articles %}
+            {% if item.position == shortcode_data.read_also_content_id and item.relatedArticle.isActive %}
+                {% set article_category = item.relatedArticle.articleHasCategories|first.category %}
+                <a href="{{ article_macro.article_url(item.relatedArticle, article_category, true) }}">
+                    {{ item.relatedArticle.translate.title }}
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% for item in shortcode_data.read_also_videos %}
+            {% if item.position == shortcode_data.read_also_content_id and item.relatedTvVideo.isActive %}
+                <a href="{{ video_macro.video_url(item.relatedTvVideo, true) }}">
+                    {{ item.relatedTvVideo.translate.title }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

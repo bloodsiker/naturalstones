@@ -1,0 +1,17 @@
+# order_board ========================================================
+order_board:
+    path: /order-board
+    defaults:
+        _controller: OrderBundle:OrderBoard:list
+
+order_board_vote:
+    path: /order-board/vote
+    defaults:
+        _controller: OrderBundle:OrderBoard:voteOrder
+
+order_board_status:
+    path: /order-board/{status}
+    defaults:
+        _controller: OrderBundle:OrderBoard:list
+    requirements:
+        status: "new|completed|cancel|top"

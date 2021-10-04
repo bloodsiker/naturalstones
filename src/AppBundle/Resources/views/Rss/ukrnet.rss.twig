@@ -1,0 +1,98 @@
+{% import 'AppBundle:Block:_articles_macro.html.twig' as article %}
+{% import 'AppBundle:Block:_events_macro.html.twig' as event %}
+{% import 'AppBundle:Block:_videos_macro.html.twig' as video %}
+{% import 'AppBundle:Block:_blogs_macro.html.twig' as blog %}
+{% import 'AppBundle:Block:_collections_macro.html.twig' as collection %}
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns="http://backend.userland.com/rss2" xmlns:yandex="http://news.yandex.ru">
+    <channel>
+
+        <title>{{ ('frontend.rss.ukrnet.' ~ type ~ '.title')|trans({}, 'AppBundle') }}</title>
+        <description>{{ ('frontend.rss.ukrnet.' ~ type ~ '.description')|trans({}, 'AppBundle') }}</description>
+
+        {% set base_url = app.request.getSchemeAndHttpHost() %}
+        <link>{{ base_url }}</link>
+
+        <image>
+            <url>{{ base_url ~ asset('bundles/app/img/logo_100x100.jpg') }}</url>
+            <title>{{ 'frontend.rss.brend'|trans({}, 'AppBundle') }}</title>
+            <link>{{ base_url }}</link>
+        </image>
+
+        {% for key, item in items %}
+            {% set is_article = item is instanceof('\\AppBundle\\Entity\\Article') %}
+            {% set is_video = item is instanceof('\\AppBundle\\Entity\\TvVideo') %}
+            {% set is_blog = item is instanceof('\\AppBundle\\Entity\\Blog') %}
+            {% set is_collection = item is instanceof('\\AppBundle\\Entity\\Collection') %}
+
+            {% if is_article %}
+                {% set category = item.articleHasCategories|first.category %}
+                {% set category_title = category.translate.title %}
+                {% set content = shortcode(item.translate.content, item, false)|striptags|raw %}
+                {% set link = article.article_url(item, category) %}
+            {% elseif is_video %}
+                {% set category = item.category %}
+                {% set category_title = category.translate.title %}
+                {% set content = item.translate.content|striptags|raw %}
+                {% set link = video.video_url(item)|trim %}
+            {% elseif is_blog %}
+                {% set category = null %}
+                {% set category_title = 'Suzy Menkes Blog' %}
+                {% set content = shortcode(item.translate.content, item, false)|striptags|raw %}
+                {% set link = blog.suzy_blog_url(item.slug)|trim %}
+            {% elseif is_collection %}
+                {% set category = item.category %}
+                {% set category_title = category.translate.title %}
+                {% set content = null %}
+                {% set link = collection.collection_url(item)|trim %}
+            {% else %}
+                {% set category = null %}
+                {% set category_title = 'Event List'|trans([], 'AppBundle') %}
+                {% set content = item.translate.content|striptags|raw %}
+                {% set link = event.event_url(item) %}
+            {% endif %}
+
+            {% if is_blog %}
+                {% set description = item.translate.short|striptags|raw %}
+            {% else %}
+                {% set description = item.translate.header|raw %}
+            {% endif %}
+
+            {% if description is empty and content %}
+                {% set description = content|split('.')|slice(0,3)|join('.')~'.' %}
+            {% endif %}
+
+            <item>
+                <title>{{ item.translate.title }}</title>
+                {%- if is_article and item.html and item.html.isActive and item.html.path -%}
+                    <link>{{ html_page_path(item.html, app.request.scheme) }}</link>
+                {%- else -%}
+                    <link>{{ base_url }}{{ link }}</link>
+                {%- endif -%}
+                <description><![CDATA[{{ description }}]]></description>
+                <category>{{ category_title }}</category>
+                <yandex:genre>article</yandex:genre>
+
+                {% if is_article %}
+                    {% set image = item.image ? item.image|imagine_filter('article_320x475') : null %}
+                    {% if image %}<enclosure url="{{ image }}" type="image/jpeg" />{% endif %}
+                {% elseif is_blog %}
+                    {% set image = item.image ? item.image|imagine_filter('blog_320x475') : null %}
+                    {% if image %}<enclosure url="{{ image }}" type="image/jpeg" />{% endif %}
+                {% elseif is_video %}
+                    {% set image = item.image ? item.image|imagine_filter('video_320x176') : null %}
+                    {% if image %}<enclosure url="{{ image }}" type="image/jpeg" video="true"/>{% endif %}
+                {% else %}
+                    {% if item.gallery and item.gallery.galleryHasImage %}
+                        {% for event in item.gallery.galleryHasImage %}
+                            <enclosure url="{{ event.image.path|imagine_filter('gallery_x315') }}" type="image/jpeg" />
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+
+                <pubDate>{{ item.publishAt|date('D, d M y H:i:s O') }}</pubDate>
+                <yandex:full-text><![CDATA[{{ content }}]]></yandex:full-text>
+            </item>
+    {% endfor %}
+   </channel>
+</rss>

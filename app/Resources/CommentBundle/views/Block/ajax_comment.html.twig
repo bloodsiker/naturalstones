@@ -1,0 +1,5 @@
+{% if comment %}
+    {% import "CommentBundle:Block/macros:item.html.twig" as item %}
+
+    {{ item.comment(comment, false) }}
+{% endif %}

@@ -1,0 +1,20 @@
+{% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+{% set sumVote = book.ratePlus + book.rateMinus %}
+{% set percent = sumVote >= book.ratePlus - book.rateMinus and sumVote > 0 ? book.ratePlus*100/(sumVote) : 0 %}
+
+<div class="rrange">
+    Оценка читателей<span>{{ percent|round(1) }}%</span>
+    <div class="rbar">
+        <div class="rfill" style="width: {{ percent|round(1) }}%;"></div>
+    </div>
+</div>
+<div class="rate3" data-name="Оценка читателей">
+    <div class="ps" {% if (result and result.resultVote == false) or result is null %} onclick="voteBook(1, {{ book.id }}, '{{ block_ajax_path }}');" {% else %} onclick="showAlert('Ваш голос уже засчитан', 'error')" {% endif %}>
+        <span class="fa fa-thumbs-up"></span>
+        <span class="psc">{{ book.ratePlus }}</span>
+    </div>
+    <div class="ms" {% if (result and result.resultVote == true) or result is null %} onclick="voteBook(0, {{ book.id }}, '{{ block_ajax_path }}');" {% else %} onclick="showAlert('Ваш голос уже засчитан', 'error')" {% endif %}>
+        <span class="fa fa-thumbs-down"></span>
+        <span class="msc">{{ book.rateMinus }}</span>
+    </div>
+</div>

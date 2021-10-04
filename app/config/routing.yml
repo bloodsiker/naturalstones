@@ -1,0 +1,87 @@
+# Application =================================================================
+app:
+    resource: '@AppBundle/Resources/config/routing.yml'
+    options: { i18n: true }
+#==============================================================================
+
+# Product ========================================================================
+product:
+    resource: '@ProductBundle/Resources/config/routing.yml'
+    options: { i18n: true }
+#==============================================================================
+
+# Books ========================================================================
+books:
+    resource: '@BookBundle/Resources/config/routing.yml'
+    options: { i18n: true }
+#==============================================================================
+
+# Order ========================================================================
+order:
+    resource: '@OrderBundle/Resources/config/routing.yml'
+    options: { i18n: true }
+#==============================================================================
+
+# Genre ========================================================================
+genres:
+    resource: '@GenreBundle/Resources/config/routing.yml'
+    options: { i18n: true }
+#==============================================================================
+
+# Share ========================================================================
+share:
+    resource: '@ShareBundle/Resources/config/routing.yml'
+    options: { i18n: true }
+#==============================================================================
+
+# Comment ========================================================================
+comment:
+    resource: '@CommentBundle/Resources/config/routing.yml'
+    options: { i18n: true }
+#==============================================================================
+
+# Sonata Admin ================================================================
+sonata_user_admin_security:
+    resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+    prefix: /admin
+
+sonata_user_admin_resetting:
+    resource: '@SonataUserBundle/Resources/config/routing/admin_resetting.xml'
+    prefix: /admin/resetting
+
+admin_area:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+# =============================================================================
+
+# Sonata Page =================================================================
+sonata_page:
+    resource: '@SonataPageBundle/Resources/config/routing/page.xml'
+    prefix: /
+
+sonata_page_exceptions:
+    resource: '@SonataPageBundle/Resources/config/routing/exceptions.xml'
+    prefix: /
+
+sonata_page_cache:
+    resource: '@SonataPageBundle/Resources/config/routing/cache.xml'
+    prefix: /
+# =============================================================================
+
+# FOS User Bundle =============================================================
+fos_user_resetting_request:
+    path: /resetting/request
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+# =============================================================================
+
+# Liip Imagine ================================================================
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.yaml"
+# =============================================================================

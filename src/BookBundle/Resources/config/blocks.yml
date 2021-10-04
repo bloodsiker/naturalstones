@@ -1,0 +1,46 @@
+services:
+    book.block.list:
+        class: BookBundle\Block\ListBooksBlockService
+        arguments:
+          - book.block.list
+          - '@templating'
+          - '@?doctrine'
+        tags:
+          - { name: sonata.block }
+
+    book.block.book_voting:
+        class: BookBundle\Block\BookVotingBlockService
+        arguments:
+          - book.block.book_voting
+          - '@templating'
+          - '@request_stack'
+          - '@book.entity_manager'
+        tags:
+          - { name: sonata.block }
+
+    book.block.popular:
+      class: BookBundle\Block\PopularBooksBlockService
+      arguments:
+        - book.block.popular
+        - '@templating'
+        - '@?doctrine'
+      tags:
+        - { name: sonata.block }
+
+    book.block.collection_list:
+      class: BookBundle\Block\ListCollectionBlockService
+      arguments:
+        - book.block.collection_list
+        - '@templating'
+        - '@?doctrine'
+      tags:
+        - { name: sonata.block }
+
+    book.block.collection_genre:
+      class: BookBundle\Block\CollectionGenreBlockService
+      arguments:
+        - book.block.collection_genre
+        - '@templating'
+        - '@?doctrine'
+      tags:
+        - { name: sonata.block }

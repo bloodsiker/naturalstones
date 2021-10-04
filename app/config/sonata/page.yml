@@ -1,0 +1,253 @@
+sonata_page:
+    class:
+        page: PageBundle\Entity\Page
+        site: PageBundle\Entity\Site
+        block: PageBundle\Entity\Block
+        snapshot: PageBundle\Entity\Snapshot
+
+    multisite: host
+    direct_publication: '%kernel.debug%'
+    use_streamed_response: true # set the value to false in debug mode or if the reverse proxy does not handle streamed response
+    ignore_route_patterns:
+        - ^(.*)admin(.*)                            # ignore admin route, ie route containing 'admin'
+        - ^_(.*)                                    # ignore symfony routes
+        - ^(.*)fos_user_(?!resetting_reset)(.*)     # ignore for_user route
+        - ^(.*)liip_imagine_(.*)                    # ignore liip imagine route
+        - ^(.*)redirect_old_(.*)                    # ignore old routing redirects
+
+    ignore_routes:
+        - sonata_page_exceptions_list
+        - sonata_page_exceptions_edit
+        - sonata_page_cache_esi
+        - sonata_page_cache_ssi
+        - sonata_page_ajax_block
+        - sonata_page_js_sync_cache
+        - sonata_page_js_async_cache
+        - sonata_cache_esi
+        - sonata_cache_ssi
+        - sonata_cache_js_async
+        - sonata_cache_js_sync
+        - sonata_cache_apc
+
+        - block__ajax
+        - order_board_vote
+        - comment_vote
+        - inc_book_download
+        - book_download
+
+    ignore_uri_patterns:
+        - "^/admin\\/"   # ignore admin route, ie route containing 'admin'
+
+    slugify_service: cocur_slugify
+
+    page_defaults:
+        index: {decorate: false} # disable decoration for homepage, key - is a page route
+
+    default_template: default # template key from templates section, used as default for pages
+
+    templates:
+        wide:
+            path: 'AppBundle:layout:wide.html.twig'
+            name: 'sonata.page.template.wide'
+            containers:
+                header:
+                    name: Header
+                content_top:
+                    name: Top content
+                content:
+                    name: Main content
+                content_bottom:
+                    name: Bottom content
+                footer:
+                    name: Footer
+            matrix:
+                layout: |
+                    HHHHHHHH
+                    TTTTTTTT
+                    CCCCCCCC
+                    CCCCCCCC
+                    BBBBBBBB
+                    FFFFFFFF
+                mapping:
+                    H: header
+                    T: content_top
+                    C: content
+                    B: content_bottom
+                    F: footer
+
+        default:
+            path: 'AppBundle:layout:default.html.twig'
+            name: 'sonata.page.template.default'
+            containers:
+                header:
+                    name: Header
+                content_top:
+                    name: Top content
+                content:
+                    name: Main content
+                content_side:
+                    name: Side right content
+                content_bottom:
+                    name: Bottom content
+                footer:
+                    name: Footer
+            matrix:
+                layout: |
+                    HHHHHHHHH
+                    TTTTTTTTT
+                    CCCCCCCRR
+                    CCCCCCCRR
+                    BBBBBBBBB
+                    FFFFFFFFF
+                mapping:
+                    H: header
+                    T: content_top
+                    C: content
+                    R: content_side
+                    B: content_bottom
+                    F: footer
+
+        section:
+            path: 'AppBundle:layout:section.html.twig'
+            name: 'sonata.page.template.section'
+            containers:
+                header:
+                    name: Header
+                content_top:
+                    name: Top content
+                content:
+                    name: Main content
+                content_side_left:
+                    name: Side left content
+                content_side:
+                    name: Side right content
+                content_bottom:
+                    name: Bottom content
+                footer:
+                    name: Footer
+            matrix:
+                layout: |
+                    HHHHHHHHHH
+                    TTTTTTTTTT
+                    LLCCCCCCRR
+                    LLCCCCCCRR
+                    LLCCCCCCRR
+                    BBBBBBBBBB
+                    FFFFFFFFFF
+                mapping:
+                    H: header
+                    T: content_top
+                    C: content
+                    L: content_side_left
+                    R: content_side
+                    B: content_bottom
+                    F: footer
+
+        view:
+            path: 'AppBundle:layout:view.html.twig'
+            name: 'sonata.page.template.view'
+            containers:
+                header:
+                    name: Header
+                content_top:
+                    name: Top content
+                content:
+                    name: Main content
+                content_side_left:
+                    name: Side left content
+                    blocks:
+                        - ~
+                content_side:
+                    name: Side right content
+                content_bottom:
+                    name: Bottom content
+                footer:
+                    name: Footer
+            matrix:
+                layout: |
+                    HHHHHHHHHH
+                    TTTTTTTTTT
+                    CCCCCCLLRR
+                    CCCCCCLLRR
+                    CCCCCCLLRR
+                    BBBBBBBBBB
+                    FFFFFFFFFF
+                mapping:
+                    H: header
+                    T: content_top
+                    C: content
+                    L: content_side_left
+                    R: content_side
+                    B: content_bottom
+                    F: footer
+
+        homepage:
+            path: 'AppBundle:layout:homepage.html.twig'
+            name: 'sonata.page.template.homepage'
+            containers:
+                header:
+                    name: Header
+                content_top:
+                    name: Top content
+                content:
+                    name: Main content
+                content_side_left:
+                    name: Side left content
+                    blocks:
+                      - ~
+                content_bottom:
+                    name: Bottom content
+                footer:
+                    name: Footer
+            matrix:
+                layout: |
+                    HHHHHHHH
+                    TTTTTTTT
+                    LLCCCCCC
+                    LLCCCCCC
+                    LLCCCCCC
+                    BBBBBBBB
+                    FFFFFFFF
+                mapping:
+                    H: header
+                    T: content_top
+                    C: content
+                    L: content_side_left
+                    B: content_bottom
+                    F: footer
+        error:
+            path: 'AppBundle:layout:error.html.twig'
+            name: 'sonata.page.template.error'
+            containers:
+                header:
+                    name: Header
+                content_top:
+                    name: Top content
+                content:
+                    name: Main content
+                content_side:
+                    name: Side right content
+                content_bottom:
+                    name: Bottom content
+                footer:
+                    name: Footer
+            matrix:
+                layout: |
+                    HHHHHHHHH
+                    TTTTTTTTT
+                    CCCCCCCRR
+                    CCCCCCCRR
+                    BBBBBBBBB
+                    FFFFFFFFF
+                mapping:
+                    H: header
+                    T: content_top
+                    C: content
+                    R: content_side
+                    B: content_bottom
+                    F: footer
+
+    # manage the http errors
+    catch_exceptions:
+        not_found: [404]    # render 404 page with "not_found" key (name generated: _page_internal_error_{key})
+        fatal:     [500]    # so you can use the same page for different http errors or specify specific page for each error

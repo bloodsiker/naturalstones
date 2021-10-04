@@ -1,0 +1,46 @@
+{% if app.request.get('search') %}
+    <h1>Авторы. Результаты поиска по запросу <span class="highlight">{{ app.request.get('search')|raw }}</span> ({{ authors.count|number_format(0, '.', ' ')  }})</h1>
+{% else %}
+    <h1>Авторы ({{ authors.count|number_format(0, '.', ' ')  }})</h1>
+{% endif %}
+
+<hr class="line">
+
+{#<ul class="author-filter">#}
+    {#<li><a href="">Все авторы</a></li>#}
+    {#<li><a href="">Популярные авторы</a></li>#}
+{#</ul>#}
+
+<form action="{{ path('author_list') }}" class="form">
+    <div class="inputs">
+        <input type="text" name="search" placeholder="Искать..">
+        <button>Искать</button>
+    </div>
+</form>
+
+<ul class="author-list-letter">
+    <li>Авторы на букву</li>
+
+    {% for letter in letters %}
+        {% if letter[1] is defined %}
+            <li><a href="{{ path('author_list_letter', { 'letter': letter[1] }) }}" class="{{ app.request.get('letter') == letter[1] ? 'active' : null }}">{{ letter[1] }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+<table class="table">
+    {% for author in authors %}
+        <tr>
+            <td>
+                <i aria-hidden="true" class="fa fa-book"></i> {{ author.getBooks().count() }}
+            </td>
+            <td class="title author-name">
+                <a href="{{ path('author_books', { 'slug': author.slug }) }}">{{ replace_highlight(author.name, app.request.get('search'))|raw }}</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% if authors.maxPerPage is defined and authors.count > authors.maxPerPage %}
+    {{ pagerfanta(authors, { 'omitFirstPage': true}) }}
+{% endif %}

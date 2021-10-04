@@ -1,0 +1,28 @@
+{% extends 'AppBundle:layout:default.html.twig' %}
+{% block head_javascripts %}
+    {{ parent() }}
+    {% if app.debug %}
+        <script src="{{ asset('bundles/app/js/lib/pikaday.js') }}"></script>
+    {% else %}
+        {% javascripts
+        '@AppBundle/Resources/public/js/lib/pikaday.js'
+        filter='?uglifyjs2' output='js/pikaday.min.js'
+        %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endif %}
+{% endblock %}
+{% block content_main %}
+    {{
+        sonata_block_render(
+            { 'type': 'article.block.service.list' },
+            {
+                'show_title': 'article.title.last_news'|trans({}, 'ArticleBundle'),
+                'items_count': 100,
+                'list_type': constant('ArticleBundle\\Block\\ArticleBaseBlockService::TEXT_LIST'),
+                'show_paginator': false,
+            }
+        )
+    }}
+{{ parent() }}
+{% endblock %}

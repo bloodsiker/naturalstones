@@ -1,0 +1,40 @@
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% set ckParameters = {'CKEditor': app.request.get('CKEditor'), 'CKEditorFuncNum': app.request.get('CKEditorFuncNum')} %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style>
+        .content {
+            padding: 20px 15px;
+        }
+        .wrapper {
+            background: #ecf0f5 !important;
+        }
+    </style>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+      $(function () {
+        $(".select").click(function (e) {
+          e.preventDefault();
+          window.opener.CKEDITOR.tools.callFunction({{ app.request.get('CKEditorFuncNum')|escape('js') }}, $(this).data("id"));
+          window.close();
+        });
+      });
+    </script>
+{% endblock %}
+{% block sonata_wrapper %}{% block list_table %}{{ parent() }}{% endblock %}{% endblock %}
+{% block sonata_nav %}{% endblock %}
+{% block logo %}{% endblock %}
+{% block tab_menu %}{% endblock %}
+{% block actions %}{% endblock %}
+{% block list_filters_actions %}{% endblock %}
+
+{% block list_filters %}{% endblock %}
+

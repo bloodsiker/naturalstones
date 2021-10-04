@@ -1,0 +1,20 @@
+<div class="list">
+    {% for item in collections %}
+        <div class="collection__item">
+            <a href="{{ path('collection_view', {'slug' : item.slug}) }}" class="collection__link">
+                <div class="collection__preview">
+                    <div class="collection__pic" style="background-image:url({{ asset(item.poster.path) }})"></div>
+                </div>
+                <div class="collection__text">
+                    <div class="collection__name">{{ item.title }}</div>
+                    <div class="collection__qty">{{ item.collectionHasBook.count() }} {{ book_change_end(item.collectionHasBook.count()) }}</div>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% if collections.maxPerPage is defined and collections.count > collections.maxPerPage %}
+    {{ pagerfanta(collections, { 'omitFirstPage': true}) }}
+{% endif %}

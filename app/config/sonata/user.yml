@@ -1,0 +1,15 @@
+sonata_user:
+    security_acl: true
+    manager_type: orm
+    class:
+        user:  UserBundle\Entity\User
+        group: UserBundle\Entity\Group
+    table:
+        user_group: user_users_groups
+    impersonating:
+        route:      sonata_admin_dashboard
+
+doctrine:
+    dbal:
+        types:
+            json: Sonata\Doctrine\Types\JsonType

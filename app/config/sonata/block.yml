@@ -1,0 +1,82 @@
+sonata_block:
+    context_manager: sonata.page.block.context_manager
+    default_contexts: [sonata_page_bundle]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts: [admin]
+        sonata.admin.block.search_result:
+            contexts: [admin]
+
+#        # PageBundle's Blocks
+#        sonata.page.block.container:
+#            contexts: [sonata_page_bundle]
+        sonata.page.block.ajax:
+            contexts: [cms]
+#        sonata.page.block.context_manager:
+#            contexts: [sonata_page_bundle]
+        page.block.site_variable:
+            contexts: [cms]
+
+        # AppBundle's Blocks
+        app.block.service.header:
+            contexts: [cms]
+        app.block.service.footer:
+            contexts: [cms]
+        app.block.service.search:
+            contexts: [cms]
+        app.block.service.breadcrumb:
+            contexts: [cms]
+#        app.block.service.get_state_value:
+#            contexts: [cms]
+
+        # BookBundle Block's
+        book.block.list:
+            contexts: [cms]
+        book.block.book_voting:
+            contexts: [cms]
+        book.block.popular:
+            contexts: [cms]
+        book.block.collection_list:
+            contexts: [cms]
+        book.block.collection_genre:
+            contexts: [cms]
+
+        # GenreBundle Block's
+        genre.block.genre_list:
+            contexts: [cms]
+
+        # SeriesBundle Block's
+        series.block.series_list:
+            contexts: [cms]
+
+        # ShareBundle Block's
+        share.block.tag_list:
+            contexts: [cms]
+        share.block.author_list:
+            contexts: [cms]
+
+        quiz.block.service.quiz:
+            contexts: [cms]
+
+        # OrderBundle Block's
+        order.block.order_board_list:
+            contexts: [cms]
+        order.block.add_order_board:
+            contexts: [cms]
+
+        # CommentBundle Block's
+        comment.block.list_comments:
+            contexts: [cms]
+        comment.block.add_comment:
+            contexts: [cms]
+        comment.block.list_swaps:
+            contexts: [cms]
+        comment.block.add_swap:
+            contexts: [cms]
+#
+#        # UserBundle's Blocks
+#        sonata.user.block.account: # used to display menu option (login option)
+#            contexts: [user]
+#            cache: sonata.page.cache.js_async
+#        sonata.user.block.menu: # used to display the menu in profile pages
+#            contexts: [user]

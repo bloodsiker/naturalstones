@@ -1,0 +1,31 @@
+{% import 'AppBundle:Block:_articles_macro.html.twig' as article_helper %}
+{% import 'AppBundle:Block:_events_macro.html.twig' as event_helper %}
+{% import 'AppBundle:Block:_videos_macro.html.twig' as video_helper %}
+
+{% set checkforTranslation = false %}
+{% if object is instanceof('\\AppBundle\\Entity\\Article') and object.articleHasCategories|length > 0 %}
+    {% set url = article_helper.article_url(object, object.articleHasCategories|first.category ) %}
+    {% set checkforTranslation = true %}
+{% elseif object is instanceof('\\AppBundle\\Entity\\Event') %}
+    {% set url = event_helper.event_url(object) %}
+    {% set checkforTranslation = true %}
+{% elseif object is instanceof('\\AppBundle\\Entity\\TvVideo') %}
+    {% set url = video_helper.video_url(object) %}
+    {% set checkforTranslation = true %}
+{% elseif object is instanceof('\\AppBundle\\Entity\\Horoscope') %}
+    {% set url = path('horoscope', {'slug': object.slug}) %}
+{% elseif object is instanceof('\\AppBundle\\Entity\\Informer') and object.article %}
+    {% set url = article_helper.article_url(object.article, object.article.articleHasCategories|first.category) %}
+{% else %}
+    {% set url = null %}
+{% endif %}
+
+{% if admin.isGranted('VIEW', object) and url %}
+    <a href="{{ url }}" class="btn btn-sm btn-default" title="{{ 'admin.action.on_site'|trans({}, 'AppBundle') }}" target="_blank">
+        <i class="glyphicon glyphicon-eye-open"></i>
+        {{ 'admin.action.on_site'|trans({}, 'AppBundle') }}
+    </a>
+{% endif %}
+{% if checkforTranslation and not object|has_translation %}
+    <div title="{{ 'admin.alert.no_translation'|trans({}, 'AppBundle') }}" class="alert__no-translation">!</div>
+{% endif %}

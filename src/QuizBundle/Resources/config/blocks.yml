@@ -1,0 +1,10 @@
+services:
+  quiz.block.service.quiz:
+    class: "QuizBundle\\Block\\QuizBlockService"
+    arguments:
+      - quiz.block.service.quiz
+      - '@templating'
+      - '@quiz.entity_manager'
+      - '@request_stack'
+    tags:
+      - { name: sonata.block }

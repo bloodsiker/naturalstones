@@ -1,0 +1,24 @@
+services:
+    sonata.admin.product:
+        class: ProductBundle\Admin\ProductAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "group.product", label: "group.product_editor" }
+        arguments:
+          - ~
+          - ProductBundle\Entity\Product
+          - ProductBundle:ProductAdmin
+        calls:
+          - [ setTranslationDomain, [ProductBundle] ]
+          - [ setTemplate, ['edit', 'ProductBundle:Admin:edit.html.twig'] ]
+          - [ setEntityManager, ['@app.entity_manager'] ]
+
+    sonata.admin.product_category:
+        class: ProductBundle\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.product", label: "group.category_editor" }
+        arguments:
+            - ~
+            - ProductBundle\Entity\Category
+            - ProductBundle:ProductAdmin
+        calls:
+            - [ setTranslationDomain, [ ProductBundle ] ]

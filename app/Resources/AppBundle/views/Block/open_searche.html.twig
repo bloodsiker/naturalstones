@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+    <ShortName>Поиск книг на TopBook</ShortName>
+    <Description>Поиск книг на TopBook</Description>
+    <Contact>admin@topbook.com.ua</Contact>
+    <Url type="text/html" template="{{ url('search') }}?search={searchTerms}" />
+    <LongName>Поиск книг на TopBook</LongName>
+    <Image height="64" width="64" type="image/png">{{ asset('public/assets/i/favicons/favicon.ico') }}</Image>
+    <Image height="16" width="16" type="image/vnd.microsoft.icon">{{ asset('public/assets/i/favicons/favicon.ico') }}</Image>
+    <SyndicationRight>open</SyndicationRight>
+    <AdultContent>false</AdultContent>
+    <Language>ru-ru</Language>
+    <OutputEncoding>utf-8</OutputEncoding>
+    <InputEncoding>utf-8</InputEncoding>
+</OpenSearchDescription>

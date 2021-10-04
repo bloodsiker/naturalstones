@@ -1,0 +1,44 @@
+services:
+    share.admin.stone:
+        class: ShareBundle\Admin\StoneAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.share", label: "group.stone_editor" }
+        arguments:
+            - ~
+            - ShareBundle\Entity\Stone
+            - ShareBundle:ShareAdmin
+        calls:
+            - [ setTranslationDomain, [ ShareBundle ] ]
+
+    share.admin.size:
+        class: ShareBundle\Admin\SizeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.share", label: "group.size_editor" }
+        arguments:
+            - ~
+            - ShareBundle\Entity\Size
+            - ShareBundle:ShareAdmin
+        calls:
+            - [ setTranslationDomain, [ ShareBundle ] ]
+
+    share.admin.colour:
+        class: ShareBundle\Admin\ColourAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.share", label: "group.colour_editor" }
+        arguments:
+            - ~
+            - ShareBundle\Entity\Colour
+            - ShareBundle:ShareAdmin
+        calls:
+            - [ setTranslationDomain, [ ShareBundle ] ]
+
+    share.admin.tag:
+        class: ShareBundle\Admin\TagAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.share", label: "group.tag" }
+        arguments:
+            - ~
+            - ShareBundle\Entity\Tag
+            - ~
+        calls:
+            - [ setTranslationDomain, [ShareBundle] ]

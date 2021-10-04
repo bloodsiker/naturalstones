@@ -1,0 +1,14 @@
+{% set url = null %}
+{% set app_router = admin.configurationPool.container.get('router') %}
+{% if object is instanceof('BookBundle\\Entity\\Book')%}
+    {% set url = path('book_view', {'id': object.id, 'slug': object.slug}) %}
+{% elseif object is instanceof('ArticleBundle\\Entity\\Article') %}
+    {% set url = path('collection_view', {'slug': object.slug}) %}
+{% endif %}
+
+{% if admin.isGranted('VIEW', object) and url %}
+    <a href="{{ url }}" class="btn btn-sm btn-default" title="{{ 'actions.btn.preview'|trans({}, 'SonataAdminBundle') }}" target="_blank">
+        <i class="glyphicon glyphicon-eye-open"></i>
+        {{ 'actions.btn.on_site'|trans({}, 'SonataAdminBundle') }}
+    </a>
+{% endif %}

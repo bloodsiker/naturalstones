@@ -1,0 +1,74 @@
+{% macro comment(comment, show_title = true) %}
+    {% spaceless %}
+        <div class="comm-container" itemprop="review" itemscope itemtype="http://schema.org/Review">
+            {% if show_title %}
+                <div class="comm-link">
+                    <a href="{{ path('book_view', { 'slug': comment.book.slug, 'id': comment.book.id }) }}" itemprop="name">{{ comment.book.name }}</a>
+                </div>
+            {% endif %}
+            <div class="comm-item">
+                <div class="comm-left">
+                    {% if show_title %}
+                        <a href="{{ path('book_view', { 'slug': comment.book.slug, 'id': comment.book.id }) }}">
+                            <img class="lazyload" data-src="{{ asset(comment.book.poster.path) }}" alt="{{ comment.book.name }}">
+                        </a>
+                    {% else %}
+                        <img class="lazyload" data-src="{{ comment.user ? comment.user.id : asset('bundles/app/assets/images/noavatar.png') }}" alt="{{ comment.user ? comment.user.username : comment.userName }}"/>
+                    {% endif %}
+                </div>
+                <div class="comm-right">
+                    <div class="comm-top-info clearfix">
+                        <div class="comm-info-line">
+                            <div class="comm-author" itemprop="author">{{ comment.user ? comment.user.username : comment.userName }}</div>
+                            <div class="comm-date" itemprop="datePublished" content="{{ comment.createdAt|date('Y-m-d') }}">{{ comment.createdAt|date_time_humanize }}</div>
+
+                            <div class="comm-rate {{ comment.rating == 0 ? null : comment.rating > 0 ? 'pos-comm' : 'neg-comm' }}">
+                                <a href="#"
+                                   onclick="voteComment(1, {{ comment.id }}, '{{ path('comment_vote') }}'); return false;">+</a>
+                                <span class="ignore-select">
+                                        <span class="ratingtypeplusminus ratingzero" data-comment-id="{{ comment.id }}">{{ comment.rating }}</span>
+                                    </span>
+                                <a href="#"
+                                   onclick="voteComment(0, {{ comment.id }}, '{{ path('comment_vote') }}'); return false;">-</a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="comm-text" itemprop="reviewBody">
+                        {{ comment.comment|raw }}
+                    </div>
+                    <div class="comm-bottom-info">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro swap(comment) %}
+    {% spaceless %}
+        <div class="comm-container" itemprop="review" itemscope itemtype="http://schema.org/Review">
+            <div class="comm-item">
+                <div class="comm-left">
+                    <img class="lazyload" data-src="{{ comment.user ? comment.user.id : asset('bundles/app/assets/images/noavatar.png') }}" alt="{{ comment.user ? comment.user.username : comment.userName }}"/>
+                </div>
+                <div class="comm-right">
+                    <div class="comm-top-info clearfix">
+                        <div class="comm-info-line">
+                            <div class="comm-author" itemprop="author">{{ comment.user ? comment.user.username : comment.userName }}</div>
+                            <div class="comm-date" itemprop="datePublished" content="{{ comment.createdAt|date('Y-m-d') }}">{{ comment.createdAt|date_time_humanize }}</div>
+                            {% if comment.userEmail %}
+                                <div class="comm-email"><a href="mailto:{{ comment.userEmail }}">{{ comment.userEmail }}</a></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="comm-text" itemprop="reviewBody">
+                        {{ comment.content|raw }}
+                    </div>
+                    <div class="comm-bottom-info">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endmacro %}

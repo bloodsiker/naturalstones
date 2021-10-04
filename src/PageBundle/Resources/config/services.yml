@@ -1,0 +1,35 @@
+parameters:
+    sonata.page.redirect.class: "PageBundle\\Route\\RedirectRouter"
+    sonata.page.manager.redirect.entity: "PageBundle\\Entity\\PageRedirect"
+
+services:
+    page.block.site_variable:
+        class: "PageBundle\\Block\\SiteVariableBlockService"
+        arguments:
+            - page.block.site_variable
+            - '@templating'
+            - '@?doctrine'
+        tags:
+            - { name: sonata.block }
+
+    sonata.page.manager.redirect:
+        class: "PageBundle\\Entity\\RedirectManager"
+        arguments:
+            - '%sonata.page.manager.redirect.entity%'
+            - '@doctrine'
+
+    sonata.page.redirect:
+        class: '%sonata.page.redirect.class%'
+        arguments:
+            - '@sonata.page.manager.redirect'
+            - '@router'
+        calls:
+            - [ 'setLocale', ['%locale%'] ]
+            - [ 'setLocales', ['%locales%'] ]
+
+    sonata.redirect_listener:
+        class: "PageBundle\\Listener\\RedirectListener"
+        arguments:
+            - '@sonata.page.redirect'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 48 }

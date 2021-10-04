@@ -1,0 +1,144 @@
+{% spaceless %}
+    {% set storage = attr.upload_storage|default('media_multiple_upload_image') %}
+    {% set max_upload_files = attr.max_upload_files|default(20) %}
+    {% set upload_field = id~'_file' %}
+    <hr/>
+    <div id="upload_area_{{ id }}">
+        <div class="col-sm-9">
+            <div id="upload_progress_bar_{{ id }}" class="progress" style="margin-top: 5px;">
+                <div class="progress-bar"
+                     role="progressbar"
+                     aria-valuenow="0"
+                     aria-valuemin="0"
+                     aria-valuemax="100"
+                     style="width: 0%;">0%</div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="btn btn-primary btn-sm sonata-ba-action pull-right fileinput-button" id="dropzone_{{ id }}">
+                <i class="fa fa-download"></i>&nbsp;<i class="fa fa-th"></i>&nbsp;
+                <span>{{ 'btn_multiupload'|trans({}, btn_catalogue) }}</span>
+                <input type="file"
+                       name="{{ upload_field }}"
+                       id="{{ upload_field }}"
+                       class="form-control"
+                       multiple
+                       accept="image/*"
+                       data-url="{{ oneup_uploader_endpoint(storage) }}"
+                >
+            </div>
+            <div class="clearfix"></div>
+            <div class="help-block sonata-ba-field-help pull-right" style="font-size: 11px;">
+                {{ 'multiupload.max_files_help'|trans({'%count%': max_upload_files}, btn_catalogue) }}
+            </div>
+        </div>
+    </div>
+{% endspaceless %}
+{% autoescape false %}
+    <!-- edit one related -->
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var uploadInput = jQuery('#{{ upload_field }}'),
+                uploadFiles = [],
+                uploadDropZone = jQuery('#dropzone_{{ id }}'),
+                uploadProgressBlock = jQuery('#upload_progress_bar_{{ id }}'),
+                uploadProgressBar = jQuery('#upload_progress_bar_{{ id }} .progress-bar'),
+                processFiles = 0;
+
+        {#jQuery('#field_actions_{{ id }} a').click();#}
+        {#jQuery('#sonata-ba-field-container-{{ id }}').bind('sonata.add_element', function() {#}
+        {#jQuery(this).unbind('sonata.add_element');#}
+        {#jQuery('.sonata-ba-form form input[name*="[image]"]:not([value])')#}
+        {#.first()#}
+        {#.attr('value', id)#}
+        {#.trigger('change')#}
+        {#;#}
+
+        {#return false;#}
+        {#});#}
+        {#};#}
+
+        jQuery(document).ready(function() {
+            uploadInput.fileupload({
+                dataType: 'json',
+                dropZone: uploadDropZone,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                maxFileSize: 10240000,
+                formData: {
+                    storage: '{{ storage }}',
+                    field: '{{ upload_field }}'
+                },
+                start: function () {
+                    uploadFiles = [];
+                    processFiles = 0;
+
+                    uploadInput.attr('disabled', true);
+                    uploadProgressBar.css('width', '0%');
+                    uploadProgressBar.text('0 %');
+                    uploadProgressBlock.slideDown();
+                },
+                add: function (e, data) {
+                    if (processFiles < {{ max_upload_files }}) {
+                        data.submit();
+                    }
+
+                    processFiles += 1;
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+
+                    uploadProgressBar.css('min-width', '2em');
+                    uploadProgressBar.css('width', progress + '%');
+                    uploadProgressBar.text(progress + ' %');
+
+                    if (data.loaded === data.total) {
+                        uploadProgressBar.text('{{ 'upload.files_total'|trans({}, btn_catalogue) }}: ' + processFiles + '. {{ 'upload.finished'|trans({}, btn_catalogue) }}...');
+                        uploadProgressBlock.fadeOut(5000);
+                    }
+                },
+                done: function (e, data) {
+                    var result = data.result;
+                    if (result.error !== undefined) {
+                        console.log('Errors:', e, data);
+                    } else if (result.success !== undefined && result.image !== undefined) {
+                        uploadFiles.push(result.image);
+                    }
+
+                    if (jQuery(this).fileupload('active') === 1) {
+                        insert_gallery_image(uploadFiles);
+                    }
+
+                    jQuery(this).val('');
+                    uploadInput.removeAttr('disabled');
+                },
+                fail: function (e, data) {
+                    uploadInput.removeAttr('disabled');
+                    console.log('Errors:', e, data);
+                }
+            });
+
+            var insert_gallery_image = function (images) {
+                jQuery('#field_actions_{{ id }} a').click();
+                jQuery('#sonata-ba-field-container-{{ id }}').bind('sonata.add_element', function() {
+                    var image_id = images.shift();
+
+                    jQuery(this).unbind('sonata.add_element');
+                    jQuery('.sonata-ba-form form input[name*="[image]"]:not([value])')
+                        .first()
+                        .attr('value', image_id)
+                        .trigger('change');
+
+                    if (images.length) {
+                        setTimeout(function () {
+                            insert_gallery_image(images)
+                        }, 100);
+                    }
+
+                    return false;
+                });
+
+                return false;
+            };
+        });
+    </script>
+{% endautoescape %}

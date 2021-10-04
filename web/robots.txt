@@ -1,0 +1,16 @@
+# www.robotstxt.org/
+# www.google.com/support/webmasters/bin/answer.py?hl=en&answer=156449
+
+User-agent: *
+#Allow: /
+Disallow: /files/media_file/*
+Disallow: /_block/
+Disallow: /admin/*
+Disallow: /_page/
+Disallow: /order-board/vote
+Disallow: /comment/vote
+Disallow: /inc_download/book
+Disallow: /download/book_file/*
+
+Sitemap: http://topbook.com.ua/sitemap.xml
+Host: http://topbook.com.ua

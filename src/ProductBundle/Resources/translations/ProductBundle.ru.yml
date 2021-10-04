@@ -1,0 +1,56 @@
+Action: Действия
+Product List: Товары
+Product Create: Добавить товар
+Category List: Категории
+Category Create: Добавить категорию
+
+btn_search_related: Показать релевантные книги по тегам
+btn_search_tags: Показать релевантные теги по тексту
+not_found: Ничего не найдено...
+no_tags_selected: Нет выбранных тегов в книге...
+
+btn_link_add: Добавить
+btn_save: Сохранить
+btn_save_and_exit: Сохранить и выйти
+btn_save_and_create_new: Сохранить и создать новую
+
+text_or: или
+
+form_group:
+    basic: Основные
+    additional: Дополнительные
+
+group:
+    product: Товары
+    product_editor: Товары
+    category_editor: Категории
+
+product:
+    fields:
+        id: ID
+        name: Название
+        description: Описание
+        instagram_link: Ссылка на инстаграм пост
+        slug: Сегмент URL (slug)
+        is_available: В наличии
+        is_active: Активно
+        image: Изображение
+        category: Категория
+        colours: Цвет(а)
+        stones: Камни
+        sizes: Размер(ы)
+        price: Цена
+        discount: Скидочная цена
+        tags: Тег(и)
+        views: Просмотры
+        updated_at: Изменена
+        created_at: Создана
+    buttons:
+        link_add: Добавить новый
+
+category:
+    fields:
+        id: ID
+        name: Название
+        slug: Сегмент URL (slug)
+        is_active: Активно

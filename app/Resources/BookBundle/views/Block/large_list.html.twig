@@ -1,0 +1,106 @@
+{% for book in books %}
+    <div class="book-item" itemscope itemtype="http://schema.org/Book">
+        <div class="book-img img-box pseudo-link"
+             data-link="{{ path('book_view', { 'slug': book.slug, 'id': book.id }) }}">
+            <div class="book-rates">
+                {% set rate = book.ratePlus - book.rateMinus %}
+                <span class="count {{ rate >= 0 ? 'green' : 'red' }}">{{ rate > 0 ? '+'~rate : rate < 0 ? rate : 0 }}</span>
+                <div class="counter">
+                    <span class="rating">
+                        <span id="ratig-layer-{{ book.id }}">
+                            <span class="hand-up icon-like">
+                                <i class="fa fa-thumbs-up"></i>
+                                <span class="ratePos">{{ book.ratePlus }}</span>
+                            </span>
+                            <span class="hand-down icon-dislike">
+                                <i class="fa fa-thumbs-down"></i>
+                                <span class="rateNeg">{{ book.rateMinus }}</span>
+                            </span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <img class="lazyload" data-src="{{ asset(book.poster.path) }}" alt="{{ book.name }}" itemprop="image" />
+        </div>
+        <div class="book-text">
+
+            {% set number = settings['series'] is defined and settings['series'] and book.seriesNumber ? '#'~book.seriesNumber : null %}
+            <a class="book-title" href="{{ path('book_view', { 'slug': book.slug, 'id': book.id }) }}" itemprop="name">{{ book.name }} {{ number }}</a>
+
+            <div class="book-text-inner">
+                {% if book.getAuthors is iterable %}
+                    <div class="mi-item">
+                        <span>Автор:</span>
+                        {% for author in book.getAuthors %}
+                            <a href="{{ path('author_books', { 'slug': author.slug }) }}" itemprop="author"><em>{{ author.name }}</em></a>{{ loop.last ? '' : ' / ' }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if book.getGenres is iterable %}
+                    <div class="mi-item">
+                        <span>Жанр:</span>
+                        {% for genre in book.getGenres %}
+                            <a href="{{ genre_path(genre) }}" itemprop="genre"><em>{{ genre.name }}</em></a>{{ loop.last ? '' : ' / ' }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if book.year is not empty %}
+                    <div class="mi-item">
+                        <span>Год:</span>
+                        <a href="{{ path('year_books', { 'year': book.year }) }}"><em>{{ book.year }}</em></a>
+                    </div>
+                {% endif %}
+
+                {% if book.series is not empty %}
+                    <div class="mi-item">
+                        <span>Авторская серия:</span>
+                        <a href="{{ path('series_books', { 'slug': book.series.slug }) }}">
+                            <em>{{ book.series }} {{ book.seriesNumber ? '#'~book.seriesNumber : null }}</em>
+                        </a>
+                    </div>
+                {% endif %}
+
+                {% if book.seriesPublishing is not empty %}
+                    <div class="mi-item">
+                        <span>Издательская серия:</span>
+                        <a href="{{ path('series_books', { 'slug': book.seriesPublishing.slug }) }}"><em>{{ book.seriesPublishing }}</em></a>
+                    </div>
+                {% endif %}
+
+                {% if book.pages is not empty %}
+                    <div class="mi-item">
+                        <span>Страниц:</span>
+                        <em itemprop="numberOfPages">{{ book.pages }}</em>
+                    </div>
+                {% endif %}
+
+                {% if book.isbn is not empty %}
+                    <div class="mi-item">
+                        <span>ISBN:</span> <em itemprop="isbn">{{ book.isbn }}</em>
+                    </div>
+                {% endif %}
+
+                {% if book.restrictAge is not empty %}
+                    <div class="mi-item">
+                        <span>Ограничение:</span> <em>{{ book.restrictAge }}+</em>
+                    </div>
+                {% endif %}
+
+                <div class="book-desc" itemprop="description">{{ book.description|truncate(280, true)|raw }}</div>
+
+                <div class="book-stats">
+                    <span class="stats-item">Просмотров <i class="fa fa-eye" aria-hidden="true"></i> {{ book.views|number_format(0, '.', ' ') }}</span>
+                    <span class="stats-item">Скачиваний <i class="fa fa-cloud-download" aria-hidden="true"></i> {{ book.download|number_format(0, '.', ' ') }}</span>
+                    <span class="stats-item">Комментариев <i class="fa fa-comments" aria-hidden="true"></i> {{ book.getComments|length|number_format(0, '.', ' ') }}</span>
+                    <time datetime="{{ book.createdAt|date("Y-m-d H:i") }}">{{ book.createdAt|date_time_humanize('d MMMM Y') }}</time>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+{% if books.maxPerPage is defined and books.count > books.maxPerPage %}
+    {{ pagerfanta(books, { 'omitFirstPage': true}) }}
+{% endif %}

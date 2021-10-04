@@ -1,0 +1,14 @@
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+{% block list_filters %}
+    {{ parent() }}
+    {% if admin.class is defined and admin.class in ['AppBundle\\Entity\\Article', 'AppBundle\\Entity\\Event', 'AppBundle\\Entity\\TvVideo'] %}
+        {% set entityWithoutTranslation = admin.class|split('\\') %}
+        {% set withoutTranslationCount = without_translation_count(admin.class) %}
+        {% if withoutTranslationCount %}
+            <div class="alert alert-danger alert__full-width">
+                {{ ('admin.alert.no_translation_'~entityWithoutTranslation[0]~':'~entityWithoutTranslation[2])|transchoice(withoutTranslationCount, {'%count%': withoutTranslationCount}, 'AppBundle')|raw }}
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+

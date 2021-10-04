@@ -1,0 +1,23 @@
+<div class="col-cont">
+    <div class="container">
+
+        <div class="section-title clearfix">
+            <h2>Новые книги</h2>
+        </div>
+
+        <div class="movies clearfix grid grid-list">
+
+            {{
+            sonata_block_render(
+                { 'type': 'book.block.list' },
+                {
+                    'items_count' : 15,
+                    'page': app.request.get('page') ? app.request.get('page') : 1
+                }
+            )
+            }}
+
+        </div>
+    </div>
+
+</div>

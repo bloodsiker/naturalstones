@@ -1,0 +1,20 @@
+<div class="col-cont">
+    <div class="top-wrap">
+
+        <div class="top-liders-bg">
+            <div class="tl-title">Топ книг</div>
+        </div>
+
+        {{
+        sonata_block_render(
+            { 'type': 'book.block.list' },
+            {
+                'items_count' : 100,
+                'top_book': true,
+                'list_type': constant('BookBundle\\Block\\ListBooksBlockService::TOP_100_LIST')
+            }
+        )
+        }}
+
+    </div>
+</div>

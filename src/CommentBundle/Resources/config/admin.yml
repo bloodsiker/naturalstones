@@ -1,0 +1,22 @@
+services:
+    comment_admin:
+        class: CommentBundle\Admin\CommentAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "group.comment", label: "group.comment_editor" }
+        arguments:
+          - ~
+          - CommentBundle\Entity\Comment
+          - ~
+        calls:
+          - [ setTranslationDomain, [CommentBundle] ]
+
+    swap_admin:
+        class: CommentBundle\Admin\SwapAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.comment", label: "group.swap_editor" }
+        arguments:
+            - ~
+            - CommentBundle\Entity\Swap
+            - ~
+        calls:
+            - [ setTranslationDomain, [CommentBundle] ]

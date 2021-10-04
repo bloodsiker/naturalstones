@@ -1,0 +1,16 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function(){
+            $('input[type="checkbox"].data-toggle-content').on('ifUnchecked', function(event){
+                $('label.data-toggle-content').addClass('hide');
+                $('textarea.data-toggle-content').addClass('hide');
+            });
+            $('input[type="checkbox"].data-toggle-content').on('ifChecked', function(event){
+                $('label.data-toggle-content').removeClass('hide');
+                $('textarea.data-toggle-content').removeClass('hide');
+            });
+        });
+    </script>
+{% endblock %}

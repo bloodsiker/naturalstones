@@ -1,0 +1,77 @@
+parameters:
+#    sonata.page.admin.site.class: "PageBundle\\Admin\\SiteAdmin"
+#    sonata.page.admin.page.class: "PageBundle\\Admin\\PageAdmin"
+#    sonata.page.manager.page.class: "PageBundle\\Entity\\PageManager"
+#    sonata.page.site.selector.host.class: "PageBundle\\Site\\HostSiteSelector"
+#    sonata.page.route.page.generator.class: "PageBundle\\Route\\RoutePageGenerator"
+
+#    assetic.value_supplier.class: "AppBundle\\Services\\CustomValueSupplier"
+#    security.acl.permission.map.class: "Sonata\\AdminBundle\\Security\\Acl\\Permission\\AdminPermissionMap"
+
+services:
+    app.security.authentication_handler:
+        class: AppBundle\Handler\AuthenticationHandler
+        public: false
+        arguments:
+            - "@router"
+            - "@session"
+
+#    session.handler.pdo:
+#        class: "Symfony\\Component\\HttpFoundation\\Session\\Storage\\Handler\\PdoSessionHandler"
+#        public: false
+#        arguments:
+#            - 'mysql:host=%database_host%;port=%database_port%;dbname=%database_name%'
+#            - { db_username: "%database_user%", db_password: "%database_password%" }
+#
+    app.pagerfanta.view.default:
+        class: "AppBundle\\Template\\DefaultView"
+        arguments:
+            - '@app.pagerfanta.template.default'
+            - { proximity: 9 }
+        tags: [{ name: pagerfanta.view, alias: default }]
+
+    app.pagerfanta.template.default:
+        class: "AppBundle\\Template\\PagerfantaTemplate"
+        calls:
+            - [ 'setTranslator', ['@translator']]
+            - [ 'init', ['AppBundle'] ]
+
+    app.entity_manager:
+        class: "Doctrine\\ORM\\EntityManager"
+        factory: ['@doctrine', getManager]
+        public: false
+
+    app.seo.updater:
+        class: "AppBundle\\Services\\SeoUpdater"
+        arguments:
+            - '@sonata.page.cms_manager_selector'
+            - '@sonata.seo.page'
+            - '@request_stack'
+            - '@translator'
+            - '@router'
+            - '@app.save.state.value'
+            - '%route_locales%'
+#
+#    app.redis.cache:
+#        class: "Doctrine\\Common\\Cache\\RedisCache"
+#
+#    app.redis.cache.key.decorator:
+#        class: "AppBundle\\Services\\RedisCacheKeyDecorator"
+#        arguments:
+#            - '@app.redis.cache'
+#        calls:
+#            - [ setNamespace, ['%secret%:app:redis:cache']]
+#            - [ connect, ['%redis_host%', '%redis_port%']]
+#
+#
+#    app.imagine.helper:
+#        class: "AppBundle\\Helper\\ImagineHelper"
+#        calls:
+#            - [ 'setLiipImagineExtension', ['@liip_imagine.twig.extension']]
+#            - [ 'setMediaCdn', ['%media_cdn_host%']]
+
+    app.save.state.value:
+        class: "AppBundle\\Services\\SaveStateValue"
+
+    app.breadcrumb:
+        class: "AppBundle\\Services\\BreadcrumbService"

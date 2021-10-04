@@ -1,0 +1,11 @@
+services:
+    sonata.admin.quiz:
+        class: "QuizBundle\\Admin\\QuizAdmin"
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.quiz", label: "group.quiz_editor" }
+        arguments:
+            - ~
+            - "QuizBundle\\Entity\\Quiz"
+            - ~
+        calls:
+            - [ setTranslationDomain, [QuizBundle] ]

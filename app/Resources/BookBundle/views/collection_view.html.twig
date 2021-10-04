@@ -1,0 +1,40 @@
+<div class="container collection-list">
+    <h1>{{ bookCollection.title }}</h1>
+    <div class="collection-description">
+        {{ bookCollection.description|raw }}
+    </div>
+
+    {% if bookCollection.collectionHasBook|length > 0 %}
+        <div class="list">
+            {% for item in bookCollection.collectionHasBook %}
+                <div class="collection__item_preview">
+                    <div class="book-preview__image-block">
+                        <a href="{{ path('book_view', {'id': item.book.id, 'slug': item.book.slug}) }}">
+                            <img class="book-preview__image" src="{{ asset(item.book.poster.path) }}" alt="{{ item.book.name }}">
+                        </a>
+                    </div>
+
+                    <div class="book-preview__content-block">
+                        <div class="book-preview__authors">
+                            {% for author in item.book.getAuthors %}
+                                <a href="{{ path('author_books', { 'slug': author.slug }) }}" class="book-preview__author">{{ author.name }}</a>
+                                {{ loop.last ? '' : ', ' }}
+                            {% endfor %}
+
+                        </div>
+                        <a href="{{ path('book_view', {'id': item.book.id, 'slug': item.book.slug}) }}" class="book-preview__name-link">
+                            <h2 class="book-preview__name">{{ item.book.name }}</h2>
+                        </a>
+                        <div class="book-preview__description">
+                            <div class="book-preview__description-text">
+                                {{ item.book.description|truncate(400, true)|raw }}
+                            </div>
+                        </div>
+
+                        <a href="{{ path('book_view', {'id': item.book.id, 'slug': item.book.slug}) }}" class="btn btn_orange book-preview__button">Подробнее</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

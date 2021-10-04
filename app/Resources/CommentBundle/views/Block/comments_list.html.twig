@@ -1,0 +1,13 @@
+{% import "CommentBundle:Block/macros:item.html.twig" as item %}
+<div class="comments-items">
+    {% if comments is empty %}
+        <div class="comm-container"></div>
+    {% endif %}
+    {% for comment in comments %}
+        {{ item.comment(comment, settings.show_title) }}
+    {% endfor %}
+
+    {% if settings.show_paginator and comments.getNbPages() > 1 %}
+        {{ pagerfanta(comments, { 'omitFirstPage': true}) }}
+    {% endif %}
+</div>

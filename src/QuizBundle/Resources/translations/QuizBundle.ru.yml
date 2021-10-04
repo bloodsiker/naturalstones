@@ -1,0 +1,77 @@
+Quiz List: Опросы
+Quiz Answer List: Ответы
+Quiz Result List: Результаты
+
+Action: Действия
+
+action_list_answers: Ответы
+action_list_results: Результаты
+
+list_answer_link: Ссылка
+
+group:
+  quiz: Опросы
+  quiz_editor: Опросы
+  quiz_answer_editor: Ответы
+  quiz_result_editor: Результаты
+
+quiz:
+  fields:
+    id: ID
+    title: Вопрос
+    is_active: Активно
+    created_at: Создан
+    voted_count: Всего проголосовало
+    voted_type: Тип
+    answers: Ответы
+
+    modes:
+      single: Одиночный выбор
+      multiple: Множественный выбор
+
+  form_group:
+    basic: Основное
+    additional: Дополнительно
+    info: Информация
+    answers: Ответы
+
+quiz_answer:
+  fields:
+    id: ID
+    title: Ответ
+    link: Ссылка
+    quiz: Вопрос
+    percent: Результат, %
+    counter: Результат, кол-во
+    order_num: Позиция
+
+  form_group:
+    basic: Головне
+    additional: Додатково
+
+quiz_has_answer:
+  fields:
+    id: ID
+    quiz: Вопрос
+    answer: Ответ
+    order_num: Позиция
+    percent: Результат, %
+    counter: Результат, кол-во
+
+quiz_result:
+  fields:
+    id: ID
+    quiz: Вопрос
+    answer: Ответ
+    comment: Комментарий
+    voted_at: Проголосовано
+    ip: IP
+
+  form_group:
+    basic: Основное
+    additional: Дополнительно
+    info: Информация
+
+front:
+  quiz:
+      give_vote: Проголосовать

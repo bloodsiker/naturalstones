@@ -1,0 +1,7 @@
+{% extends 'AdminBundle:Ckeditor:ajax.html.twig' %}
+
+{% block sonata_page_content %}
+    {{ parent() }}
+
+    {% include 'MediaBundle:Admin:crop_popup.html.twig' %}
+{% endblock %}

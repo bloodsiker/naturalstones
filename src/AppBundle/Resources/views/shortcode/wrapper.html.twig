@@ -1,0 +1,9 @@
+{% spaceless %}
+    {% if wrap %}
+        <div class="-short">
+            {{ content|raw }}
+        </div>
+    {% else %}
+        {{ content|raw }}
+    {% endif %}
+{% endspaceless %}

@@ -1,0 +1,50 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% if object is instanceof('\\BookBundle\\Entity\\Book') %}
+        {% if field_description.name == 'files' %}
+            {% set files = object.bookHasFiles.getValues() %}
+            <div class="btn-group" role="group" aria-label="...">
+                {% for file in files %}
+                    <button type="button" class="btn btn-default">{{ file.bookFile.path|file_extension|upper }}</button>
+                {% endfor %}
+            </div>
+        {% elseif field_description.name == 'authors' %}
+            {% set route_name = field_description.options.route.name %}
+            {% for author in object.authors %}
+                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, author, field_description.options.route.parameters) }}" class="label label-warning">{{ author.name }}</a>
+            {% endfor %}
+        {% elseif field_description.name == 'name' %}
+            {% set route_name = field_description.options.route.name %}
+            <a href="{{ admin.generateUrl('edit', { id : object.id }) }}" class="sonata-link-identifier">{{ object.name }}</a>
+            {% if object.series %}
+                <hr style="margin-top:0;margin-bottom:5px;">
+                <span class="text-muted info" style="font-size: 12px;"><i class="text-blue">Авторская: </i>{{ object.series }} {% if object.seriesNumber %}#{{ object.seriesNumber }}{% endif %}</span>
+            {% endif %}
+            {% if object.seriesPublishing %}
+                <hr style="margin-top:0;margin-bottom:5px;">
+                <span class="text-muted info" style="font-size: 12px;"><i class="text-red">Издательская: </i>{{ object.seriesPublishing }}</span>
+            {% endif %}
+        {% elseif field_description.name == 'genres' %}
+            {% set route_name = field_description.options.route.name %}
+            {% for genre in object.genres %}
+                {% if genre.isActive %}
+                    {% set class = 'primary' %}
+                {% else %}
+                    {% set class = 'danger' %}
+                {% endif %}
+                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, genre, field_description.options.route.parameters) }}" class="label label-{{ class }}">{{ genre.name }}</a>
+            {% endfor %}
+        {% elseif field_description.name == 'poster' %}
+            {% set v = asset('bundles/admin/images/preview_placeholder.png') %}
+            {% set image_preview_path = value ? value.path : null %}
+            <img src="{{ image_preview_path|default(v) }}?{{ random() }}" style="max-height: 100px;"/>
+        {% endif %}
+    {% elseif object is instanceof('\\BookBundle\\Entity\\BookCollection') %}
+        {% if field_description.name == 'poster' %}
+            {% set v = asset('bundles/admin/images/preview_placeholder.png') %}
+            {% set image_preview_path = value ? value.path : null %}
+            <img src="{{ image_preview_path|default(v) }}?{{ random() }}" style="max-height: 100px;"/>
+        {% endif %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends action_template %}
+
+{% block select_type %}
+    <div class="box box-success">
+        <div class="box-header">
+            <h3 class="box-title">
+                {{ block('title') }}:
+            </h3>
+        </div>
+        <div class="box-body">
+            {% for type in admin.getTranslationTypes(true) %}
+                <div class="col-xs-6">
+                    <a href="{{ admin.generateUrl('create', {'type': type}) }}"
+                       class="btn btn-app btn-block"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       title="{{ ('link_action_create_'~type)|trans({}, 'MediaBundle') }}">
+                        <i class="fa fa-{{ type }}"></i>
+                        {{ ('link_action_create_'~type)|trans({}, 'MediaBundle') }}
+                    </a>
+                </div>
+            {% else %}
+                <span class="alert alert-info">{{ 'no_types_available'|trans({}, 'MediaBundle') }}</span>
+            {% endfor %}
+            <div class="clearfix"></div>
+        </div>
+    </div>
+{% endblock %}

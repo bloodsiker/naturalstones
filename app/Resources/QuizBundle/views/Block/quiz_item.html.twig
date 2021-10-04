@@ -1,0 +1,49 @@
+{% if quiz %}
+    {% import _self as quiz_macro %}
+    {% macro answer_title(item) %}
+        {% if(item.link) %}
+            <a href="{{ item.link }}" target="_blank">{{ item.title|raw }}</a>
+        {% else %}
+            {{ item.title|raw }}
+        {% endif %}
+    {% endmacro %}
+
+    <div class="side-title icon-left"><i class="fa fa-question-circle"></i>Опрос</div>
+    <div class="side-cont">
+        <h3 class="vote-sub-title">{{ quiz.title }}</h3>
+        {% if voted %}
+            <div class="vote-result-container">
+                {% for item in quizAnswers %}
+                    <div class="vote-result-item">
+                        {% set percent = item.answer.percent|number_format(2, '.') %}
+                        <div class="vote-result-item-num">
+                            <span>{{ percent }}</span>%
+                        </div>
+                        <div class="vote-result-item-line">
+                            <b style="transform: translateX({{ percent }}%);"></b>
+                            <span>{{ quiz_macro.answer_title(item.answer) }}</span>
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="vote-questions-container" id="quiz_container">
+                {% set type = quiz.votedType == constant('VOTE_SINGLE_MODE', quiz) ? 'radio' : 'checkbox' %}
+                {% for item in quizAnswers %}
+                    <div class="vote-questions-item">
+                        <label for="vote-questions-item-{{ loop.index }}" class="custom-{{ type }}">
+                            <input type="{{ type }}" class="quiz_check" id="vote-questions-item-{{ loop.index }}" name="{{ blockID }}" value="{{ item.answer.id }}" />
+                            {{ quiz_macro.answer_title(item.answer) }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+            <div class="vote-questions-footer">
+                <button class="vote-btn" data-quiz-id="{{ quiz.id }}" data-type="{{ type }}" data-ajax-url="{{ block_ajax_path }}" disabled>{{ 'front.quiz.give_vote'|trans({}, 'QuizBundle') }}</button>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

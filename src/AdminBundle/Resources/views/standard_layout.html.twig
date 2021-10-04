@@ -1,0 +1,48 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/admin/css/style.css') }}">
+    <script>
+        ADMIN_LANG = '{{ app.request.locale }}';
+    </script>
+{% endblock %}
+
+{% block logo %}
+    {% spaceless %}
+        <a style="background: rgb(34, 45, 50) none repeat scroll 0% 0%;" class="logo" href="{{ path('sonata_admin_dashboard') }}">
+            {% if 'single_image' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
+                <img src="{{ asset(sonata_admin.adminPool.titlelogo) }}" alt="{{ sonata_admin.adminPool.title }}">
+            {% endif %}
+            {% if 'single_text' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
+                <span>{{ sonata_admin.adminPool.title }}</span>
+            {% endif %}
+        </a>
+    {% endspaceless %}
+{% endblock %}
+
+{% block sonata_top_nav_menu_add_block %}
+    {% set current_locale = app.request.locale %}
+    <li class="dropdown language">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <i class="fa fa-globe fa-fw" aria-hidden="true"></i>{{ current_locale|upper }} <i class="fa fa-caret-down" aria-hidden="true"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-language">
+            {% for locale in locales_list if locale != current_locale %}
+                <li>
+                    <a href="{{
+                    path(
+                        app.request.attributes.get('_route'),
+                        app.request.attributes.get('_route_params')|merge({'_locale': locale})
+                    )
+                    }}">
+                        <img class="img-fluid rounded"
+                             style="border: 1px solid #777; max-width: 24px;"
+                             src="{{ asset('bundles/admin/images/flags/'~locale~'.svg') }}"
+                        > {{ locale|upper }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+    {{ parent() }}
+{% endblock %}

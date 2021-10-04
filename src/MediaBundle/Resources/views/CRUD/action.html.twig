@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:action.html.twig' %}
+
+{% block title %}{{ 'title_select_type'|trans({}, 'MediaBundle') }}{% endblock %}
+
+{% block content %}
+    {{ block('select_type') }}
+{% endblock %}

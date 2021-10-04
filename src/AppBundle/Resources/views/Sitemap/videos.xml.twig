@@ -1,0 +1,21 @@
+{% import 'AppBundle:Block:_videos_macro.html.twig' as video %}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    {% set base_url = app.request.getSchemeAndHttpHost() %}
+    {% for key, item in items %}
+        <url>
+            <loc>{{ base_url }}{{ video.video_url(item)|trim }}</loc>
+            <video:video>
+                {% set image = item.image ? item.image|imagine_filter('video_320x176') : null %}
+                {% if image %}
+                    <video:thumbnail_loc>{{ image }}</video:thumbnail_loc>
+                {% endif %}
+                <video:title>{{ item.translate.title }}</video:title>
+                <video:description><![CDATA[{{ item.code|raw }}{{ item.translate.content|striptags|raw }}]]></video:description>
+                <video:view_count>{{ item.views }}</video:view_count>
+                <video:publication_date>{{ item.publishAt|date('Y-m-d') }}</video:publication_date>
+                <video:live>no</video:live>
+            </video:video>
+        </url>
+    {% endfor %}
+</urlset>

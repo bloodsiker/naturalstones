@@ -1,0 +1,185 @@
+<div class="col-cont">
+    <div itemscope itemtype="http://schema.org/Book">
+        <article class="full-page">
+
+            <div class="page-cols">
+
+                <div class="page-col-left">
+
+                    <div class="m-img">
+                        <img class="lazyload" data-src="{{ asset(book.poster.path) }}" alt="{{ book.name }}" itemprop="image"/>
+                    </div>
+                </div>
+
+                <div class="page-col-right">
+
+                    <h1 itemprop="name">{{ book.name }}</h1>
+
+                    <div class="m-info">
+
+                        {% if book.getAuthors is iterable %}
+                            <div class="mi-item">
+                                <span><i class="fa fa-users"></i>Автор:</span>
+                                {% for author in book.getAuthors %}
+                                    <a href="{{ path('author_books', { 'slug': author.slug }) }}" itemprop="author">
+                                        <em>{{ author.name }}</em>
+                                    </a>{{ loop.last ? '' : ' / ' }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {% if book.getGenres is iterable %}
+                            <div class="mi-item">
+                                <span><i class="fa fa-info-circle"></i>Жанр:</span>
+                                {% for genre in book.getGenres %}
+                                    <a href="{{ genre_path(genre) }}" itemprop="genre"><em>{{ genre.name }}</em></a>{{ loop.last ? '' : ' / ' }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {% if book.year is not empty %}
+                            <div class="mi-item">
+                                <span><i class="fa fa-calendar-o"></i>Год:</span>
+                                <a href="{{ path('year_books', { 'year': book.year }) }}"><em>{{ book.year }}</em></a>
+                            </div>
+                        {% endif %}
+
+                        {% if book.series is not empty %}
+                            <div class="mi-item">
+                                <span><i class="fa fa-pencil-square"></i>Авторская серия:</span>
+                                <a href="{{ path('series_books', { 'slug': book.series.slug }) }}">
+                                    <em>{{ book.series }} {{ book.seriesNumber ? '#'~book.seriesNumber : null }}</em>
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if book.seriesPublishing is not empty %}
+                            <div class="mi-item">
+                                <span><i class="fa fa-pencil-square"></i>Издательская серия:</span>
+                                <a href="{{ path('series_books', { 'slug': book.seriesPublishing.slug }) }}">
+                                    <em>{{ book.seriesPublishing }}</em>
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if book.pages is not empty %}
+                            <div class="mi-item">
+                                <span><i class="fa fa fa-book"></i>Страниц:</span> <em itemprop="numberOfPages">{{ book.pages }}</em>
+                            </div>
+                        {% endif %}
+
+                        {% if book.isbn is not empty %}
+                            <div class="mi-item">
+                                <span><i class="fa fa-align-justify"></i>ISBN:</span> <em itemprop="isbn">{{ book.isbn }}</em>
+                            </div>
+                        {% endif %}
+
+                        {% if book.restrictAge is not empty %}
+                            <div class="mi-item">
+                                <span><i class="fa fa fa-child"></i>Ограничение:</span> <em>{{ book.restrictAge }}+</em>
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                    <br>
+                    <div id="result-rates" class="rates">
+                        {{
+                        sonata_block_render(
+                            { 'type': 'book.block.book_voting' },
+                            { 'book' : book }
+                        )
+                        }}
+                    </div>
+
+                    {% if book.getTags is not empty %}
+                        <div class="book-tags">
+                            <strong><i class="fa fa-tags"></i> Теги: </strong>
+                            {% for tag in book.getTags %}
+                                <a href="{{ path('tag_books', {'slug': tag.slug }) }}">{{ tag.name }}</a>{{ loop.last ? '' : ', ' }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="m-desc full-text slice-this">
+                        <h2><strong>Описание книги</strong></h2>
+                        <div itemprop="description">{{ book.description|raw }}</div>
+                    </div>
+                    <div class="m-buttons">
+                        <div class="but to-view"><i class="fa fa-arrow-down"></i> Скачать</div>
+                    </div>
+
+                    {% if book.bookHasRelated|length > 2 %}
+                        <div class="section related">
+                            <div class="section-title"><h2>Похожие книги:</h2></div>
+                            <div class="rel-box" id="owl-rel">
+                                {% for relate in book.bookHasRelated %}
+                                    <a class="rel-book img-box"
+                                       href="{{ path('book_view', { 'id': relate.relatedBook.id, 'slug': relate.relatedBook.slug }) }}">
+                                        <img data-src="{{ asset(relate.relatedBook.poster.path) }}"
+                                             alt="Если один уйдет" class=" lazyload"/>
+                                        <div class="rel-book-title">{{ relate.relatedBook.name }}</div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+
+            <div class="download-section">
+
+                <ul class="tabs nowrap">
+                    <li class="current">Скачать книгу</li>
+                </ul>
+
+                <div class="book-file">
+                    {% if book.isAllowDownload %}
+                        {% set url = path('inc_book_download') %}
+                        {% for file in book.bookHasFiles %}
+                            <div class="block">
+                                <span itemprop="bookFormat" content="{{ file.bookFile.path|file_extension }}">
+                                    <a href="{{ path('book_download', { 'file_id': file.bookFile.id }) }}" onclick="incBookDownload({{ book.id }}, '{{ url }}'); return true;">{{ file.bookFile.path|file_extension }}
+                                        <span style="font-size: 10px">({{ file.bookFile.size|file_size_humanize }})</span>
+                                    </a></span>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="share-section">
+                    <div class="addthis_inline_share_toolbox_k7z0"></div>
+                </div>
+
+            </div>
+
+        </article>
+
+        <div class="full-comms">
+
+            {{
+            sonata_block_render(
+                { 'type': 'comment.block.add_comment' },
+                {
+                    'book': book,
+                }
+            )
+            }}
+
+            {{
+            sonata_block_render(
+                { 'type': 'comment.block.list_comments' },
+                {
+                    'show_paginator': false,
+                    'show_title': false,
+                    'book': book,
+                }
+            )
+            }}
+
+        </div>
+    </div>
+
+</div>

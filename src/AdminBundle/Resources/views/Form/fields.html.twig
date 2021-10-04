@@ -1,0 +1,410 @@
+{#{% block weekday_widget %}#}
+    {#<div class="form-group" id="{{ id }}-container">#}
+        {#{{ block('form_label') }}#}
+        {#<div class="btn-toolbar" role="toolbar" id="{{ id }}-weekdays">#}
+            {#<div class="btn-group" role="group">#}
+                {#{% for weekday, value in weekdays %}#}
+                    {#<a class="btn btn-default" data-value="{{ value }}">{{ weekday|format_date('E') }}</a>#}
+                {#{% endfor %}#}
+            {#</div>#}
+            {#{{ block('hidden_widget') }}#}
+        {#</div>#}
+        {#{{ block('form_error') }}#}
+    {#</div>#}
+
+    {#<script type="text/javascript">#}
+        {#var currentValue = parseInt($('#{{ id }}').val(), 10) || 0;#}
+
+        {#$('#{{ id }}-weekdays').find('a.btn').each(function(idx, element) {#}
+            {#$(element).on('click', function() {#}
+                {#var e = $(this),#}
+                    {#value = parseInt($('#{{ id }}').val(), 10) || 0;#}
+
+                {#if (e.hasClass('btn-success')) {#}
+                    {#e.switchClass('btn-success', 'btn-default');#}
+                    {#value &= ~e.data('value');#}
+                {#} else {#}
+                    {#e.switchClass('btn-default', 'btn-success');#}
+                    {#value |= e.data('value');#}
+                {#}#}
+
+                {#$('#{{ id }}').val(value);#}
+            {#});#}
+
+            {#if (currentValue & $(element).data('value')) {#}
+                {#$(element).switchClass('btn-default', 'btn-success');#}
+            {#}#}
+        {#});#}
+    {#</script>#}
+{#{% endblock %}#}
+
+{% block colorpicker_widget %}
+    {% spaceless %}
+        {% if widget == "image" %}
+            <div id="{{ id }}_color" {{ block("widget_container_attributes") }}>
+                <div{% if value %} style="background-color: #{{ value }};"{% endif %}>&nbsp;</div>
+                {{ block("hidden_widget") }}
+            </div>
+        {% else %}
+            #{{ block("form_widget_simple") }}
+            <span id="{{ id }}_color_preview" class="colorpicker__preview">&nbsp;</span>
+        {% endif %}
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                var $field = $('#{{ id }}');
+                {% if widget != "image" %}
+                $field.css({
+                    'display': 'inline-block'
+                });
+
+                var $fieldPreview = $('#{{ id }}_color_preview');
+                $field.change(function() {
+                    $fieldPreview.css({
+                        'backgroundColor': '#' + ($(this).val() ? $(this).val() : 'ffffff')
+                    });
+                });
+                $fieldPreview.css({
+                    'backgroundColor': '#' + $field.val()
+                });
+                {% endif %}
+                var $configs = $.extend({
+                    color: '#' + $field.val(),
+                    onBeforeShow: function() {
+                        $(this).ColorPickerSetColor($field.val());
+                    }
+                }, {{ configs|json_encode|raw }});
+                {% if widget == "image" %}
+                $picker = $('#{{ id }}_color');
+                $picker.ColorPicker($.extend({
+                    onChange: function(hsb, hex, rgb) {
+                        $field.val(hex);
+                        $('div', $picker).css({
+                            backgroundColor: '#' + hex
+                        });
+                    }
+                }, $configs));
+                {% else %}
+                $field.attr('size', '6').attr('maxlength', '6').width('auto');
+                $field.ColorPicker($.extend({
+                    onChange: function(hsb, hex, rgb) {
+                        $field.val(hex);
+                        $fieldPreview.css({
+                            backgroundColor: '#' + hex
+                        });
+                    }
+                }, $configs));
+                {% endif %}
+            });
+        </script>
+    {% endspaceless %}
+{% endblock colorpicker_widget %}
+
+{#{% block choice_player_widget %}#}
+    {#<div class="form-group" id="{{ id }}-container">#}
+        {#{{ block('form_label') }}#}
+        {#<div class="btn-toolbar" role="toolbar" id="{{ id }}-settings">#}
+            {#<div class="btn-group" role="group">#}
+                {#{% for value, player in players %}#}
+                    {#<a class="btn btn-default" data-value="{{ value }}">#}
+                        {#{{ ('admin.players.type.'~player)|trans({}, 'SonataAdminBundle') }}#}
+                    {#</a>#}
+                {#{% endfor %}#}
+            {#</div>#}
+            {#{{ block('hidden_widget') }}#}
+        {#</div>#}
+        {#{{ block('form_error') }}#}
+    {#</div>#}
+
+    {#<script type="text/javascript">#}
+        {#var currentValue = parseInt($('#{{ id }}').val(), 10) || 0;#}
+
+        {#jQuery('#{{ id }}-settings a.btn').each(function(idx, element) {#}
+            {#jQuery(element).on('click', function() {#}
+                {#var e = $(this),#}
+                    {#value = parseInt($('#{{ id }}').val(), 10) || 0;#}
+
+                {#jQuery('#{{ id }}-settings a.btn').switchClass('btn-success', 'btn-default');#}
+                {#e.switchClass('btn-default', 'btn-success');#}
+
+                {#$('#{{ id }}').val(e.data('value'));#}
+            {#});#}
+
+            {#if (currentValue == jQuery(element).data('value')) {#}
+                {#jQuery(element).switchClass('btn-default', 'btn-success');#}
+            {#}#}
+        {#});#}
+    {#</script>#}
+{#{% endblock %}#}
+
+{% block upload_vich_image_widget %}
+    {% if preview %}
+        {#{{ dump() }}#}
+        {% set v = asset('bundles/admin/images/preview_placeholder.png') %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-left" style="margin-right: 15px; margin-bottom: 10px; width: 100%;">
+                    {% if download_uri and image_path is not empty %}
+                        <a href="{{ image_path }}" target="_blank" download="" class="btn-sm btn-success pull-right" style="margin-bottom: 5px">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                            {{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}
+                        </a>
+                    {% endif %}
+
+                    {% set preview_width = preview_width matches '/^[\\d\\.]+$/' ? preview_width~'px' : preview_width %}
+                    <img id="{{ id }}_preview"
+                         src="{{ image_path|default(v) }}?{{ random() }}"
+                         style="width:{{ image_path ? preview_width|default('100%') : '150px' }};">
+
+                    {% if image_path is not empty %}
+                        <div style="font-weight: bolder; font-size: 12px; color: #3A4A51;">
+                            {{ image_path }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {{ form_widget(form.file, {'attr': {'accept': mime_types|join(',') }}) }}
+
+        {% if form.delete is defined %}
+            {{ form_widget(form.delete) }}
+        {% endif %}
+
+        <script type="text/javascript">
+            jQuery(document).ready(function()
+            {
+                'use strict';
+                var preview = jQuery('#{{ id }}_preview');
+                jQuery('#{{ form.file.vars.id }}').change(function() {
+                    if (this.files && this.files[0] && this.files[0].type.match(/image.*/)) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            preview.attr('src', e.target.result);
+                        };
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                });
+            });
+        </script>
+    {% else %}
+        {{ block('form_widget') }}
+    {% endif %}
+{% endblock %}
+
+{#{% block download_image_widget %}#}
+    {#{% if preview %}#}
+        {#{% set image_preview_path = image_web_path %}#}
+        {#{% if image_web_path is not empty %}#}
+            {#{% set image_preview_path = image_web_path|imagine_filter('admin_preview') %}#}
+        {#{% endif %}#}
+
+        {#{% set v = asset('bundles/admin/images/preview_placeholder.png') %}#}
+        {#<div class="row">#}
+            {#<div class="col-md-6">#}
+                {#{{ block('form_label') }}#}
+                {#<div class="pull-left" style="margin-right: 15px; margin-bottom: 10px; width: 100%;">#}
+                    {#<img id="{{ id }}_download_preview"#}
+                         {#src="{{ image_preview_path|default(v) }}?{{ random() }}"#}
+                         {#style="max-height: {{ preview_width|default(150) }}px;"#}
+                    {#>#}
+                    {#{{ block('hidden_widget') }}#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
+        {#<script type="text/javascript">#}
+            {#(function() {#}
+                {#'use strict';#}
+                {#jQuery('#{{ id }}').change(function() {#}
+                    {#jQuery('#{{ id }}_download_preview').attr('src', jQuery(this).val());#}
+                {#});#}
+            {#}());#}
+        {#</script>#}
+    {#{% else %}#}
+        {#{{ block('form_widget') }}#}
+    {#{% endif %}#}
+{#{% endblock %}#}
+
+{#{% block bitwise_choice_widget %}#}
+    {#{% if expanded %}#}
+        {#{{ block('bitwise_choice_widget_expanded') }}#}
+    {#{% else %}#}
+        {#{{ block('choice_widget') }}#}
+    {#{% endif %}#}
+{#{% endblock %}#}
+
+{#{% block bitwise_choice_widget_expanded %}#}
+    {#{% spaceless %}#}
+        {#{% set options = choices %}#}
+        {#{{ block('bitwise_choice_widget_expanded_multiples') }}#}
+    {#{% endspaceless %}#}
+{#{% endblock %}#}
+
+{#{% block bitwise_choice_widget_expanded_multiples %}#}
+    {#{% spaceless %}#}
+        {#{% for group_label, choice in options %}#}
+            {#{% if choice is iterable %}#}
+                {#<div class="col-md-6">#}
+                    {#<label><u>{{ group_label|trans({}, translation_domain) }}</u></label>#}
+                    {#{% set options = choice %}#}
+                    {#{{ block('bitwise_choice_widget_expanded_multiples') }}#}
+                {#</div>#}
+            {#{% else %}#}
+                {#<div {{ block('widget_container_attributes') }}>#}
+                    {#{{ form_widget(form.children[group_label]) }}#}
+                    {#{{ form_label(form.children[group_label]) }}#}
+                {#</div>#}
+            {#{% endif %}#}
+        {#{% endfor %}#}
+    {#{% endspaceless %}#}
+{#{% endblock %}#}
+
+{% block sonata_admin_book_name_text_counter_widget %}
+    {{ block('form_widget') }}
+
+    <script>
+        var id = jQuery('#{{ form.vars.id }}');
+        var label = jQuery('label[for={{ id }}]');
+        label.after('<div id="duplicate_book" style="margin-bottom: 5px;max-height: 100px;overflow-y: scroll;"></div>');
+        var container = jQuery('#duplicate_book');
+        jQuery('#{{ id }}').on('input',function() {
+            var name = $(this).val();
+            if (name.length > 3) {
+                jQuery.ajax({
+                    method: "GET",
+                    url: "{{ path('admin_book_book_search_book') }}",
+                    cache: false,
+                    dataType: 'json',
+                    data: { 'name': name },
+                    success: function (response) {
+                        console.log(response);
+                        if (response) {
+                            var message = '';
+                            for (var i in response) {
+                                message += '<a href="'+ response[i].url +'" style="margin-right: 5px" target="_blank">' + response[i].name + '</a><br/>';
+                            }
+                            container.html(message);
+                        }
+                    }
+                });
+            } else {
+                container.html('');
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block share_admin_author_name_text_widget %}
+    {{ block('form_widget') }}
+
+    <script>
+        var id = jQuery('#{{ form.vars.id }}');
+        var label = jQuery('label[for={{ id }}]');
+        label.after('<div id="duplicate_author" style="margin-bottom: 5px;max-height: 100px;overflow-y: scroll;"></div>');
+        var container = jQuery('#duplicate_author');
+        jQuery('#{{ id }}').on('input',function() {
+            var name = $(this).val();
+            if (name.length > 3) {
+                jQuery.ajax({
+                    method: "GET",
+                    url: "{{ path('admin_share_author_search_author') }}",
+                    cache: false,
+                    dataType: 'json',
+                    data: { 'name': name },
+                    success: function (response) {
+                        console.log(response);
+                        if (response) {
+                            var message = '';
+                            for (var i in response) {
+                                message += '<a href="'+ response[i].url +'" style="margin-right: 5px" target="_blank">' + response[i].name + '</a><br/>';
+                            }
+                            container.html(message);
+                        }
+                    }
+                });
+            } else {
+                container.html('');
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block series_admin_title_text_widget %}
+    {{ block('form_widget') }}
+
+    <script>
+        var id = jQuery('#{{ form.vars.id }}');
+        var label = jQuery('label[for={{ id }}]');
+        label.after('<div id="duplicate_series" style="margin-bottom: 5px;max-height: 100px;overflow-y: scroll;"></div>');
+        var container = jQuery('#duplicate_series');
+        jQuery('#{{ id }}').on('input',function() {
+            var name = $(this).val();
+            if (name.length > 3) {
+                jQuery.ajax({
+                    method: "GET",
+                    url: "{{ path('admin_series_series_search_series') }}",
+                    cache: false,
+                    dataType: 'json',
+                    data: { 'name': name },
+                    success: function (response) {
+                        console.log(response);
+                        if (response) {
+                            var message = '';
+                            for (var i in response) {
+                                message += '<a href="'+ response[i].url +'" style="margin-right: 5px" target="_blank">' + response[i].name + '</a><br/>';
+                            }
+                            container.html(message);
+                        }
+                    }
+                });
+            } else {
+                container.html('');
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block text_counter_widget %}
+    {{ block('form_widget') }}
+    {{ block('counter_widget') }}
+{% endblock %}
+
+{% block textarea_counter_widget %}
+    {{ block('textarea_widget') }}
+    {{ block('counter_widget') }}
+{% endblock %}
+
+{% block counter_widget %}
+    <script>
+        $('#{{ id }}').textcounter({
+            countContainerClass: 'text-count-wrapper pull-right',
+            stopInputAtMaximum: {{ stop_at_maximum ? 'true' : 'false' }},
+            counterText: '{{ ('admin.fields.counter.total.'~widget_type)|trans({}, 'SonataAdminBundle') }}: %d',
+            countDownText: '{{ ('admin.fields.counter.remaining.'~widget_type)|trans({}, 'SonataAdminBundle') }}: %d',
+            countSpaces: {{ count_spaces ? 'true' : 'false' }},
+            countDown: {{ count_down ? 'true' : 'false' }},
+            type: "{{ widget_type }}",
+            min: {{ min }},
+            max: {{ max }},
+        });
+    </script>
+{% endblock %}
+
+{% block codemirror_widget %}
+    {% spaceless %}
+        {{ block('textarea_widget') }}
+
+        <script type="text/javascript">
+            if (typeof CodeMirror !== 'undefined') {
+                CodeMirror.fromTextArea(document.getElementById('{{ id }}'), {
+                    autoRefresh: true,
+                    lineNumbers: true,
+                    mode: 'htmlmixed',
+                    indentUnit: 4,
+                    autofocus: true,
+                    fixedGutter: true,
+                    lineWrapping: true
+                });
+            }
+        </script>
+    {% endspaceless %}
+{% endblock %}

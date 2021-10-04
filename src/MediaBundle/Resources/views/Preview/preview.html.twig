@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="UTF-8">
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    </head>
+    <body>
+        {% spaceless %}
+            {% if entity %}
+                {% set isFile       = entity is instanceof("\\MediaBundle\\Entity\\MediaFile") %}
+                {% set isImage      = entity is instanceof("\\MediaBundle\\Entity\\MediaImage") %}
+                {% set isVideo      = entity is instanceof("\\MediaBundle\\Entity\\MediaVideo") %}
+                {% set isAudio      = entity is instanceof("\\MediaBundle\\Entity\\MediaAudio") %}
+                {% set isGallery    = entity is instanceof("\\MediaBundle\\Entity\\MediaGallery") %}
+
+                {% import 'MediaBundle:Admin:_media_macro.html.twig' as _media %}
+                {% set entityId = 'entity'~entity.id %}
+
+                <div>
+                    {% if isImage %}
+                        {{ _media.image(entity, 'max-height: 270px;') }}
+                    {% elseif isGallery %}
+                        {{ _media.image(entity.getCover(), 'max-height: 270px;') }}
+                    {% elseif isVideo or isAudio %}
+                        {% if not entity.type and entity.path %}
+                            {{ isAudio ? _media.audio(entity.path) : _media.video(entity.path, entityId)}}
+                        {% elseif entity.type %}
+                            {{ entity.code|set_frame_size('100%', '270px')|raw }}
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div style="font-size: 15px;color: blue;">
+                {% if isFile %}
+                    {{ entity.title|default(entity.getName()) }}
+                {% elseif isGallery %}
+                    {{ 'media.fields.count_images'|trans({}, 'MediaBundle') }}: {{ entity.countImages }}.<br>{{ entity.description|default(entity.title) }}
+                {% else %}
+                    {{ entity.title }}
+                {% endif %}
+                </div>
+            {% endif %}
+        {% endspaceless %}
+    </body>
+</html>

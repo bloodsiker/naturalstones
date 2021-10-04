@@ -1,0 +1,15 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% set imageSrc = object.image %}
+
+    {%- if imageSrc is empty and object.article is not empty -%}
+        {% set imageSrc = object.article.image %}
+    {%- endif -%}
+
+    {%- if imageSrc is not empty -%}
+        <div align="center">
+            <img src="{{ app.request.schemeAndHttpHost }}/{{ imageSrc }}" width="150px">
+        </div>
+    {%- endif -%}
+{% endblock %}

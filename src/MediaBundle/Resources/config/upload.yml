@@ -1,0 +1,37 @@
+services:
+    media.upload_namer.base:
+        class: "MediaBundle\\Naming\\MediaNamer"
+        public: false
+
+    media.upload_namer.file:
+        class: "MediaBundle\\Naming\\MediaNamer"
+        calls:
+            - [ 'setPrefix', [ '/file/' ]]
+
+    media.upload_namer.image:
+        class: "MediaBundle\\Naming\\MediaNamer"
+        calls:
+            - [ 'setPrefix', [ '/image/' ]]
+
+    media.upload_namer.video:
+        class: "MediaBundle\\Naming\\MediaNamer"
+        calls:
+            - [ 'setPrefix', [ '/video/' ]]
+
+    media.upload_namer.audio:
+        class: "MediaBundle\\Naming\\MediaNamer"
+        calls:
+            - [ 'setPrefix', [ '/audio/' ]]
+
+    media.upload_error_handler:
+        class: "MediaBundle\\ErrorHandler\\UploadErrorHandler"
+
+    media.upload_listener:
+        class: "MediaBundle\\EventListener\\UploadListener"
+        calls:
+            - [ 'setContainer', ['@service_container'] ]
+            - [ 'setImageService', [ '@media.image.service' ]]
+            - [ 'setVideoService', [ '@media.video.service' ]]
+        tags:
+            - { name: kernel.event_listener, event: oneup_uploader.post_upload, method: onPostUploadFile }
+            - { name: kernel.event_listener, event: oneup_uploader.post_upload.media_multiple_upload_image, method: onPostUploadImageFile }

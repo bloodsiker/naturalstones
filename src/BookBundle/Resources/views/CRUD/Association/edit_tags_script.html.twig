@@ -1,0 +1,137 @@
+{% autoescape false %}
+	<!-- edit one related -->
+	<script type="text/javascript">
+
+        // handle the related link
+        var field_search_tags_{{ id }} = function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var tags = [],
+                bookFile = [],
+                eventTarget = jQuery(event.target),
+                searchTagsArea = jQuery('#field_search_tags_{{ id }}'),
+                textContent = CKEDITOR.instances['{{ id|replace({'tags': 'description'}) }}'].getData();
+
+            eventTarget.attr('disabled', true);
+            searchTagsArea.html('');
+
+            jQuery('.sonata-ba-form form input[name*="[tags][]"]').each(function () {
+                tags.push(jQuery(this).val());
+            });
+
+            jQuery('.sonata-ba-form form input[name*="[bookFile]"]').each(function () {
+                bookFile.push(jQuery(this).val());
+            });
+            console.log(bookFile);
+
+            // the ajax post
+            jQuery.ajax({
+                url: '{{ sonata_admin.admin.generateUrl('find_tags_in_text', {
+					'code':      sonata_admin.admin.root.code,
+					'elementId': id,
+					'objectId':  sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
+					'uniqid':    sonata_admin.admin.root.uniqid,
+					'subclass': app.request.query.get('subclass'),
+				} + sonata_admin.field_description.getOption('link_parameters', {})) }}',
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    _xml_http_request: true,
+                    tags: tags,
+                    textContent: textContent,
+                    bookFile: bookFile
+                },
+                beforeSend: function(xhr) {
+                    searchTagsArea.html(
+                        '<p class="text-center">' +
+                        '<img src="{{ asset('bundles/sonataadmin/ajax-loader.gif') }}"> ' +
+                        '{{ 'loading_information'|trans({}, 'SonataAdminBundle') }}' +
+                        '</p>'
+                    );
+                },
+                success: function(foundTags) {
+                    eventTarget.removeAttr('disabled');
+
+                    if (!Object.keys(foundTags).length) {
+                        searchTagsArea.html(
+                            '<p class="alert alert-info text-center">' +
+                            '<i class="fa fa-check"></i> ' +
+                            '{{ 'not_found'|trans({}, 'BookBundle') }}</p>'
+                        );
+                        searchTagsArea.find('p.alert').fadeOut( 5000, function () { jQuery(this).remove(); });
+                    } else {
+                        searchTagsArea.html(
+                            '<table class="table table-bordered table-condensed table-hover" ' +
+                            'id="table_found_tags_{{ id }}"></table>'
+                        );
+
+                        var foundTagsTable = searchTagsArea.find('table');
+                        for (var fTag in foundTags) {
+                            foundTagsTable.append(
+                                '<tr class="default">' +
+                                    '<td>' + foundTags[fTag].name + '</td>' +
+                                    '<td class="text-center"><i class="fa fa-check"></i> ' + foundTags[fTag].count + '</td>' +
+                                    '<td class="text-center">' +
+                                        '<button ' +
+                                            'class="btn btn-sm btn-success" ' +
+                                            'data-id="' + fTag + '"' +
+                                            'data-name="' + foundTags[fTag].name + '"' +
+                                            'onclick="return insert_found_tag_{{ id }}(this);"' +
+                                        '>' +
+                                            '<i class="fa fa-plus"></i>' +
+                                        '</button>' +
+                                    '</td>' +
+                                '</tr>'
+                            );
+                        }
+                    }
+                }
+            });
+
+            return false;
+        };
+
+        function insert_found_tag_{{ id }}(link) {
+            link.onclick = null;
+
+            var selector = jQuery(link);
+
+            jQuery('#field_search_tags_{{ id }} table button.btn-success').attr('disabled', true);
+
+            acId = window.Select2 ? '#{{ id }}_autocomplete_input' : '#{{ id }}_autocomplete_input_v4';
+            data = $(acId).select2('data');
+            data.push({id: selector.data('id'), text: selector.data('name')});
+            $(acId).trigger({
+                type: window.Select2 ? 'change' : 'select2:select',
+                added: {id: selector.data('id')},
+                params: { data:{id: selector.data('id')} }
+            });
+            $(acId).select2('data', data);
+
+            jQuery('#field_search_tags_{{ id }} table button.btn-success').removeAttr('disabled');
+
+            selector.parent().parent().remove();
+
+            return false;
+        }
+
+        function start_field_search_{{ id }}(link) {
+            link.onclick = null;
+
+            if (jQuery('#field_search_tags_{{ id }}').length === 0) {
+                jQuery('#field_container_{{ id }}')
+                    .after('<div id="field_search_tags_{{ id }}" style="max-height: 300px;overflow: auto;"></div>');
+            }
+
+            // add the jQuery event to the a element
+            jQuery(link)
+                .click(field_search_tags_{{ id }})
+                .trigger('click')
+            ;
+
+            return false;
+        }
+	</script>
+	<!-- / edit one related  -->
+{% endautoescape %}

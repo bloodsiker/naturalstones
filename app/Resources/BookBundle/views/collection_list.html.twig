@@ -1,0 +1,20 @@
+<div class="container collection-list">
+    <h1>Подборки</h1>
+
+    {{
+    sonata_block_render(
+        { 'type': 'book.block.collection_genre' }
+    )
+    }}
+
+    {{
+    sonata_block_render(
+        { 'type': 'book.block.collection_list' },
+        {
+            'page': app.request.get('page') ? app.request.get('page') : 1,
+            'genre': genre,
+        }
+    )
+    }}
+
+</div>

@@ -1,0 +1,9 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% set type = object.getTypesList()[value|number_format] %}
+    <span class="label label-primary">
+        <span class="fa fa-{{ type }}"></span>
+        {{ ('media.types.'~type)|trans({}, 'MediaBundle') }}
+    </span>
+{% endblock %}

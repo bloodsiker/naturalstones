@@ -1,0 +1,30 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% set isImage = object is instanceof("\\MediaBundle\\Entity\\MediaImage") %}
+
+    {{ value is not empty ? value : 'file #'~object.id }}
+
+    {% if object.size or object.mimeType or object.width is defined or object.path %}
+        <hr style="margin-top:0;margin-bottom:5px;">
+        <p>
+            <span class="text-muted info" style="font-size: 12px;">
+                {% if object.size %}
+                    {{ 'media.fields.size'|trans({}, 'MediaBundle') }}: {{ object.size|media_humanize_filesize }}<br/>
+                {% endif %}
+
+                {% if object.path %}
+                    {{ 'media.fields.extension'|trans({}, 'MediaBundle') }}: {{ object.path|file_extension }}<br/>
+                {% endif %}
+
+                {% if object.mimeType %}
+                    {{ 'media.fields.mime_type'|trans({}, 'MediaBundle') }}: "{{ object.mimeType }}"<br/>
+                {% endif %}
+
+                {% if isImage and (object.width and object.height) %}
+                    {{ 'media.fields.resolution'|trans({}, 'MediaBundle') }}: {{ object.width }}x{{ object.height }} px
+                {% endif %}
+            </span>
+        </p>
+    {% endif %}
+{% endblock %}

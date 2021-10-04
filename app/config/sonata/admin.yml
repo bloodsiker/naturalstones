@@ -1,0 +1,110 @@
+sonata_admin:
+    title: book library
+    title_logo: /bundles/admin/images/logo.jpg
+    show_mosaic_button: false
+    security:
+        handler: sonata.admin.security.handler.acl
+        information:
+            GUEST:    [VIEW, LIST]
+            STAFF:    [EDIT, LIST, CREATE]
+            EDITOR:   [OPERATOR, EXPORT]
+            ADMIN:    [MASTER]
+        admin_permissions: [CREATE, LIST, EDIT, DELETE, UNDELETE, EXPORT, OPERATOR, MASTER]
+        object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
+
+    templates:
+        short_object_description: 'MediaBundle:Helper:short-object-description.html.twig'
+        list: 'AdminBundle:Core:list.html.twig'
+    options:
+        title_mode: single_image
+
+    assets:
+        extra_javascripts:
+            - bundles/sonatapage/sonata-page.back.min.js
+            - bundles/admin/js/textcounter.min.js
+            - bundles/admin/js/colorpicker.js
+            - bundles/admin/js/codemirror/codemirror.js
+            - bundles/admin/js/codemirror/autorefresh.js
+            - bundles/admin/js/codemirror/css.js
+            - bundles/admin/js/codemirror/xml.js
+            - bundles/admin/js/codemirror/javascript.js
+            - bundles/admin/js/codemirror/htmlmixed.js
+        extra_stylesheets:
+            - bundles/sonatapage/sonata-page.back.min.css
+            - bundles/admin/css/colorpicker.css
+            - bundles/admin/css/codemirror/codemirror.css
+            - bundles/admin/css/style.css
+
+
+    dashboard:
+        blocks:
+            - position: left
+              type: sonata.admin.block.admin_list
+              settings:
+                  groups:
+                      - group.media
+                      - group.product
+                      - group.book
+#                      - group.genre
+                      - group.share
+
+            - position: right
+              type: sonata.admin.block.admin_list
+              settings:
+                  groups:
+#                      - group.quiz
+#                      - group.comment
+                      - group.order
+                      - sonata_page
+                      - sonata_user
+        groups:
+            group.media:
+                label: group.media
+                label_catalogue: MediaBundle
+                icon: <i class="fa fa-files-o"></i>
+            group.product:
+                label: group.product
+                label_catalogue: ProductBundle
+                icon: <i class="fa fa-paw"></i>
+            group.book:
+                label: group.book
+                label_catalogue: BookBundle
+                icon: <i class="fa fa-book"></i>
+#            group.genre:
+#                label: group.genre
+#                label_catalogue: GenreBundle
+#                icon: <i class="fa fa-object-group"></i>
+            group.article:
+                label: group.article
+                label_catalogue: ArticleBundle
+                icon: <i class="fa fa-newspaper-o"></i>
+            group.share:
+                label: group.share
+                label_catalogue: ShareBundle
+                icon: <i class="fa fa-text-width"></i>
+#            group.quiz:
+#                label: group.quiz
+#                label_catalogue: QuizBundle
+#                icon: <i class="fa fa-question-circle"></i>
+#            group.comment:
+#                label: group.comment
+#                label_catalogue: CommentBundle
+#                icon: <i class="fa fa-comment"></i>
+            group.order:
+                label: group.order
+                label_catalogue: OrderBundle
+                icon: <i class="fa fa-bell-o"></i>
+            sonata_page:
+                label: ~
+                label_catalogue: SonataPageBundle
+                icon: <i class="fa fa-sitemap"></i>
+                items:
+                    - sonata.page.admin.page
+                    - sonata.page.admin.page_redirect
+                    - sonata.page.admin.site
+                    - sonata.page.admin.site_variables
+                    - sonata.page.admin.site_variables_placement
+            sonata_user:
+                label: ~
+                label_catalogue: SonataUserBundle
+                icon: <i class="fa fa-users"></i>

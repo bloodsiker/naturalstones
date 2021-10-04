@@ -1,0 +1,38 @@
+{% import 'AppBundle:Block:_articles_macro.html.twig' as article %}
+{% import 'AppBundle:Block:_blogs_macro.html.twig' as blog %}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+    {% set base_url = app.request.getSchemeAndHttpHost() %}
+    {% for key, item in items %}
+        <url>
+            {% set is_article = item is instanceof('\\AppBundle\\Entity\\Article') %}
+            {% set is_blog = item is instanceof('\\AppBundle\\Entity\\Blog') %}
+
+            {% if is_blog %}
+                {% set link = blog.suzy_blog_url(item.slug)|trim %}
+            {% else %}
+                {% set category = item.articleHasCategories|first.category %}
+                {% set link = article.article_url(item, category)|trim %}
+            {% endif %}
+
+            {% set keywords = item.translate.getMetaKeywords() %}
+            {%- if is_article and item.html and item.html.isActive and item.html.path -%}
+                <loc>{{ html_page_path(item.html, app.request.scheme) }}</loc>
+            {%- else -%}
+                <loc>{{ base_url }}{{ link }}</loc>
+            {%- endif -%}
+            <news:news>
+                <news:publication>
+                    <news:name>Vogue.ua</news:name>
+                    <news:language>ru</news:language>
+                </news:publication>
+                <news:genres>PressRelease, Blog</news:genres>
+                <news:publication_date>{{ item.publishAt|date('Y-m-d') }}</news:publication_date>
+                <news:title>{{ item.translate.title }}</news:title>
+                {% if keywords %}
+                    <news:keywords>{{ keywords }}</news:keywords>
+                {% endif %}
+            </news:news>
+        </url>
+    {% endfor %}
+</urlset>

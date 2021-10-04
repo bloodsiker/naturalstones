@@ -1,0 +1,68 @@
+{# render iframe #}
+{% macro iframe(code, id, lazy) %}
+    {% if '<script' in code %}
+        {{ code|raw }}
+    {% elseif lazy is empty %}
+        {{ code|raw }}
+    {% else %}
+        <a class="btn btn-primary frame" href="javascript:void(0)" id="{{ id }}">
+            <img src="{{ asset('bundles/admin/images/play.png') }}" style="max-height: 60px;"/>
+        </a>
+        <script type="text/javascript">
+            jQuery('a#{{ id }}').click(function() {
+                jQuery(this).replaceWith('{{ code|set_frame_size(400, 'auto')|raw }}');
+            });
+        </script>
+    {% endif %}
+{% endmacro %}
+
+{# render audio #}
+{% macro audio(path) %}
+    {% set audio_path = '/'~(path|trim('/'))|raw %}
+    <audio preload="metadata" controls style="width: 100%; min-width: 200px;">
+        <source src="{{ audio_path }}">
+        <source src="{{ cdn_host~audio_path }}">
+    </audio>
+{% endmacro %}
+
+{# render image #}
+{% macro image(src, styles, id) %}
+    {% set v = asset('bundles/admin/images/preview_placeholder.png') %}
+    {% set image_preview_path = src %}
+    {% if src is not empty %}
+        {% set image_preview_path = src|imagine_filter('admin_preview') %}
+        {% set image_preview_path = src %}
+    {% endif %}
+
+    <img src="{{ image_preview_path|default(v)|raw }}?{{ random() }}"
+         id="upload_img_preview_{{ id|default(random()) }}" style="{{ styles|default('width:100%') }}"/>
+{% endmacro %}
+
+{# render video #}
+{% macro video(path, id, lazy) %}
+    {% set video_path = '/'~(path|trim('/'))|raw %}
+    {#{% set poster_path = (path|trim('/'))|imagine_filter('video_snapshot_poster')|raw %}#}
+    {% set poster_path = null %}
+
+    {% set code = '<video id="'~id~'" poster="'~poster_path~'" class="video-js vjs-default-skin" style="width: 100%; height: 200px; min-width: 200px;" controls preload="none" data-setup="{}">' %}
+    {% set code = code ~ '<source src="'~video_path~'">' %}
+    {#{% set code = code ~ '<source src="'~cdn_host~video_path~'">' %}#}
+    {% set code = code ~ '</video>' %}
+
+    {% if lazy is empty %}
+        {{ code|raw }}
+    {% else %}
+        <a class="btn btn-primary video" href="javascript:void(0)" id="{{ id }}">
+            {% if poster_path %}
+                <img src="{{ poster_path }}" style="max-height: 60px;"/>
+            {% else %}
+                <img src="{{ asset('bundles/admin/images/play.png') }}" style="max-height: 60px;"/>
+            {% endif %}
+        </a>
+        <script type="text/javascript">
+            jQuery('a#{{ id }}').click(function() {
+                jQuery(this).replaceWith('{{ code|raw }}');
+            });
+        </script>
+    {% endif %}
+{% endmacro %}

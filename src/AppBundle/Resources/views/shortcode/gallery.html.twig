@@ -1,0 +1,20 @@
+{% if shortcode_data.gallery %}
+    <div class="slider">
+        <div class="slider__img-holder">
+            <div class="slider__slide-block">
+                {%  for key, item in shortcode_data.gallery.galleryHasImage %}
+                    <div class="slider__item" data-copyright="{{ item.image.translate.copyright }}" data-description="{{ item.image.translate.title }}">
+                        <img class="slider__item__img" src="{{ item.image.path ? item.image.path|imagine_filter('gallery_x750') : null }}" alt="{{ item.image.translate.title }}">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="slider__description"></div>
+        <div class="slider__copyright"></div>
+        <div class="slider__footer">
+            <div class="slider__footer__counter">
+                <span id="slick-slider-current">1</span> / <span id="slick-slider-total">{{ shortcode_data.gallery.galleryHasImage|length }}</span>
+            </div>
+        </div>
+    </div>
+{% endif %}

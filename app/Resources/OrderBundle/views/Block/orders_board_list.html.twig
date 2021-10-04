@@ -1,0 +1,31 @@
+<ul class="author-filter">
+    <li><a href="{{ path('order_board') }}"><i class="fa fa-circle-o" aria-hidden="true"></i> Все заказы</a></li>
+    <li>
+        <a href="{{ path('order_board_status', { 'status': 'new' }) }}"><i class="fa fa-exclamation" aria-hidden="true"></i>
+            {{ 'order_board.fields.statuses.new'| trans({}, 'OrderBundle') }}</a>
+    </li>
+    <li>
+        <a href="{{ path('order_board_status', { 'status': 'completed' }) }}"><i class="fa fa-check" aria-hidden="true"></i>
+            {{ 'order_board.fields.statuses.completed'| trans({}, 'OrderBundle') }}</a>
+    </li>
+    <li>
+        <a href="{{ path('order_board_status', { 'status': 'cancel' }) }}"><i class="fa fa-times" aria-hidden="true"></i>
+            {{ 'order_board.fields.statuses.cancel'| trans({}, 'OrderBundle') }}</a>
+    </li>
+    <li>
+        <a href="{{ path('order_board_status', { 'status': 'top' }) }}"><i class="fa fa-bomb" aria-hidden="true"></i>
+            {{ 'order_board.fields.statuses.top'| trans({}, 'OrderBundle') }}</a>
+    </li>
+</ul>
+
+<table class="table">
+    {% import "OrderBundle:Block/macros:item.html.twig" as item %}
+
+    {% for order in orders %}
+        {{ item.order(order) }}
+    {% endfor %}
+</table>
+
+{% if orders.maxPerPage is defined and orders.count > orders.maxPerPage %}
+    {{ pagerfanta(orders, { 'omitFirstPage': true}) }}
+{% endif %}

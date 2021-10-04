@@ -1,0 +1,15 @@
+services:
+  quiz.entity_manager:
+    class: "Doctrine\\ORM\\EntityManager"
+    factory: ['@doctrine', getManager]
+    public: false
+
+  quiz.repository.abstract:
+    factory: [ '@quiz.entity_manager', 'getRepository' ]
+    abstract: true
+
+  quiz.repository.quiz:
+    class: "\\QuizBundle\\Entity\\QuizRepository"
+    parent: quiz.repository.abstract
+    arguments:
+      - 'QuizBundle:Quiz'

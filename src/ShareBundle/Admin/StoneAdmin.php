@@ -1,0 +1,114 @@
+<?php
+
+namespace ShareBundle\Admin;
+
+use AdminBundle\Admin\BaseAdmin as Admin;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\CoreBundle\Form\Type\DateTimePickerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
+/**
+ * Class StoneAdmin
+ */
+class StoneAdmin extends Admin
+{
+    protected $datagridValues = [
+        '_page'       => 1,
+        '_per_page'   => 25,
+        '_sort_by'    => 'id',
+        '_sort_order' => 'DESC',
+    ];
+
+    /**
+     * @param RouteCollection $collection
+     */
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('acl');
+    }
+
+    /**
+     * @param ListMapper $listMapper
+     */
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->add('id', null, [
+                'label' => 'stone.fields.id',
+            ])
+            ->addIdentifier('name', null, [
+                'label' => 'stone.fields.name',
+            ])
+            ->add('isActive', null, [
+                'label' => 'stone.fields.is_active',
+                'editable'  => true,
+            ])
+            ->add('createdAt', null, [
+                'label' => 'stone.fields.created_at',
+            ])
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'edit' => [],
+                ],
+            ]);
+    }
+
+    /**
+     * @param DatagridMapper $datagridMapper
+     */
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('name', null, [
+                'label' => 'stone.fields.name',
+            ])
+            ->add('isActive', null, [
+                'label' => 'stone.fields.is_active',
+            ])
+            ->add('createdAt', null, [
+                'label' => 'stone.fields.created_at',
+            ]);
+    }
+
+    /**
+     * @param FormMapper $formMapper
+     */
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
+                ->add('name', TextType::class, [
+                    'label' => 'stone.fields.name',
+                ])
+                ->add('slug', TextType::class, [
+                    'label' => 'stone.fields.slug',
+                    'required' => false,
+                    'attr' => ['readonly' => !$this->getSubject()->getId() ? false : true],
+                ])
+                ->add('description', CKEditorType::class, [
+                    'label' => 'stone.fields.description',
+                    'config_name' => 'advanced',
+                    'required' => false,
+                    'attr' => [
+                        'rows' => 5,
+                    ],
+                ])
+            ->end()
+            ->with('form_group.additional', ['class' => 'col-md-4', 'name' => false])
+                ->add('isActive', null, [
+                    'label' => 'stone.fields.is_active',
+                    'required' => false,
+                ])
+                ->add('createdAt', DateTimePickerType::class, [
+                    'label'     => 'stone.fields.created_at',
+                    'required' => true,
+                    'format' => 'YYYY-MM-dd HH:mm',
+                    'attr' => ['readonly' => true],
+                ])
+            ->end();
+    }
+}

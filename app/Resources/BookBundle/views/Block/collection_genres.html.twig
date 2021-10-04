@@ -1,0 +1,16 @@
+<div class="filter_block">
+    <div class="filter_name">
+        Темы:
+    </div>
+    <div class="filter_list">
+        <div class="genres">
+            <ul class="tags">
+                <li><a href="{{ path('collection_list') }}" class="{{ 'collection_list' == app.request.get('_route') ? 'active' : null }}">Все</a></li>
+                {% for genre in genres %}
+                    {% set url = path('collection_category', { 'genre': genre.slug }) %}
+                    <li><a href="{{ url }}" class="{{ url in app.request.requestUri ? 'active' : null }}">{{ genre.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

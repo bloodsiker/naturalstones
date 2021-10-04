@@ -1,0 +1,22 @@
+{% extends 'AppBundle:Menu:knp_menu.html.twig' %}
+
+{% block children %}
+    <nav class="footer-nav">
+        <div class="container">
+            {% set currentItem = item %}
+            {% for item in currentItem.children %}
+                {%- set linkAttributes = item.linkAttributes -%}
+                {%- if matcher.isCurrent(item) or matcher.isAncestor(item, options.matchingDepth) %}
+                    {%- set linkAttributes = linkAttributes|merge({'class': 'active'}) -%}
+                {%- endif %}
+
+                {{ block('item') }}
+            {% endfor %}
+        </div>
+    </nav>
+{% endblock %}
+
+{% block linkElement %}
+    {% import 'knp_menu.html.twig' as macros %}
+    <h5><a href="{{ finalUri }}" {{ macros.attributes(linkAttributes) }}>{{ block('label') }}</a></h5>
+{% endblock %}

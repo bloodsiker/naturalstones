@@ -1,0 +1,31 @@
+{% extends 'SonataUserBundle:Admin/Core:user_block.html.twig' %}
+
+{% block user_block %}
+    {% spaceless %}
+        {% if app.user %}
+            <li class="user-header bg-light-blue">
+                <img src="{{ asset('/bundles/admin/images/default_avatar.png') }}" class="img-circle" alt="Avatar">
+                <p>{{ app.user.firstname|default(app.user.username) }}</p>
+            </li>
+            <li class="user-footer">
+                <div>
+                    {% if is_granted('EDIT', app.user) or is_granted('ROLE_SUPER_ADMIN') %}
+                        <a href="{{ url('admin_user_user_edit', {id: app.user.id}) }}" class="btn btn-default btn-flat pull-left" role="button">
+                            <i class="fa fa-user"></i> {{ 'link_edit_profile'|trans({}, 'SonataUserBundle') }}
+                        </a>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_PREVIOUS_ADMIN') and sonata_user.impersonating %}
+                        <a href="{{ url(sonata_user.impersonating.route, sonata_user.impersonating.parameters| merge({'_switch_user': '_exit'})) }}" class="btn btn-default btn-flat">
+                            <i class="fa fa-sign-out fa-fw"></i>(exit)
+                        </a>
+                    {% endif %}
+
+                    <a href="{{ url('sonata_user_admin_security_logout') }}" class="btn btn-default btn-flat pull-right">
+                        <i class="fa fa-sign-out fa-fw"></i> {{ 'user_block_logout'|trans({}, 'SonataUserBundle') }}
+                    </a>
+                </div>
+            </li>
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}

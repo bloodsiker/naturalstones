@@ -1,0 +1,24 @@
+<div class="modal fade" id="field_dialog_crop" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog crop-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{ 'media.crop.size'|trans({}, 'MediaBundle') }} - <span class="title"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" align="center">
+                    <div class="modal-body-content"/>
+                </div>
+                <br/>
+                <div class="well well-sm text-right">
+                    <button class="btn btn-success" type="button" role="button" aria-disabled="false">
+                        <span class="ui-button-text">{{ 'media.crop.button.save'|trans({}, 'MediaBundle') }}</span>
+                    </button>
+                    <button class="btn btn-default" type="button" role="button" aria-disabled="false" onclick="jQuery('#field_dialog_crop').modal('hide'); return false;">
+                        <span class="ui-button-text">{{ 'media.crop.button.cancel'|trans({}, 'MediaBundle') }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

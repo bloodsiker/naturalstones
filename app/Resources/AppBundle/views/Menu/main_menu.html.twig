@@ -1,0 +1,70 @@
+{% extends 'AppBundle:Menu:knp_menu.html.twig' %}
+
+{% block children %}
+    {% set currentItem = item %}
+
+    <!-- navbar -->
+    <nav class="h-nav">
+        <div class="container">
+            <div class="mobile-menu-btn">
+                <img src='{{ asset('bundles/app/img/mobile_burger.svg') }}' />
+                <div class="mobile-close"><div></div><div></div></div>
+            </div>
+            <a class="n-logo" href="{{ path('index') }}">
+                {% if app.request.locale == 'ru' %}
+                    <img src='{{ asset('bundles/app/img/nav_logo_small.svg') }}' />
+                {% else %}
+                    <img src='{{ asset('bundles/app/img/nav_logo_small_ua.svg') }}' />
+                {% endif %}
+            </a>
+            <div class="n-search">
+                <p>{{ 'app.frontend.search.title'|trans({}, 'AppBundle') }}</p>
+                <form action="{{ path('search') }}">
+                    <div class="n-search-form">
+                        <img src="{{ asset('bundles/app/img/header_search.svg') }}" />
+                        <input class="search-field"
+                               name="q"
+                               placeholder="{{ 'app.frontend.search.enter_text'|trans({}, 'AppBundle') }}"
+                               type="text">
+                        <div class="search-clean"></div>
+                    </div>
+                </form>
+            </div>
+            <ul>
+                {% set currentSubMenu = [] %}
+                {% if options.matchingDepth is not none and options.matchingDepth > 0 %}
+                    {% set options = options|merge({'matchingDepth': currentOptions.matchingDepth - 1}) %}
+                {% endif %}
+
+                {% for item in currentItem.children %}
+                    {% set linkAttributes = item.linkAttributes %}
+
+                    {% if matcher.isCurrent(item) or matcher.isAncestor(item, options.matchingDepth) %}
+                        {% set linkAttributes = linkAttributes|merge({'class': 'active'}) %}
+                        {% set currentSubMenu = item.children %}
+                    {% endif %}
+
+                    {{ block('item') }}
+                {% endfor %}
+            </ul>
+        </div>
+
+        {% if currentSubMenu %}
+            <div class="h-nav-submenu">
+                <div class="container">
+                    <ul>
+                        {% for item in currentSubMenu %}
+                            {% set linkAttributes = item.linkAttributes %}
+                            {% if matcher.isCurrent(item) %}
+                                {% set linkAttributes = linkAttributes|merge({'class': 'active'}) %}
+                                {% set currentSubMenu = item.children %}
+                            {% endif %}
+
+                            {{ block('item') }}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </nav>
+{% endblock %}

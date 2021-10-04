@@ -1,0 +1,21 @@
+
+<div class="head center">
+    <a href="/" class="logo" title="На главную">Книголюб.нет</a>
+
+    <div class="search-wrap">
+        {{
+        sonata_block_render(
+            { 'type': 'app.block.service.search' },
+            {
+                'list_type' : constant('AppBundle\\Block\\SearchBlockService::HEADER_FORM_TEMPLATE'),
+            }
+        )
+        }}
+    </div>
+    <div class="login-buts">
+        <div class="show-login icon-left icon-dark button" id="show-login"><i class="fa fa-sign-in"></i>Авторизация</div>
+    </div>
+</div>
+
+
+{#{{ knp_menu_render('main', {'template': 'AppBundle:Menu:main_menu.html.twig'}) }}#}

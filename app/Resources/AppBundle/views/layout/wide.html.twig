@@ -1,0 +1,20 @@
+{% extends 'AppBundle:layout:default.html.twig' %}
+
+{% block content_main %}
+
+    <section class="cols">
+        <div class="col-full">
+            {% if content is defined and content|length > 0 %}
+                {{ content|raw }}
+            {% endif %}
+
+            {% if page is defined %}
+                {% if page.name != 'global' %}
+                    {{ sonata_page_render_container('content_main', 'global') }}
+                {% endif %}
+                {{ sonata_page_render_container('content_main', page) }}
+            {% endif %}
+        </div>
+    </section>
+
+{% endblock %}

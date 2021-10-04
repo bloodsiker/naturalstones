@@ -1,0 +1,44 @@
+{% extends 'knp_menu.html.twig' %}
+
+{% import _self as _menu %}
+{% macro linkGA(menu, uri) %}_gaq.push(['_trackEvent', '{{ menu }}', 'click', '{{ uri }}']){% endmacro %}
+
+{% block list %}
+    {% set menu_alias = item.name %}
+    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+        {% import 'knp_menu.html.twig' as macros %}
+        {{ block('children') }}
+    {% endif %}
+{% endblock %}
+
+{% block children %}
+    {% set currentItem = item %}
+    {% for item in currentItem.children %}
+        {%- set linkAttributes = item.linkAttributes -%}
+        {%- if matcher.isCurrent(item) or matcher.isAncestor(item, options.matchingDepth) %}
+            {%- set linkAttributes = linkAttributes|merge({'class': 'active'}) -%}
+        {%- endif %}
+
+        {{ block('item') }}
+    {% endfor %}
+{% endblock %}
+
+{% block item %}
+    {% import _menu as self %}
+    {% import 'knp_menu.html.twig' as macros %}
+    {%- if item.displayed and item.uri is not empty %}
+        {%- set finalUri = '://' in item.uri ? item.uri : (item.uri) -%}
+        {%- if item.getExtra('ga') -%}
+            {%- set linkAttributes = linkAttributes|merge({'onclick': self.linkGA(menu_alias, finalUri)}) -%}
+        {%- endif %}
+
+        {{ block('linkElement') }}
+    {%- endif %}
+{% endblock %}
+
+{% block linkElement %}
+    {% import 'knp_menu.html.twig' as macros %}
+    <li>
+        <a href="{{ finalUri }}" {{ macros.attributes(linkAttributes) }}>{{ block('label') }}</a>
+    </li>
+{% endblock %}

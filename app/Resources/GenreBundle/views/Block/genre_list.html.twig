@@ -1,0 +1,27 @@
+{% if settings.list_type == constant('GenreBundle\\Block\\ListGenreBlockService::LIST_ASIDE') %}
+    <div class="side-item side-bg">
+        <div class="side-title icon-left icon-dark"><i class="fa fa-bars"></i>Жанры</div>
+        <div class="side-cont">
+            <ul class="menu-2col navi">
+                {% for genre in genres %}
+                    <li><a href="{{ genre_path(genre) }}" class="{{ app.request.get('genre') == genre.slug ? 'active' : null }}">{{ genre.name }}&nbsp;&nbsp;<span style="font-size: 12px;color: #999;">{{ genre.countBook }}</span></a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% elseif settings.list_type == constant('GenreBundle\\Block\\ListGenreBlockService::LIST_GENRES') %}
+    {% for genre in genres %}
+        <div class="sub-genre">
+            <h2><a href="{{ genre_path(genre) }}">{{ genre.name }}</a>&nbsp;&nbsp;<span style="font-size: 14px;color: #999;">{{ genre.countBook }}</span></h2>
+            {% if genre.children.getValues()|length %}
+                <ul>
+                    {% for child in genre.children.getValues() %}
+                        {% if child.isActive %}
+                            <li><a href="{{ genre_path(child) }}">{{ child.name }}</a>&nbsp;&nbsp;&nbsp;<span style="font-size: 13px;color: #999;">{{ child.countBook }}</span></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endif %}

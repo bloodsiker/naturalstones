@@ -1,0 +1,27 @@
+oneup_uploader:
+    twig: true
+    mappings:
+        default:
+            frontend: blueimp
+            use_orphanage: true
+
+#        media.multiupload:
+#            use_orphanage: false
+#            frontend: blueimp
+#            enable_progress: true
+#            enable_cancelation: false
+#            storage:
+#                directory: '%media_base_temp_dir_path%'
+#
+#        media.provider.video:
+#            use_orphanage: false
+#            frontend: blueimp
+#            enable_progress: true
+#            enable_cancelation: false
+##            allowed_mimetypes: ['video/mp4']
+#            storage:
+#                directory: '%media_base_temp_dir_path%'
+#
+#    orphanage:
+#        maxage: 86400
+#        directory: '%media_base_temp_dir_path%'

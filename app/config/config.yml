@@ -1,0 +1,112 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+    - { resource: sonata/core.yml }
+    - { resource: sonata/block.yml }
+    - { resource: sonata/admin.yml }
+    - { resource: sonata/notification.yml }
+    - { resource: sonata/user.yml }
+    - { resource: sonata/intl.yml }
+    - { resource: sonata/seo.yml }
+    - { resource: sonata/page.yml }
+    - { resource: fos/user.yml }
+    - { resource: fos/ckeditor.yml }
+    - { resource: ../../vendor/knplabs/doctrine-behaviors/config/orm-services.yml }
+    - { resource: liip/imagine.yml }
+    - { resource: knplabs/gaufrette.yml }
+    - { resource: oneup/oneup-upload.yml }
+    - { resource: vich/vich_uploader.yml }
+    - { resource: whiteoctober/pagerfanta.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: ru
+    locales: [ru, uk]
+    route_locales: ru|ua
+    replacement_locales: [{ from: uk, to: ua }]
+
+framework:
+    #esi: ~
+    translator: { fallbacks: ['%locale%'] }
+    secret: '%secret%'
+    router:
+        resource: '%kernel.project_dir%/app/config/routing.yml'
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
+    validation: { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    #serializer: { enable_annotations: true }
+    default_locale: '%locale%'
+    trusted_hosts: ~
+    session:
+        # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id: session.handler.native_file
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+    fragments: ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+
+# Twig Configuration
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes:
+        - 'AdminBundle:Form:fields.html.twig'
+        - 'SonataCoreBundle:Form:datepicker.html.twig'
+        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    variables:
+        version: ["%static_version%"]
+    use_controller: false
+    bundles: [ "AppBundle", "PageBundle", "MediaBundle" ]
+#    node: "%nodejs_binary%"
+    filters:
+        jsqueeze: ~
+        cssrewrite: ~
+#        uglifyjs2:
+#            bin: "%kernel.root_dir%/Resources/node/node_modules/.bin/uglifyjs"
+#        uglifycss:
+#            bin: "%kernel.root_dir%/Resources/node/node_modules/.bin/uglifycss"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        server_version: '%server_version%'
+        driver: pdo_mysql
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+        charset: UTF8
+        types:
+            json: Sonata\Doctrine\Types\JsonType
+
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+        mappings:
+#            ApplicationSonataPageBundle: ~ # only once the ApplicationSonataPageBundle is generated
+            SonataPageBundle: ~
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    spool: { type: memory }
+
+sensio_framework_extra:
+   router:
+        annotations: false

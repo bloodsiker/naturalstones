@@ -1,0 +1,23 @@
+{% extends admin.getTemplate('base_list_field', 'text') %}
+
+{% block field %}
+    {% if object is instanceof('\\PageBundle\\Entity\\PageRedirect') %}
+        {% if field_description.name == 'type' %}
+            {% set redirectType = object.getTypeList[object.type] %}
+            {% set transLabel = 'form.types.'~redirectType %}
+            {% set typeTrans = transLabel|trans({}, 'SonataPageBundle') %}
+            <small><b>{{ typeTrans }}</b></small>
+        {% elseif field_description.name == 'fromPath' %}
+            <a href="{{ admin.generateUrl('edit', { id : object.id }) }}" class="sonata-link-identifier">{{ object.fromPath }}</a>
+            {% if object.help is not empty %}
+                <br>
+                <small>{{ object.help }}</small>
+            {% endif %}
+        {% elseif field_description.name == 'pageHost' %}
+            {% set page = object.toPage() %}
+            {% if page is not empty %}
+                <small><b>{{ page.site.host }}</b></small>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}

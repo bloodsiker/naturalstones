@@ -1,0 +1,11 @@
+services:
+    order.admin.board:
+        class: OrderBundle\Admin\OrderBoardAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "group.order", label: "group.order_board_editor" }
+        arguments:
+          - ~
+          - OrderBundle\Entity\OrderBoard
+          - ~
+        calls:
+          - [ setTranslationDomain, [OrderBundle] ]

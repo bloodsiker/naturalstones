@@ -1,0 +1,11 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% if object is instanceof('\\PageBundle\\Entity\\SiteVariable') %}
+        {% if field_description.name == 'placement' %}
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-default">{{ object.getVariablePosition[value] }}</button>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

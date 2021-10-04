@@ -1,0 +1,5 @@
+{% if object.path is defined and object.path is not empty and admin.hasRoute('download') %}
+    <a class="btn btn-sm btn-default" href="{{ admin.generateObjectUrl('download', object) }}" target="_blank">
+        <i class="fa fa-download"></i> {{ 'action_download'|trans({}, 'MediaBundle') }}
+    </a>
+{% endif %}

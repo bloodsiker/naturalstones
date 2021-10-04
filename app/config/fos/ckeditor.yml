@@ -1,0 +1,148 @@
+fos_ck_editor:
+   input_sync: true
+   default_config: default
+   base_path: "/bundles/admin/js/ckeditor"
+   js_path:   "/bundles/admin/js/ckeditor/ckeditor.js"
+#   filebrowsers:
+#       - ExpertBrowse
+#       - GalleryBrowse
+#       - NewsBrowse
+   configs:
+        simple:
+            title: false
+            height: 80
+            toolbar: simple
+            skin: "bootstrapck,/bundles/admin/ckeditor/skins/bootstrapck/"
+            extraPlugins: 'symbol,font,wordcount'
+            templates: 'segodnya2018'
+            protectedTags: 'html|head|body'
+            extraAllowedContent: 'iframe[*]; link div span em p h1 h2 ul li section(*); *[id];'
+            allowedContent: true
+            fullPage: false
+
+        default:
+            title: false
+            height: 250
+            toolbar: default
+            skin: "bootstrapck,/bundles/admin/ckeditor/skins/bootstrapck/"
+            extraPlugins: 'symbol,font,wordcount'
+            templates: 'segodnya2018'
+            protectedTags: 'html|head|body'
+            extraAllowedContent: 'iframe[*]; link div span em p h1 h2 ul li section(*); *[id];'
+            allowedContent: true
+            fullPage: false
+            language: "%locale%"
+
+        advanced:
+            title: false
+            height: 340
+            toolbar: advanced
+            skin: "bootstrapck,/bundles/admin/ckeditor/skins/bootstrapck/"
+            extraPlugins: 'shortcode,format_buttons,pastecode,symbol,font,horizontalrule,numericinput,wordcount'
+            templates: 'segodnya2018'
+            protectedTags: 'html|head|body'
+            extraAllowedContent: 'iframe[*]; link div span em p h1 h2 ul li section(*); *[id];'
+            previewText: ''
+            baseFloatZIndex: 100001
+            allowedContent: true
+            fullPage: false
+            language: "%locale%"
+
+#            filebrowserImageBrowseRoute: admin_newmedia_media_media_list
+#            filebrowserImageBrowseRouteParameters:
+#                provider: media.provider.image
+#                CKEditor: true
+#
+#            filebrowserFlashBrowseRoute: admin_newmedia_media_media_list
+#            filebrowserFlashBrowseRouteParameters:
+#                provider: media.provider.video
+#                CKEditor: true
+#
+#            filebrowserGalleryBrowseRoute: admin_newmedia_media_gallery_list
+#            filebrowserGalleryBrowseRouteParameters:
+#                CKEditor: true
+#
+#            filebrowserExpertBrowseRoute: admin_newmedia_share_expert_list
+#            filebrowserExpertBrowseRouteParameters:
+#                CKEditor: true
+#
+#            filebrowserNewsBrowseRoute: admin_newmedia_news_news_list
+#            filebrowserNewsBrowseRouteParameters:
+#                CKEditor: true
+
+   plugins:
+        font:
+            path: '/bundles/admin/ckeditor/plugins/font/'
+            filename: 'plugin.js'
+        widget:
+            path: '/bundles/admin/ckeditor/plugins/widget/'
+            filename: 'plugin.js'
+        symbol:
+            path: '/bundles/admin/ckeditor/plugins/symbol/'
+            filename: 'plugin.js'
+        lineutils:
+            path: '/bundles/admin/ckeditor/plugins/lineutils/'
+            filename: 'plugin.js'
+        shortcode:
+            path: '/bundles/admin/ckeditor/plugins/shortcode/'
+            filename: 'plugin.js'
+        pastecode:
+            path: '/bundles/admin/ckeditor/plugins/pastecode/'
+            filename: 'plugin.js'
+        numericinput:
+            path: '/bundles/admin/ckeditor/plugins/numericinput/'
+            filename: 'plugin.js'
+        horizontalrule:
+            path: '/bundles/admin/ckeditor/plugins/horizontalrule/'
+            filename: 'plugin.js'
+        format_buttons:
+            path: '/bundles/admin/ckeditor/plugins/format_buttons/'
+            filename: 'plugin.js'
+        wordcount:
+            path: '/bundles/admin/ckeditor/plugins/wordcount/'
+            filename: 'plugin.js'
+
+   toolbars:
+       configs:
+            simple:
+                - [ "Source" ]
+                - [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "Undo", "Redo" ]
+                - [ "Find", "Replace", "SelectAll" ]
+                - [ "Link", "Unlink", "Anchor" ]
+                - [ "Bold", "Italic", "Underline", "Strike", "-", "RemoveFormat" ]
+                - [ "Maximize" ]
+
+            default:
+                - [ "Source" ]
+                - [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "Undo", "Redo" ]
+                - [ "Find", "Replace", "SelectAll" ]
+                - [ "Link", "Unlink", "Anchor" ]
+#              "Image",
+                - [ "Table", "-", "Iframe", "Flash", "ImageSC" ]
+                - [ "ShowBlocks" ]
+                - [ "Maximize" ]
+                - "/"
+                - [ "Format", "Font", "FontSize", "TextColor", "-", "BGColor" ]
+                - [ "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "-", "RemoveFormat" ]
+                - [ "NumberedList", "BulletedList", "-", "Outdent", "Indent", "-", "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock" ]
+
+            advanced:
+                - [ "Source" ]
+                - [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "Undo", "Redo" ]
+                - [ "Find", "Replace", "SelectAll" ]
+                - [ "Link", "Unlink", "Anchor" ]
+#              "Image",
+                - [ "Table", "-", "Iframe", "Flash", "ImageSC", "VideoSC", "GallerySC"]
+#                - [ "ReadSC", "ExpertSC", "QuoteSC" ]
+                - [ "h2", "HorizontalRule", "PasteCode" ]
+                - [ "Symbol" ]
+                - [ "ShowBlocks" ]
+                - [ "Maximize" ]
+                - "/"
+                - [ "Format", "Font", "FontSize", "TextColor", "-", "BGColor" ]
+                - [ "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "-", "RemoveFormat" ]
+                - [ "NumberedList", "BulletedList", "-", "Outdent", "Indent", "-", "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock" ]
+
+twig:
+   form_themes:
+       - AdminBundle:Form:ckeditor_widget.html.twig

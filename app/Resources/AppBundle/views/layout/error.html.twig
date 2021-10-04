@@ -1,0 +1,10 @@
+{% extends 'AppBundle:layout:default.html.twig' %}
+
+{% block content %}
+<div class="container page-404">
+    <div class="br"></div>
+    <h1>404</h1>
+    <p>{{ 'error.404.page_not_found'|trans([], 'AppBundle') }}</p>
+    <p><a href="{{ path('index') }}">{{ 'error.404.on_main_page'|trans([], 'AppBundle') }} &rarr;</a></p>
+</div>
+{% endblock %}

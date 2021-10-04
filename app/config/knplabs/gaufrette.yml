@@ -1,0 +1,17 @@
+knp_gaufrette:
+    stream_wrapper: ~
+    adapters:
+        file:
+            local:
+                directory: "%media_base_path%"
+                create: true
+        image:
+            local:
+                directory: "%media_base_path%"
+                create: true
+
+    filesystems:
+        file:
+            adapter: file
+        image:
+            adapter: image

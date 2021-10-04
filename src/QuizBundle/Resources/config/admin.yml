@@ -1,0 +1,44 @@
+services:
+    sonata.admin.quiz:
+        class: "QuizBundle\\Admin\\QuizAdmin"
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.quiz", label: "group.quiz_editor" }
+        arguments:
+            - ~
+            - "QuizBundle\\Entity\\Quiz"
+            - ~
+        calls:
+            - [ setTranslationDomain, [QuizBundle] ]
+
+    sonata.admin.quiz_answer:
+        class: "QuizBundle\\Admin\\QuizAnswerAdmin"
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.quiz", label: "group.quiz_answer_editor", show_in_dashboard: false }
+        arguments:
+            - ~
+            - "QuizBundle\\Entity\\QuizAnswer"
+            - QuizBundle:QuizAdmin
+        calls:
+            - [ setTranslationDomain, [QuizBundle] ]
+
+    sonata.admin.quiz_has_answer:
+        class: "QuizBundle\\Admin\\QuizHasAnswerAdmin"
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'group.quiz', label: 'group.quiz_has_answer_editor', show_in_dashboard: false }
+        arguments:
+            - ~
+            - "QuizBundle\\Entity\\QuizHasAnswer"
+            - ~
+        calls:
+            - [ setTranslationDomain, [QuizBundle] ]
+
+    sonata.admin.quiz_result:
+        class: "QuizBundle\\Admin\\QuizResultAdmin"
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.quiz", label: "group.quiz_result_editor", show_in_dashboard: false }
+        arguments:
+            - ~
+            - "QuizBundle\\Entity\\QuizResult"
+            - ~
+        calls:
+            - [ setTranslationDomain, [QuizBundle] ]

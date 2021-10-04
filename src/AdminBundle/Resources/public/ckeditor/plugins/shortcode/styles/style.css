@@ -1,0 +1,11 @@
+code.quote, code.gallery, code.quiz, code.holder {
+    display: block;
+    color: #55f;
+    background-color: #DCE9FC;
+    border: 1px solid #EAF2FD;
+}
+
+span.quote__text, span.quote__img, span.gallery__id, span.quiz__id, span.holder__id {
+    font-weight: bold;
+    color: #000;
+}

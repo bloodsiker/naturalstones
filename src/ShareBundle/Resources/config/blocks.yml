@@ -1,0 +1,18 @@
+services:
+    share.block.tag_list:
+        class: "ShareBundle\\Block\\ListTagsBlockService"
+        arguments:
+          - share.block.tag_list
+          - '@templating'
+          - '@?doctrine'
+        tags:
+          - { name: sonata.block }
+
+    share.block.author_list:
+        class: "ShareBundle\\Block\\ListAuthorsBlockService"
+        arguments:
+          - share.block.author_list
+          - '@templating'
+          - '@?doctrine'
+        tags:
+          - { name: sonata.block }

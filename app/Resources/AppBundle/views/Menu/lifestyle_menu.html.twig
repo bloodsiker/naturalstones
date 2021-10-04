@@ -1,0 +1,25 @@
+{% extends 'AppBundle:Menu:knp_menu.html.twig' %}
+
+{% block children %}
+    {% set currentItem = item %}
+
+    <nav class="header-menu header-menu-main">
+        <div class="container">
+            <ul class="lined-top">
+                {% if options.matchingDepth is not none and options.matchingDepth > 0 %}
+                    {% set options = options|merge({'matchingDepth': currentOptions.matchingDepth - 1}) %}
+                {% endif %}
+
+                {% for item in currentItem.children %}
+                    {% set linkAttributes = item.linkAttributes %}
+
+                    {% if matcher.isCurrent(item) or matcher.isAncestor(item, options.matchingDepth) %}
+                        {% set linkAttributes = linkAttributes|merge({'class': 'active'}) %}
+                    {% endif %}
+
+                    {{ block('item') }}
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+{% endblock %}

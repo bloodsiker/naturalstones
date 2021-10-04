@@ -1,0 +1,13 @@
+<div class="col-cont">
+
+    {{
+    sonata_block_render(
+        { 'type': 'comment.block.list_comments' },
+        {
+            'items_count' : 30,
+            'page': app.request.get('page') ? app.request.get('page') : 1,
+        }
+    )
+    }}
+
+</div>

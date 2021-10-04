@@ -1,0 +1,36 @@
+services:
+    admin.form.type.colorpicker:
+        class: "AdminBundle\\Form\\Type\\ColorPickerType"
+        tags:
+            - { name: form.type, alias: colorpicker }
+
+    admin.form.type.upload_vich_image:
+        class: "AdminBundle\\Form\\Type\\UploadVichImageType"
+        arguments:
+            - '@vich_uploader.storage'
+            - '@vich_uploader.upload_handler'
+            - '@vich_uploader.property_mapping_factory'
+            - '@property_accessor'
+            - '@vich_uploader.metadata_reader'
+        tags:
+            - { name: form.type, alias: upload_vich_image }
+
+    admin.form.type.download_image:
+        class: "AdminBundle\\Form\\Type\\DownloadImageType"
+        tags:
+            - { name: form.type, alias: download_image }
+
+    admin.form.type.textarea_counter:
+        class: "AdminBundle\\Form\\Type\\TextareaCounterType"
+        tags:
+            - { name: form.type, alias: textarea_counter }
+
+    admin.form.type.text_counter:
+        class: "AdminBundle\\Form\\Type\\TextCounterType"
+        tags:
+            - { name: form.type, alias: text_counter }
+
+    admin.form.type.codemirror:
+        class: "AdminBundle\\Form\\Type\\CodeMirrorType"
+        tags:
+        - { name: form.type, alias: codemirror }

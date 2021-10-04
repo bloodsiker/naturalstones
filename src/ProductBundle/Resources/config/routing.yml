@@ -1,0 +1,51 @@
+# books ========================================================
+book_view:
+    path: /book/{id}-{slug}
+    defaults:
+        _controller: BookBundle:Book:view
+    requirements:
+        slug: "([a-zA-Z\\-0-9\\_]+)?"
+        id: "\\d+"
+
+book_list:
+    path: /newbook
+    defaults:
+        _controller: BookBundle:Book:list
+
+inc_book_download:
+    path: /inc_download/book
+    defaults:
+        _controller: BookBundle:Book:incDownload
+
+year_books:
+    path: /year/{year}
+    defaults:
+        _controller: BookBundle:Book:yearList
+    requirements:
+        year: "\\d+"
+
+book_download:
+    path: /download/book_file/{file_id}
+    defaults:
+        _controller: BookBundle:Book:download
+    requirements:
+        file_id: "\\d+"
+
+collection_category:
+    path: /collection/g_{genre}
+    defaults:
+        _controller: BookBundle:Book:collectionList
+    requirements:
+        genre: "([a-zA-Z\\-0-9\\_]+)?"
+
+collection_view:
+    path: /collection/{slug}
+    defaults:
+        _controller: BookBundle:Book:collection
+    requirements:
+        slug: "([a-zA-Z\\-0-9\\_]+)?"
+
+collection_list:
+    path: /collection
+    defaults:
+        _controller: BookBundle:Book:collectionList

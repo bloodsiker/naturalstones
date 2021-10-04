@@ -1,0 +1,39 @@
+# Main page ============================================
+index:
+  path: /
+  defaults:
+    _controller: AppBundle:Default:index
+
+top_100:
+  path: /top-100
+  defaults:
+    _controller: AppBundle:Default:topBooks
+
+search:
+  path: /search
+  defaults:
+    _controller: AppBundle:Default:search
+
+sitemap:
+  path: /sitemap.{_format}
+  defaults:
+    _controller: AppBundle:Default:sitemap
+  requirements:
+    _format: "xml"
+
+opensearch:
+  path: /opensearch.{_format}
+  defaults:
+    _format: "xml"
+    _controller: AppBundle:Default:openSearch
+  requirements:
+    _format: "xml"
+
+block__ajax:
+  path: /_block/ajax/{blockType}/{blockId}
+  defaults:
+    _controller: AppBundle:Block:ajax
+  methods: [GET, POST]
+  requirements:
+    blockType: .+
+    blockId: .+

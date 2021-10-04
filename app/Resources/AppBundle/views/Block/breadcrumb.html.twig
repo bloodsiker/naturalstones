@@ -1,0 +1,33 @@
+{% import _self as macro %}
+{% macro macro(text, href, key) %}
+    {% spaceless %}
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="{{ href }}" itemtype="http://schema.org/Thing" itemprop="item"><span itemprop="name">{{ text }}</span></a>
+            <meta itemprop="position" content="{{ key }}" />
+        </li>
+    {% endspaceless %}
+{% endmacro %}
+{% macro macro_text(text) %}
+    {% spaceless %}
+        <li>
+            <span>{{ text }}</span>
+        </li>
+    {% endspaceless %}
+{% endmacro %}
+
+{% if breadcrumbs|length %}
+    <section class="breadcrumb">
+        <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+            {% set i = 1 %}
+            {{ macro.macro('Главная', path('index'), i) }}
+            {% for link in breadcrumbs %}
+                {% set i = i + 1 %}
+                {% if link['href'] is defined %}
+                    {{ macro.macro(link.title, link.href, i) }}
+                {% else %}
+                    {{ macro.macro_text(link.title) }}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </section>
+{% endif %}

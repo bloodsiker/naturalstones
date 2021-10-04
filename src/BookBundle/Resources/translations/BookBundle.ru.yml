@@ -1,0 +1,112 @@
+Action: Действия
+Book List: Книги
+Book Create: Создать книгу
+Book Info Download List: Список скачиваний
+Book Info Download Create: Добавить
+Book Info View List: Список просмотренных книг
+Book Info View Create: Добавить
+Book Collection List: Список колекций
+Book Collection Create: ДОбавить колекцию
+
+btn_search_related: Показать релевантные книги по тегам
+btn_search_tags: Показать релевантные теги по тексту
+not_found: Ничего не найдено...
+no_tags_selected: Нет выбранных тегов в книге...
+
+btn_link_add: Добавить
+btn_save: Сохранить
+btn_save_and_exit: Сохранить и выйти
+btn_save_and_create_new: Сохранить и создать новую
+
+text_or: или
+
+form_group:
+    basic: Основные
+    additional: Дополнительные
+
+group:
+    book: Книги
+    book_editor: Книги
+    book_file_editor: Файлы книг
+    book_has_file_editor: Файлы для книги
+    book_info_download: Скачивание книг
+    book_info_view: Просмотр книг
+    book_collection_editor: Колекции
+
+book:
+    fields:
+        id: ID
+        name: Название книги
+        description: Краткое описание
+        slug: Сегмент URL (slug)
+        files: Файлы книги
+        is_active: Активно
+        is_allow_download: Скачивания
+        poster: Изображение книги
+        authors: Автор(ы)
+        series_publishing: Издательская серия
+        series: Авторская серия
+        isbn: ISBN
+        series_number: 'номер # в серии'
+        pages: Страниц
+        year: Год издания
+        restrict_age: Ограничение в возрасте
+        genres: Жанр(ы)
+        tags: Тег(и)
+        download: Скачиваний
+        rating: Рейтинг
+        views: Просмотры
+        book_related: Похожие книги
+        updated_at: Изменена
+        created_at: Создана
+    buttons:
+        link_add: Добавить новый
+
+book_has_file:
+    fields:
+        book: Книга
+        file: Файл
+        type: Тип
+        order_num: ''
+
+book_has_related:
+    fields:
+        book: Книга
+        book_related: Похожая книги
+        order_num: Позиция
+
+book_download:
+    fields:
+        id: ID
+        book: Книга
+        download_at: Дата
+        ip: IP
+
+book_view:
+    fields:
+        id: ID
+        book: Книга
+        view_at: Дата
+        views: Просмотров
+        downloads: Скачиваний
+
+book_collection:
+    fields:
+        id: ID
+        poster: Изображение
+        title: Заголовок
+        description: Текст
+        slug: Сегмент URL (slug)
+        books: Книги
+        genres: Жанры
+        views: Просмотры
+        is_active: Активно
+        updated_at: Изменена
+        created_at: Создана
+
+book_collection_has_book:
+    fields:
+        id: ID
+        book: Книга
+        order_num: ''
+        article: Статья

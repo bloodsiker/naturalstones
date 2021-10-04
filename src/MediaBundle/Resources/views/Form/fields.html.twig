@@ -1,0 +1,446 @@
+{% block media_code_widget %}
+    {% import 'MediaBundle:Admin:_media_macro.html.twig' as _media %}
+
+    {% set object = sonata_admin.admin.subject %}
+    {% if object.id %}
+        <div style="margin-bottom: 15px;">
+            {{ _media.iframe(object.code, object.id) }}
+        </div>
+    {% endif %}
+
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block media_upload_file_widget %}
+    {{ block('media_upload_widget') }}
+
+    {% set object = sonata_admin.admin.subject %}
+    <div>
+        {% if object.path %}
+            {{ block('media_download_widget') }}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block media_upload_image_widget %}
+    {% import 'MediaBundle:Admin:_media_macro.html.twig' as _media %}
+
+    {% set object = sonata_admin.admin.subject %}
+    <div>
+        {{ _media.image(object.path, null, id) }}
+        {% if object.path %}
+            {{ block('media_download_widget') }}
+        {% endif %}
+    </div>
+
+    {{ block('media_upload_widget') }}
+{% endblock %}
+
+{% block media_upload_audio_widget %}
+    {% import 'MediaBundle:Admin:_media_macro.html.twig' as _media %}
+
+    {% set object = sonata_admin.admin.subject %}
+    {% if object.id %}
+        <div>
+            {% if not object.type %}
+                {{ _media.audio(object.path) }}
+                {% if object.path %}
+                    {{ block('media_download_widget') }}
+                {% endif %}
+            {% else %}
+                {{ _media.iframe(object.code, object.id) }}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {{ block('media_upload_widget') }}
+{% endblock %}
+
+{% block media_upload_video_widget %}
+    {% import 'MediaBundle:Admin:_media_macro.html.twig' as _media %}
+
+    {% set object = sonata_admin.admin.subject %}
+    {% if object.id %}
+        <div>
+            {% if not object.type %}
+                {{ _media.video(object.path, object.id) }}
+                {% if object.path %}
+                    {{ block('media_download_widget') }}
+                {% endif %}
+            {% else %}
+                {{ _media.iframe(object.code, object.id) }}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {{ block('media_upload_widget') }}
+{% endblock %}
+
+{% block media_download_widget %}
+    <a href="{{ object.path }}" target="_blank" download title="{{ 'upload.download'|trans({}, 'MediaBundle') }}">
+        <span style="font-weight: bolder; font-size: 12px; color: #3A4A51;">
+            {{ 'upload.path'|trans({}, 'MediaBundle') }}: {{ object.path }}&nbsp;
+            [<i class="fa fa-download" aria-hidden="true"></i>]
+        </span>
+    </a>
+    <hr style="margin: 0px;">
+{% endblock %}
+
+{% block media_upload_widget %}
+    {% set maxfilesize = oneup_uploader_maxsize(storage)|file_size_humanize %}
+    {% set translationDomain = translation_domain|default(sonata_admin.admin.translationDomain) %}
+    {% set btnText = 'upload.choose_file'|trans({}, translationDomain) %}
+
+    {{ form_label(form) }}
+
+    <div class="sonata-ba-field sonata-ba-field-standard-natural">
+        <div class="btn btn-primary fileinput-button" id="dropzone_{{ id }}">
+            <i class="glyphicon glyphicon-file" id="icon_{{ id }}"></i>
+            <span id="btn_text_{{ id }}">{{ btnText }}</span>
+            <input type="file"
+                   name="{{ id }}_file"
+                   id="{{ id }}_file"
+                   class="form-control"
+                   {% if required %}required="required"{% endif %}
+                   accept="{{ mimeTypes }}"
+                   data-url="{{ oneup_uploader_endpoint(storage) }}"
+            >
+        </div>
+    </div>
+    <div id="fileupload-progress_{{ id }}" class="progress">
+        <div class="progress-bar progress-bar-success"></div>
+    </div>
+
+    {{ form_widget(form) }}
+
+    <script type="text/javascript">
+        jQuery(document).ready(function()
+        {
+            var uploadInput = jQuery('#{{ id }}_file'),
+                uploadFileName = '',
+                uploadFormArea = uploadInput.closest('form'),
+                uploadDropZone = jQuery('#dropzone_{{ id }}'),
+                uploadButtonText = jQuery('#btn_text_{{ id }}'),
+                uploadButtonIcon = jQuery('#icon_{{ id }}'),
+                uploadProgressBlock = jQuery('#fileupload-progress_{{ id }}'),
+                uploadProgressBar = jQuery('#fileupload-progress_{{ id }} .progress-bar');
+
+                jQuery(uploadInput).change(function() {
+                    if (this.files && this.files[0]) {
+                        uploadFileName = this.files[0].name;
+                        {% if sonata_admin.admin.subject is instanceof("\\MediaBundle\\Entity\\MediaImage") %}
+                            if (this.files[0].type.match(/image.*/)) {
+                                var reader = new FileReader();
+                                reader.onload = function (e) {
+                                    var preview = jQuery('#upload_img_preview_{{ id }}');
+                                    preview.attr('src', e.target.result);
+                                };
+                                reader.readAsDataURL(this.files[0]);
+                            }
+                        {% endif %}
+                    }
+                });
+
+            uploadInput.fileupload({
+                dataType: 'json',
+                dropZone: uploadDropZone,
+                formData: {
+                    storage: '{{ storage }}'
+                },
+                {% if chunkSize %}
+                maxChunkSize: {{ chunkSize }},
+                {% endif %}
+                start: function (e) {
+                    clearError();
+
+                    uploadProgressBar.css('width','0%');
+                    uploadProgressBar.text('0 %');
+                    uploadProgressBlock.slideDown();
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+
+                    uploadProgressBar.css('min-width', '2em');
+                    uploadProgressBar.css('width', progress + '%');
+                    uploadProgressBar.text(progress + ' %');
+
+                    if (progress === 100) {
+                        uploadProgressBar.text('{{ 'upload.processing'|trans({}, translationDomain) }}');
+                    }
+                },
+                done: function (e, data) {
+                    var result = data.result;
+                    if (result.error !== undefined) {
+                        renderError(result.error);
+                    } else if (result.success !== undefined) {
+                        uploadFormArea.find('input[id*="_title"]').val(uploadFileName);
+                        jQuery.each(result.files, function (field, value) {
+                            uploadFormArea.find('input[id*="_' + field + '"]:not(:file)').val(value);
+                        });
+
+                        jQuery(this).val('');
+                        jQuery(this).removeAttr('required');
+                        uploadButtonText.text(result.files.name);
+                        uploadButtonIcon.removeClass('glyphicon-file glyphicon-remove').addClass('glyphicon-ok');
+                        uploadDropZone.removeClass('btn-primary btn-danger').addClass('btn-success');
+                    }
+
+                    uploadProgressBlock.hide();
+                },
+                fail: function(e, data) {
+                    renderError(data.errorThrown);
+                }
+            });
+
+            function renderError(message)
+            {
+                clearError();
+
+                uploadDropZone.removeClass('btn-primary btn-success').addClass('btn-danger');
+                uploadButtonIcon.removeClass('glyphicon-ok glyphicon-file').addClass('glyphicon-remove');
+                uploadInput.attr('required', 'required');
+
+                var transMessage;
+                switch(message) {
+                    case 'error.whitelist':
+                        transMessage = '{{ 'upload.error.whitelist'|trans({}, translationDomain) }}';
+                        break;
+                    case 'error.blacklist':
+                        transMessage = '{{ 'upload.error.blacklist'|trans({}, translationDomain) }}';
+                        break;
+                    case 'error.maxsize':
+                        transMessage = '{{ 'upload.error.maxsize'|trans({'%maxsize%': maxfilesize}, translationDomain) }}';
+                        break;
+                    default:
+                        transMessage = message;
+                        break;
+                }
+
+                $('<div id="fileupload_error_{{ id }}" >' +
+                    '<i class="fa fa-exclamation-circle" style="color: #dd4b39; margin-top: 10px;">' +
+                    '<p class="fa" style="font-family: sans-serif;">' +
+                    '&nbsp' + transMessage + '</p></i>' +
+                    '</div>').insertAfter(uploadDropZone);
+            }
+
+            function clearError()
+            {
+                uploadProgressBlock.hide();
+
+                uploadDropZone.removeClass('btn-success btn-danger').addClass('btn-primary');
+                uploadButtonIcon.removeClass('glyphicon-ok glyphicon-remove').addClass('glyphicon-file');
+                uploadButtonText.text('{{ btnText }}');
+
+                jQuery('#fileupload_error_{{ id }}').remove();
+
+                {% if required %}
+                    uploadInput.removeAttr('required');
+                {% endif %}
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block media_crop_image_widget %}
+    {% spaceless %}
+        <div>
+            {% set imgId = form.vars.id %}
+            {% set imgWidth = form.x.parent.vars.crop_w %}
+            {% set imgHeight = form.x.parent.vars.crop_h %}
+            {% set media = sonata_admin.admin.subject %}
+            {% set hash = '?'~('now'|date('U')) %}
+
+            <div>
+                <img src="{{ media.path|imagine_filter(filter) }}" style="max-width: 100%;"
+                        {{ imgWidth ? 'width="'~imgWidth~'"' : '' }} {{ imgHeight ? 'height="'~imgHeight~'"' : '' }}
+                     class="{{ imgId }} crop_img loading"
+                     style="{{ imgWidth ? 'width:'~imgWidth~'px;'}} {{ imgHeight ? 'height:'~imgHeight~'px;'}}">
+            </div>
+
+            {% autoescape %}
+                <script>
+                    var cropPreview = $('.' + '{{ imgId }}'),
+                        h = {{ imgWidth }},
+                        w = {{ imgHeight }};
+
+                    cropPreview.attr('src', cropPreview.attr('src')+'{{ hash }}');
+                    if(!h && !w) {
+                        w = '800px';
+                        h = 'auto';
+
+                        cropPreview.width(w).height(h);
+                        cropPreview.parent().css({
+                            'width': w,
+                            'height': h,
+                            'overflow': 'hidden'
+                        });
+                    }
+                </script>
+            {% endautoescape %}
+
+            {{ form_row(form.x) }}
+            {{ form_row(form.y) }}
+            {{ form_row(form.h) }}
+            {{ form_row(form.w) }}
+            {{ form_row(form.image, {'attr': {'value': image~hash}}) }}
+            {{ form_row(form.crop_w) }}
+            {{ form_row(form.crop_h) }}
+            {{ form_row(form.crop_q) }}
+            {{ form_row(form.reset) }}
+
+            {% if imgWidth == 0 and imgHeight == 0 and form.reset_all is defined %}
+                {{ form_row(form.reset_all) }}
+            {% else %}
+                <hr/>
+                <div class="well well-sm form-actions" style="min-height: 52px;">
+                    <div class="" style="margin-top: 5px; display: inline-block;">
+                        {{ form_row(form.upload, {'attr': {'size': 5}})}}
+                    </div>
+                    <span style="margin-left: 30px; display: inline-block">
+                    {{ 'media.crop.or'|trans({}, translation_domain|default(sonata_admin.admin.translationDomain)) }} &nbsp;&nbsp;
+                    </span>
+                    {% if imgWidth > 0 and imgHeight > 0 %}
+                        {{ form_widget(form.cropbtn, {'attr': {'class': 'btn btn-warning'}})}}
+                    {% endif %}
+
+                </div>
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block media_filesize_widget %}
+    <div class="sonata-ba-field sonata-ba-field-standard-natural">
+        <input name="media_size_{{ full_name }}" value="{{ value|media_humanize_filesize }}"
+               readonly="readonly" disabled="disabled" class="form-control">
+        <input type="hidden" id="{{ id }}" name="{{ full_name }}" value="{{ value }}">
+    </div>
+{% endblock %}
+
+{% block media_bitrate_widget %}
+    <div class="sonata-ba-field sonata-ba-field-standard-natural">
+        <input name="media_bitrate_{{ full_name }}" value="{{ value|media_humanize_bitrate }}"
+               readonly="readonly" disabled="disabled" class="form-control">
+        <input type="hidden" id="{{ id }}" name="{{ full_name }}" value="{{ value }}">
+    </div>
+{% endblock %}
+
+{% block media_duration_widget %}
+    <div class="sonata-ba-field sonata-ba-field-standard-natural">
+        <input name="media_duration_{{ full_name }}" value="{{ value|media_humanize_duration }}"
+               readonly="readonly" disabled="disabled" class="form-control">
+        <input type="hidden" id="{{ id }}" name="{{ full_name }}" value="{{ value }}">
+    </div>
+{% endblock %}
+
+{% block button_widget %}
+    {% set type = type|default('submit') %}
+
+    {% if label is empty %}
+        {%- if label_format is not empty %}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {% else %}
+            {% set label = name|humanize %}
+        {% endif %}
+    {% endif %}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
+        <i class="fa fa-crop"></i>
+        {{ label|trans({}, translation_domain) }}
+    </button>
+{% endblock button_widget %}
+
+{% block sonata_admin_media_gallery_galleryHasImage_sonata_type_collection_widget %}
+    {#{% include '@SonataAdmin/CRUD//Association/edit_one_to_many.html.twig' %}#}
+
+    {% if not sonata_admin.field_description.hasassociationadmin %}
+        {% for element in value %}
+            {{ element|render_relation_element(sonata_admin.field_description) }}
+        {% endfor %}
+    {% else %}
+
+        <div id="field_container_{{ id }}" class="field-container">
+            <span id="field_widget_{{ id }}" >
+                {% if sonata_admin.edit == 'inline' %}
+                    {% if sonata_admin.inline == 'table' %}
+                        {% if form.children|length > 0 %}
+                            {% include '@SonataAdmin/CRUD/Association/edit_one_to_many_inline_table.html.twig' %}
+                        {% endif %}
+                    {% elseif form.children|length > 0 %}
+                        {% set associationAdmin = sonata_admin.field_description.associationadmin %}
+                        {% include '@SonataAdmin/CRUD/Association/edit_one_to_many_inline_tabs.html.twig' %}
+
+                    {% endif %}
+                {% else %}
+                    {{ form_widget(form) }}
+                {% endif %}
+
+            </span>
+
+            {% set display_create_button = sonata_admin.field_description.associationadmin.hasRoute('create')
+                and sonata_admin.field_description.associationadmin.hasAccess('create')
+                and btn_add and (
+                sonata_admin.field_description.options.limit is not defined or
+                form.children|length < sonata_admin.field_description.options.limit
+                )
+            %}
+
+            {% if sonata_admin.edit == 'inline' %}
+                {% if display_create_button %}
+                    <span id="field_actions_{{ id }}">
+                        <a href="{{ sonata_admin.field_description.associationadmin.generateUrl(
+                                'create',
+                                sonata_admin.field_description.getOption('link_parameters', {})
+                            ) }}"
+                            id="field_actions_create_{{ id }}"
+                            onclick="return start_field_retrieve_{{ id }}(this);"
+                            class="btn btn-success btn-sm sonata-ba-action"
+                            title="{{ btn_add|trans({}, btn_catalogue) }}"
+                        >
+                            <i class="fa fa-plus-circle"></i>
+                            {{ btn_add|trans({}, btn_catalogue) }}
+                        </a>
+
+                        {% if attr.upload_storage %}
+                            {% include 'MediaBundle:CRUD/Association:edit_multiupload_widget.html.twig' %}
+                        {% endif %}
+                    </span>
+                {% endif %}
+
+                {#add code for the sortable options#}
+                {% if sonata_admin.field_description.options.sortable is defined %}
+                    {% if sonata_admin.inline == 'table' %}
+                        {% include '@SonataAdmin/CRUD/Association/edit_one_to_many_sortable_script_table.html.twig' %}
+                    {% else %}
+                        {% include '@SonataAdmin/CRUD/Association/edit_one_to_many_sortable_script_tabs.html.twig' %}
+                    {% endif %}
+                {% endif %}
+
+                {#include association code#}
+                {% include '@SonataAdmin/CRUD/Association/edit_one_script.html.twig' %}
+
+            {% else %}
+                <span id="field_actions_{{ id }}" >
+                    {% if display_create_button %}
+                        <a href="{{ sonata_admin.field_description.associationadmin.generateUrl(
+                                'create',
+                                sonata_admin.field_description.getOption('link_parameters', {})
+                            ) }}"
+                            onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                            class="btn btn-success btn-sm sonata-ba-action"
+                            title="{{ btn_add|trans({}, btn_catalogue) }}"
+                        >
+                            <i class="fa fa-plus-circle"></i>
+                            {{ btn_add|trans({}, btn_catalogue) }}
+                        </a>
+                    {% endif %}
+                </span>
+
+                {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
+                {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

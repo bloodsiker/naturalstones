@@ -16,18 +16,22 @@
 {% endmacro %}
 
 {% if breadcrumbs|length %}
-    <section class="breadcrumb">
-        <ul itemscope itemtype="http://schema.org/BreadcrumbList">
-            {% set i = 1 %}
-            {{ macro.macro('Главная', path('index'), i) }}
-            {% for link in breadcrumbs %}
-                {% set i = i + 1 %}
-                {% if link['href'] is defined %}
-                    {{ macro.macro(link.title, link.href, i) }}
-                {% else %}
-                    {{ macro.macro_text(link.title) }}
-                {% endif %}
-            {% endfor %}
-        </ul>
-    </section>
+    <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList">
+        {% set i = 1 %}
+        {{ macro.macro('Главная', path('index'), i) }}
+        {% for link in breadcrumbs %}
+            {% set i = i + 1 %}
+            {% if link['href'] is defined %}
+                {{ macro.macro(link.title, link.href, i) }}
+            {% else %}
+                {{ macro.macro_text(link.title) }}
+            {% endif %}
+        {% endfor %}
+    </ul>
 {% endif %}
+
+
+{#<ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList">#}
+{#    <li><a href="">Главная</a></li>#}
+{#    <li><span>Классические букеты</span></li>#}
+{#</ul>#}

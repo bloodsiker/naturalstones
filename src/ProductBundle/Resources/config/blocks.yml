@@ -1,8 +1,8 @@
 services:
-    book.block.list:
-        class: BookBundle\Block\ListBooksBlockService
+    product.block.list:
+        class: ProductBundle\Block\ListProductBlockService
         arguments:
-          - book.block.list
+          - product.block.list
           - '@templating'
           - '@?doctrine'
         tags:

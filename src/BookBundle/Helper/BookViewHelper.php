@@ -92,8 +92,6 @@ class BookViewHelper
         $repository = $this->entityManager->getRepository(BookInfoView::class);
 
         $now = new \DateTime('now');
-        $viewBook = $repository->findOneBy(['book' => $book, 'viewAt' => $now]);
-
-        return $viewBook;
+        return $repository->findOneBy(['book' => $book, 'viewAt' => $now]);
     }
 }

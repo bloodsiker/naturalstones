@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Category
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="ProductBundle\Entity\CategoryRepository")
  * @ORM\Table(name="product_category")
  * @ORM\HasLifecycleCallbacks
  */

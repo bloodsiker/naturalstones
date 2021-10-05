@@ -1,68 +1,400 @@
 {% extends 'AppBundle:layout:default.html.twig' %}
 
-{% block content_main %}
-
-    <div class="cols">
-        {{ block('content_side') }}
-        {{ block('content_right') }}
-    </div>
-
-{% endblock %}
-
- {% block breadchumbs %}{% endblock %}
-
-{% block content_side %}
-    {{ parent() }}
-{% endblock %}
-
-{% block content_right %}
-    <div class="col-cont">
-        <div class="section">
-            <div class="section-title clearfix">
-                <h2>Новые книги</h2>
-            </div>
-
-            <div class="movies clearfix grid grid-list">
-
-                {{
-                sonata_block_render(
-                    { 'type': 'book.block.list' },
-                    {
-                        'items_count' : 10,
-                        'page': app.request.get('page') ? app.request.get('page') : 1,
-                    }
-                )
-                }}
-            </div>
-        </div>
-
+{% block header %}
+    <header>
         {{
         sonata_block_render(
-            { 'type': 'page.block.site_variable' },
+            { 'type': 'app.block.service.header' },
             {
-                'placement': 'homepage-bottom'
+                'class' : 'index-header',
             }
         )
         }}
+    </header>
+{% endblock %}
 
-        {#<section class="site-desc">#}
-            {##}
-            {#<h1>Скачать книги бесплатно</h1>#}
-            {#<p>#}
-                {#Довольно часто в сети можно встретить такой поисковый запрос: <b>скачать книги бесплатно, или же#}
-                    {#читать книги бесплатно</b>. И это не может не радовать – все же есть еще люди, которые любят#}
-                {#читать, а некоторые и вовсе стараются максимально повысить свой уровень образования при помощи#}
-                {#печатных изданий. Но далеко не на каждом портале можно скачать книги бесплатно и быстро.#}
-                {#На других сайтах чтение в режиме онлайн не всегда доступно для пользователей – то навязчивая#}
-                {#реклама мешает в полной мере насладиться книгой, то еще что-то. В общем, проблем много, а#}
-                {#порталов, работающих действительно честно – мало.#}
-                {#На нашем сайте Вы можете не только скачивать книги в fb2, epub, pdf и txt форматах без#}
-                {#регистрации, но и быть уверенным в качестве этих книг. Каждая книга перед добавлением на сайт#}
-                {#проверяется на качество файла. Так же у нас не нужно вводить ни номер телефона, ни капчу, ни#}
-                {#другие персональные данные.#}
-            {#</p>#}
+{% block main_screen %}
+    <section class="main-video-section">
+        <div class="main-video-bg">
+            <img class="main-video-img" src="{{ asset('bundles/app/images/poster/1.jpg') }}" alt="" />
+            <video autoplay muted loop poster="{{ asset('bundles/app/images/poster/1.jpg') }}">
+                <!--
+                <source src="images/video/video.mp4"></source>
+                <source src="images/video/video.webm" type="video/webm"></source>
+                <source src="images/video/video.ogv" type="video/ogg">
+                 -->
+            </video>
+        </div>
+        <div class="main-video-content">
+            <div class="inner">
+                <div class="desc-logo"><img src="{{ asset('bundles/app/images/video-logo.svg') }}" alt=""></div>
+                <div class="desc">Здесь живет твой оберег</div>
+            </div>
+        </div>
 
-        {#</section>#}
+        <a href="" class="video-instagram"><img src="{{ asset('bundles/app/images/instagram.svg') }}" alt=""></a>
+
+        <div class="header-cart video-header-cart">
+            <a href="" class="header-cart-link">
+                <img src="{{ asset('bundles/app/images/cart.svg') }}" alt="">
+                <span class="count">4</span>
+            </a>
+            <div class="header-cart-info">
+                <div class="top">В корзине 4 товара</div>
+                <div class="middle">
+                    <div class="header-cart-item">
+                        <a href="" class="image"><img src="{{ asset('bundles/app/images/cart-item-1.jpg') }}" alt=""></a>
+                        <div class="inner">
+                            <a href="" class="name">Блю Мондиаль 101 роза</a>
+                            <div class="price">60 USD</div>
+                        </div>
+                        <a href="" class="remove"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></a>
+                    </div>
+                    <div class="header-cart-item">
+                        <a href="" class="image"><img src="{{ asset('bundles/app/images/cart-item-2.jpg') }}" alt=""></a>
+                        <div class="inner">
+                            <a href="" class="name">Белла 31 роза</a>
+                            <div class="price">123 USD</div>
+                        </div>
+                        <a href="" class="remove"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></a>
+                    </div>
+                    <div class="header-cart-item">
+                        <a href="" class="image"><img src="{{ asset('bundles/app/images/cart-item-3.jpg') }}" alt=""></a>
+                        <div class="inner">
+                            <a href="" class="name">Алегрия 31 роза</a>
+                            <div class="price">77 USD</div>
+                        </div>
+                        <a href="" class="remove"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></a>
+                    </div>
+                    <div class="header-cart-item">
+                        <a href="" class="image"><img src="{{ asset('bundles/app/images/cart-item-4.jpg') }}" alt=""></a>
+                        <div class="inner">
+                            <a href="" class="name">Букет "Для Тебя" 101 роза</a>
+                            <div class="price">140 USD</div>
+                        </div>
+                        <a href="" class="remove"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></a>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="total">
+                        <p>Итого:</p>
+                        <div class="total-price">1257 USD</div>
+                    </div>
+                    <a href="" class="button">Оформить заказ</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="video-menu-toggle">
+            <div class="buter">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            Меню
+        </div>
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.menu' },
+                {
+                    'type': 'video'
+                }
+            )
+        }}
+
+        <div class="video-slide-down">
+            <img src="images/slide-down.svg" alt="">
+            Все украшения
+        </div>
+
+        <div class="video-options">
+
+        </div>
+
+    </section>
+{% endblock %}
+
+{% block content_main %}
+
+    <!--main-content-->
+    <div class="main-content">
+
+        <!-- catalog-section -->
+        <section class="simple-section">
+            <div class="container">
+
+                <div class="filter-outer">
+                    <h1>Все букеты</h1>
+                    <form action="#" method="post" class="filter-form">
+                        <div class="filter-content">
+                            <div class="filter-content-inner">
+                                <div class="title">Фильтры</div>
+
+                                <div class="filter-block">
+                                    <div class="filter-toggle"><span>Цвет</span><i></i></div>
+                                    <div class="filter-podmenu">
+                                        <ul class="filter-podmenu-choose">
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="color-check">
+                                                    <i></i>
+                                                    <span>
+															<small class="color" style="background: #fff; box-shadow: 1px 0px 6px rgba(0, 0, 0, 0.08);"></small>
+															Белый
+														</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="color-check">
+                                                    <i></i>
+                                                    <span>
+															<small class="color" style="background: #FFF500;"></small>
+															Желтый
+														</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="color-check">
+                                                    <i></i>
+                                                    <span>
+															<small class="color" style="background: #24C12B;"></small>
+															Зеленый
+														</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="color-check">
+                                                    <i></i>
+                                                    <span>
+															<small class="color" style="background: #DD6B2B;"></small>
+															Коралловый
+														</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="color-check">
+                                                    <i></i>
+                                                    <span>
+															<small class="color" style="background: #FF0000;"></small>
+															Красный
+														</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="color-check">
+                                                    <i></i>
+                                                    <span>
+															<small class="color" style="background: #F8E6CB;"></small>
+															Кремовый
+														</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="color-check">
+                                                    <i></i>
+                                                    <span>
+															<small class="color" style="background: #FF6B00;"></small>
+															Оранжевый
+														</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="color-check">
+                                                    <i></i>
+                                                    <span>
+															<small class="color" style="background: #EA6A61;"></small>
+															Персиковый
+														</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="color-check">
+                                                    <i></i>
+                                                    <span>
+															<small class="color" style="background: #FA94DD;"></small>
+															Розовый
+														</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="color-check">
+                                                    <i></i>
+                                                    <span>
+															<small class="color" style="background: #0085FF;"></small>
+															Синий
+														</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="color-check">
+                                                    <i></i>
+                                                    <span>
+															<small class="color" style="background: #7000FF;"></small>
+															Сиреневый
+														</span>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="filter-block">
+                                    <div class="filter-toggle"><span>Состав</span><i></i></div>
+                                    <div class="filter-podmenu">
+                                        <ul class="filter-podmenu-choose">
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="type-check">
+                                                    <i></i>
+                                                    <span>Розы</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="type-check">
+                                                    <i></i>
+                                                    <span>Тюльпаны</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="type-check">
+                                                    <i></i>
+                                                    <span>Пионы</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="type-check">
+                                                    <i></i>
+                                                    <span>Ромашки</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="type-check">
+                                                    <i></i>
+                                                    <span>Розы</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="type-check">
+                                                    <i></i>
+                                                    <span>Тюльпаны</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="type-check">
+                                                    <i></i>
+                                                    <span>Пионы</span>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="filter-checkbox">
+                                                    <input type="checkbox" name="type-check">
+                                                    <i></i>
+                                                    <span>Ромашки</span>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="filter-block">
+                                    <div class="filter-toggle"><span>Цена</span><i></i></div>
+                                    <div class="filter-podmenu with-diapazon">
+                                        <div class="range-slider-content">
+                                            <div class="extra-controls">
+													<span class="value-block">
+														<input type="text" class="js-input-from" value="0" />
+													</span>
+                                                <span class="divider">-</span>
+                                                <span class="value-block">
+												    	 <input type="text" class="js-input-to" value="0" />
+												    </span>
+                                                <span class="valuta">USD</span>
+                                            </div>
+                                            <div class="range-slider">
+                                                <input type="text" class="js-range-slider" value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="catalog-filter-close">
+                                    <img src="images/cross.svg" alt="">
+                                </div>
+                            </div>
+                            <div class="filter-overlay"></div>
+                        </div>
+
+                        <div class="filter-open">Фильтры <i>+</i></div>
+
+                        <div class="filter-block select-block">
+                            <select class="sort-select" data-placeholder="Сортировка">
+                                <option></option>
+                                <option value="1">По умолчанию</option>
+                                <option value="2">По возрастанию цены</option>
+                                <option value="3">По убыванию цены</option>
+                            </select>
+                        </div>
+
+                    </form>
+                </div>
+
+                {{
+                sonata_block_render(
+                    { 'type': 'product.block.list' },
+                    {
+                        'items_count' : 12,
+                        'page': app.request.get('page') ? app.request.get('page') : 1
+                    }
+                )
+                }}
+
+                {{
+                sonata_block_render(
+                    { 'type': 'page.block.site_variable' },
+                    {
+                        'placement': 'homepage-bottom'
+                    }
+                )
+                }}
+                <div class="seo-content">
+                    <h4>Доставка цветов по миру от Bali Flowers</h4>
+                    <p>Когда хочется дарить яркие эмоции и незабываемые впечатления своим родным и близким выбирайте доставку цветов от цветочной компании «Roses». В оговоренные сроки, с огромным трепетом и удовольствием наши курьеры доставят ваш букет в любой город и населенный пункт мира. <br>Мы всегда идем навстречу каждому клиенту, поэтому:</p>
+                    <ul>
+                        <li>предлагаем большой выбор цветочных композиций, как классических, так и дизайнерских;</li>
+                        <li>организовали лояльную ценовую политику – вы можете выбрать красивый букет на свой бюджет;</li>
+                        <li>принимаем оплату в любой валюте и любым способом;</li>
+                        <li>предоставляем скидки постоянным клиентам и ежедневные акции на букеты;</li>
+                        <li>всегда предлагаем исключительно качественные композиции из свежих цветов;</li>
+                        <li>даем исчерпывающие ответы на все ваши вопросы по доставке цветов по миру и ассортименту компании.</li>
+                    </ul>
+                    <h4>Заказать доставку цветов и нечто большее</h4>
+                    <p>К Вашим услугам доступна доставка букетов с сюрпризом. Убедитесь, что получатель будет по назначенному адресу и в указанное время доставки на месте, сделайте заказ и ожидайте звонка от восхищенного получателя! К букету возможно приложить поздравительную открытку с теплыми словами.</p>
+                    <p>В «<a href="">Bali Flowers</a>» можно заказать доставку цветов в комплекте со сладостями либо фруктами, или по Вашему желанию курьер приобретет мягкую игрушку, шарики. Так Ваш подарок станет более впечатляющим и запоминающимся. <br>Если нужно что-то необычное и стандартные букеты не подходят для Вашего случая, тогда обратите внимание на разделы: «Дизайнерские букеты», «Букеты 101+», «Корзины с цветами» и «Цветы в коробке». Из нашего ассортимента Вы обязательно найдете «именно тот самый» идеальный букет.</p>
+                    <h5>Вы любите делать неожиданные подарки, а мы – их доставлять!</h5>
+                </div>
+
+            </div>
+        </section>
+
     </div>
+    <!--//main-content-->
+
 {% endblock %}
 

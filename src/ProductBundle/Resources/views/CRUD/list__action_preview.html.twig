@@ -1,9 +1,7 @@
 {% set url = null %}
 {% set app_router = admin.configurationPool.container.get('router') %}
-{% if object is instanceof('BookBundle\\Entity\\Book')%}
-    {% set url = path('book_view', {'id': object.id, 'slug': object.slug}) %}
-{% elseif object is instanceof('ArticleBundle\\Entity\\Article') %}
-    {% set url = path('collection_view', {'slug': object.slug}) %}
+{% if object is instanceof('ProductBundle\\Entity\\Product')%}
+    {% set url = product_path(object) %}
 {% endif %}
 
 {% if admin.isGranted('VIEW', object) and url %}

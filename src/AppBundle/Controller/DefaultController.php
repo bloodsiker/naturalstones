@@ -5,8 +5,6 @@ namespace AppBundle\Controller;
 use BookBundle\Entity\Book;
 use BookBundle\Entity\BookCollection;
 use GenreBundle\Entity\Genre;
-use SeriesBundle\Entity\Series;
-use ShareBundle\Entity\Author;
 use ShareBundle\Entity\Tag;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -129,16 +127,6 @@ class DefaultController extends Controller
             $urls[] = ['loc' => $router->generate('order_board_status', ['status' => $status]), 'changefreq' => 'weekly', 'priority' => '0.3'];
         }
 
-        $urls[] = ['loc' => $router->generate('series_list'), 'changefreq' => 'weekly', 'priority' => '0.5'];
-        $types = ['author', 'publishing'];
-        foreach ($types as $type) {
-            $urls[] = ['loc' => $router->generate('series_list_type', ['type' => $type]), 'changefreq' => 'weekly', 'priority' => '0.5'];
-        }
-        $series = $em->getRepository(Series::class)->findBy(['isActive' => true]);
-        foreach ($series as $serie) {
-            $urls[] = ['loc' => $router->generate('series_books', ['slug' => $serie->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
-        }
-
         $tags = $em->getRepository(Tag::class)->findBy(['isActive' => true]);
         foreach ($tags as $tag) {
             $urls[] = ['loc' => $router->generate('tag_books', ['slug' => $tag->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
@@ -156,19 +144,6 @@ class DefaultController extends Controller
                     }
                 }
             }
-        }
-
-        $urls[] = ['loc' => $router->generate('author_list'), 'changefreq' => 'weekly', 'priority' => '0.5'];
-        $letter = $em->getRepository(Author::class)->uniqLetterByAuthor();
-        foreach ($letter as $let) {
-            if (isset($let[1])) {
-                $urls[] = ['loc' => $router->generate('author_list_letter', ['letter' => $let[1]]), 'changefreq' => 'weekly', 'priority' => '0.3'];
-            }
-        }
-
-        $authors = $em->getRepository(Author::class)->findBy(['isActive' => true]);
-        foreach ($authors as $author) {
-            $urls[] = ['loc' => $router->generate('author_books', ['slug' => $author->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
         }
 
         $urls[] = ['loc' => $router->generate('last_comments'), 'changefreq' => 'weekly', 'priority' => '0.3'];

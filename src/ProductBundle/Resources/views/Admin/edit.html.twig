@@ -18,7 +18,7 @@
             {% endif %}
         {% else %}
             <button type="submit" class="btn btn-success" name="btn_create">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i> {{ 'btn_save'|trans({}, 'BookBundle') }}
+                <i class="fa fa-plus-circle" aria-hidden="true"></i> {{ 'btn_save'|trans({}, 'ProductBundle') }}
             </button>
         {% endif %}
     {% else %}
@@ -31,7 +31,7 @@
         {# NEXT_MAJOR: remove default filter #}
         {% if objectId|default(admin.id(object)) is not null %}
             <button type="submit" class="btn btn-success" name="btn_update_and_edit">
-                <i class="fa fa-save" aria-hidden="true"></i> {{ 'btn_save'|trans({}, 'BookBundle') }}
+                <i class="fa fa-save" aria-hidden="true"></i> {{ 'btn_save'|trans({}, 'ProductBundle') }}
             </button>
 
             {% if admin.hasRoute('list') and admin.hasAccess('list') %}
@@ -47,9 +47,9 @@
                 </a>
             {% endif %}
 
-            {{ 'text_or'|trans({}, 'BookBundle') }}
+            {{ 'text_or'|trans({}, 'ProductBundle') }}
 
-            <a class="btn btn-info persist-preview" target="_blank" href="{{ path('book_view', {'id': object.id, 'slug': object.slug}) }}">
+            <a class="btn btn-info persist-preview" target="_blank" href="{{ product_path(object) }}">
                 <i class="fa fa-eye" aria-hidden="true"></i> {{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}
             </a>
 
@@ -65,7 +65,7 @@
         {% else %}
             {% if admin.hasroute('edit') and admin.hasAccess('edit') %}
                 <button class="btn btn-success" type="submit" name="btn_create_and_edit">
-                    <i class="fa fa-save" aria-hidden="true"></i> {{ 'btn_save'|trans({}, 'BookBundle') }}
+                    <i class="fa fa-save" aria-hidden="true"></i> {{ 'btn_save'|trans({}, 'ProductBundle') }}
                 </button>
             {% endif %}
             {% if admin.hasroute('list') and admin.hasAccess('list') %}
@@ -76,7 +76,7 @@
             {% endif %}
             <button class="btn btn-success" type="submit" name="btn_create_and_create">
                 <i class="fa fa-plus-circle"
-                   aria-hidden="true"></i> {{ 'btn_save_and_create_new'|trans({}, 'BookBundle') }}
+                   aria-hidden="true"></i> {{ 'btn_save_and_create_new'|trans({}, 'ProductBundle') }}
             </button>
         {% endif %}
     {% endif %}

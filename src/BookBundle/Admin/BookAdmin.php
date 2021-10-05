@@ -7,7 +7,6 @@ use AdminBundle\Form\Type\TextCounterType;
 use BookBundle\Entity\Book;
 use Doctrine\ORM\EntityManager;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
-use SeriesBundle\Entity\Series;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

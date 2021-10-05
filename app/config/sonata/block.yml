@@ -22,6 +22,8 @@ sonata_block:
             contexts: [cms]
         app.block.service.footer:
             contexts: [cms]
+        app.block.service.menu:
+            contexts: [ cms ]
         app.block.service.search:
             contexts: [cms]
         app.block.service.breadcrumb:
@@ -39,6 +41,9 @@ sonata_block:
         book.block.collection_list:
             contexts: [cms]
         book.block.collection_genre:
+            contexts: [cms]
+
+        product.block.list:
             contexts: [cms]
 
         # GenreBundle Block's

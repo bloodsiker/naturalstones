@@ -1,25 +1,32 @@
 services:
-  twig.extension.intl:
-    class: Twig_Extensions_Extension_Intl
-    tags:
-      - { name: twig.extension }
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
 
-#  app.twig.extension:
+#    app.twig.extension:
 #    class: "AppBundle\\Twig\\AppExtension"
 #    arguments:
-#      - '@translator'
-#      - '@router'
+#        - '@translator'
+#        - '@router'
 #    tags:
-#      - { name: twig.extension }
-
-#  app.twig.extension.sort:
-#      class: "AppBundle\\Twig\\SortByFieldExtension"
-#      tags:
 #        - { name: twig.extension }
+#
+#    app.twig.extension.sort:
+#        class: "AppBundle\\Twig\\SortByFieldExtension"
+#        tags:
+#            - { name: twig.extension }
 
-  app.twig.extension.genre:
-      class: "GenreBundle\\Twig\\GenreExtension"
-      arguments:
-        - '@genre.router.helper'
-      tags:
-        - { name: twig.extension }
+    app.twig.extension.genre:
+        class: "GenreBundle\\Twig\\GenreExtension"
+        arguments:
+            - '@genre.router.helper'
+        tags:
+            - { name: twig.extension }
+
+    app.twig.extension.product:
+        class: "ProductBundle\\Twig\\ProductExtension"
+        arguments:
+            - '@product.router.helper'
+        tags:
+            - { name: twig.extension }

@@ -17,14 +17,6 @@
         {% elseif field_description.name == 'name' %}
             {% set route_name = field_description.options.route.name %}
             <a href="{{ admin.generateUrl('edit', { id : object.id }) }}" class="sonata-link-identifier">{{ object.name }}</a>
-            {% if object.series %}
-                <hr style="margin-top:0;margin-bottom:5px;">
-                <span class="text-muted info" style="font-size: 12px;"><i class="text-blue">Авторская: </i>{{ object.series }} {% if object.seriesNumber %}#{{ object.seriesNumber }}{% endif %}</span>
-            {% endif %}
-            {% if object.seriesPublishing %}
-                <hr style="margin-top:0;margin-bottom:5px;">
-                <span class="text-muted info" style="font-size: 12px;"><i class="text-red">Издательская: </i>{{ object.seriesPublishing }}</span>
-            {% endif %}
         {% elseif field_description.name == 'genres' %}
             {% set route_name = field_description.options.route.name %}
             {% for genre in object.genres %}

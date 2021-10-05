@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block header %}
-    <header class="head-container">
+    <header>
         {{
             sonata_block_render(
                 {
@@ -24,105 +24,30 @@
 {% endblock %}
 
 {% block content %}
-    <section class="wrap center">
+
+    {{ block('main_screen') }}
+
+    <div class="main-content">
         {{ parent() }}
-    </section>
-
-{% endblock %}
-
-{% block top_nav %}
-    <div class="top-nav">
-        <div class="top-nav-title">
-            <a href="" class="to-top-link logo-hide" style="display: none"></a>
-            <a class="to-top-link {{ path('top_100') in app.request.requestUri ? 'active' : null }}" href="{{ path('top_100') }}"><span>&nbsp;ТОП-100 книг&nbsp;</span></a>
-{#            <a class="to-top-link {{ path('book_list') in app.request.requestUri ? 'active' : null }}" href="{{ path('book_list') }}"><span>Новинки книг</span></a>#}
-            <a class="to-top-link {{ path('genre_list') in app.request.requestUri ? 'active' : null }}" href="{{ path('genre_list') }}"><span>Жанры</span></a>
-            <a class="to-top-link {{ path('author_list') in app.request.requestUri ? 'active' : null }}" href="{{ path('author_list') }}"><span>Авторы</span></a>
-            <a class="to-top-link {{ path('series_list') in app.request.requestUri ? 'active' : null }}" href="{{ path('series_list') }}"><span>Серии</span></a>
-            <a class="to-top-link {{ path('collection_list') in app.request.requestUri ? 'active' : null }}" href="{{ path('collection_list') }}"><span>Подборки</span></a>
-            <a class="to-top-link {{ path('swap_book') in app.request.requestUri ? 'active' : null }}" href="{{ path('swap_book') }}"><span>Обмен книгами</span></a>
-            <a class="to-top-link {{ path('last_comments') in app.request.requestUri ? 'active' : null }}" href="{{ path('last_comments') }}"><span>Последние комментарии</span></a>
-            <a class="to-top-link {{ path('order_board') in app.request.requestUri ? 'active' : null }}" href="{{ path('order_board') }}"><span>Стол заказов</span></a>
-        </div>
     </div>
+
 {% endblock %}
 
- {% block breadchumbs %}
+{% block main_screen %}
 
-     {{
-     sonata_block_render(
-         { 'type': 'app.block.service.breadcrumb' }
-     )
-     }}
-
- {% endblock %}
+{% endblock %}
 
 {% block content_main %}
-    <section class="cols">
-        {{ block('content_side') }}
+    {% if content is defined and content|length > 0 %}
+        {{ content|raw }}
+    {% endif %}
 
-        {% if content is defined and content|length > 0 %}
-            {{ content|raw }}
+    {% if page is defined %}
+        {% if page.name != 'global' %}
+            {{ sonata_page_render_container('content_main', 'global') }}
         {% endif %}
-
-        {% if page is defined %}
-            {% if page.name != 'global' %}
-                {{ sonata_page_render_container('content_main', 'global') }}
-            {% endif %}
-            {{ sonata_page_render_container('content_main', page) }}
-        {% endif %}
-    </section>
-{% endblock %}
-
-{% block content_side %}
-    <aside class="col-side">
-
-        {# List genres #}
-        {{
-        sonata_block_render(
-            { 'type': 'genre.block.genre_list' },
-            { 'list_type' : constant('GenreBundle\\Block\\ListGenreBlockService::LIST_ASIDE') }
-        )
-        }}
-
-        {# Popular book #}
-{#        {{#}
-{#        sonata_block_render(#}
-{#            { 'type': 'book.block.list' },#}
-{#            {#}
-{#                'list_type' : constant('BookBundle\\Block\\ListBooksBlockService::POPULAR_LIST'),#}
-{#                'popular' : true,#}
-{#                'items_count': 4,#}
-{#            }#}
-{#        )#}
-{#        }}#}
-
-        {{
-        sonata_block_render(
-            { 'type': 'book.block.popular' },
-            {
-                'by_month' : true,
-                'items_count': 4,
-            }
-        )
-        }}
-
-        <div class="side-item" id="side-quiz">
-            {{
-            sonata_block_render(
-                { 'type': 'quiz.block.service.quiz' }
-            )
-            }}
-        </div>
-
-         {#List tags#}
-        {#{{#}
-        {#sonata_block_render(#}
-            {#{ 'type': 'share.block.tag_list' }#}
-        {#)#}
-        {#}}#}
-
-    </aside>
+        {{ sonata_page_render_container('content_main', page) }}
+    {% endif %}
 {% endblock %}
 
 {% block content_bottom %}
@@ -135,7 +60,8 @@
 {% endblock %}
 
 {% block footer %}
-    <footer class="foot-line">
+    <!--footer-->
+    <footer>
         {% if page is defined %}
             {% if page.name != 'global' %}
                 {{ sonata_page_render_container('footer', 'global') }}
@@ -149,4 +75,5 @@
             )
         }}
     </footer>
+    <!--//footer-->
 {% endblock %}

@@ -10,7 +10,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * Class Product
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="ProductBundle\Entity\ProductRepository")
  * @ORM\Table(name="product_product")
  * @ORM\HasLifecycleCallbacks
  *
@@ -113,7 +113,7 @@ class Product
      * @ORM\JoinTable(name="product_product_colours",
      *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="colour_id", referencedColumnName="id", onDelete="CASCADE")}
-     *     )
+     * )
      */
     protected $colours;
 
@@ -147,6 +147,7 @@ class Product
      *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="size_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     protected $sizes;
 

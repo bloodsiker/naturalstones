@@ -1,0 +1,335 @@
+<!-- product-section -->
+<section class="simple-section">
+    <div class="container">
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
+
+        <h1>{{ product.name }}</h1>
+        <div class="product-section-detail">
+
+            <div class="product-gallery">
+                <div class="product-big-slider js-slick">
+                    <div class="product-big-item">
+                        <img src="{{ asset(product.image.path) }}" alt="">
+                    </div>
+                    <div class="product-big-item">
+                        <img src="{{ asset('bundles/app/images/2.jpg') }}" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-information">
+                <div class="product-info-top clearfix">
+                    <form action="#" method="post" class="product-add-form">
+                        <div class="top-block">
+                            <div class="inner-block">
+                                <h5>Выберите размер</h5>
+                                <ul class="product-sizes-check">
+                                    {% for size in product.sizes %}
+                                        <li>
+                                            <div class="size-radiobox">
+                                                <label class="radiobox">
+                                                    <input type="radio" name="size-radio" value="{{ size.id }}">
+                                                    <i>{{ size.name }}</i>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                <div class="select-block mobile-select">
+                                    <select class="custom-select" data-placeholder="Размер">
+                                        <option></option>
+                                        {% for size in product.sizes %}
+                                            <option value="{{ size.id }}">{{ size.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="inner-block">
+                                <h5>Выберите количество</h5>
+                                <div class="cart-product-amount">
+                                    <span class="qtyminus">−</span>
+                                    <input type="text" value="1" class="qty" onkeypress="return event.charCode &gt;= 48 &amp;&amp; event.charCode &lt;= 57" placeholder="">
+                                    <span class="qtyplus" data-max="100">+</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom-block">
+                            <div class="total-price">{{  product.price }} грн</div>
+                            <a href="#cartModal" class="button cart-button popup-open" data-effect="mfp-zoom-in">Добавить в корзину</a>
+                        </div>
+                    </form>
+
+                    <div class="product-quick">
+                        <div class="product-quick-toggle button">Быстрый заказ <img src="{{ asset('bundles/app/images/arrow-right-purple.svg') }}" alt=""></div>
+                        <div class="product-quick-block">
+                            <div class="top">
+                                <h5>Нет времени оформлять?</h5>
+                                <div class="messengers-input">
+                                    <input class="telegram" type="text" placeholder="+0 000 000 00 00">
+                                </div>
+                            </div>
+                            <div class="middle">
+                                <div class="note">Выберите в каком мессенджере вам ответить:</div>
+                                <ul class="messengers-list">
+                                    <li>
+                                        <label class="messengers-radio telegram">
+                                            <input type="radio" name="mess-radio" checked>
+                                            <span>
+															<img src="{{ asset('bundles/app/images/telegram.svg') }}" alt="">
+														</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="messengers-radio viber">
+                                            <input type="radio" name="mess-radio">
+                                            <span>
+															<img src="{{ asset('bundles/app/images/viber.svg') }}" alt="">
+														</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="bottom">
+                                <a href="#quickModal" class="button popup-open" data-effect="mfp-zoom-in">Быстрый заказ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-description">
+                    <ul class="product-description-list">
+                        <li>
+                            <a href="#prod-desc-2" class="active-tab"><img src="{{ asset('bundles/app/images/info.svg') }}" alt="">Описание</a>
+                        </li>
+                        <li>
+                            <a href="#prod-desc-3"><img src="{{ asset('bundles/app/images/list.svg') }}" alt="">Характеристики</a>
+                        </li>
+                        <li>
+                            <a href="#prod-desc-1"><img src="{{ asset('bundles/app/images/delivery.svg') }}" alt="">Доставка и оплата</a>
+                        </li>
+                    </ul>
+                    <div class="product-description-inner">
+                        <!-- Таб-1 -->
+                        <div id="prod-desc-2" class="product-description-content visible">
+                            <div class="product-description-trigger">
+                                <a href="">
+                                    <span class="pic"><img src="{{ asset('bundles/app/images/info.svg') }}" alt=""></span>
+                                    Описание
+                                    <img src="{{ asset('bundles/app/images/select-arrow.svg') }}" class="arrow" alt="">
+                                </a>
+                            </div>
+                            <div class="product-description-tab">
+                                <div class="product-desc-text">
+                                    {{ product.description|raw }}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Таб-2 -->
+                        <div id="prod-desc-3" class="product-description-content">
+                            <div class="product-description-trigger">
+                                <a href="">
+                                    <span class="pic"><img src="{{ asset('bundles/app/images/list.svg') }}" alt=""></span>
+                                    Характеристики
+                                    <img src="{{ asset('bundles/app/images/select-arrow.svg') }}" class="arrow" alt="">
+                                </a>
+                            </div>
+                            <div class="product-description-tab">
+                                <table class="product-char-table">
+                                    <tr>
+                                        <td>
+                                            <div class="name">Цвет</div>
+                                        </td>
+                                        <td>
+                                            {% if product.colours is iterable %}
+                                                {% for colour in product.colours %}
+                                                    <em style="color: {{ '#'~colour.colour }}">{{ colour.name }}</em>
+                                                    {{ loop.last ? '' : ' , ' }}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="name">Кому</div>
+                                        </td>
+                                        <td>Мужские, Женские</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="name">Камни</div>
+                                        </td>
+                                        <td>
+                                            {% if product.stones is iterable %}
+                                                {% for stone in product.stones %}
+                                                    <em>{{ stone.name }}</em>
+                                                    {{ loop.last ? '' : ' , ' }}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Таб-3 -->
+                        <div id="prod-desc-1" class="product-description-content">
+                            <div class="product-description-trigger">
+                                <a href="">
+                                    <span class="pic"><img src="{{ asset('bundles/app/images/delivery.svg') }}" alt=""></span>
+                                    Доставка и оплата
+                                    <img src="{{ asset('bundles/app/images/select-arrow.svg') }}" class="arrow" alt="">
+                                </a>
+                            </div>
+                            <div class="product-description-tab">
+                                <div class="product-desc-text">
+                                    <ul>
+                                        <li>Доставляем в пределах города с 9:00 до 20:00 - <strong>БЕСПЛАТНО</strong>;</li>
+                                        <li>Букет будет доставлен через <strong>30 - 150 минут</strong> после оплаты;</li>
+                                        <li>Доставка по области, а так же в другое время расчитывается <strong>индивидуально</strong>.</li>
+                                    </ul>
+                                </div>
+                                <div class="product-pay-list">
+                                    <div class="product-pay-block">
+                                        <div class="pay-title">Оплата производится с помощью банков</div>
+                                        <ul class="product-pay-country">
+                                            <li>
+                                                <img src="{{ asset('bundles/app/images/pay-systems/pay-system-8.png') }}" alt="">
+                                                <img src="{{ asset('bundles/app/images/pay-systems/pay-system-9.png') }}" alt="">
+                                                <span>Украина</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="similar-products-block">
+            <div class="similar-title"><span>Похожие товары</span></div>
+            <div class="similar-products-slider js-slick">
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product/3.jpg" alt=""></a>
+                    <div class="name"><a href="">Аква 25 роз</a></div>
+                    <div class="price"><span>60 USD</span></div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product/4.jpg" alt=""></a>
+                    <div class="name"><a href="">Букет "Лион"</a></div>
+                    <div class="price"><span>60 USD</span></div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product/5.jpg" alt=""></a>
+                    <div class="name"><a href="">Ред Наоми 25 роз</a></div>
+                    <div class="price"><span>60 USD</span></div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product/6.jpg" alt=""></a>
+                    <div class="name"><a href="">Корзина "Вечная Любовь"</a></div>
+                    <div class="price">
+                        <span class="old-price">60 USD</span>
+                        <span>50 USD</span>
+                    </div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product/7.jpg" alt=""></a>
+                    <div class="name"><a href="">Аква 25 роз</a></div>
+                    <div class="price"><span>60 USD</span></div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product-2.jpg" alt=""></a>
+                    <div class="name"><a href="">Букет "Лион"</a></div>
+                    <div class="price"><span>60 USD</span></div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product-3.jpg" alt=""></a>
+                    <div class="name"><a href="">Ред Наоми 25 роз</a></div>
+                    <div class="price"><span>60 USD</span></div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product-4.jpg" alt=""></a>
+                    <div class="name"><a href="">Корзина "Вечная Любовь"</a></div>
+                    <div class="price">
+                        <span class="old-price">60 USD</span>
+                        <span>50 USD</span>
+                    </div>
+                    <a href="" class="button">Купить</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="similar-products-block">
+            <div class="similar-title"><span>С этим товаром покупают</span></div>
+            <div class="similar-products-slider js-slick">
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product-1.jpg" alt=""></a>
+                    <div class="name"><a href="">Аква 25 роз</a></div>
+                    <div class="price"><span>60 USD</span></div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product-2.jpg" alt=""></a>
+                    <div class="name"><a href="">Букет "Лион"</a></div>
+                    <div class="price"><span>60 USD</span></div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product-3.jpg" alt=""></a>
+                    <div class="name"><a href="">Ред Наоми 25 роз</a></div>
+                    <div class="price"><span>60 USD</span></div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product-4.jpg" alt=""></a>
+                    <div class="name"><a href="">Корзина "Вечная Любовь"</a></div>
+                    <div class="price">
+                        <span class="old-price">60 USD</span>
+                        <span>50 USD</span>
+                    </div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product-1.jpg" alt=""></a>
+                    <div class="name"><a href="">Аква 25 роз</a></div>
+                    <div class="price"><span>60 USD</span></div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product-2.jpg" alt=""></a>
+                    <div class="name"><a href="">Букет "Лион"</a></div>
+                    <div class="price"><span>60 USD</span></div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product-3.jpg" alt=""></a>
+                    <div class="name"><a href="">Ред Наоми 25 роз</a></div>
+                    <div class="price"><span>60 USD</span></div>
+                    <a href="" class="button">Купить</a>
+                </div>
+                <div class="catalog-block">
+                    <a href="" class="image"><img src="images/product-4.jpg" alt=""></a>
+                    <div class="name"><a href="">Корзина "Вечная Любовь"</a></div>
+                    <div class="price">
+                        <span class="old-price">60 USD</span>
+                        <span>50 USD</span>
+                    </div>
+                    <a href="" class="button">Купить</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

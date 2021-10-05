@@ -57,7 +57,8 @@ class HeaderBlockService extends AbstractAdminBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template'      => 'AppBundle:Block:header.html.twig',
+            'template'  => 'AppBundle:Block:header.html.twig',
+            'class'     => null,
         ]);
     }
 

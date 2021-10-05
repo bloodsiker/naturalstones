@@ -9,13 +9,7 @@ services:
         arguments:
             - '@app.entity_manager'
 
-#
-#    book.repository.abstract:
-#        factory: [ '@book.entity_manager', 'getRepository' ]
-#        abstract: true
-#
-#    book.repository.book:
-#        class: "\\BookBundle\\Entity\\BookRepository"
-#        parent: book.repository.abstract
-#        arguments:
-#          - 'BookBundle:Book'
+    product.router.helper:
+        class: ProductBundle\Helper\ProductRouterHelper
+        arguments:
+            - '@router'

@@ -1,0 +1,6 @@
+{% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+
+<a href="" class="header-cart-link" data-url="{{ block_ajax_path }}"  data-action="{{ constant('AppBundle\\Block\\CartBlockService::ACTION_SHOW') }}">
+    <img src="{{ asset('bundles/app/images/cart.svg') }}" alt="">
+    <span class="count countProductInCart">{{ countItems }}</span>
+</a>

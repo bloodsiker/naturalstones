@@ -1,0 +1,159 @@
+<section class="simple-section">
+    <div class="container">
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
+
+        <div class="cart-title">
+            <h1>Корзина</h1>
+            <a href="" class="cart-clean"><img src="{{ asset('bundles/app/images/cross-remove.svg') }}" alt="">Очистить корзину</a>
+        </div>
+
+        <div id="cartContainer">
+            {{
+                sonata_block_render(
+                    { 'type': 'app.block.service.cart' },
+                    {
+                        'action': constant('AppBundle\\Block\\CartBlockService::ACTION_SHOW'),
+                        'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART_PAGE')
+                    }
+                )
+            }}
+        </div>
+
+{#        <div class="cart-gifts-block">#}
+{#            <div class="gifts-title"><span>Добавить к этому заказу подарок?</span></div>#}
+{#            <div class="gifts-slider-outer">#}
+{#                <div class="gifts-slider js-slick">#}
+{#                    <div class="dop-items-block">#}
+{#                        <div class="image"><img src="images/product-dop-item-1.jpg" alt=""></div>#}
+{#                        <div class="price">15 USD</div>#}
+{#                        <a href="" class="add-item">#}
+{#                            <img src="images/check.svg" alt="">#}
+{#                            <span>Добавить</span>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="dop-items-block">#}
+{#                        <div class="image"><img src="images/product-dop-item-2.jpg" alt=""></div>#}
+{#                        <div class="price">10 USD</div>#}
+{#                        <a href="" class="add-item">#}
+{#                            <img src="images/check.svg" alt="">#}
+{#                            <span>Добавить</span>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="dop-items-block">#}
+{#                        <div class="image"><img src="images/product-dop-item-1.jpg" alt=""></div>#}
+{#                        <div class="price">15 USD</div>#}
+{#                        <a href="" class="add-item">#}
+{#                            <img src="images/check.svg" alt="">#}
+{#                            <span>Добавить</span>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="dop-items-block">#}
+{#                        <div class="image"><img src="images/product-dop-item-2.jpg" alt=""></div>#}
+{#                        <div class="price">10 USD</div>#}
+{#                        <a href="" class="add-item">#}
+{#                            <img src="images/check.svg" alt="">#}
+{#                            <span>Добавить</span>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="dop-items-block">#}
+{#                        <div class="image"><img src="images/product-dop-item-1.jpg" alt=""></div>#}
+{#                        <div class="price">15 USD</div>#}
+{#                        <a href="" class="add-item">#}
+{#                            <img src="images/check.svg" alt="">#}
+{#                            <span>Добавить</span>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="dop-items-block">#}
+{#                        <div class="image"><img src="images/product-dop-item-2.jpg" alt=""></div>#}
+{#                        <div class="price">10 USD</div>#}
+{#                        <a href="" class="add-item">#}
+{#                            <img src="images/check.svg" alt="">#}
+{#                            <span>Добавить</span>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="dop-items-block">#}
+{#                        <div class="image"><img src="images/product-dop-item-1.jpg" alt=""></div>#}
+{#                        <div class="price">15 USD</div>#}
+{#                        <a href="" class="add-item">#}
+{#                            <img src="images/check.svg" alt="">#}
+{#                            <span>Добавить</span>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="dop-items-block">#}
+{#                        <div class="image"><img src="images/product-dop-item-2.jpg" alt=""></div>#}
+{#                        <div class="price">10 USD</div>#}
+{#                        <a href="" class="add-item">#}
+{#                            <img src="images/check.svg" alt="">#}
+{#                            <span>Добавить</span>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="dop-items-block">#}
+{#                        <div class="image"><img src="images/product-dop-item-1.jpg" alt=""></div>#}
+{#                        <div class="price">15 USD</div>#}
+{#                        <a href="" class="add-item">#}
+{#                            <img src="images/check.svg" alt="">#}
+{#                            <span>Добавить</span>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="dop-items-block">#}
+{#                        <div class="image"><img src="images/product-dop-item-2.jpg" alt=""></div>#}
+{#                        <div class="price">10 USD</div>#}
+{#                        <a href="" class="add-item">#}
+{#                            <img src="images/check.svg" alt="">#}
+{#                            <span>Добавить</span>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+
+{#        <div class="cart-quick">#}
+{#            <div class="product-quick-block">#}
+{#                <div class="top">#}
+{#                    <h5>Нет времени оформлять?</h5>#}
+{#                    <div class="messengers-input">#}
+{#                        <input class="telegram" type="text" placeholder="+0 000 000 00 00">#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="middle">#}
+{#                    <div class="note">Выберите в каком мессенджере вам ответить:</div>#}
+{#                    <ul class="messengers-list">#}
+{#                        <li>#}
+{#                            <label class="messengers-radio telegram">#}
+{#                                <input type="radio" name="mess-radio" checked>#}
+{#                                <span>#}
+{#												<img src="images/telegram.svg" alt="">#}
+{#											</span>#}
+{#                            </label>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <label class="messengers-radio whatsapp">#}
+{#                                <input type="radio" name="mess-radio">#}
+{#                                <span>#}
+{#												<img src="images/whatsapp.svg" alt="">#}
+{#											</span>#}
+{#                            </label>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <label class="messengers-radio viber">#}
+{#                                <input type="radio" name="mess-radio">#}
+{#                                <span>#}
+{#												<img src="images/viber.svg" alt="">#}
+{#											</span>#}
+{#                            </label>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#                <div class="bottom">#}
+{#                    <a href="#quickModal" class="button popup-open" data-effect="mfp-zoom-in">Быстрый заказ</a>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+
+    </div>
+</section>

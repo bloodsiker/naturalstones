@@ -53,14 +53,22 @@
                                 <h5>Выберите количество</h5>
                                 <div class="cart-product-amount">
                                     <span class="qtyminus">−</span>
-                                    <input type="text" value="1" class="qty" onkeypress="return event.charCode &gt;= 48 &amp;&amp; event.charCode &lt;= 57" placeholder="">
+                                    <input type="text" id="quantity" value="1" class="qty" onkeypress="return event.charCode &gt;= 48 &amp;&amp; event.charCode &lt;= 57" placeholder="">
                                     <span class="qtyplus" data-max="100">+</span>
                                 </div>
                             </div>
                         </div>
                         <div class="bottom-block">
-                            <div class="total-price">{{  product.price }} грн</div>
-                            <a href="#cartModal" class="button cart-button popup-open" data-effect="mfp-zoom-in">Добавить в корзину</a>
+                            <div class="total-price">{{ product.price }} грн</div>
+                            {{
+                                sonata_block_render(
+                                    { 'type': 'app.block.service.cart' },
+                                    {
+                                        'product': product,
+                                        'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_BUTTON_IN_PRODUCT')
+                                    }
+                                )
+                            }}
                         </div>
                     </form>
 
@@ -217,6 +225,7 @@
                 {
                     'title' : 'Похожие товары',
                     'items_count' : 10,
+                    'exclude_ids' : product.id,
                     'page': app.request.get('page') ? app.request.get('page') : 1,
                     'list_type': constant('ProductBundle\\Block\\ListProductBlockService::SIMILAR_LIST')
                 }
@@ -229,6 +238,7 @@
             {
                 'title' : 'С этим товаром покупают',
                 'items_count' : 10,
+                'exclude_ids' : product.id,
                 'page': app.request.get('page') ? app.request.get('page') : 1,
                 'list_type': constant('ProductBundle\\Block\\ListProductBlockService::SIMILAR_LIST')
             }

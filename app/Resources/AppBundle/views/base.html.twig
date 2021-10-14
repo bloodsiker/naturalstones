@@ -102,6 +102,166 @@
             <script src="{{ asset('bundles/app/js/jquery.magnific-popup.min.js') }}"></script>
             <script src="{{ asset('bundles/app/js/ion.rangeSlider.min.js') }}"></script>
             <script src="{{ asset('bundles/app/js/myjs.js') }}"></script>
+
+            <script>
+                $('.header-cart-link').on('click', function (e) {
+                    e.preventDefault();
+                    let _this = $(this),
+                        url = _this.data('url'),
+                        action = _this.data('action');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: { action: action },
+                        success: function (response) {
+                            let containerCart = $('.header-cart-info');
+                            containerCart.html(response);
+                        }
+                    });
+
+                    $('.header-cart-info').show();
+                })
+                $(document).click( function(e){
+                    if ( $(e.target).closest('.header-cart').length ) {
+                        return;
+                    }
+                    $('.header-cart-info').hide();
+                });
+
+                $('.product-add-form').on('click','.add-to-cart', function () {
+                    let _this = $(this),
+                        item_id = _this.data('id'),
+                        url = _this.data('url'),
+                        action = _this.data('action'),
+                        quantity = $('#quantity').val();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: { action: action, item_id: item_id, quantity: quantity },
+                        success: function (response) {
+                            if (200 === response.code) {
+                                $('.header-cart-info').html('');
+                                $('.countProductInCart').html(response.count);
+                            }
+                        }
+                    });
+                });
+
+                $('.header-cart').on('click','.remove-product', function (e) {
+                    e.preventDefault();
+
+                    let _this = $(this),
+                        action = _this.data('action'),
+                        item_id = _this.data('id'),
+                        url = _this.data('url');
+
+                    let filter = { action: action, item_id: item_id };
+                    getAjax(url, filter, '.header-cart-info', true);
+                });
+
+                $('#cartContainer').on('click','.remove-item', function (e) {
+                    e.preventDefault();
+
+                    let _this = $(this),
+                        action = _this.data('action'),
+                        template = _this.data('template'),
+                        item_id = _this.data('id'),
+                        url = _this.data('url');
+
+                    let filter = { action: action, item_id: item_id, template: template };
+                    getAjax(url, filter, '#cartContainer', true);
+                });
+
+                $('.input-recalculate').on('input change', function () {
+                    let _this = $(this),
+                        item_id = _this.data('id'),
+                        url = _this.data('url'),
+                        action = _this.data('action'),
+                        quantity = _this.val();
+
+                    let filter = { action: action, item_id: item_id, quantity: quantity };
+                    console.log(filter);
+                    // getAjax(url, filter, '#modal-cart', true);
+                });
+
+                /*Плюс-минус*/
+                $('#cartContainer').on('click', '.qtyplus', function (e) {
+                    e.preventDefault();
+                    let fieldName = $(this).siblings('.qty');
+                    let value = 1;
+                    var currentVal = parseInt(fieldName.val());
+                    var maxCount = $(".qtyplus").data("max")
+                    if (!isNaN(currentVal)) {
+                        if (currentVal < maxCount) {
+                            value = currentVal + 1;
+                            $('.qtyminus').val("-").removeAttr('style');
+                        } else {
+                            $(this).val("+").css('color', '#aaa');
+                            $(this).val("+").css('cursor', 'not-allowed');
+                        }
+                    }
+
+                    fieldName.val(value);
+
+                    let _this = $('.input-recalculate'),
+                        item_id = _this.data('id'),
+                        url = _this.data('url'),
+                        template = _this.data('template'),
+                        action = _this.data('action');
+
+                    let filter = { action: action, item_id: item_id, template: template, quantity: value };
+                    getAjax(url, filter, '#cartContainer', true);
+                });
+
+                $('#cartContainer').on('click', '.qtyminus', function (e) {
+                    e.preventDefault();
+                    let fieldName = $(this).siblings('.qty');
+                    let value = 1;
+                    let currentVal = parseInt(fieldName.val());
+                    if (!isNaN(currentVal) && currentVal > 1) {
+                        value = currentVal - 1;
+                        $('.qtyplus').val("+").removeAttr('style');
+                    } else {
+                        $(this).val("-").css('color', '#aaa');
+                        $(this).val("-").css('cursor', 'not-allowed');
+                    }
+
+                    fieldName.val(value);
+
+                    let _this = $('.input-recalculate'),
+                        item_id = _this.data('id'),
+                        url = _this.data('url'),
+                        template = _this.data('template'),
+                        action = _this.data('action');
+
+                    let filter = { action: action, item_id: item_id, template: template, quantity: value };
+                    getAjax(url, filter, '#cartContainer', true);
+                });
+
+
+                let getAjax = function (url, filter, htmlContainer, rewriteCount = false) {
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: filter,
+                        success: function (response) {
+                            let container = $(htmlContainer);
+                            container.html(response);
+                            if (rewriteCount) {
+                                rewriteCartCountProduct();
+                            }
+                        }
+                    });
+                };
+
+                /* Rewrite count product in cart */
+                let rewriteCartCountProduct = function () {
+                    let container = $('#countProductInCart');
+                    $('.countProductInCart').text(container.data('count-cart'));
+                };
+            </script>
         {% endblock %}
     </body>
 </html>

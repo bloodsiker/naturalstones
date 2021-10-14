@@ -1,0 +1,7 @@
+{% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+
+<a href="#cartModal" class="button cart-button popup-open add-to-cart"
+   data-effect="mfp-zoom-in"
+   data-id="{{ settings['product'].id }}"
+   data-url="{{ block_ajax_path }}"
+   data-action="{{ constant('AppBundle\\Block\\CartBlockService::ACTION_ADD') }}">Добавить в корзину</a>

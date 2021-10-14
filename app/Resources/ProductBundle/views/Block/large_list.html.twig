@@ -12,7 +12,7 @@
                 {% else %}
                     <div class="price"><span>{{ product.price}} грн</span></div>
                 {% endif %}
-                <a href="" class="button">Купить</a>
+                <a href="{{ product_path(product) }}" class="button">Купить</a>
             </div>
         {% endfor %}
     </div>

@@ -162,21 +162,21 @@ $(document).ready(function() {
 		function updateInputs (data) {
 			from = data.from;
 		    to = data.to;
-		    
+
 		    $inputFrom.prop("value", from);
-		    $inputTo.prop("value", to);	
+		    $inputTo.prop("value", to);
 		}
 
 		$inputFrom.on("input", function () {
 		    var val = $(this).prop("value");
-		    
+
 		    // validate
 		    if (val < min) {
 		        val = min;
 		    } else if (val > to) {
 		        val = to;
 		    }
-		    
+
 		    instance.update({
 		        from: val
 		    });
@@ -184,102 +184,55 @@ $(document).ready(function() {
 
 		$inputTo.on("input", function () {
 		    var val = $(this).prop("value");
-		    
+
 		    // validate
 		    if (val < from) {
 		        val = from;
 		    } else if (val > max) {
 		        val = max;
 		    }
-		    
+
 		    instance.update({
 		        to: val
 		    });
 		});
 	}
-	
-	/*Плюс-минус*/
-    $('.qtyplus').click(function(e){
-        // Stop acting like a button
-        e.preventDefault();
-        // Get the field name
-        fieldName = $(this).siblings('.qty');
-        // Get its current value
-        var currentVal = parseInt(fieldName.val());
-        var maxCount = $(".qtyplus").data("max")
-        // If is not undefined
-        if (!isNaN(currentVal)) {
-            // Increment only if value is < 20
-            if (currentVal < maxCount)
-            {
-             fieldName.val(currentVal + 1);
-              $('.qtyminus').val("-").removeAttr('style');
-							}
-            else
-            {
-            	$(this).val("+").css('color','#aaa');
-        		$(this).val("+").css('cursor','not-allowed');
-            }
-        } else {
-            // Otherwise put a 0 there
-            fieldName.val(1);
 
-        }
-    });
-    // This button will decrement the value till 0
-    $(".qtyminus").click(function(e) {
-        // Stop acting like a button
-        e.preventDefault();
-        // Get the field name
-        fieldName = $(this).siblings('.qty');
-        // Get its current value
-        var currentVal = parseInt(fieldName.val());
-        // If it isn't undefined or its greater than 0
-        if (!isNaN(currentVal) && currentVal > 1) {
-            // Decrement one only if value is > 1
-           fieldName.val(currentVal - 1);
-             $('.qtyplus').val("+").removeAttr('style');
-        } else {
-            // Otherwise put a 0 there
-            fieldName.val(1);
-            $(this).val("-").css('color','#aaa');
-            $(this).val("-").css('cursor','not-allowed');
-        }
-    });
+
 
     /*работа меню*/
-	$(".header-buter").click(function () {
+	$(".header-buter").on('click', function () {
 		$(".header-menu-outer").addClass("visible");
 		$(".header-overlay").fadeIn(300);
 	});
-	
-	$(".header-menu-close, .header-overlay").click(function () {
+
+	$(".header-menu-close, .header-overlay").on('click', function () {
 		 $(".header-menu-outer").removeClass("visible");
 		 $(".header-overlay").fadeOut(300);
 	});
 
 	// Появление фильтра в мобилке
-	$('.filter-open').click(function(){
+	$('.filter-open').on('click', function(){
 		$(".filter-content").fadeIn(300);
 	});
-	
-	$('.filter-overlay, .catalog-filter-close').click(function(){
+
+	$('.filter-overlay, .catalog-filter-close').on('click', function(){
 		$(".filter-content").fadeOut(300);
 	});
 
 	// Открытие меню в видео
-	$('.video-menu-toggle').click(function(){
+	$('.video-menu-toggle').on('click', function(){
 		$(".video-menu-outer").fadeToggle(300);
 		$(".video-options-menu").fadeOut(300);
 		$(".video-options-toggle").removeClass("open-filter");
 	});
 
-	$('.video-menu-close').click(function(){
+	$('.video-menu-close').on('click', function(){
 		$(".video-menu-outer").fadeToggle(300);
 	});
 
 	// Появление языков выбора и валют
-	$(".video-options-toggle").click(function () {
+	$(".video-options-toggle").on('click', function () {
 		$(".video-options-toggle").not($(this)).removeClass("open-filter");
 		$(this).toggleClass("open-filter");
 		$(".video-options-menu").not($(this).next(".video-options-menu")).fadeOut(300);
@@ -288,18 +241,18 @@ $(document).ready(function() {
 	});
 
 	// Работа смены границ в инпуте
-	$(".messengers-radio.telegram").click(function () {
+	$(".messengers-radio.telegram").on('click', function () {
 		$(".messengers-input input").removeClass().addClass('telegram');
 	});
-	$(".messengers-radio.whatsapp").click(function () {
+	$(".messengers-radio.whatsapp").on('click', function () {
 		$(".messengers-input input").removeClass().addClass('whatsapp');
 	});
-	$(".messengers-radio.viber").click(function () {
+	$(".messengers-radio.viber").on('click', function () {
 		$(".messengers-input input").removeClass().addClass('viber');
 	});
 
 	/*Табы характеристик*/
-	$(".product-description-list a").click(function(e){
+	$(".product-description-list a").on('click', function(e){
 		e.preventDefault();
 		var $searchId = $( $(this).attr("href") );
 		$(".product-description-list a").not($(this)).removeClass("active-tab");
@@ -309,14 +262,14 @@ $(document).ready(function() {
 	});
 
 	/*Табы характеристик*/
-	$(".product-description-trigger a").click(function(e){
+	$(".product-description-trigger a").on('click', function(e){
 		e.preventDefault();
 		$(this).toggleClass("active-trigger");
 		$(this).parent().next('.product-description-tab').slideToggle(300);
 	});
 
 	/*Показ быстрого заказа*/
-	$(".product-quick-toggle").click(function(){
+	$(".product-quick-toggle").on('click', function(){
 		$(this).toggleClass("opened");
 		$('.product-quick-block').slideToggle(300);
 	});
@@ -324,15 +277,15 @@ $(document).ready(function() {
 	/*модалка*/
 	if($('.popup-open').length){
 		$('.popup-open').magnificPopup({
-		  removalDelay: 300, 
+		  removalDelay: 300,
 		  fixedContentPos: true,
 		  callbacks: {
 		    beforeOpen: function() {
 		       this.st.mainClass = this.st.el.attr('data-effect');
 		    }
 		  },
-		  midClick: true 
-		});	
+		  midClick: true
+		});
 	}
 
 	if($('.modal-slider').length){
@@ -358,20 +311,20 @@ $(document).ready(function() {
 	// появление поля ввода открытки
 	$(".add-postcard input").change(function(){
         if ($(this).prop('checked')) {
-          $('.order-postcard').slideDown(300); 
-        } 
+          $('.order-postcard').slideDown(300);
+        }
         else {
-          $('.order-postcard').slideUp(300); 
+          $('.order-postcard').slideUp(300);
         }
     });
 
     // появление адрес получателя
 	$(".address-radio-block input").change(function(){
         if ($(".add-address").prop('checked')) {
-          $('.add-address-toggle').slideDown(300); 
-        } 
+          $('.add-address-toggle').slideDown(300);
+        }
         else {
-          $('.add-address-toggle').slideUp(300); 
+          $('.add-address-toggle').slideUp(300);
         }
     });
 

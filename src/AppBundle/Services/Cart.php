@@ -16,7 +16,6 @@ class Cart
      */
     const SESSION_CART  = 'user_cart';
     const TYPE_PRODUCT  = 'product';
-    const TYPE_DISCOUNT = 'discount';
 
     /**
      * @var Session
@@ -66,12 +65,12 @@ class Cart
 
         if (array_key_exists($type, $productsInCart)) {
             if (array_key_exists($id, $productsInCart[$type])) {
-                $productsInCart[$type][$id] += $count;
+                $productsInCart[$type][$id]['count'] += $count;
             } else {
-                $productsInCart[$type][$id] = $count;
+                $productsInCart[$type][$id]['count'] = $count;
             }
         } else {
-            $productsInCart[$type][$id] = $count;
+            $productsInCart[$type][$id]['count'] = $count;
         }
 
         $this->setCart($productsInCart);
@@ -87,28 +86,19 @@ class Cart
     public function getProductsInfo()
     {
         $productsInCart = $this->getProductInCart();
+//        dump($productsInCart);die;
         $productRepository = $this->entityManager->getRepository(Product::class);
-        $packRepository = $this->entityManager->getRepository(Pack::class);
 
         $productsInfo = [];
 
         if ($productsInCart && is_array($productsInCart)) {
             if (array_key_exists(self::TYPE_PRODUCT, $productsInCart)) {
-                foreach ($productsInCart[self::TYPE_PRODUCT] as $id => $quantity) {
+                foreach ($productsInCart[self::TYPE_PRODUCT] as $id => $data) {
                     $infoProduct = $productRepository->find($id);
                     if ($infoProduct) {
                         $productsInfo[self::TYPE_PRODUCT][$id]['item'] = $infoProduct;
-                        $productsInfo[self::TYPE_PRODUCT][$id]['count'] = $quantity;
-                    }
-                }
-            }
-
-            if (array_key_exists(self::TYPE_DISCOUNT, $productsInCart)) {
-                foreach ($productsInCart[self::TYPE_DISCOUNT] as $id => $quantity) {
-                    $infoPack = $packRepository->find($id);
-                    if ($infoPack) {
-                        $productsInfo[self::TYPE_DISCOUNT][$id]['item'] = $infoPack;
-                        $productsInfo[self::TYPE_DISCOUNT][$id]['count'] = $quantity;
+                        $productsInfo[self::TYPE_PRODUCT][$id]['count'] = $data['count'];
+                        $productsInfo[self::TYPE_PRODUCT][$id]['totalPrice'] = $data['count'] * ($infoProduct->getDiscount() ?: $infoProduct->getPrice());
                     }
                 }
             }
@@ -134,12 +124,12 @@ class Cart
 
         if (array_key_exists($type, $productsInCart)) {
             if (array_key_exists($id, $productsInCart[$type])) {
-                $productsInCart[$type][$id] = $count;
+                $productsInCart[$type][$id]['count'] = $count;
             } else {
-                $productsInCart[$type][$id] = $count;
+                $productsInCart[$type][$id]['count'] = $count;
             }
         } else {
-            $productsInCart[$type][$id] = $count;
+            $productsInCart[$type][$id]['count'] = $count;
         }
 
         $this->setCart($productsInCart);
@@ -159,14 +149,8 @@ class Cart
 
         if ($productsInCart && is_array($productsInCart)) {
             if (array_key_exists(self::TYPE_PRODUCT, $productsInCart)) {
-                foreach ($productsInCart[self::TYPE_PRODUCT] as $quantity) {
-                    $count += $quantity;
-                }
-            }
-
-            if (array_key_exists(self::TYPE_DISCOUNT, $productsInCart)) {
-                foreach ($productsInCart[self::TYPE_DISCOUNT] as $quantity) {
-                    $count += $quantity;
+                foreach ($productsInCart[self::TYPE_PRODUCT] as $data) {
+                    $count += $data['count'];
                 }
             }
         }
@@ -186,16 +170,8 @@ class Cart
 
         if ($productsInCart && is_array($productsInCart)) {
             if (array_key_exists(self::TYPE_PRODUCT, $productsInCart)) {
-                foreach ($productsInCart[self::TYPE_PRODUCT] as $product) {
-                    $item = $product['item'];
-                    $totalPrice += $product['count'] * ($item->getDiscount() ?: $item->getPrice());
-                }
-            }
-
-            if (array_key_exists(self::TYPE_DISCOUNT, $productsInCart)) {
-                foreach ($productsInCart[self::TYPE_DISCOUNT] as $product) {
-                    $item = $product['item'];
-                    $totalPrice += $product['count'] * ($item->getDiscount() ?: $item->getPrice());
+                foreach ($productsInCart[self::TYPE_PRODUCT] as $data) {
+                    $totalPrice += $data['totalPrice'];
                 }
             }
         }

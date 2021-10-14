@@ -44,10 +44,10 @@ class DefaultController extends Controller
     /**
      * @return Response
      */
-    public function topBooksAction(Request $request)
+    public function cartAction(Request $request)
     {
         $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Топ-100 книг']);
+        $breadcrumb->addBreadcrumb(['title' => 'Корзина']);
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => '100 лучших книг на сайте | TopBook.com.ua - скачать книги в fb2, epub, pdf, txt форматах',
@@ -61,7 +61,7 @@ class DefaultController extends Controller
             ],
         ]);
 
-        return $this->render('BookBundle::top-100.html.twig');
+        return $this->render('AppBundle:cart:cart.html.twig');
     }
 
     /**

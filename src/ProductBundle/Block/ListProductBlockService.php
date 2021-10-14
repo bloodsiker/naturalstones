@@ -64,11 +64,10 @@ class ListProductBlockService extends AbstractAdminBlockService
             'title'            => null,
             'list_type'        => null,
             'items_count'      => 20,
-            'popular'          => false,
-            'popular_days_ago' => 30,
             'page'             => 1,
             'category'         => null,
             'tag'              => null,
+            'exclude_ids'      => null,
             'show_paginator'   => true,
             'template'         => 'ProductBundle:Block:large_list.html.twig',
         ]);
@@ -103,6 +102,10 @@ class ListProductBlockService extends AbstractAdminBlockService
 
         if ($blockContext->getSetting('tag')) {
             $repository->filterByTag($qb, $blockContext->getSetting('tag'));
+        }
+
+        if ($blockContext->getSetting('exclude_ids')) {
+            $repository->filterExclude($qb, $blockContext->getSetting('exclude_ids'));
         }
 
         $paginator = new Pagerfanta(new DoctrineORMAdapter($qb, true, false));

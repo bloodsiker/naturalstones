@@ -49,6 +49,17 @@ class ProductRepository extends EntityRepository
     }
 
     /**
+     * @param  QueryBuilder  $qb
+     * @param $excludeIds
+     *
+     * @return QueryBuilder
+     */
+    public function filterExclude(QueryBuilder $qb, $excludeIds) : QueryBuilder
+    {
+        return $qb->andWhere('p.id not in (:exclude_ids)')->setParameter('exclude_ids', $excludeIds);
+    }
+
+    /**
      * @param array $tags
      * @param array $excludeIds
      * @param int   $limit

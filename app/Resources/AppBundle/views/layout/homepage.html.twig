@@ -24,15 +24,23 @@
 
         <a href="" class="video-instagram"><img src="{{ asset('bundles/app/images/instagram.svg') }}" alt=""></a>
 
-        {{
-            sonata_block_render(
-                { 'type': 'app.block.service.cart' },
-                {
-                    'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART'),
-                    'class': 'video-header-cart'
-                }
-            )
-        }}
+        <div class="header-cart video-header-cart">
+            {{
+                sonata_block_render(
+                    { 'type': 'app.block.service.cart' },
+                    { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART_QUANTITY') }
+                )
+            }}
+
+            <div class="header-cart-info">
+                {{
+                    sonata_block_render(
+                        { 'type': 'app.block.service.cart' },
+                        { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART') }
+                    )
+                }}
+            </div>
+        </div>
 
         <div class="video-menu-toggle">
             <div class="buter">

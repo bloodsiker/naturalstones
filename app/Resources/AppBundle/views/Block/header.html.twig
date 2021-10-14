@@ -15,12 +15,23 @@
                 )
             }}
 
-            {{
-                sonata_block_render(
-                    { 'type': 'app.block.service.cart' },
-                    { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART') }
-                )
-            }}
+            <div class="header-cart">
+                {{
+                    sonata_block_render(
+                        { 'type': 'app.block.service.cart' },
+                        { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART_QUANTITY') }
+                    )
+                }}
+
+                <div class="header-cart-info">
+                    {{
+                        sonata_block_render(
+                            { 'type': 'app.block.service.cart' },
+                            { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART') }
+                        )
+                    }}
+                </div>
+            </div>
         </div>
     </div>
     <div class="header-overlay"></div>

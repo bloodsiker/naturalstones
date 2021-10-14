@@ -373,8 +373,7 @@ h1 {
 }
 
 .header-cart:hover .header-cart-info {
-  opacity: 1;
-  visibility: visible;
+  /*display: block;*/
 }
 
 .header-cart-link {
@@ -433,8 +432,7 @@ h1 {
   border-radius: 27px;
   width: 372px;
   transition: all 0.3s ease-out 0.2s;
-  opacity: 0;
-  visibility: hidden;
+  display: none;
 }
 
 .header-cart-info .top {
@@ -2944,6 +2942,14 @@ footer {
   font-weight: bold;
   font-size: 20px;
 }
+.cart-table .old-price {
+  font-size: 18px;
+  text-decoration: line-through;
+  margin-right: 14px;
+}
+.cart-table .old-price ~ span {
+  color: #f08383;
+}
 
 .cart-table .cart-item {
   display: -ms-flexbox;
@@ -4139,7 +4145,7 @@ footer {
   }
 
   .header-cart-info {
-    display: none !important;
+    /*display: none !important;*/
   }
 
   .header-cart {

@@ -1,0 +1,20 @@
+{% if mainImage %}
+    <div class="main-video-bg">
+        <img class="main-video-img lazyload" data-src="{{ asset(mainImage.image.path) }}" src="" alt="{{ mainImage.title }}" />
+        <video autoplay muted loop poster="{{ asset(mainImage.image.path) }}">
+            <!--
+            <source src="images/video/video.mp4"></source>
+            <source src="images/video/video.webm" type="video/webm"></source>
+            <source src="images/video/video.ogv" type="video/ogg">
+             -->
+        </video>
+    </div>
+    <div class="main-video-content">
+        <div class="inner">
+            <div class="desc-logo"><img src="{{ asset('bundles/app/images/video-logo.svg') }}" alt=""></div>
+            {% if mainImage.title %}
+                <div class="desc">{{ mainImage.title }}</div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

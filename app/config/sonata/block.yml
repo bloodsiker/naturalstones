@@ -24,12 +24,18 @@ sonata_block:
             contexts: [cms]
         app.block.service.menu:
             contexts: [ cms ]
+        app.block.service.cart:
+            contexts: [ cms ]
         app.block.service.search:
             contexts: [cms]
         app.block.service.breadcrumb:
             contexts: [cms]
 #        app.block.service.get_state_value:
 #            contexts: [cms]
+
+        # MainImageBundle Block's
+        main.block.image:
+            contexts: [ cms ]
 
         # BookBundle Block's
         book.block.list:

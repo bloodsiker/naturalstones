@@ -40,7 +40,7 @@ product:
         stones: Камни
         sizes: Размер(ы)
         price: Цена
-        discount: Скидочная цена
+        discount: Цена со скидкой
         tags: Тег(и)
         views: Просмотры
         updated_at: Изменена

@@ -61,3 +61,14 @@ services:
             - '@app.breadcrumb'
         tags:
             - { name: sonata.block }
+
+    app.block.service.cart:
+        class: AppBundle\Block\CartBlockService
+        arguments:
+            - app.block.service.cart
+            - '@templating'
+            - '@app.cart'
+            - '@request_stack'
+            - '@app.entity_manager'
+        tags:
+            - { name: sonata.block }

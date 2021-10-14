@@ -14,7 +14,7 @@ class ProductRepository extends EntityRepository
     /**
      * @return QueryBuilder
      */
-    public function baseBookQueryBuilder(): QueryBuilder
+    public function baseProductQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p');
         $qb
@@ -27,13 +27,24 @@ class ProductRepository extends EntityRepository
 
     /**
      * @param QueryBuilder $qb
+     * @param Category     $category
+     *
+     * @return QueryBuilder
+     */
+    public function filterByCategory(QueryBuilder $qb, Category $category) : QueryBuilder
+    {
+        return $qb->andWhere('p.category = :category')->setParameter('category', $category);
+    }
+
+    /**
+     * @param QueryBuilder $qb
      * @param Tag          $tag
      *
      * @return QueryBuilder
      */
     public function filterByTag(QueryBuilder $qb, Tag $tag) : QueryBuilder
     {
-        return $qb->innerJoin('b.tags', 'tag', 'WITH', 'tag.id = :tag')
+        return $qb->innerJoin('p.tags', 'tag', 'WITH', 'tag.id = :tag')
             ->setParameter('tag', $tag);
     }
 
@@ -48,7 +59,7 @@ class ProductRepository extends EntityRepository
      */
     public function getRelatedByTagsBooks(array $tags = [], array $excludeIds = [], $limit = 50)
     {
-        $qb = $this->baseBookQueryBuilder();
+        $qb = $this->baseProductQueryBuilder();
         $qb
             ->innerJoin('p.tags', 'tag', 'WITH', 'tag.id IN (:tags)')
             ->setParameter('tags', $tags)

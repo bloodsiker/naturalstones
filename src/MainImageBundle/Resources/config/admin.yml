@@ -1,0 +1,11 @@
+services:
+    main_image.admin.image:
+        class: MainImageBundle\Admin\MainImageAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "group.main_image", label: "group.main_image_editor" }
+        arguments:
+          - ~
+          - MainImageBundle\Entity\MainImage
+          - AdminBundle:CRUD
+        calls:
+          - [ setTranslationDomain, [MainImageBundle] ]

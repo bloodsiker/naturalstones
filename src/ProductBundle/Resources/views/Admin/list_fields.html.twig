@@ -12,13 +12,12 @@
         {% elseif field_description.name == 'sizes' %}
             {% set route_name = field_description.options.route.name %}
             {% for size in object.sizes %}
-                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, size, field_description.options.route.parameters) }}" class="label label-primary">{{ size.name }}</a>
+                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, size, field_description.options.route.parameters) }}" class="label label-primary">{{ size }}</a>
             {% endfor %}
         {% elseif field_description.name == 'colours' %}
             {% set route_name = field_description.options.route.name %}
             {% for colour in object.colours %}
-                <span class="colorpicker__preview" style="background-color: {{ '#' ~ colour.colour }}; margin: 0;"></span>
-{#                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, colour, field_description.options.route.parameters) }}" class="label label-warning">{{ colour.name }}</a>#}
+                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, colour, field_description.options.route.parameters) }}"><span class="colorpicker__preview" style="background-color: {{ '#' ~ colour.colour }}; margin: 0;"></span></a>
             {% endfor %}
         {% elseif field_description.name == 'name' %}
             <a href="{{ admin.generateUrl('edit', { id : object.id }) }}" class="sonata-link-identifier">{{ object.name }}</a>

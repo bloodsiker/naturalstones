@@ -16,6 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Size
 {
+    const TYPE_ML = 'мл';
+    const TYPE_SM = 'см';
+
     /**
      * @var int
      *
@@ -28,9 +31,16 @@ class Size
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=100, nullable=false)
      */
     protected $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=20, nullable=false)
+     */
+    protected $type;
 
     /**
      * @var bool
@@ -52,6 +62,7 @@ class Size
     public function __construct()
     {
         $this->isActive = true;
+        $this->type = self::TYPE_SM;
 
         $this->products = new ArrayCollection();
     }
@@ -63,7 +74,7 @@ class Size
      */
     public function __toString()
     {
-        return (string) $this->getName();
+        return (string) sprintf('%s %s', $this->getName(), $this->getType());
     }
 
     /**
@@ -98,6 +109,30 @@ class Size
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return Size
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -156,5 +191,16 @@ class Size
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTypes()
+    {
+        return [
+            self::TYPE_ML => self::TYPE_ML,
+            self::TYPE_SM => self::TYPE_SM,
+        ];
     }
 }

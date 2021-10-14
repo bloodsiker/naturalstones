@@ -1,86 +1,24 @@
-<div class="catalog-flex">
-    <div class="catalog-block">
-        <a href="" class="image"><img src="images/product-1.jpg" alt=""></a>
-        <div class="name"><a href="">Аква 25 роз</a></div>
-        <div class="price"><span>60 USD</span></div>
-        <a href="" class="button">Купить</a>
+{% if products %}
+    <div class="catalog-flex">
+        {% for product in products %}
+            <div class="catalog-block">
+                <a href="{{ product_path(product) }}" class="image"><img class="lazyload" data-src="{{ asset(product.image.path) }}" src="" alt="{{ product.name }}"></a>
+                <div class="name"><a href="">{{ product.name }}</a></div>
+                {% if product.discount %}
+                    <div class="price">
+                        <span class="old-price">{{ product.price}} грн</span>
+                        <span>{{ product.discount}} грн</span>
+                    </div>
+                {% else %}
+                    <div class="price"><span>{{ product.price}} грн</span></div>
+                {% endif %}
+                <a href="" class="button">Купить</a>
+            </div>
+        {% endfor %}
     </div>
-    <div class="catalog-block">
-        <a href="" class="image"><img src="images/product-2.jpg" alt=""></a>
-        <div class="name"><a href="">Букет "Лион"</a></div>
-        <div class="price"><span>60 USD</span></div>
-        <a href="" class="button">Купить</a>
-    </div>
-    <div class="catalog-block">
-        <a href="" class="image"><img src="images/product-3.jpg" alt=""></a>
-        <div class="name"><a href="">Ред Наоми 25 роз</a></div>
-        <div class="price"><span>60 USD</span></div>
-        <a href="" class="button">Купить</a>
-    </div>
-    <div class="catalog-block">
-        <a href="" class="image"><img src="images/product-4.jpg" alt=""></a>
-        <div class="name"><a href="">Корзина "Вечная Любовь"</a></div>
-        <div class="price">
-            <span class="old-price">60 USD</span>
-            <span>50 USD</span>
-        </div>
-        <a href="" class="button">Купить</a>
-    </div>
-    <div class="catalog-block">
-        <a href="" class="image"><img src="images/product-1.jpg" alt=""></a>
-        <div class="name"><a href="">Аква 25 роз</a></div>
-        <div class="price"><span>60 USD</span></div>
-        <a href="" class="button">Купить</a>
-    </div>
-    <div class="catalog-block">
-        <a href="" class="image"><img src="images/product-2.jpg" alt=""></a>
-        <div class="name"><a href="">Букет "Лион"</a></div>
-        <div class="price"><span>60 USD</span></div>
-        <a href="" class="button">Купить</a>
-    </div>
-    <div class="catalog-block">
-        <a href="" class="image"><img src="images/product-3.jpg" alt=""></a>
-        <div class="name"><a href="">Ред Наоми 25 роз</a></div>
-        <div class="price"><span>60 USD</span></div>
-        <a href="" class="button">Купить</a>
-    </div>
-    <div class="catalog-block">
-        <a href="" class="image"><img src="images/product-4.jpg" alt=""></a>
-        <div class="name"><a href="">Корзина "Вечная Любовь"</a></div>
-        <div class="price">
-            <span class="old-price">60 USD</span>
-            <span>50 USD</span>
-        </div>
-        <a href="" class="button">Купить</a>
-    </div>
-    <div class="catalog-block">
-        <a href="" class="image"><img src="images/product-1.jpg" alt=""></a>
-        <div class="name"><a href="">Аква 25 роз</a></div>
-        <div class="price"><span>60 USD</span></div>
-        <a href="" class="button">Купить</a>
-    </div>
-    <div class="catalog-block">
-        <a href="" class="image"><img src="images/product-2.jpg" alt=""></a>
-        <div class="name"><a href="">Букет "Лион"</a></div>
-        <div class="price"><span>60 USD</span></div>
-        <a href="" class="button">Купить</a>
-    </div>
-    <div class="catalog-block">
-        <a href="" class="image"><img src="images/product-3.jpg" alt=""></a>
-        <div class="name"><a href="">Ред Наоми 25 роз</a></div>
-        <div class="price"><span>60 USD</span></div>
-        <a href="" class="button">Купить</a>
-    </div>
-    <div class="catalog-block">
-        <a href="" class="image"><img src="images/product-4.jpg" alt=""></a>
-        <div class="name"><a href="">Корзина "Вечная Любовь"</a></div>
-        <div class="price">
-            <span class="old-price">60 USD</span>
-            <span>50 USD</span>
-        </div>
-        <a href="" class="button">Купить</a>
-    </div>
-</div>
+{% endif %}
+
+
 
 <div class="more-catalog">
     <a href="" class="more-catalog-link"> <!-- loading - класс для вращения стрелки -->
@@ -88,12 +26,17 @@
         <span>Загрузить еще 16 товаров</span>
     </a>
 </div>
-<!--Пагинация-->
-<ul class="pagination">
-    <li><a href=""><i class="arrow prev"></i></a></li>
-    <li><a href="">1</a></li>
-    <li class="active"><a href="">2</a></li>
-    <li><a href="">3</a></li>
-    <li class="next"><a href=""><i class="arrow next"></i></a></li>
-</ul>
-<!--//Пагинация-->
+
+{#<!--Пагинация-->#}
+{#<ul class="pagination">#}
+{#    <li><a href=""><i class="arrow prev"></i></a></li>#}
+{#    <li><a href="">1</a></li>#}
+{#    <li class="active"><a href="">2</a></li>#}
+{#    <li><a href="">3</a></li>#}
+{#    <li class="next"><a href=""><i class="arrow next"></i></a></li>#}
+{#</ul>#}
+{#<!--//Пагинация-->#}
+
+{% if settings.show_paginator and products.maxPerPage is defined and products.count > products.maxPerPage %}
+    {{ pagerfanta(products, { 'omitFirstPage': true}) }}
+{% endif %}

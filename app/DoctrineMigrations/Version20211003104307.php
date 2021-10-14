@@ -34,6 +34,7 @@ final class Version20211003104307 extends AbstractMigration
         $size = $schema->createTable('share_sizes');
         $size->addColumn('id', 'integer', array('unsigned' => true, 'notnull' => true, 'autoincrement' => true));
         $size->addColumn('name', 'string', array('length' => 100, 'notnull' => true));
+        $size->addColumn('type', 'string', array('length' => 20, 'notnull' => true));
         $size->addColumn('is_active', 'boolean', array('notnull' => true));
         $size->setPrimaryKey(array('id'));
 

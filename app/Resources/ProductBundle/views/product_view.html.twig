@@ -211,125 +211,29 @@
             </div>
         </div>
 
-        <div class="similar-products-block">
-            <div class="similar-title"><span>Похожие товары</span></div>
-            <div class="similar-products-slider js-slick">
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product/3.jpg" alt=""></a>
-                    <div class="name"><a href="">Аква 25 роз</a></div>
-                    <div class="price"><span>60 USD</span></div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product/4.jpg" alt=""></a>
-                    <div class="name"><a href="">Букет "Лион"</a></div>
-                    <div class="price"><span>60 USD</span></div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product/5.jpg" alt=""></a>
-                    <div class="name"><a href="">Ред Наоми 25 роз</a></div>
-                    <div class="price"><span>60 USD</span></div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product/6.jpg" alt=""></a>
-                    <div class="name"><a href="">Корзина "Вечная Любовь"</a></div>
-                    <div class="price">
-                        <span class="old-price">60 USD</span>
-                        <span>50 USD</span>
-                    </div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product/7.jpg" alt=""></a>
-                    <div class="name"><a href="">Аква 25 роз</a></div>
-                    <div class="price"><span>60 USD</span></div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product-2.jpg" alt=""></a>
-                    <div class="name"><a href="">Букет "Лион"</a></div>
-                    <div class="price"><span>60 USD</span></div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product-3.jpg" alt=""></a>
-                    <div class="name"><a href="">Ред Наоми 25 роз</a></div>
-                    <div class="price"><span>60 USD</span></div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product-4.jpg" alt=""></a>
-                    <div class="name"><a href="">Корзина "Вечная Любовь"</a></div>
-                    <div class="price">
-                        <span class="old-price">60 USD</span>
-                        <span>50 USD</span>
-                    </div>
-                    <a href="" class="button">Купить</a>
-                </div>
-            </div>
-        </div>
+        {{
+            sonata_block_render(
+                { 'type': 'product.block.list' },
+                {
+                    'title' : 'Похожие товары',
+                    'items_count' : 10,
+                    'page': app.request.get('page') ? app.request.get('page') : 1,
+                    'list_type': constant('ProductBundle\\Block\\ListProductBlockService::SIMILAR_LIST')
+                }
+            )
+        }}
 
-        <div class="similar-products-block">
-            <div class="similar-title"><span>С этим товаром покупают</span></div>
-            <div class="similar-products-slider js-slick">
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product-1.jpg" alt=""></a>
-                    <div class="name"><a href="">Аква 25 роз</a></div>
-                    <div class="price"><span>60 USD</span></div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product-2.jpg" alt=""></a>
-                    <div class="name"><a href="">Букет "Лион"</a></div>
-                    <div class="price"><span>60 USD</span></div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product-3.jpg" alt=""></a>
-                    <div class="name"><a href="">Ред Наоми 25 роз</a></div>
-                    <div class="price"><span>60 USD</span></div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product-4.jpg" alt=""></a>
-                    <div class="name"><a href="">Корзина "Вечная Любовь"</a></div>
-                    <div class="price">
-                        <span class="old-price">60 USD</span>
-                        <span>50 USD</span>
-                    </div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product-1.jpg" alt=""></a>
-                    <div class="name"><a href="">Аква 25 роз</a></div>
-                    <div class="price"><span>60 USD</span></div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product-2.jpg" alt=""></a>
-                    <div class="name"><a href="">Букет "Лион"</a></div>
-                    <div class="price"><span>60 USD</span></div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product-3.jpg" alt=""></a>
-                    <div class="name"><a href="">Ред Наоми 25 роз</a></div>
-                    <div class="price"><span>60 USD</span></div>
-                    <a href="" class="button">Купить</a>
-                </div>
-                <div class="catalog-block">
-                    <a href="" class="image"><img src="images/product-4.jpg" alt=""></a>
-                    <div class="name"><a href="">Корзина "Вечная Любовь"</a></div>
-                    <div class="price">
-                        <span class="old-price">60 USD</span>
-                        <span>50 USD</span>
-                    </div>
-                    <a href="" class="button">Купить</a>
-                </div>
-            </div>
-        </div>
+        {{
+        sonata_block_render(
+            { 'type': 'product.block.list' },
+            {
+                'title' : 'С этим товаром покупают',
+                'items_count' : 10,
+                'page': app.request.get('page') ? app.request.get('page') : 1,
+                'list_type': constant('ProductBundle\\Block\\ListProductBlockService::SIMILAR_LIST')
+            }
+        )
+        }}
 
     </div>
 </section>

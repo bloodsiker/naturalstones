@@ -15,75 +15,24 @@
 
 {% block main_screen %}
     <section class="main-video-section">
-        <div class="main-video-bg">
-            <img class="main-video-img" src="{{ asset('bundles/app/images/poster/1.jpg') }}" alt="" />
-            <video autoplay muted loop poster="{{ asset('bundles/app/images/poster/1.jpg') }}">
-                <!--
-                <source src="images/video/video.mp4"></source>
-                <source src="images/video/video.webm" type="video/webm"></source>
-                <source src="images/video/video.ogv" type="video/ogg">
-                 -->
-            </video>
-        </div>
-        <div class="main-video-content">
-            <div class="inner">
-                <div class="desc-logo"><img src="{{ asset('bundles/app/images/video-logo.svg') }}" alt=""></div>
-                <div class="desc">Здесь живет твой оберег</div>
-            </div>
-        </div>
+
+        {{
+            sonata_block_render(
+                { 'type': 'main.block.image' }
+            )
+        }}
 
         <a href="" class="video-instagram"><img src="{{ asset('bundles/app/images/instagram.svg') }}" alt=""></a>
 
-        <div class="header-cart video-header-cart">
-            <a href="" class="header-cart-link">
-                <img src="{{ asset('bundles/app/images/cart.svg') }}" alt="">
-                <span class="count">4</span>
-            </a>
-            <div class="header-cart-info">
-                <div class="top">В корзине 4 товара</div>
-                <div class="middle">
-                    <div class="header-cart-item">
-                        <a href="" class="image"><img src="{{ asset('bundles/app/images/cart-item-1.jpg') }}" alt=""></a>
-                        <div class="inner">
-                            <a href="" class="name">Блю Мондиаль 101 роза</a>
-                            <div class="price">60 USD</div>
-                        </div>
-                        <a href="" class="remove"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></a>
-                    </div>
-                    <div class="header-cart-item">
-                        <a href="" class="image"><img src="{{ asset('bundles/app/images/cart-item-2.jpg') }}" alt=""></a>
-                        <div class="inner">
-                            <a href="" class="name">Белла 31 роза</a>
-                            <div class="price">123 USD</div>
-                        </div>
-                        <a href="" class="remove"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></a>
-                    </div>
-                    <div class="header-cart-item">
-                        <a href="" class="image"><img src="{{ asset('bundles/app/images/cart-item-3.jpg') }}" alt=""></a>
-                        <div class="inner">
-                            <a href="" class="name">Алегрия 31 роза</a>
-                            <div class="price">77 USD</div>
-                        </div>
-                        <a href="" class="remove"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></a>
-                    </div>
-                    <div class="header-cart-item">
-                        <a href="" class="image"><img src="{{ asset('bundles/app/images/cart-item-4.jpg') }}" alt=""></a>
-                        <div class="inner">
-                            <a href="" class="name">Букет "Для Тебя" 101 роза</a>
-                            <div class="price">140 USD</div>
-                        </div>
-                        <a href="" class="remove"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></a>
-                    </div>
-                </div>
-                <div class="bottom">
-                    <div class="total">
-                        <p>Итого:</p>
-                        <div class="total-price">1257 USD</div>
-                    </div>
-                    <a href="" class="button">Оформить заказ</a>
-                </div>
-            </div>
-        </div>
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.cart' },
+                {
+                    'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART'),
+                    'class': 'video-header-cart'
+                }
+            )
+        }}
 
         <div class="video-menu-toggle">
             <div class="buter">
@@ -104,7 +53,7 @@
         }}
 
         <div class="video-slide-down">
-            <img src="images/slide-down.svg" alt="">
+            <img src="{{ asset('bundles/app/images/slide-down.svg') }}" alt="">
             Все украшения
         </div>
 
@@ -125,7 +74,7 @@
             <div class="container">
 
                 <div class="filter-outer">
-                    <h1>Все букеты</h1>
+                    <h1>Все товары</h1>
                     <form action="#" method="post" class="filter-form">
                         <div class="filter-content">
                             <div class="filter-content-inner">
@@ -356,22 +305,23 @@
                 </div>
 
                 {{
-                sonata_block_render(
-                    { 'type': 'product.block.list' },
-                    {
-                        'items_count' : 12,
-                        'page': app.request.get('page') ? app.request.get('page') : 1
-                    }
-                )
+                    sonata_block_render(
+                        { 'type': 'product.block.list' },
+                        {
+                            'items_count' : 5,
+                            'page': app.request.get('page') ? app.request.get('page') : 1,
+                            'show_paginator': false
+                        }
+                    )
                 }}
 
                 {{
-                sonata_block_render(
-                    { 'type': 'page.block.site_variable' },
-                    {
-                        'placement': 'homepage-bottom'
-                    }
-                )
+                    sonata_block_render(
+                        { 'type': 'page.block.site_variable' },
+                        {
+                            'placement': 'homepage-bottom'
+                        }
+                    )
                 }}
                 <div class="seo-content">
                     <h4>Доставка цветов по миру от Bali Flowers</h4>

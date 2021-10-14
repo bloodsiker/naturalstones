@@ -1,0 +1,21 @@
+Action: Действия
+Main Image List: Список изображений
+Main Image Create: Добавить изображение
+
+form_group:
+    basic: Основные
+    additional: Дополнительные
+
+group:
+    main_image: Фоновая картинка
+    main_image_editor: Фоновая картинка
+
+main_image:
+    fields:
+        title: Заголовок
+        description: Описание
+        image: Изображение
+        is_active: Активный
+        created_at: Дата создания
+        order_num: Позиция
+        id: ID

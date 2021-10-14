@@ -75,3 +75,9 @@ services:
 
     app.breadcrumb:
         class: "AppBundle\\Services\\BreadcrumbService"
+
+    app.cart:
+        class: AppBundle\Services\Cart
+        arguments:
+            - '@session'
+            - '@app.entity_manager'

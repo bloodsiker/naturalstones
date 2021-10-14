@@ -8,9 +8,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\CoreBundle\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -51,6 +50,11 @@ class SizeAdmin extends Admin
                     'label' => 'size.fields.is_active',
                     'required' => false,
                 ])
+                ->add('type', ChoiceType::class, [
+                    'label' => 'size.fields.type',
+                    'choices' => $this->getTypes(),
+                    'required' => true,
+                ])
             ->end()
         ;
     }
@@ -66,6 +70,14 @@ class SizeAdmin extends Admin
             ])
             ->add('name', null, [
                 'label' => 'size.fields.name',
+            ])
+            ->add('type', null, [
+                'label' => 'size.fields.type',
+            ], ChoiceType::class, [
+                'choices' => $this->getTypes(),
+                'choice_translation_domain' => $this->getTranslationDomain(),
+                'expanded' => false,
+                'multiple' => false,
             ])
             ->add('isActive', null, [
                 'label' => 'size.fields.is_active',
@@ -89,6 +101,12 @@ class SizeAdmin extends Admin
                 'label' => 'size.fields.name',
                 'field' => 'name',
             ])
+            ->add('type', 'choice', [
+                'label' => 'size.fields.type',
+                'choices' => $this->getTypes(),
+                'catalogue' => $this->getTranslationDomain(),
+                'editable'  => true,
+            ])
             ->add('_action', 'actions', [
                 'actions' => ['edit' => []],
             ])
@@ -105,5 +123,17 @@ class SizeAdmin extends Admin
             ->add('name')
             ->add('isActive')
         ;
+    }
+
+    /**
+     * @return array
+     *
+     * @throws \Exception
+     */
+    private function getTypes()
+    {
+        $matchEntity = $this->getClass();
+
+        return $matchEntity::getTypes();
     }
 }

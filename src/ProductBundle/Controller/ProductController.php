@@ -7,6 +7,7 @@ use BookBundle\Entity\BookCollection;
 use BookBundle\Entity\BookInfoDownload;
 use GenreBundle\Entity\Genre;
 use MediaBundle\Entity\MediaFile;
+use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,8 +31,10 @@ class ProductController extends Controller
     public function listAction(Request $request)
     {
         $slug = $request->get('slug');
+        $repo = $this->getDoctrine()->getManager()->getRepository(Category::class);
+        $category = $repo->findOneBy(['slug' => $slug]);
         $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Новинки книг']);
+        $breadcrumb->addBreadcrumb(['title' => $category->getName()]);
 
         $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
         $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
@@ -45,7 +48,7 @@ class ProductController extends Controller
             ],
         ]);
 
-        return $this->render('ProductBundle::product_list.html.twig');
+        return $this->render('ProductBundle::product_list.html.twig', ['category' => $category]);
     }
 
     /**

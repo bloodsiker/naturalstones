@@ -15,67 +15,14 @@
                 )
             }}
 
-            <div class="header-cart">
-                <a href="" class="header-cart-link">
-                    <img src="{{ asset('bundles/app/images/cart.svg') }}" alt="">
-                    <span class="count">4</span>
-                </a>
-                <div class="header-cart-info">
-                    <div class="top">В корзине 4 товара</div>
-                    <div class="middle">
-                        <div class="header-cart-item">
-                            <a href="" class="image"><img src="{{ asset('bundles/app/images/cart-item-1.jpg') }}" alt=""></a>
-                            <div class="inner">
-                                <a href="" class="name">Блю Мондиаль 101 роза</a>
-                                <div class="price">60 USD</div>
-                            </div>
-                            <a href="" class="remove"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></a>
-                        </div>
-                        <div class="header-cart-item">
-                            <a href="" class="image"><img src="{{ asset('bundles/app/images/cart-item-2.jpg') }}" alt=""></a>
-                            <div class="inner">
-                                <a href="" class="name">Белла 31 роза</a>
-                                <div class="price">123 USD</div>
-                            </div>
-                            <a href="" class="remove"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></a>
-                        </div>
-                        <div class="header-cart-item">
-                            <a href="" class="image"><img src="{{ asset('bundles/app/images/cart-item-3.jpg') }}" alt=""></a>
-                            <div class="inner">
-                                <a href="" class="name">Алегрия 31 роза</a>
-                                <div class="price">77 USD</div>
-                            </div>
-                            <a href="" class="remove"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></a>
-                        </div>
-                        <div class="header-cart-item">
-                            <a href="" class="image"><img src="{{ asset('bundles/app/images/cart-item-4.jpg') }}" alt=""></a>
-                            <div class="inner">
-                                <a href="" class="name">Букет "Для Тебя" 101 роза</a>
-                                <div class="price">140 USD</div>
-                            </div>
-                            <a href="" class="remove"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></a>
-                        </div>
-                    </div>
-                    <div class="bottom">
-                        <div class="total">
-                            <p>Итого:</p>
-                            <div class="total-price">1257 USD</div>
-                        </div>
-                        <a href="" class="button">Оформить заказ</a>
-                    </div>
-                </div>
-            </div>
+            {{
+                sonata_block_render(
+                    { 'type': 'app.block.service.cart' },
+                    { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART') }
+                )
+            }}
         </div>
     </div>
     <div class="header-overlay"></div>
 </div>
 <!--//header-->
-
-{#{{#}
-{#sonata_block_render(#}
-{#    { 'type': 'app.block.service.search' },#}
-{#    {#}
-{#        'list_type' : constant('AppBundle\\Block\\SearchBlockService::HEADER_FORM_TEMPLATE'),#}
-{#    }#}
-{#)#}
-{#}}#}

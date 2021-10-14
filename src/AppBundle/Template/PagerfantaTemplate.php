@@ -15,15 +15,17 @@ use Symfony\Component\Translation\TranslatorInterface;
 class PagerfantaTemplate extends DefaultTemplate
 {
     static protected $defaultOptions = [
-        'prev_message'       => '<span class="pagination-prev"><a href="%href%">%prev_text%</a></span>',
-        'next_message'       => '<span class="pagination-next"><a href="%href%">%next_text%</a></span>',
+//        'prev_message'       => '<span class="pagination-prev"><a href="%href%">%prev_text%</a></span>',
+        'prev_message'       => '<li><a href="%href%"><i class="arrow prev"></i></a></li>',
+//        'next_message'       => '<span class="pagination-next"><a href="%href%">%next_text%</a></span>',
+        'next_message'       => '<li class="next"><a href="%href%"><i class="arrow next"></i></a></li>',
         'css_disabled_class' => '',
         'css_dots_class'     => 'nav_ext',
-        'css_current_class'  => 'pagination-current',
+        'css_current_class'  => 'active',
         'dots_text'          => '...',
-        'container_template' => '<div class="pagination">%prev%<span class="navigation">%pages%</span>%next%</div>',
-        'page_template'      => '<a href="%href%"%rel%>%text%</a>',
-        'span_template'      => '<span class="%class%">%text%</span>',
+        'container_template' => '<ul class="pagination">%prev% %pages% %next%</ul>',
+        'page_template'      => '<li><a href="%href%"%rel%>%text%</a></li>',
+        'span_template'      => '<li class="%class%"><a href="%href%"%rel%>%text%</a></li>',
         'rel_previous'        => 'prev',
         'rel_next'            => 'next',
     ];

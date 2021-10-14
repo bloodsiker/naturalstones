@@ -46,6 +46,7 @@ size:
     fields:
         id: ID
         name: Название
+        type: Мера длины
         slug: Сегмент URL (slug)
         is_active: Активен
         created_at: Дата создания

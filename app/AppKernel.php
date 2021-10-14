@@ -79,6 +79,7 @@ class AppKernel extends Kernel
             new ShareBundle\ShareBundle(),
             new OrderBundle\OrderBundle(),
             new QuizBundle\QuizBundle(),
+            new MainImageBundle\MainImageBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

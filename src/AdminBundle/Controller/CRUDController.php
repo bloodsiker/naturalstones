@@ -12,8 +12,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CRUDController extends Controller
 {
     //TODO: add translations for string values
-    const ERROR_MESSAGE = 'actions.message.object_not_found';//'Unable to find the object with id : %s';
-    const SUCCESS_MESSAGE = 'actions.message.object_success';//'Moved successfully';
+    const ERROR_MESSAGE = 'Unable to find the object with id : %s';//'Unable to find the object with id : %s';
+    const SUCCESS_MESSAGE = 'Moved successfully';//'Moved successfully';
 
     /**
      * Move item up by decrementing order_num value
@@ -23,13 +23,17 @@ class CRUDController extends Controller
     public function moveUpAction()
     {
         $repository = $this->getRepository();
-
         return $this->objectTransform(function ($object, $admin) use ($repository) {
             if (method_exists($repository, 'getHighestPropertyByPosition')) {
                 $secondObject = $repository->getHighestPropertyByPosition('orderNum', $object, 'DESC');
                 if ($secondObject) {
-                    $object->setOrderNum($secondObject->getOrderNum());
-                    $secondObject->setOrderNum($secondObject->getOrderNum() + 1);
+                    if ($secondObject->getOrderNum() === $object->getOrderNum()) {
+                        $secondObject->setOrderNum($object->getOrderNum() + 1);
+                    } else {
+                        $objectNum = $object->getOrderNum();
+                        $object->setOrderNum($secondObject->getOrderNum());
+                        $secondObject->setOrderNum($objectNum);
+                    }
                 }
             } else {
                 $object->setOrderNum($object->getOrderNum() - 1);
@@ -50,8 +54,13 @@ class CRUDController extends Controller
             if (method_exists($repository, 'getHighestPropertyByPosition')) {
                 $secondObject = $repository->getHighestPropertyByPosition('orderNum', $object, 'ASC');
                 if ($secondObject) {
-                    $object->setOrderNum($secondObject->getOrderNum());
-                    $secondObject->setOrderNum($secondObject->getOrderNum() - 1);
+                    if ($secondObject->getOrderNum() === $object->getOrderNum()) {
+                        $object->setOrderNum($object->getOrderNum() + 1);
+                    } else {
+                        $objectNum = $object->getOrderNum();
+                        $object->setOrderNum($secondObject->getOrderNum());
+                        $secondObject->setOrderNum($objectNum);
+                    }
                 }
             } else {
                 $object->setOrderNum($object->getOrderNum() + 1);
@@ -117,7 +126,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param string $action \Closure
+     * @param $action \Closure
      *
      * @return RedirectResponse
      */
@@ -130,7 +139,7 @@ class CRUDController extends Controller
 
         if (!$object) {
             throw new NotFoundHttpException(
-                $translator->trans(self::ERROR_MESSAGE, array('%id%' => $id), 'SonataAdminBundle')
+                $translator->trans(self::ERROR_MESSAGE, ['%id%' => $id], 'SonataAdminBundle')
             );
         }
 
@@ -139,10 +148,10 @@ class CRUDController extends Controller
         $this->admin->update($object);
         $this->addFlash(
             'sonata_flash_success',
-            $translator->trans(self::SUCCESS_MESSAGE, array(), 'SonataAdminBundle')
+            $translator->trans(self::SUCCESS_MESSAGE, [], 'SonataAdminBundle')
         );
 
-        return new RedirectResponse($this->admin->generateUrl($this->getListOrTreeUrlName()));
+        return new RedirectResponse($this->admin->generateUrl('list'));
     }
 
     /**

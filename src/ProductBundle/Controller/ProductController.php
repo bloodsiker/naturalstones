@@ -9,6 +9,7 @@ use GenreBundle\Entity\Genre;
 use MediaBundle\Entity\MediaFile;
 use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
+use ShareBundle\Entity\Tag;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,6 +50,65 @@ class ProductController extends Controller
         ]);
 
         return $this->render('ProductBundle::product_list.html.twig', ['category' => $category]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @Cache(maxage=60, public=true)
+     */
+    public function listWhoAction(Request $request)
+    {
+        $who = $request->get('who');
+        $whoIs = Product::$whois[$who];
+        $breadcrumb = $this->get('app.breadcrumb');
+        $breadcrumb->addBreadcrumb(['title' => $whoIs]);
+
+        $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
+        $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
+
+        $this->get('app.seo.updater')->doMagic(null, [
+            'title' => 'Последние новинки книг в библиотеке ТопБук'.$page,
+            'description' => "{$pageDesc} Последние новинки книг | Электронная библиотека, скачать книги бесплатно и без регистрации, читать рецензии, отзывы, книжные рейтинги.",
+            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'og' => [
+                'og:url' => $request->getSchemeAndHttpHost(),
+            ],
+        ]);
+
+        return $this->render('ProductBundle::product_list_who.html.twig', ['whois' => $whoIs]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @Cache(maxage=60, public=true)
+     */
+    public function listTagAction(Request $request)
+    {
+        $slug = $request->get('slug');
+        $repo = $this->getDoctrine()->getManager()->getRepository(Tag::class);
+        $tag = $repo->findOneBy(['slug' => $slug]);
+        $breadcrumb = $this->get('app.breadcrumb');
+        $breadcrumb->addBreadcrumb(['title' => 'Тег: #' . $tag->getName()]);
+
+        $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
+        $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
+
+        $this->get('app.seo.updater')->doMagic(null, [
+            'title' => 'Последние новинки книг в библиотеке ТопБук'.$page,
+            'description' => "{$pageDesc} Последние новинки книг | Электронная библиотека, скачать книги бесплатно и без регистрации, читать рецензии, отзывы, книжные рейтинги.",
+            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'og' => [
+                'og:url' => $request->getSchemeAndHttpHost(),
+            ],
+        ]);
+
+        return $this->render('ProductBundle::product_list_tag.html.twig', ['tag' => $tag]);
     }
 
     /**

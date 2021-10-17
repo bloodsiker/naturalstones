@@ -67,6 +67,8 @@ final class Version20211003104307 extends AbstractMigration
         $product->addColumn('views', 'integer', array('unsigned' => true, 'notnull' => false, 'default' => 0));
         $product->addColumn('is_active', 'boolean', array('notnull' => true));
         $product->addColumn('is_available', 'boolean', array('notnull' => true));
+        $product->addColumn('is_man', 'boolean', array('notnull' => true));
+        $product->addColumn('is_woman', 'boolean', array('notnull' => true));
         $product->addColumn('created_at', 'datetime', array('notnull' => true));
         $product->addColumn('updated_at', 'datetime', array('notnull' => false));
         $product->setPrimaryKey(['id']);
@@ -77,12 +79,12 @@ final class Version20211003104307 extends AbstractMigration
         $productImages = $schema->createTable('product_product_has_image');
         $productImages->addColumn('id', 'integer', array('unsigned' => true, 'notnull' => true, 'autoincrement' => true));
         $productImages->addColumn('product_id', 'integer', array('unsigned' => true, 'notnull' => true));
-        $productImages->addColumn('media_id', 'integer', array('unsigned' => true, 'notnull' => true));
+        $productImages->addColumn('image_id', 'integer', array('unsigned' => true, 'notnull' => true));
         $productImages->addColumn('order_num', 'integer', array('length' => 11, 'notnull' => true, 'default' => 1));
         $productImages->setPrimaryKey(['id']);
-        $productImages->addIndex(['product_id', 'media_id']);
+        $productImages->addIndex(['product_id', 'image_id']);
         $productImages->addForeignKeyConstraint($product, ['product_id'], ['id'], ['onDelete' => 'restrict']);
-        $productImages->addForeignKeyConstraint($schema->getTable('media_file'), ['media_id'], ['id'], ['onDelete' => 'restrict']);
+        $productImages->addForeignKeyConstraint($schema->getTable('media_image'), ['image_id'], ['id'], ['onDelete' => 'restrict']);
 
         $productStone = $schema->createTable('product_product_stones');
         $productStone->addColumn('product_id', 'integer', array('unsigned' => true, 'notnull' => true));

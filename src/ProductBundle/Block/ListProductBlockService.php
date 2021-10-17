@@ -10,6 +10,7 @@ use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,6 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ListProductBlockService extends AbstractAdminBlockService
 {
     const SIMILAR_LIST = 'ProductBundle:Block:similar_list.html.twig';
+    const TEMPLATE_AJAX  = 'ProductBundle:Block:large_list_ajax.html.twig';
 
     /**
      * @var Registry $doctrine
@@ -26,17 +28,24 @@ class ListProductBlockService extends AbstractAdminBlockService
     protected $doctrine;
 
     /**
+     * @var RequestStack $requestStack
+     */
+    protected $requestStack;
+
+    /**
      * ListGenreBlockService constructor.
      *
      * @param string          $name
      * @param EngineInterface $templating
      * @param Registry        $doctrine
+     * @param RequestStack    $requestStack
      */
-    public function __construct($name, EngineInterface $templating, Registry $doctrine)
+    public function __construct($name, EngineInterface $templating, Registry $doctrine, RequestStack $requestStack)
     {
         parent::__construct($name, $templating);
 
         $this->doctrine = $doctrine;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -67,8 +76,10 @@ class ListProductBlockService extends AbstractAdminBlockService
             'page'             => 1,
             'category'         => null,
             'tag'              => null,
+            'who'              => null,
             'exclude_ids'      => null,
             'show_paginator'   => true,
+            'ajax_paginator'   => false,
             'template'         => 'ProductBundle:Block:large_list.html.twig',
         ]);
     }
@@ -89,8 +100,11 @@ class ListProductBlockService extends AbstractAdminBlockService
             return new Response();
         }
 
+        $request = $this->requestStack->getCurrentRequest();
+        $isAjax = $request->isXmlHttpRequest();
+
         $limit = (int) $blockContext->getSetting('items_count');
-        $page = (int) $blockContext->getSetting('page');
+        $page = $isAjax ? $request->get('page') : $blockContext->getSetting('page');
 
         $repository = $this->doctrine->getRepository(Product::class);
 
@@ -104,19 +118,23 @@ class ListProductBlockService extends AbstractAdminBlockService
             $repository->filterByTag($qb, $blockContext->getSetting('tag'));
         }
 
+        if ($blockContext->getSetting('who')) {
+            $repository->filterByWho($qb, $blockContext->getSetting('who'));
+        }
+
         if ($blockContext->getSetting('exclude_ids')) {
             $repository->filterExclude($qb, $blockContext->getSetting('exclude_ids'));
         }
 
         $paginator = new Pagerfanta(new DoctrineORMAdapter($qb, true, false));
         $paginator->setAllowOutOfRangePages(true);
-        $paginator->setMaxPerPage($limit);
-        $paginator->setCurrentPage($page);
+        $paginator->setMaxPerPage((int) $limit);
+        $paginator->setCurrentPage((int) $page);
 
         $template = !is_null($blockContext->getSetting('list_type'))
             ? $blockContext->getSetting('list_type') : $blockContext->getTemplate();
 
-        return $this->renderResponse($template, [
+        return $this->renderResponse($request->isXmlHttpRequest() ? self::TEMPLATE_AJAX : $template, [
             'products'  => $paginator,
             'block'     => $block,
             'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),

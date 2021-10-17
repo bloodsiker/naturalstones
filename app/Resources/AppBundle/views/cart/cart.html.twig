@@ -9,7 +9,14 @@
 
         <div class="cart-title">
             <h1>Корзина</h1>
-            <a href="" class="cart-clean"><img src="{{ asset('bundles/app/images/cross-remove.svg') }}" alt="">Очистить корзину</a>
+            {{
+                sonata_block_render(
+                    { 'type': 'app.block.service.cart' },
+                    {
+                        'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_BUTTON_CLEAR')
+                    }
+                )
+            }}
         </div>
 
         <div id="cartContainer">

@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\CoreBundle\Form\Type\DateTimePickerType;
 use Sonata\CoreBundle\Validator\ErrorElement;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
@@ -20,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Valid;
 
 /**
  * Class ProductAdmin
@@ -182,6 +184,8 @@ class ProductAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $context = $this->getPersistentParameter('context');
+
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => null])
                 ->add('name', TextCounterType::class, [
@@ -203,6 +207,18 @@ class ProductAdmin extends Admin
                     'label' => 'product.fields.slug',
                     'required' => false,
                     'attr' => ['readonly' => !$this->getSubject()->getId() ? false : true],
+                ])
+                ->add('productHasImage', CollectionType::class, [
+                    'label' => 'product.fields.product_image',
+                    'required' => false,
+                    'constraints' => new Valid(),
+                    'by_reference' => false,
+                ], [
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                    'sortable' => 'orderNum',
+                    'link_parameters' => ['context' => $context],
+                    'admin_code' => 'sonata.admin.product_has_image',
                 ])
             ->end()
             ->with('form_group.additional', ['class' => 'col-md-4', 'name' => null])
@@ -233,6 +249,14 @@ class ProductAdmin extends Admin
                     'required' => false,
                     'currency' => 'UAH',
                     'scale' => 0,
+                ])
+                ->add('isWoman', null, [
+                    'label' => 'product.fields.is_woman',
+                    'required' => false,
+                ])
+                ->add('isMan', null, [
+                    'label' => 'product.fields.is_man',
+                    'required' => false,
                 ])
                 ->add('colours', ModelAutocompleteType::class, [
                     'label' => 'product.fields.colours',

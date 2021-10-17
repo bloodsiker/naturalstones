@@ -18,6 +18,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 class Product
 {
+    const WHO_MAN = 'man';
+    const WHO_WOMAN = 'woman';
+
     /**
      * @var int
      *
@@ -97,6 +100,20 @@ class Product
      *
      * @ORM\Column(type="boolean", nullable=false)
      */
+    protected $isMan;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    protected $isWoman;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
     protected $isAvailable;
 
     /**
@@ -152,6 +169,16 @@ class Product
     protected $sizes;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasImage",
+     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"orderNum" = "ASC"})
+     */
+    protected $productHasImage;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=false)
@@ -172,15 +199,18 @@ class Product
     {
         $this->isActive = true;
         $this->isAvailable = true;
+        $this->isMan = false;
+        $this->isWoman = true;
         $this->views = 0;
         $this->price = 0;
         $this->discount = 0;
         $this->createdAt = new \DateTime('now');
 
-        $this->colours        = new ArrayCollection();
-        $this->tags           = new ArrayCollection();
-        $this->stones         = new ArrayCollection();
-        $this->sizes          = new ArrayCollection();
+        $this->colours         = new ArrayCollection();
+        $this->tags            = new ArrayCollection();
+        $this->stones          = new ArrayCollection();
+        $this->sizes           = new ArrayCollection();
+        $this->productHasImage = new ArrayCollection();
     }
 
     /**
@@ -414,6 +444,54 @@ class Product
     public function getIsAvailable()
     {
         return $this->isAvailable;
+    }
+
+    /**
+     * Set isMan
+     *
+     * @param boolean $isMan
+     *
+     * @return Product
+     */
+    public function setIsMan($isMan)
+    {
+        $this->isMan = $isMan;
+
+        return $this;
+    }
+
+    /**
+     * Get isMan
+     *
+     * @return boolean
+     */
+    public function getIsMan()
+    {
+        return $this->isMan;
+    }
+
+    /**
+     * Set isWoman
+     *
+     * @param boolean $isWoman
+     *
+     * @return Product
+     */
+    public function setIsWoman($isWoman)
+    {
+        $this->isWoman = $isWoman;
+
+        return $this;
+    }
+
+    /**
+     * Get isWoman
+     *
+     * @return boolean
+     */
+    public function getIsWoman()
+    {
+        return $this->isWoman;
     }
 
     /**
@@ -671,4 +749,46 @@ class Product
 
         return $this;
     }
+
+    /**
+     * Add ProductHasImage.
+     *
+     * @param \ProductBundle\Entity\ProductHasImage $bookHasRelated
+     *
+     * @return Product
+     */
+    public function addProductHasImage(\ProductBundle\Entity\ProductHasImage $productHasImage)
+    {
+        $productHasImage->setProduct($this);
+        $this->productHasImage[] = $productHasImage;
+
+        return $this;
+    }
+
+    /**
+     * Remove ProductHasImage.
+     *
+     * @param \ProductBundle\Entity\ProductHasImage $productHasImage
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductHasImage(\ProductBundle\Entity\ProductHasImage $productHasImage)
+    {
+        return $this->productHasImage->removeElement($productHasImage);
+    }
+
+    /**
+     * Get ProductHasImage.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProductHasImage()
+    {
+        return $this->productHasImage;
+    }
+
+    public static $whois = [
+        self::WHO_MAN => 'Для мужчин',
+        self::WHO_WOMAN => 'Для женщин',
+    ];
 }

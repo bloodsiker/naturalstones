@@ -1,25 +1,25 @@
 {% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
 
-<form action="#" method="post" class="cart-table-form">
-    <table class="cart-table">
-        <thead>
-        <tr>
-            <th>Товары</th>
-            <th>Цена</th>
-            <th>Количество</th>
-            <th>Сумма</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-            {% if products.product is defined %}
+{% if products.product is defined %}
+    <form action="#" method="post" class="cart-table-form">
+        <table class="cart-table">
+            <thead>
+            <tr>
+                <th>Товары</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Сумма</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
                 {% for mProduct in products.product %}
                     <tr>
                         <td>
                             <div class="cart-item">
                                 <a href="{{ product_path(mProduct.item) }}" class="item-image"><img alt="{{ mProduct.item.name }}" class="lazyload" data-src="{{ asset(mProduct.item.image.getPath()) }}" src=""></a>
                                 <div class="item-name">
-                                    <a href="">{{ mProduct.item.name }}</a>
+                                    <a href="{{ product_path(mProduct.item) }}">{{ mProduct.item.name }}</a>
                                     {% if mProduct.item.discount %}
                                         <span>Скидка</span>
                                     {% endif  %}
@@ -38,7 +38,7 @@
                         </td>
                         <td data-text="Количество">
                             <div class="cart-product-amount">
-                                <span class="qtyminus">−</span>
+                                <span class="qtyminus" data-recalculate="1">−</span>
                                 <input type="text"
                                        data-id="{{ mProduct.item.id }}"
                                        data-url="{{ block_ajax_path }}"
@@ -48,7 +48,7 @@
                                        class="qty input-recalculate"
                                        onkeypress="return event.charCode &gt;= 48 &amp;&amp; event.charCode &lt;= 57"
                                        placeholder="">
-                                <span class="qtyplus" data-max="100">+</span>
+                                <span class="qtyplus" data-recalculate="1" data-max="100">+</span>
                             </div>
                         </td>
                         <td data-text="Сумма">
@@ -66,14 +66,26 @@
                         </td>
                     </tr>
                 {% endfor %}
-            {% endif %}
+            </tbody>
+        </table>
+        <div class="cart-table-total">
+            <a href="" class="button white-button">Продолжить покупки</a>
+            <div class="total-price">
+                Итого: <span>{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>
+            </div>
+            <button type="submit" class="button">Оформить заказ</button>
+        </div>
+    </form>
+{% else %}
+    <table class="cart-table">
+        <tbody>
+        <tr>
+            <td style="text-align: center"><img src="{{ asset('bundles/app/images/sad.png') }}" alt=""><h2>Корзина пустая</h2></td>
+        </tr>
         </tbody>
     </table>
+
     <div class="cart-table-total">
         <a href="" class="button white-button">Продолжить покупки</a>
-        <div class="total-price">
-            Итого: <span>{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>
-        </div>
-        <button type="submit" class="button">Оформить заказ</button>
     </div>
-</form>
+{% endif %}

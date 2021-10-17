@@ -1,0 +1,17 @@
+{% if products %}
+    {% for product in products %}
+        <div class="catalog-block">
+            <a href="{{ product_path(product) }}" class="image"><img class="lazyload" data-src="{{ asset(product.image.path) }}" src="" alt="{{ product.name }}"></a>
+            <div class="name"><a href="">{{ product.name }}</a></div>
+            {% if product.discount %}
+                <div class="price">
+                    <span class="old-price">{{ product.price}} грн</span>
+                    <span>{{ product.discount}} грн</span>
+                </div>
+            {% else %}
+                <div class="price"><span>{{ product.price}} грн</span></div>
+            {% endif %}
+            <a href="{{ product_path(product) }}" class="button">Купить</a>
+        </div>
+    {% endfor %}
+{% endif %}

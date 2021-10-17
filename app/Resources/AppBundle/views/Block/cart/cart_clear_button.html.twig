@@ -1,0 +1,12 @@
+{% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+
+{% if countItems %}
+    <a href="#"
+       class="cart-clean"
+       data-url="{{ block_ajax_path }}"
+       data-action="{{ constant('AppBundle\\Block\\CartBlockService::ACTION_CLEAR') }}"
+       data-template="{{ constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART_PAGE') }}">
+        <img src="{{ asset('bundles/app/images/cross-remove.svg') }}" alt="">
+        Очистить корзину
+    </a>
+{% endif %}

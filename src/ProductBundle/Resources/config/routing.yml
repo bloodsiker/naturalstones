@@ -1,4 +1,17 @@
-# books ========================================================
+# products ========================================================
+product_who_list:
+    path: /catalog/{who}
+    defaults:
+        _controller: ProductBundle:Product:listWho
+    requirements:
+        who: "man|woman"
+product_tags_list:
+    path: /catalog/tag-{slug}
+    defaults:
+        _controller: ProductBundle:Product:listTag
+    requirements:
+        slug: "([a-zA-Z\\-0-9\\_]+)?"
+
 product_list:
     path: /catalog/{slug}
     defaults:

@@ -360,7 +360,7 @@ class DefaultView implements ViewInterface
             return $this->template->nextEnabled($this->pagerfanta->getNextPage());
         }
 
-//        return null;
-        return $this->template->nextDisabled();
+        return null;
+//        return $this->template->nextDisabled();
     }
 }

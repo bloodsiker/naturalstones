@@ -24,6 +24,7 @@ group:
     product: Товары
     product_editor: Товары
     category_editor: Категории
+    product_has_image_editor: Дополнительные изображения
 
 product:
     fields:
@@ -34,6 +35,8 @@ product:
         slug: Сегмент URL (slug)
         is_available: В наличии
         is_active: Активно
+        is_woman: Для женщин
+        is_man: Для мужчин
         image: Изображение
         category: Категория
         colours: Цвет(а)
@@ -43,10 +46,18 @@ product:
         discount: Цена со скидкой
         tags: Тег(и)
         views: Просмотры
+        product_image: Дополнительные изображения
         updated_at: Изменена
         created_at: Создана
     buttons:
         link_add: Добавить новый
+
+product_has_image:
+    fields:
+        id: ID
+        product: Продукт
+        image: Изображение
+        order_num: ''
 
 category:
     fields:

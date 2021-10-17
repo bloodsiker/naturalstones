@@ -14,11 +14,13 @@
             <div class="product-gallery">
                 <div class="product-big-slider js-slick">
                     <div class="product-big-item">
-                        <img src="{{ asset(product.image.path) }}" alt="">
+                        <img src="{{ asset(product.image.path) }}" alt="{{ product.name }}">
                     </div>
-                    <div class="product-big-item">
-                        <img src="{{ asset('bundles/app/images/2.jpg') }}" alt="">
-                    </div>
+                    {% for productImage in product.productHasImage %}
+                        <div class="product-big-item">
+                            <img src="{{ asset(productImage.image.path) }}" alt="{{ product.name }}">
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
 
@@ -88,16 +90,16 @@
                                         <label class="messengers-radio telegram">
                                             <input type="radio" name="mess-radio" checked>
                                             <span>
-															<img src="{{ asset('bundles/app/images/telegram.svg') }}" alt="">
-														</span>
+                                                <img src="{{ asset('bundles/app/images/telegram.svg') }}" alt="">
+                                            </span>
                                         </label>
                                     </li>
                                     <li>
                                         <label class="messengers-radio viber">
                                             <input type="radio" name="mess-radio">
                                             <span>
-															<img src="{{ asset('bundles/app/images/viber.svg') }}" alt="">
-														</span>
+                                                <img src="{{ asset('bundles/app/images/viber.svg') }}" alt="">
+                                            </span>
                                         </label>
                                     </li>
                                 </ul>
@@ -165,7 +167,15 @@
                                         <td>
                                             <div class="name">Кому</div>
                                         </td>
-                                        <td>Мужские, Женские</td>
+                                        <td>
+                                            {% if product.isMan %}
+                                                <a href="{{ path('product_who_list', {'who' : 'man'}) }}" class="link">Мужские</a>{% if product.isWoman %}, {% endif %}
+                                            {% endif %}
+
+                                            {% if product.isWoman %}
+                                                <a href="{{ path('product_who_list', {'who' : 'woman'}) }}" class="link">Женские</a>
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -215,6 +225,15 @@
                             </div>
                         </div>
                     </div>
+
+                    {% if product.tags is iterable %}
+                        <div class="product-tags">
+                            <span>Теги:</span>
+                            {% for tag in product.tags %}
+                                <a href="{{ path('product_tags_list', {'slug' : tag.slug}) }}" class="link">#{{ tag.name }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -233,16 +252,16 @@
         }}
 
         {{
-        sonata_block_render(
-            { 'type': 'product.block.list' },
-            {
-                'title' : 'С этим товаром покупают',
-                'items_count' : 10,
-                'exclude_ids' : product.id,
-                'page': app.request.get('page') ? app.request.get('page') : 1,
-                'list_type': constant('ProductBundle\\Block\\ListProductBlockService::SIMILAR_LIST')
-            }
-        )
+            sonata_block_render(
+                { 'type': 'product.block.list' },
+                {
+                    'title' : 'С этим товаром покупают',
+                    'items_count' : 10,
+                    'exclude_ids' : product.id,
+                    'page': app.request.get('page') ? app.request.get('page') : 1,
+                    'list_type': constant('ProductBundle\\Block\\ListProductBlockService::SIMILAR_LIST')
+                }
+            )
         }}
 
     </div>

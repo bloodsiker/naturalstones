@@ -12,6 +12,17 @@ services:
           - [ setTemplate, ['edit', 'ProductBundle:Admin:edit.html.twig'] ]
           - [ setEntityManager, ['@app.entity_manager'] ]
 
+    sonata.admin.product_has_image:
+        class: ProductBundle\Admin\ProductHasImageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'group.product', label: "group.product_has_image_editor", show_in_dashboard: false }
+        arguments:
+            - ~
+            - ProductBundle\Entity\ProductHasImage
+            - ~
+        calls:
+            - [ setTranslationDomain, [ ProductBundle ] ]
+
     sonata.admin.product_category:
         class: ProductBundle\Admin\CategoryAdmin
         tags:

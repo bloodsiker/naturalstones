@@ -8,7 +8,14 @@
                 <a href="" class="image"><img class="lazyload" data-src="{{ asset(mProduct.item.image.getPath()) }}" src="" alt=""></a>
                 <div class="inner">
                     <a href="{{ product_path(mProduct.item) }}" class="name">{{ mProduct.item.name }} - ({{ mProduct.count }} шт)</a>
-                    <div class="price">{{ mProduct.item.price}} грн</div>
+                    {% if mProduct.item.discount %}
+                        <div class="price">
+                            <span class="old-price">{{ mProduct.item.price }} грн</span>
+                            <span>{{ mProduct.item.discount|number_format(2, ',') }} грн</span>
+                        </div>
+                    {% else %}
+                        <div class="price">{{ mProduct.item.price|number_format(2, ',') }} грн</div>
+                    {% endif %}
                 </div>
                 <a href="" data-id="{{ mProduct.item.id }}" data-url="{{ block_ajax_path }}" data-action="{{ constant('AppBundle\\Block\\CartBlockService::ACTION_REMOVE') }}" class="remove remove-product">
                     <img src="{{ asset('bundles/app/images/cross.svg') }}" alt="">

@@ -1,31 +1,18 @@
 {% if products %}
     <div class="catalog-flex">
-        {% for product in products %}
-            <div class="catalog-block">
-                <a href="{{ product_path(product) }}" class="image"><img class="lazyload" data-src="{{ asset(product.image.path) }}" src="" alt="{{ product.name }}"></a>
-                <div class="name"><a href="">{{ product.name }}</a></div>
-                {% if product.discount %}
-                    <div class="price">
-                        <span class="old-price">{{ product.price}} грн</span>
-                        <span>{{ product.discount}} грн</span>
-                    </div>
-                {% else %}
-                    <div class="price"><span>{{ product.price}} грн</span></div>
-                {% endif %}
-                <a href="{{ product_path(product) }}" class="button">Купить</a>
-            </div>
-        {% endfor %}
+        {% include 'ProductBundle:Block:large_list_ajax.html.twig' %}
     </div>
 {% endif %}
 
-
-
-<div class="more-catalog">
-    <a href="" class="more-catalog-link"> <!-- loading - класс для вращения стрелки -->
-        <i><img src="images/rotate.svg" alt="" /></i>
-        <span>Загрузить еще 16 товаров</span>
-    </a>
-</div>
+{% if settings.ajax_paginator and products.count > settings.items_count %}
+    {% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+    <div class="more-catalog">
+        <a href="#" class="more-catalog-link" id="get_more_products" data-page="2" data-url="{{ block_ajax_path }}"> <!-- loading - класс для вращения стрелки -->
+            <i><img src="{{ asset('bundles/app/images/rotate.svg') }}" alt="" /></i>
+            <span>Загрузить еще</span>
+        </a>
+    </div>
+{% endif %}
 
 {#<!--Пагинация-->#}
 {#<ul class="pagination">#}

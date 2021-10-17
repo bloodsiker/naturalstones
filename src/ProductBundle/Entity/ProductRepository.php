@@ -36,6 +36,17 @@ class ProductRepository extends EntityRepository
         return $qb->andWhere('p.category = :category')->setParameter('category', $category);
     }
 
+    public function filterByWho(QueryBuilder $qb, $who) : QueryBuilder
+    {
+        if ($who === Product::WHO_MAN) {
+            $qb->andWhere('p.isMan = :isMan')->setParameter('isMan', true);
+        } elseif ($who === Product::WHO_WOMAN) {
+            $qb->andWhere('p.isWoman = :isWoman')->setParameter('isWoman', true);
+        }
+
+        return $qb;
+    }
+
     /**
      * @param QueryBuilder $qb
      * @param Tag          $tag

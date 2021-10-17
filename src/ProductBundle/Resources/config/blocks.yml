@@ -5,6 +5,7 @@ services:
           - product.block.list
           - '@templating'
           - '@?doctrine'
+          - '@request_stack'
         tags:
           - { name: sonata.block }
 

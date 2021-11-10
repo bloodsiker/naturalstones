@@ -73,7 +73,7 @@
             <div class="total-price">
                 Итого: <span>{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>
             </div>
-            <button type="submit" class="button">Оформить заказ</button>
+            <a href="{{ path('step-1') }}" type="submit" class="button">Оформить заказ</a>
         </div>
     </form>
 {% else %}

@@ -64,6 +64,26 @@ class DefaultController extends Controller
         return $this->render('AppBundle:cart:cart.html.twig');
     }
 
+    public function cartStepOneAction(Request $request)
+    {
+        $breadcrumb = $this->get('app.breadcrumb');
+        $breadcrumb->addBreadcrumb(['title' => 'Оформление заказа']);
+
+        $this->get('app.seo.updater')->doMagic(null, [
+            'title' => '100 лучших книг на сайте | TopBook.com.ua - скачать книги в fb2, epub, pdf, txt форматах',
+            'description' => '100 лучших книг на сайте | Электронная библиотека, скачать книги, читать рецензии, отзывы, книжные рейтинги.',
+            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'og' => [
+                'og:site_name' => 'TopBook.com.ua - скачать книги в fb2, epub, pdf, txt форматах',
+                'og:type' => 'article',
+                'og:title' => '100 лучших книг на сайте',
+                'og:url' => $request->getSchemeAndHttpHost(),
+            ],
+        ]);
+
+        return $this->render('AppBundle:cart:step_1.html.twig');
+    }
+
     /**
      * @param Request $request
      *

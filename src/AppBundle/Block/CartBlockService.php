@@ -22,6 +22,7 @@ class CartBlockService extends AbstractAdminBlockService
     const TEMPLATE_CART = 'AppBundle:Block/cart:cart.html.twig';
     const TEMPLATE_CART_QUANTITY = 'AppBundle:Block/cart:cart_quantity.html.twig';
     const TEMPLATE_CART_PAGE = 'AppBundle:Block/cart:cart_page.html.twig';
+    const TEMPLATE_CART_STEP_1_PAGE = 'AppBundle:Block/cart:cart_step_1_page.html.twig';
 
     const TEMPLATE_BUTTON_HEAD = 'AppBundle:Block/cart:button_header.html.twig';
     const TEMPLATE_BUTTON_IN_PRODUCT  = 'AppBundle:Block/cart:product_button.html.twig';

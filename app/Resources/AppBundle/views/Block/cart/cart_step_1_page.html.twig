@@ -1,0 +1,59 @@
+{% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+
+{% if products.product is defined %}
+    <div class="order-form-total">
+        <div class="top-block">
+            <h4>Ваш заказ</h4>
+            <a href="{{ path('cart') }}" class="redact-link">Редактировать</a>
+        </div>
+        {% for mProduct in products.product %}
+            <div class="order-form-items">
+                <a class="item-image" href="{{ product_path(mProduct.item) }}"><img alt="{{ mProduct.item.name }}" class="lazyload" data-src="{{ asset(mProduct.item.image.getPath()) }}" src=""></a>
+                <div class="inner">
+                    <div class="item-name"><a href="{{ product_path(mProduct.item) }}">{{ mProduct.item.name }}</a></div>
+                    <div class="count">{{ mProduct.count }} шт.</div>
+                    {% if mProduct.item.discount %}
+                        <div class="price">
+                            <span class="old-price">{{ mProduct.item.price }} грн</span>
+                            <span>{{ mProduct.item.discount|number_format(2, ',') }} грн</span>
+                        </div>
+                    {% else %}
+                        <div class="price"><span>{{ mProduct.item.price|number_format(2, ',') }} грн</span></div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="order-form-promokod">
+            <div class="promokod-block">
+                <input type="text" placeholder="Введите промокод">
+                <button class="button white-button">Применить</button>
+            </div>
+        </div>
+        <ul class="order-form-calculate">
+            <li>
+                <span>Сумма заказа: </span>
+                <span>{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>
+            </li>
+            <li>
+                <span>Скидка по промокоду: </span>
+                <span>0 грн</span>
+            </li>
+            <li>
+                <span>Итого:</span>
+                <span class="total-price">{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>
+            </li>
+        </ul>
+    </div>
+{% else %}
+    <table class="cart-table">
+        <tbody>
+        <tr>
+            <td style="text-align: center"><img src="{{ asset('bundles/app/images/sad.png') }}" alt=""><h2>Корзина пустая</h2></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="cart-table-total">
+        <a href="" class="button white-button">Продолжить покупки</a>
+    </div>
+{% endif %}

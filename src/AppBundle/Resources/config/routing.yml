@@ -9,6 +9,11 @@ cart:
   defaults:
     _controller: AppBundle:Default:cart
 
+step-1:
+  path: /cart/step-1
+  defaults:
+    _controller: AppBundle:Default:cartStepOne
+
 search:
   path: /search
   defaults:

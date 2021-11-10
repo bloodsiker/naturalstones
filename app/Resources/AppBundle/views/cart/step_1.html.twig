@@ -1,0 +1,75 @@
+<section class="simple-section">
+    <div class="container">
+
+        {{ sonata_block_render(
+            { 'type': 'app.block.service.breadcrumb' }
+        ) }}
+
+        <h1>Оформление заказа</h1>
+        <form action="#" method="post" class="order-form simple-form">
+
+            <div class="order-form-content">
+                <div class="order-form-steps">
+                    <a href="" class="active-step">
+                        <img src="{{ asset('bundles/app/images/datas.svg') }}" alt="">
+                        <span>Ваши данные</span>
+                    </a>
+                    <a href="">
+                        <img src="{{ asset('bundles/app/images/verification.svg') }}" alt="">
+                        <span>Проверка данных и заказ</span>
+                    </a>
+                </div>
+
+                <div class="messengers-input input-block">
+                    <input type="text" placeholder="+0 000 000 00 00">
+                </div>
+                <div class="order-messengers">
+                    <div class="note">Выберите в каком мессенджере вам ответить:</div>
+                    <ul class="messengers-list">
+                        <li>
+                            <label class="messengers-radio telegram">
+                                <input type="radio" name="mess-radio">
+                                <span>
+                                    <img alt="" src="{{ asset('bundles/app/images/telegram.svg') }}">
+                                </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="messengers-radio viber">
+                                <input type="radio" name="mess-radio">
+                                <span>
+                                    <img alt="" src="{{ asset('bundles/app/images/viber.svg') }}">
+                                </span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="input-block">
+                    <input type="text" placeholder="Имя (по желанию)">
+                </div>
+                <div class="input-block">
+                    <input type="text" placeholder="E-mail (по желанию)">
+                </div>
+                <div class="input-block">
+                    <input type="text" placeholder="Адрес">
+                </div>
+                <div class="order-form-links">
+                    <a class="button white-button" href="">Отменить</a>
+                    <button class="button" type="submit">Дальше</button>
+                </div>
+            </div>
+
+            {{
+                sonata_block_render(
+                    { 'type': 'app.block.service.cart' },
+                    {
+                        'action': constant('AppBundle\\Block\\CartBlockService::ACTION_SHOW'),
+                        'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART_STEP_1_PAGE')
+                    }
+                )
+            }}
+
+        </form>
+
+    </div>
+</section>

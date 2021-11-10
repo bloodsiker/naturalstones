@@ -34,7 +34,7 @@ final class Version20181014125508 extends AbstractMigration
         $book->addColumn('updated_at', 'datetime', array('notnull' => true));
         $book->setPrimaryKey(['id']);
         $book->addIndex(['user_id']);
-        $book->addForeignKeyConstraint($schema->getTable('user_user'), ['user_id'], ['id'], ['onDelete' => 'set null']);
+        $book->addForeignKeyConstraint($schema->getTable('user_users'), ['user_id'], ['id'], ['onDelete' => 'set null']);
 
         $book = $schema->createTable('media_file');
         $book->addColumn('id', 'integer', array('unsigned' => true, 'notnull' => true, 'autoincrement' => true));
@@ -48,7 +48,7 @@ final class Version20181014125508 extends AbstractMigration
         $book->addColumn('updated_at', 'datetime', array('notnull' => true));
         $book->setPrimaryKey(['id']);
         $book->addIndex(['user_id']);
-        $book->addForeignKeyConstraint($schema->getTable('user_user'), ['user_id'], ['id'], ['onDelete' => 'set null']);
+        $book->addForeignKeyConstraint($schema->getTable('user_users'), ['user_id'], ['id'], ['onDelete' => 'set null']);
     }
 
     public function down(Schema $schema) : void

@@ -14,4 +14,12 @@
             <span class="colorpicker__preview" style="background-color: {{ '#' ~ object.colour }}; margin: 0;"></span>
         {% endif %}
     {% endif %}
+
+    {% if object is instanceof('\\ShareBundle\\Entity\\Stone') or object is instanceof('\\ShareBundle\\Entity\\Zodiac') %}
+        {% if field_description.name == 'image' %}
+            {% set v = asset('bundles/admin/images/preview_placeholder.png') %}
+            {% set image_preview_path = value ? value.path : null %}
+            <img src="{{ image_preview_path|default(v) }}?{{ random() }}" style="max-height: 100px;"/>
+        {% endif %}
+     {% endif %}
 {% endblock %}

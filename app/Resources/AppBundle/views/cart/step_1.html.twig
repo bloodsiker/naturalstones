@@ -5,30 +5,32 @@
             { 'type': 'app.block.service.breadcrumb' }
         ) }}
 
+        {% set infoCart = app.session.get('infoCart') %}
+
         <h1>Оформление заказа</h1>
-        <form action="#" method="post" class="order-form simple-form">
+        <form action="{{ path('step-2') }}" method="get" class="order-form simple-form">
 
             <div class="order-form-content">
                 <div class="order-form-steps">
-                    <a href="" class="active-step">
+                    <a href="{{ path('step-1') }}" class="active-step">
                         <img src="{{ asset('bundles/app/images/datas.svg') }}" alt="">
                         <span>Ваши данные</span>
                     </a>
-                    <a href="">
+                    <a href="#" onclick="return false;">
                         <img src="{{ asset('bundles/app/images/verification.svg') }}" alt="">
                         <span>Проверка данных и заказ</span>
                     </a>
                 </div>
 
                 <div class="messengers-input input-block">
-                    <input type="text" placeholder="+0 000 000 00 00">
+                    <input type="text" name="phone" placeholder="Телефон" class="phone-input" value="{{ infoCart ? infoCart.phone : null }}">
                 </div>
                 <div class="order-messengers">
                     <div class="note">Выберите в каком мессенджере вам ответить:</div>
                     <ul class="messengers-list">
                         <li>
                             <label class="messengers-radio telegram">
-                                <input type="radio" name="mess-radio">
+                                <input type="radio" name="messenger" value="telegram" {{ infoCart.messenger == 'telegram' ? 'checked' : null }}>
                                 <span>
                                     <img alt="" src="{{ asset('bundles/app/images/telegram.svg') }}">
                                 </span>
@@ -36,7 +38,7 @@
                         </li>
                         <li>
                             <label class="messengers-radio viber">
-                                <input type="radio" name="mess-radio">
+                                <input type="radio" name="messenger" value="viber" {{  infoCart.messenger == 'viber' ? 'checked' : null }}>
                                 <span>
                                     <img alt="" src="{{ asset('bundles/app/images/viber.svg') }}">
                                 </span>
@@ -45,17 +47,20 @@
                     </ul>
                 </div>
                 <div class="input-block">
-                    <input type="text" placeholder="Имя (по желанию)">
+                    <input type="text" name="name" placeholder="Имя" value="{{ infoCart ? infoCart.name : null }}">
                 </div>
                 <div class="input-block">
-                    <input type="text" placeholder="E-mail (по желанию)">
+                    <input type="text" name="email" placeholder="E-mail (по желанию)" value="{{ infoCart ? infoCart.email : null }}">
                 </div>
                 <div class="input-block">
-                    <input type="text" placeholder="Адрес">
+                    <input type="text" name="address" placeholder="Адрес" value="{{ infoCart ? infoCart.address : null }}">
+                </div>
+                <div class="input-block">
+                    <textarea name="" id="" cols="30" rows="3" placeholder="Комментарий"></textarea>
                 </div>
                 <div class="order-form-links">
-                    <a class="button white-button" href="">Отменить</a>
-                    <button class="button" type="submit">Дальше</button>
+                    <a class="button white-button" href="{{ path('cart') }}">Отменить</a>
+                    <button class="button" type="submit" id="nextStep">Дальше</button>
                 </div>
             </div>
 

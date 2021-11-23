@@ -80,7 +80,7 @@
                             <div class="top">
                                 <h5>Нет времени оформлять?</h5>
                                 <div class="messengers-input">
-                                    <input class="telegram" type="text" placeholder="+0 000 000 00 00">
+                                    <input class="telegram phone-input" name="phone" type="text" placeholder="+38 (___) ___-__-__">
                                 </div>
                             </div>
                             <div class="middle">
@@ -157,7 +157,9 @@
                                         <td>
                                             {% if product.colours is iterable %}
                                                 {% for colour in product.colours %}
-                                                    <em style="color: {{ '#'~colour.colour }}">{{ colour.name }}</em>
+                                                    <a href="{{ path('product_colour_list', { 'slug': colour.slug }) }}">
+                                                        <em style="color: {{ '#'~colour.colour }}">{{ colour.name }}</em>
+                                                    </a>
                                                     {{ loop.last ? '' : ' , ' }}
                                                 {% endfor %}
                                             {% endif %}
@@ -184,7 +186,9 @@
                                         <td>
                                             {% if product.stones is iterable %}
                                                 {% for stone in product.stones %}
-                                                    <em>{{ stone.name }}</em>
+                                                    <a href="{{ path('product_stone_list', { 'slug': stone.slug }) }}">
+                                                        <em>{{ stone.name }}</em>
+                                                    </a>
                                                     {{ loop.last ? '' : ' , ' }}
                                                 {% endfor %}
                                             {% endif %}
@@ -226,7 +230,7 @@
                         </div>
                     </div>
 
-                    {% if product.tags is iterable %}
+                    {% if product.tags|length > 0 %}
                         <div class="product-tags">
                             <span>Теги:</span>
                             {% for tag in product.tags %}

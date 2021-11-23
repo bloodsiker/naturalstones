@@ -68,8 +68,13 @@ class MediaImageAdmin extends Admin
         $file = $object->getFile();
         if ($file) {
             list($width, $height) = getimagesize($file->getRealPath());
-            $object->setWidth($width);
-            $object->setHeight($height);
+            if ($width && $height) {
+                $object->setWidth($width);
+                $object->setHeight($height);
+            } else {
+                $object->setWidth(null);
+                $object->setHeight(null);
+            }
             $object->setSize($file->getSize());
             $object->setMimeType($file->getMimeType());
         }

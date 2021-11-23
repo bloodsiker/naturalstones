@@ -77,7 +77,7 @@ class MediaImage extends AbstractMedia
      *
      * @return $this
      */
-    public function setWidth(string $width)
+    public function setWidth(string $width = null)
     {
         $this->width = $width;
 
@@ -97,7 +97,7 @@ class MediaImage extends AbstractMedia
      *
      * @return $this
      */
-    public function setHeight(string $height)
+    public function setHeight(string $height = null)
     {
         $this->height = $height;
 

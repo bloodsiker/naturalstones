@@ -14,6 +14,11 @@ step-1:
   defaults:
     _controller: AppBundle:Default:cartStepOne
 
+step-2:
+  path: /cart/step-2
+  defaults:
+    _controller: AppBundle:Default:cartStepTwo
+
 search:
   path: /search
   defaults:

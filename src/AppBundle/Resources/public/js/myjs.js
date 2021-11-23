@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+	$('.phone-input').inputmask("+38 (999) 999-99-99");
+
 	/*Убирание placeholder*/
 	 $('input, textarea').focus(function(){
 	   $(this).data('placeholder',$(this).attr('placeholder'))

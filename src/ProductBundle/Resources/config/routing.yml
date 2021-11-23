@@ -5,10 +5,25 @@ product_who_list:
         _controller: ProductBundle:Product:listWho
     requirements:
         who: "man|woman"
+
 product_tags_list:
     path: /catalog/tag-{slug}
     defaults:
         _controller: ProductBundle:Product:listTag
+    requirements:
+        slug: "([a-zA-Z\\-0-9\\_]+)?"
+
+product_colour_list:
+    path: /catalog/colour-{slug}
+    defaults:
+        _controller: ProductBundle:Product:listColour
+    requirements:
+        slug: "([a-zA-Z\\-0-9\\_]+)?"
+
+product_stone_list:
+    path: /catalog/stone-{slug}
+    defaults:
+        _controller: ProductBundle:Product:listStone
     requirements:
         slug: "([a-zA-Z\\-0-9\\_]+)?"
 

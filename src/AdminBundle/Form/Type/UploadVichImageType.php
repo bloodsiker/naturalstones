@@ -56,7 +56,7 @@ class UploadVichImageType extends VichImageType
             'preview'           => true,
             'required'          => false,
             'label'             => null,
-            'mime_types'        => ['image/png', 'image/jpeg', 'image/jpg'],
+            'mime_types'        => ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml', 'image/webp'],
             'image_path'        => null,
             'image_uri'         => true,
             'allow_delete'      => true,

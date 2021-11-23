@@ -10,3 +10,8 @@ tag_books:
         _controller: ShareBundle:Tag:tagBook
     requirements:
         slug: "([a-zA-Z\\-0-9\\_]+)?"
+
+stone_list:
+    path: /stones
+    defaults:
+        _controller: ShareBundle:Stone:list

@@ -20,16 +20,39 @@ final class Version20211003104307 extends AbstractMigration
 
     public function up(Schema $schema) : void
     {
+        $zodiac = $schema->createTable('share_zodiacs');
+        $zodiac->addColumn('id', 'integer', array('unsigned' => true, 'notnull' => true, 'autoincrement' => true));
+        $zodiac->addColumn('image_id', 'integer', ['unsigned' => true, 'notnull' => false]);
+        $zodiac->addColumn('name', 'string', array('length' => 255, 'notnull' => true));
+        $zodiac->addColumn('slug', 'string', array('length' => 100, 'notnull' => true));
+        $zodiac->addColumn('is_active', 'boolean', array('notnull' => true));
+        $zodiac->addColumn('is_show_main', 'boolean', array('notnull' => true));
+        $zodiac->addColumn('created_at', 'datetime', array('notnull' => true));
+        $zodiac->setPrimaryKey(array('id'));
+        $zodiac->addIndex(['image_id']);
+        $zodiac->addUniqueIndex(array('slug'));
+        $zodiac->addForeignKeyConstraint($schema->getTable('media_image'), ['image_id'], ['id'], ['onDelete' => 'set null']);
 
         $stone = $schema->createTable('share_stones');
         $stone->addColumn('id', 'integer', array('unsigned' => true, 'notnull' => true, 'autoincrement' => true));
+        $stone->addColumn('image_id', 'integer', ['unsigned' => true, 'notnull' => false]);
         $stone->addColumn('name', 'string', array('length' => 255, 'notnull' => true));
         $stone->addColumn('description', 'text', array('length' => 65535, 'notnull' => false));
         $stone->addColumn('slug', 'string', array('length' => 100, 'notnull' => true));
         $stone->addColumn('is_active', 'boolean', array('notnull' => true));
+        $stone->addColumn('is_show_main', 'boolean', array('notnull' => true));
         $stone->addColumn('created_at', 'datetime', array('notnull' => true));
         $stone->setPrimaryKey(array('id'));
+        $stone->addIndex(['image_id']);
         $stone->addUniqueIndex(array('slug'));
+        $stone->addForeignKeyConstraint($schema->getTable('media_image'), ['image_id'], ['id'], ['onDelete' => 'set null']);
+
+        $stoneZodiac = $schema->createTable('share_stone_zodiacs');
+        $stoneZodiac->addColumn('stone_id', 'integer', array('unsigned' => true, 'notnull' => true));
+        $stoneZodiac->addColumn('zodiac_id', 'integer', array('unsigned' => true, 'notnull' => true));
+        $stoneZodiac->addIndex(['stone_id', 'zodiac_id']);
+        $stoneZodiac->addForeignKeyConstraint($schema->getTable('share_stones'), ['stone_id'], ['id'], ['onDelete' => 'cascade']);
+        $stoneZodiac->addForeignKeyConstraint($zodiac, ['zodiac_id'], ['id'], ['onDelete' => 'cascade']);
 
         $size = $schema->createTable('share_sizes');
         $size->addColumn('id', 'integer', array('unsigned' => true, 'notnull' => true, 'autoincrement' => true));

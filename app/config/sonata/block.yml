@@ -65,6 +65,10 @@ sonata_block:
             contexts: [cms]
         share.block.author_list:
             contexts: [cms]
+        share.block.stones:
+            contexts: [ cms ]
+        share.block.zodiac:
+            contexts: [ cms ]
 
         quiz.block.service.quiz:
             contexts: [cms]

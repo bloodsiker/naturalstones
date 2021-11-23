@@ -13,9 +13,9 @@ use Sonata\CoreBundle\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
- * Class StoneAdmin
+ * Class ZodiacAdmin
  */
-class StoneAdmin extends Admin
+class ZodiacAdmin extends Admin
 {
     protected $datagridValues = [
         '_page'       => 1,
@@ -39,28 +39,28 @@ class StoneAdmin extends Admin
     {
         $listMapper
             ->add('id', null, [
-                'label' => 'stone.fields.id',
+                'label' => 'zodiac.fields.id',
             ])
             ->add('image', null, [
                 'label'     => 'stone.fields.image',
                 'template'  => 'ShareBundle:Admin:list_fields.html.twig',
             ])
             ->addIdentifier('name', null, [
-                'label' => 'stone.fields.name',
+                'label' => 'zodiac.fields.name',
             ])
             ->add('isActive', null, [
-                'label' => 'stone.fields.is_active',
+                'label' => 'zodiac.fields.is_active',
                 'editable'  => true,
             ])
             ->add('isShowMain', null, [
-                'label' => 'stone.fields.is_show_main',
+                'label' => 'zodiac.fields.is_show_main',
                 'editable'  => true,
             ])
             ->add('slug', null, [
-                'label' => 'stone.fields.slug',
+                'label' => 'zodiac.fields.slug',
             ])
             ->add('createdAt', null, [
-                'label' => 'stone.fields.created_at',
+                'label' => 'zodiac.fields.created_at',
             ])
             ->add('_action', 'actions', [
                 'actions' => [
@@ -77,16 +77,16 @@ class StoneAdmin extends Admin
     {
         $datagridMapper
             ->add('name', null, [
-                'label' => 'stone.fields.name',
+                'label' => 'zodiac.fields.name',
             ])
             ->add('isActive', null, [
-                'label' => 'stone.fields.is_active',
+                'label' => 'zodiac.fields.is_active',
             ])
             ->add('isShowMain', null, [
-                'label' => 'stone.fields.is_show_main',
+                'label' => 'zodiac.fields.is_show_main',
             ])
             ->add('createdAt', null, [
-                'label' => 'stone.fields.created_at',
+                'label' => 'zodiac.fields.created_at',
             ]);
     }
 
@@ -98,37 +98,29 @@ class StoneAdmin extends Admin
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('name', TextType::class, [
-                    'label' => 'stone.fields.name',
+                    'label' => 'zodiac.fields.name',
                 ])
                 ->add('slug', TextType::class, [
-                    'label' => 'stone.fields.slug',
+                    'label' => 'zodiac.fields.slug',
                     'required' => false,
                     'attr' => ['readonly' => !$this->getSubject()->getId() ? false : true],
-                ])
-                ->add('description', CKEditorType::class, [
-                    'label' => 'stone.fields.description',
-                    'config_name' => 'advanced',
-                    'required' => false,
-                    'attr' => [
-                        'rows' => 5,
-                    ],
                 ])
             ->end()
             ->with('form_group.additional', ['class' => 'col-md-4', 'name' => false])
                 ->add('isActive', null, [
-                    'label' => 'stone.fields.is_active',
+                    'label' => 'zodiac.fields.is_active',
                     'required' => false,
                 ])
                 ->add('isShowMain', null, [
-                    'label' => 'stone.fields.is_show_main',
+                    'label' => 'zodiac.fields.is_show_main',
                     'required' => false,
                 ])
                 ->add('image', ModelListType::class, [
-                    'label' => 'stone.fields.image',
+                    'label' => 'zodiac.fields.image',
                     'required' => true,
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
-                    'label'     => 'stone.fields.created_at',
+                    'label'     => 'zodiac.fields.created_at',
                     'required' => true,
                     'format' => 'YYYY-MM-dd HH:mm',
                     'attr' => ['readonly' => true],

@@ -107,9 +107,11 @@ class ColourAdmin extends Admin
                 'label' => 'colour.fields.is_active',
             ])
             ->add('_action', 'actions', [
-                'actions' => ['edit' => []],
-            ])
-        ;
+                'actions' => [
+                    'preview' => ['template' => 'ShareBundle:CRUD:list__action_preview.html.twig'],
+                    'edit' => [],
+                ],
+            ]);
     }
 
     /**

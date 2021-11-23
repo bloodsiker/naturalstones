@@ -1,0 +1,29 @@
+
+<!-- catalog-section -->
+<section class="simple-section">
+    <div class="container">
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
+
+        <div class="filter-outer">
+            <h1>Цвет: {{ colour.name }}</h1>
+
+            {% include 'AppBundle:Block:filter.html.twig' %}
+        </div>
+
+        {{
+            sonata_block_render(
+                { 'type': 'product.block.list' },
+                {
+                    'items_count' : 5,
+                    'page': app.request.get('page') ? app.request.get('page') : 1,
+                    'colour': colour
+                }
+            )
+        }}
+    </div>
+</section>

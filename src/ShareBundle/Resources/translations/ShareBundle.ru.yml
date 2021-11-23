@@ -8,6 +8,8 @@ Colour List: Список цветов
 Colour Create: Добавить цвет
 Size List: Список размеров
 Size Create: Добавить размер
+Zodiac List: Список знаков зодиака
+Zodiac Create: Добавить знак зодиака
 
 form_group:
     basic: Основные
@@ -21,6 +23,7 @@ group:
     author: Авторы
     author_editor: Авторы
     stone_editor: Камни
+    zodiac_editor: Знаки зодиака
     size_editor: Размеры
     colour_editor: Цвета
 
@@ -28,9 +31,21 @@ stone:
     fields:
         id: ID
         name: Название
+        image: Изображение
         description: Описание
         slug: Сегмент URL (slug)
         is_active: Активен
+        is_show_main: Отображать на главной
+        created_at: Дата создания
+
+zodiac:
+    fields:
+        id: ID
+        name: Название
+        image: Изображение
+        slug: Сегмент URL (slug)
+        is_active: Активен
+        is_show_main: Отображать на главной
         created_at: Дата создания
 
 colour:

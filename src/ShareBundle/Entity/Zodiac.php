@@ -7,13 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Stone
+ * Class Zodiac
  *
- * @ORM\Entity(repositoryClass="ShareBundle\Entity\StoneRepository")
- * @ORM\Table(name="share_stones")
+ * @ORM\Entity(repositoryClass="ShareBundle\Entity\ZodiacRepository")
+ * @ORM\Table(name="share_zodiacs")
  * @ORM\HasLifecycleCallbacks
  */
-class Stone
+class Zodiac
 {
     /**
      * @var int
@@ -47,13 +47,6 @@ class Stone
     protected $slug;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $description;
-
-    /**
      * @var bool
      *
      * @ORM\Column(type="boolean", nullable=false)
@@ -78,9 +71,9 @@ class Stone
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="ProductBundle\Entity\Product", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Stone", mappedBy="tags")
      */
-    protected $products;
+    protected $stones;
 
     /**
      * Constructor
@@ -91,7 +84,7 @@ class Stone
         $this->isShowMain = true;
         $this->createdAt = new \DateTime('now');
 
-        $this->products = new ArrayCollection();
+        $this->stones = new ArrayCollection();
     }
 
     /**
@@ -138,7 +131,7 @@ class Stone
      *
      * @param \MediaBundle\Entity\MediaImage $image
      *
-     * @return Stone
+     * @return Zodiac
      */
     public function setImage(\MediaBundle\Entity\MediaImage $image = null)
     {
@@ -162,7 +155,7 @@ class Stone
      *
      * @param string $name
      *
-     * @return Stone
+     * @return Zodiac
      */
     public function setName($name)
     {
@@ -186,7 +179,7 @@ class Stone
      *
      * @param string $slug
      *
-     * @return Stone
+     * @return Zodiac
      */
     public function setSlug($slug)
     {
@@ -210,7 +203,7 @@ class Stone
      *
      * @param boolean $isActive
      *
-     * @return Stone
+     * @return Zodiac
      */
     public function setIsActive($isActive)
     {
@@ -234,7 +227,7 @@ class Stone
      *
      * @param boolean $isShowMain
      *
-     * @return Stone
+     * @return Zodiac
      */
     public function setIsShowMain($isShowMain)
     {
@@ -258,7 +251,7 @@ class Stone
      *
      * @param \DateTime $createdAt
      *
-     * @return Stone
+     * @return Zodiac
      */
     public function setCreatedAt($createdAt)
     {
@@ -278,60 +271,36 @@ class Stone
     }
 
     /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return $this
-     */
-    public function setDescription($description = null)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
      * Add product
      *
-     * @param \ProductBundle\Entity\Book $product
+     * @param \ShareBundle\Entity\Stone $product
      *
      * @return $this
      */
-    public function addProduct(\ProductBundle\Entity\Product $product)
+    public function addStone(\ShareBundle\Entity\Stone $stone)
     {
-        $this->products[] = $product;
+        $this->stones[] = $stone;
 
         return $this;
     }
 
     /**
-     * Remove products
+     * Remove stone
      *
-     * @param \ProductBundle\Entity\Product $product
+     * @param \ShareBundle\Entity\Stone $stone
      */
-    public function removeProduct(\ProductBundle\Entity\Product $product)
+    public function removeStone(\ShareBundle\Entity\Stone $stone)
     {
-        $this->products->removeElement($product);
+        $this->stones->removeElement($stone);
     }
 
     /**
-     * Get products
+     * Get stones
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProducts()
+    public function getStones()
     {
-        return $this->products;
+        return $this->stones;
     }
 }

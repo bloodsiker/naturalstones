@@ -1,4 +1,15 @@
 services:
+    share.admin.zodiac:
+        class: ShareBundle\Admin\ZodiacAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.share", label: "group.zodiac_editor" }
+        arguments:
+            - ~
+            - ShareBundle\Entity\Zodiac
+            - ShareBundle:ShareAdmin
+        calls:
+            - [ setTranslationDomain, [ ShareBundle ] ]
+
     share.admin.stone:
         class: ShareBundle\Admin\StoneAdmin
         tags:

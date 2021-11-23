@@ -1,0 +1,69 @@
+<section class="simple-section">
+    <div class="container">
+
+        {{ sonata_block_render(
+            { 'type': 'app.block.service.breadcrumb' }
+        ) }}
+
+        {% set infoCart = app.session.get('infoCart') %}
+
+        <h1>Оформление заказа</h1>
+        <form action="#" method="post" class="order-form simple-form">
+
+            <div class="order-form-content">
+                <div class="order-form-steps">
+                    <a href="{{ path('step-1') }}">
+                        <img src="{{ asset('bundles/app/images/datas.svg') }}" alt="">
+                        <span>Ваши данные</span>
+                    </a>
+                    <a href="{{ path('step-2') }}" class="active-step">
+                        <img src="{{ asset('bundles/app/images/verification.svg') }}" alt="">
+                        <span>Проверка данных и заказ</span>
+                    </a>
+                </div>
+
+                <div class="order-check-block">
+                    <ul class="order-check-list">
+                        <li>
+                            <div class="name">Имя покупателя</div>
+                            <div class="value">{{ infoCart.name }}</div>
+                        </li>
+                        <li>
+                            <div class="name">Телефон покупателя</div>
+                            <div class="value">{{ infoCart.phone  }}</div>
+                        </li>
+                        <li>
+                            <div class="name">E-mail</div>
+                            <div class="value">{{ infoCart.email }}</div>
+                        </li>
+                        <li>
+                            <div class="name">Адрес доставки</div>
+                            <div class="value">{{ infoCart.address }}</div>
+                        </li>
+                        <li>
+                            <div class="name">Комментарий</div>
+                            <div class="value">Доставить без предварительного звонка</div>
+                        </li>
+                    </ul>
+                    <a href="{{ path('step-1') }}" class="button white-button change-link">Изменить</a>
+                </div>
+                <div class="order-form-links">
+                    <a class="button white-button" href="{{ path('cart') }}">Отменить</a>
+                    <button class="button" type="submit">Подтвердить</button>
+                </div>
+            </div>
+
+            {{
+                sonata_block_render(
+                    { 'type': 'app.block.service.cart' },
+                    {
+                        'action': constant('AppBundle\\Block\\CartBlockService::ACTION_SHOW'),
+                        'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART_STEP_1_PAGE')
+                    }
+                )
+            }}
+
+        </form>
+
+    </div>
+</section>

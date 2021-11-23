@@ -1,0 +1,13 @@
+{% if settings.title %}
+    <div class="main-stones">
+        <h4>{{ settings.title }}</h4>
+    </div>
+{% endif %}
+<div class="list-zodiac">
+    {% for zodiac in zodiacs %}
+        <a href="{{ path('product_stone_list', {'slug': zodiac.slug}) }}" class="zodiac-item">
+            <img src="" class="lazyload" data-src="{{ zodiac.image ? asset(zodiac.image.path) : null }}" alt="{{ zodiac.name }}">
+            <div class="head-zodiac">{{ zodiac.name }}</div>
+        </a>
+    {% endfor %}
+</div>

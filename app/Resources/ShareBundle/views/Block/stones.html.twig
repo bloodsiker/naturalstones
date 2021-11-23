@@ -1,0 +1,20 @@
+{% if settings.title %}
+    <div class="main-stones">
+        <h4>{{ settings.title }}</h4>
+    </div>
+{% endif %}
+<div class="list-stones">
+    {% for stone in stones %}
+        <a href="{{ path('product_stone_list', {'slug': stone.slug}) }}" class="stone-item">
+            <div class="head-stone">{{ stone.name }}</div>
+            <img src="" class="lazyload" data-src="{{ stone.image ? asset(stone.image.path) : null }}" alt="{{ stone.name }}">
+        </a>
+    {% endfor %}
+
+    {% if settings.view_all %}
+        <a href="{{ path('stone_list') }}" class="stone-item">
+            <div class="head-stone">Посмотреть все</div>
+            <img src="" style="width: 150px;" class="lazyload" data-src="{{ asset('bundles/app/images/arrow_rght.png') }}" alt="Посмотреть все">
+        </a>
+    {% endif %}
+</div>

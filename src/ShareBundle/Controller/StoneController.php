@@ -24,15 +24,10 @@ class StoneController extends Controller
     public function listAction(Request $request)
     {
         $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Авторы']);
+        $breadcrumb->addBreadcrumb(['title' => 'Все камни']);
 
-        if ($request->get('letter')) {
-            $title = "Авторы на букву {$request->get('letter')} | TopBook.com.ua - скачать книги бесплатно и без регистрации";
-            $description = "Список авторов фамилия которых начинается на букву {$request->get('letter')}";
-        } else {
-            $title = 'Все авторы | TopBook.com.ua - скачать книги бесплатно и без регистрации';
-            $description = "Список авторов";
-        }
+        $title = 'Все авторы | TopBook.com.ua - скачать книги бесплатно и без регистрации';
+        $description = "Список авторов";
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $title,
@@ -46,7 +41,7 @@ class StoneController extends Controller
             ],
         ]);
 
-        return $this->render('ShareBundle::author_list.html.twig');
+        return $this->render('ShareBundle::stone_list.html.twig');
     }
 
     /**

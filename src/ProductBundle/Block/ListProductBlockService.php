@@ -76,6 +76,8 @@ class ListProductBlockService extends AbstractAdminBlockService
             'page'             => 1,
             'category'         => null,
             'tag'              => null,
+            'colour'           => null,
+            'stone'            => null,
             'who'              => null,
             'exclude_ids'      => null,
             'show_paginator'   => true,
@@ -120,6 +122,14 @@ class ListProductBlockService extends AbstractAdminBlockService
 
         if ($blockContext->getSetting('who')) {
             $repository->filterByWho($qb, $blockContext->getSetting('who'));
+        }
+
+        if ($blockContext->getSetting('colour')) {
+            $repository->filterByColour($qb, $blockContext->getSetting('colour'));
+        }
+
+        if ($blockContext->getSetting('stone')) {
+            $repository->filterByStone($qb, $blockContext->getSetting('stone'));
         }
 
         if ($blockContext->getSetting('exclude_ids')) {

@@ -36,6 +36,12 @@ class ProductRepository extends EntityRepository
         return $qb->andWhere('p.category = :category')->setParameter('category', $category);
     }
 
+    /**
+     * @param  QueryBuilder  $qb
+     * @param $who
+     *
+     * @return QueryBuilder
+     */
     public function filterByWho(QueryBuilder $qb, $who) : QueryBuilder
     {
         if ($who === Product::WHO_MAN) {
@@ -45,6 +51,18 @@ class ProductRepository extends EntityRepository
         }
 
         return $qb;
+    }
+
+    public function filterByColour(QueryBuilder $qb, $colour) : QueryBuilder
+    {
+        return $qb->innerJoin('p.colours', 'colour', 'WITH', 'colour.id = :colour')
+            ->setParameter('colour', $colour);
+    }
+
+    public function filterByStone(QueryBuilder $qb, $stone) : QueryBuilder
+    {
+        return $qb->innerJoin('p.stones', 'stone', 'WITH', 'stone.id = :stone')
+            ->setParameter('stone', $stone);
     }
 
     /**

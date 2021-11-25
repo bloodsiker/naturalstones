@@ -1,0 +1,30 @@
+
+<!-- catalog-section -->
+<section class="simple-section">
+    <div class="container">
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
+
+        {{
+        sonata_block_render(
+            { 'type': 'share.block.zodiac' },
+            {
+                'title' : 'Камни для знака зодиака ' ~ zodiac.name,
+            }
+        )
+        }}
+
+        {{
+            sonata_block_render(
+                { 'type': 'share.block.stones' },
+                {
+                    'zodiac': zodiac
+                }
+            )
+        }}
+    </div>
+</section>

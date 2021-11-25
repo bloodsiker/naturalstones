@@ -26,23 +26,23 @@
                     <ul class="order-check-list">
                         <li>
                             <div class="name">Имя покупателя</div>
-                            <div class="value">{{ infoCart.name }}</div>
+                            <div class="value">{{ infoCart.name ?: null }}</div>
                         </li>
                         <li>
                             <div class="name">Телефон покупателя</div>
-                            <div class="value">{{ infoCart.phone  }}</div>
+                            <div class="value">{{ infoCart.phone ?: null  }}</div>
                         </li>
                         <li>
                             <div class="name">E-mail</div>
-                            <div class="value">{{ infoCart.email }}</div>
+                            <div class="value">{{ infoCart.email ?: null }}</div>
                         </li>
                         <li>
                             <div class="name">Адрес доставки</div>
-                            <div class="value">{{ infoCart.address }}</div>
+                            <div class="value">{{ infoCart.address ?: null }}</div>
                         </li>
                         <li>
                             <div class="name">Комментарий</div>
-                            <div class="value">Доставить без предварительного звонка</div>
+                            <div class="value">{{ infoCart.comment ?: null }}</div>
                         </li>
                     </ul>
                     <a href="{{ path('step-1') }}" class="button white-button change-link">Изменить</a>

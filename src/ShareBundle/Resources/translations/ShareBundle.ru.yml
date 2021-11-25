@@ -36,6 +36,7 @@ stone:
         slug: Сегмент URL (slug)
         is_active: Активен
         is_show_main: Отображать на главной
+        zodiacs: Знаки зодиака
         created_at: Дата создания
 
 zodiac:

@@ -1,9 +1,10 @@
 <?php
 
-namespace ShareBundle\Block;
+namespace ProductBundle\Block;
 
+use BookBundle\Entity\BookInfoView;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use ShareBundle\Entity\Stone;
+use ProductBundle\Entity\ProductInfoView;
 use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
@@ -12,10 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class StonesBlockService
+ * Class PopularProductsBlockService
  */
-class StonesBlockService extends AbstractAdminBlockService
+class PopularProductsBlockService extends AbstractAdminBlockService
 {
+    const POPULAR_LIST = 'ProductBundle:Block:popular_list.html.twig';
+
     /**
      * @var Registry $doctrine
      */
@@ -46,8 +49,8 @@ class StonesBlockService extends AbstractAdminBlockService
             $this->getName(),
             (!is_null($code) ? $code : $this->getName()),
             false,
-            'ShareBundle',
-            ['class' => 'fa fa-code']
+            'ProductBundle',
+            ['class' => 'fa fa-th-large']
         );
     }
 
@@ -57,11 +60,13 @@ class StonesBlockService extends AbstractAdminBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'items_count' => 100,
-            'zodiac' => null,
-            'view_all' => false,
-            'title' => null,
-            'template'  => 'ShareBundle:Block:stones.html.twig',
+            'list_type'        => null,
+            'items_count'      => 20,
+            'popular_days_ago' => 0,
+            'top_book'         => false,
+            'by_month'         => false,
+            'title'            => null,
+            'template'         => self::POPULAR_LIST,
         ]);
     }
 
@@ -70,6 +75,8 @@ class StonesBlockService extends AbstractAdminBlockService
      * @param Response|null         $response
      *
      * @return Response
+     *
+     * @throws \Exception
      */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
@@ -79,27 +86,32 @@ class StonesBlockService extends AbstractAdminBlockService
             return new Response();
         }
 
-        $repository = $this->doctrine->getRepository(Stone::class);
+        $limit = (int) $blockContext->getSetting('items_count');
 
-        $limit = $blockContext->getSetting('items_count');
+        $repository = $this->doctrine->getRepository(ProductInfoView::class);
 
-        $qb = $repository->baseStoneQueryBuilder();
+        $qb = $repository->baseBookInfoViewQueryBuilder();
 
-        $repository->filterByShowMain($qb);
-
-        if ($blockContext->getSetting('zodiac')) {
-            $repository->filterByZodiac($qb, $blockContext->getSetting('zodiac'));
+        if ($blockContext->getSetting('popular_days_ago')) {
+            $repository->filterPopularByDaysAgo($qb, (int) $blockContext->getSetting('popular_days_ago'));
         }
 
-        $stones = $qb->setFirstResult(0)
+        if ($blockContext->getSetting('by_month')) {
+            $repository->filterPopularByMonth($qb, (int) 0);
+        }
+
+        $result = $qb->setFirstResult(0)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
 
-        return $this->renderResponse($blockContext->getTemplate(), [
-            'stones'   => $stones,
-            'block'    => $block,
-            'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
+        $template = !is_null($blockContext->getSetting('list_type'))
+            ? $blockContext->getSetting('list_type') : $blockContext->getTemplate();
+
+        return $this->renderResponse($template, [
+            'products'  => $result,
+            'block'     => $block,
+            'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
         ], $response);
     }
 }

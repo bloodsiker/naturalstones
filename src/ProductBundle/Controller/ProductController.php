@@ -215,7 +215,7 @@ class ProductController extends Controller
         ]);
 
         $repo->incViewCounter($product->getId());
-//        $this->container->get('book.helper.views')->doView($product);
+        $this->container->get('product.helper.views')->doView($product);
 
         return $this->render('ProductBundle::product_view.html.twig', ['product' => $product]);
     }

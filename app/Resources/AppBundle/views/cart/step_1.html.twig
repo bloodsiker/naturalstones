@@ -47,16 +47,16 @@
                     </ul>
                 </div>
                 <div class="input-block">
-                    <input type="text" name="name" placeholder="Имя" value="{{ infoCart ? infoCart.name : null }}">
+                    <input type="text" name="name" placeholder="Имя" value="{{ infoCart and infoCart.name is defined ? infoCart.name : null }}">
                 </div>
                 <div class="input-block">
-                    <input type="text" name="email" placeholder="E-mail (по желанию)" value="{{ infoCart ? infoCart.email : null }}">
+                    <input type="text" name="email" placeholder="E-mail (по желанию)" value="{{ infoCart and infoCart.email is defined ? infoCart.email : null }}">
                 </div>
                 <div class="input-block">
-                    <input type="text" name="address" placeholder="Адрес" value="{{ infoCart ? infoCart.address : null }}">
+                    <input type="text" name="address" placeholder="Адрес" value="{{ infoCart and infoCart.address is defined ? infoCart.address : null }}">
                 </div>
                 <div class="input-block">
-                    <textarea name="" id="" cols="30" rows="3" placeholder="Комментарий"></textarea>
+                    <textarea name="comment" id="" cols="30" rows="3" placeholder="Комментарий">{{ infoCart and infoCart.comment is defined ? infoCart.comment : null }}</textarea>
                 </div>
                 <div class="order-form-links">
                     <a class="button white-button" href="{{ path('cart') }}">Отменить</a>

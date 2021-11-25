@@ -78,9 +78,13 @@ class Stone
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="ProductBundle\Entity\Product", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Zodiac", inversedBy="stones")
+     * @ORM\JoinTable(name="share_stone_zodiacs",
+     *     joinColumns={@ORM\JoinColumn(name="stone_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="zodiac_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
      */
-    protected $products;
+    protected $zodiacs;
 
     /**
      * Constructor
@@ -91,7 +95,7 @@ class Stone
         $this->isShowMain = true;
         $this->createdAt = new \DateTime('now');
 
-        $this->products = new ArrayCollection();
+        $this->zodiacs = new ArrayCollection();
     }
 
     /**
@@ -302,36 +306,36 @@ class Stone
     }
 
     /**
-     * Add product
+     * Add zodiac
      *
-     * @param \ProductBundle\Entity\Book $product
+     * @param \ShareBundle\Entity\Zodiac $zodiac
      *
-     * @return $this
+     * @return Stone
      */
-    public function addProduct(\ProductBundle\Entity\Product $product)
+    public function addZodiac(\ShareBundle\Entity\Zodiac $zodiac)
     {
-        $this->products[] = $product;
+        $this->zodiacs[] = $zodiac;
 
         return $this;
     }
 
     /**
-     * Remove products
+     * Remove zodiac
      *
-     * @param \ProductBundle\Entity\Product $product
+     * @param \ShareBundle\Entity\Zodiac $zodiac
      */
-    public function removeProduct(\ProductBundle\Entity\Product $product)
+    public function removeZodiac(\ShareBundle\Entity\Zodiac $zodiac)
     {
-        $this->products->removeElement($product);
+        $this->zodiacs->removeElement($zodiac);
     }
 
     /**
-     * Get products
+     * Get zodiacs
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProducts()
+    public function getZodiacs()
     {
-        return $this->products;
+        return $this->zodiacs;
     }
 }

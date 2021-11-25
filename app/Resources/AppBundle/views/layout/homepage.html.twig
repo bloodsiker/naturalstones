@@ -124,12 +124,12 @@
     <section class="section">
         <div class="container">
             {{
-            sonata_block_render(
-                { 'type': 'share.block.zodiac' },
-                {
-                    'title' : 'Камни по знаку зодиака',
-                }
-            )
+                sonata_block_render(
+                    { 'type': 'share.block.zodiac' },
+                    {
+                        'title' : 'Камни по знаку зодиака',
+                    }
+                )
             }}
         </div>
     </section>
@@ -163,15 +163,14 @@
         <div class="container">
 
             {{
-            sonata_block_render(
-                { 'type': 'product.block.list' },
-                {
-                    'title' : 'Самые популярные за месяц',
-                    'items_count' : 10,
-                    'page': app.request.get('page') ? app.request.get('page') : 1,
-                    'list_type': constant('ProductBundle\\Block\\ListProductBlockService::SIMILAR_LIST')
-                }
-            )
+                sonata_block_render(
+                    { 'type': 'product.block.popular' },
+                    {
+                        'title' : 'Самые популярные за месяц',
+                        'by_month' : true,
+                        'items_count': 10,
+                    }
+                )
             }}
 
             <div class="seo-content">

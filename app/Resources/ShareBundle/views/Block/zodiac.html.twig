@@ -5,8 +5,8 @@
 {% endif %}
 <div class="list-zodiac">
     {% for zodiac in zodiacs %}
-        <a href="{{ path('product_stone_list', {'slug': zodiac.slug}) }}" class="zodiac-item">
-            <img src="" class="lazyload" data-src="{{ zodiac.image ? asset(zodiac.image.path) : null }}" alt="{{ zodiac.name }}">
+        <a href="{{ path('zodiac_stone_list', {'slug': zodiac.slug}) }}" class="zodiac-item {% if app.request.get('slug') == zodiac.slug %}active{% endif %}">
+            <img src="{{ zodiac.image ? asset(zodiac.image.path) : null }}" alt="{{ zodiac.name }}">
             <div class="head-zodiac">{{ zodiac.name }}</div>
         </a>
     {% endfor %}

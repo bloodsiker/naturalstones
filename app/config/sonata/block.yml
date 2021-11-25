@@ -51,6 +51,8 @@ sonata_block:
 
         product.block.list:
             contexts: [cms]
+        product.block.popular:
+            contexts: [ cms ]
 
         # GenreBundle Block's
         genre.block.genre_list:

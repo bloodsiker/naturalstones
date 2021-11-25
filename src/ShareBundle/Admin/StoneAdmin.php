@@ -7,6 +7,7 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\CoreBundle\Form\Type\DateTimePickerType;
@@ -126,6 +127,15 @@ class StoneAdmin extends Admin
                 ->add('image', ModelListType::class, [
                     'label' => 'stone.fields.image',
                     'required' => true,
+                ])
+                ->add('zodiacs', ModelAutocompleteType::class, [
+                    'label' => 'stone.fields.zodiacs',
+                    'required' => false,
+                    'property' => 'name',
+                    'multiple' => true,
+                    'attr' => ['class' => 'form-control'],
+                    'btn_catalogue' => $this->translationDomain,
+                    'minimum_input_length' => 2,
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
                     'label'     => 'stone.fields.created_at',

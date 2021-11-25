@@ -136,10 +136,20 @@ final class Version20211003104307 extends AbstractMigration
         $productTags->addIndex(['product_id', 'tag_id']);
         $productTags->addForeignKeyConstraint($product, ['product_id'], ['id'], ['onDelete' => 'cascade']);
         $productTags->addForeignKeyConstraint($schema->getTable('share_tags'), ['tag_id'], ['id'], ['onDelete' => 'cascade']);
+
+        $productView = $schema->createTable('product_product_info_view');
+        $productView->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
+        $productView->addColumn('product_id', 'integer', ['unsigned' => true, 'notnull' => false]);
+        $productView->addColumn('view_at', 'date', ['notnull' => true]);
+        $productView->addColumn('views', 'smallint', ['length' => 6, 'notnull' => true, 'default' => 0]);
+        $productView->setPrimaryKey(['id']);
+        $productView->addIndex(['product_id']);
+        $productView->addForeignKeyConstraint($schema->getTable('product_product'), ['product_id'], ['id'], ['onDelete' => 'set null']);
     }
 
     public function down(Schema $schema) : void
     {
+        $schema->dropTable('product_product_info_view');
         $schema->dropTable('product_product_stones');
         $schema->dropTable('product_product_tags');
         $schema->dropTable('product_product_sizes');

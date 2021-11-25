@@ -1,11 +1,6 @@
 services:
-    book.entity_manager:
-        class: Doctrine\ORM\EntityManager
-        factory: ['@doctrine', getManager]
-        public: false
-
-    book.helper.views:
-        class: BookBundle\Helper\BookViewHelper
+    product.helper.views:
+        class: ProductBundle\Helper\ProductViewHelper
         arguments:
             - '@app.entity_manager'
 

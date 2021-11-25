@@ -3,6 +3,7 @@ Product List: Товары
 Product Create: Добавить товар
 Category List: Категории
 Category Create: Добавить категорию
+Product Info View List: Список просмотров товаров
 
 btn_search_related: Показать релевантные книги по тегам
 btn_search_tags: Показать релевантные теги по тексту
@@ -24,6 +25,7 @@ group:
     product: Товары
     product_editor: Товары
     category_editor: Категории
+    product_info_view_editor: Просмотры товаров
     product_has_image_editor: Дополнительные изображения
 
 product:
@@ -58,6 +60,13 @@ product_has_image:
         product: Продукт
         image: Изображение
         order_num: ''
+
+product_view:
+    fields:
+        id: ID
+        product: Продукт
+        view_at: Дата
+        views: Просмотров
 
 category:
     fields:

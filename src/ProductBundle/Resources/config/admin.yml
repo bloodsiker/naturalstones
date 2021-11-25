@@ -33,3 +33,14 @@ services:
             - ProductBundle:ProductAdmin
         calls:
             - [ setTranslationDomain, [ ProductBundle ] ]
+
+    sonata.admin.product_info_view:
+        class: ProductBundle\Admin\ProductInfoViewAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'group.product', label: "group.product_info_view_editor" }
+        arguments:
+            - ~
+            - ProductBundle\Entity\ProductInfoView
+            - ~
+        calls:
+            - [ setTranslationDomain, [ ProductBundle ] ]

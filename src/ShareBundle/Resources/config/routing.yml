@@ -15,3 +15,8 @@ stone_list:
     path: /stones
     defaults:
         _controller: ShareBundle:Stone:list
+
+zodiac_stone_list:
+    path: /zodiac/{slug}
+    defaults:
+        _controller: ShareBundle:Zodiac:list

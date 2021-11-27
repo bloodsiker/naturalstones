@@ -13,10 +13,11 @@ class ProductInfoViewRepository extends EntityRepository
     /**
      * @return QueryBuilder
      */
-    public function baseBookInfoViewQueryBuilder(): QueryBuilder
+    public function baseProductInfoViewQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('piv');
         $qb
+            ->where('piv.product IS NOT NULL')
             ->addSelect('SUM(piv.views) AS HIDDEN sumView')
             ->groupBy('piv.product')
             ->orderBy('sumView', 'DESC')

@@ -424,12 +424,12 @@ $(document).ready(function() {
 	}
 
 	// Добавление доп. товара
-	$(".add-item").click(function(e){
-    	e.preventDefault();
-    	$(this).toggleClass("added");
-    	var text = $(this).find('span').text();
-    	$(this).find('span').text(text == "Добавить" ? "Добавлен" : "Добавить");
-	});
+	// $(".add-item").click(function(e){
+    // 	e.preventDefault();
+    // 	$(this).toggleClass("added");
+    // 	var text = $(this).find('span').text();
+    // 	$(this).find('span').text(text == "Добавить" ? "Добавлен" : "Добавить");
+	// });
 
 	// Закрытие модалки
 	$(".close-popup").click(function(e){
@@ -476,7 +476,37 @@ $(document).ready(function() {
 		});
 	}
 
+	$('.slice-this').wTextSlicer({
+		height: '350',
+		textExpand: 'Развернуть описание',
+		textHide: 'Свернуть описание'
+	});
+
 });
+
+/*!  wTextSlicer v 1.01 */
+
+jQuery.fn.wTextSlicer = function(options){
+	var options = jQuery.extend({
+		height: '300',
+		textExpand: 'expand text',
+		textHide: 'hide text'
+	},options);
+	return this.each(function() {
+		var a = $(this),
+			h = a.outerHeight();
+		if ( h > options.height ) {
+			a.addClass('slice slice-masked').attr('data-height',h).height(options.height).after('<div class="slice-btn"><span>'+options.textExpand+'</span></div>');
+		};
+		var bt = $(this).next('.slice-btn').children('span');
+		bt.click(function() {
+			var ah = parseInt(a.css("height"), 10);
+			ah == h ? a.css({'height':options.height}) : a.css({'height':h});
+			bt.text(bt.text() == options.textExpand ? options.textHide : options.textExpand);
+			a.toggleClass('slice-masked');
+		});
+	});
+};
 
 // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
 let vh = window.innerHeight * 0.01;

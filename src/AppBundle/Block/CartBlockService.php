@@ -131,7 +131,7 @@ class CartBlockService extends AbstractAdminBlockService
             switch ($action) {
                 case self::ACTION_ADD:
                     $countItems = $this->addToCart($type, $item, $count);
-                    return new JsonResponse(['code' => 200, 'count' => $countItems]);
+                    return new JsonResponse(['code' => 200, 'count' => $countItems, 'total' => $this->cart->getTotalPrice()]);
                     break;
                 case self::ACTION_REMOVE:
                     $this->removeProductFromCart($type, $item);

@@ -90,7 +90,7 @@ class PopularProductsBlockService extends AbstractAdminBlockService
 
         $repository = $this->doctrine->getRepository(ProductInfoView::class);
 
-        $qb = $repository->baseBookInfoViewQueryBuilder();
+        $qb = $repository->baseProductInfoViewQueryBuilder();
 
         if ($blockContext->getSetting('popular_days_ago')) {
             $repository->filterPopularByDaysAgo($qb, (int) $blockContext->getSetting('popular_days_ago'));

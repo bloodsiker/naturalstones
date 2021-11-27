@@ -5,6 +5,7 @@ namespace ProductBundle\Block;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
+use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
 use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
@@ -20,6 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ListProductBlockService extends AbstractAdminBlockService
 {
     const SIMILAR_LIST = 'ProductBundle:Block:similar_list.html.twig';
+    const BUY_WITH_LIST = 'ProductBundle:Block:buy_with_list.html.twig';
     const TEMPLATE_AJAX  = 'ProductBundle:Block:large_list_ajax.html.twig';
 
     /**
@@ -75,6 +77,7 @@ class ListProductBlockService extends AbstractAdminBlockService
             'items_count'      => 20,
             'page'             => 1,
             'category'         => null,
+            'category_slug'    => null,
             'tag'              => null,
             'colour'           => null,
             'stone'            => null,
@@ -109,8 +112,16 @@ class ListProductBlockService extends AbstractAdminBlockService
         $page = $isAjax ? $request->get('page') : $blockContext->getSetting('page');
 
         $repository = $this->doctrine->getRepository(Product::class);
+        $repositoryCategory = $this->doctrine->getRepository(Category::class);
 
         $qb = $repository->baseProductQueryBuilder();
+
+        if ($blockContext->getSetting('category_slug')) {
+            $category = $repositoryCategory->findOneBy(['slug' => $blockContext->getSetting('category_slug')]);
+            if ($category) {
+                $repository->filterByCategory($qb, $category);
+            }
+        }
 
         if ($blockContext->getSetting('category')) {
             $repository->filterByCategory($qb, $blockContext->getSetting('category'));

@@ -10,7 +10,7 @@
         }}
 
         {% if stone.description %}
-            <div class="product-description-container">
+            <div class="product-description-container slice-this">
                 {{ stone.description|raw }}
             </div>
         {% endif %}
@@ -18,7 +18,7 @@
         <div class="filter-outer">
             <h1>Камень: {{ stone.name }}</h1>
 
-            {% include 'AppBundle:Block:filter.html.twig' %}
+{#            {% include 'AppBundle:Block:filter.html.twig' %}#}
         </div>
 
         {{

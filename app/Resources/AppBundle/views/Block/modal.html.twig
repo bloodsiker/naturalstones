@@ -83,7 +83,7 @@
                             <span class="desctop-text">Товар был добавлен в корзину</span>
                             <span class="mobile-text">Добавлено в корзину</span>
                         </h5>
-                        <div class="desc"><span>Сейчас в вашей корзине: </span>4 товара на сумму 2156622 USD</div>
+                        <div class="desc"><span>Сейчас в вашей корзине: </span><span id="modalCountProduct"></span> на сумму <span id="modalTotalProduct"></span> грн</div>
                     </div>
                 </div>
                 <div class="cart-links">
@@ -101,64 +101,18 @@
         <div class="popup-top no-border">
             <div class="modal-title"><span>С этим товаром покупают</span></div>
         </div>
-        <div class="modal-slider-outer">
-            <div class="dop-items-slider modal-slider js-slick">
-                <div class="dop-items-block">
-                    <div class="name">Kinder Joy</div>
-                    <div class="image"><img src="{{ asset('bundles/app/images/product-dop-item-1.jpg') }}" alt=""></div>
-                    <div class="price">15 USD</div>
-                    <a href="" class="add-item">
-                        <img src="{{ asset('bundles/app/images/check.svg') }}" alt="">
-                        <span>Добавить</span>
-                    </a>
-                </div>
-                <div class="dop-items-block">
-                    <div class="name">Raffaello</div>
-                    <div class="image"><img src="images/product-dop-item-2.jpg" alt=""></div>
-                    <div class="price">10 USD</div>
-                    <a href="" class="add-item">
-                        <img src="{{ asset('bundles/app/images/check.svg') }}" alt="">
-                        <span>Добавить</span>
-                    </a>
-                </div>
-                <div class="dop-items-block">
-                    <div class="name">Kinder Joy</div>
-                    <div class="image"><img src="images/product-dop-item-1.jpg" alt=""></div>
-                    <div class="price">15 USD</div>
-                    <a href="" class="add-item">
-                        <img src="{{ asset('bundles/app/images/check.svg') }}" alt="">
-                        <span>Добавить</span>
-                    </a>
-                </div>
-                <div class="dop-items-block">
-                    <div class="name">Raffaello</div>
-                    <div class="image"><img src="images/product-dop-item-2.jpg" alt=""></div>
-                    <div class="price">10 USD</div>
-                    <a href="" class="add-item">
-                        <img src="{{ asset('bundles/app/images/check.svg') }}" alt="">
-                        <span>Добавить</span>
-                    </a>
-                </div>
-                <div class="dop-items-block">
-                    <div class="name">Kinder Joy</div>
-                    <div class="image"><img src="images/product-dop-item-1.jpg" alt=""></div>
-                    <div class="price">15 USD</div>
-                    <a href="" class="add-item">
-                        <img src="{{ asset('bundles/app/images/check.svg') }}" alt="">
-                        <span>Добавить</span>
-                    </a>
-                </div>
-                <div class="dop-items-block">
-                    <div class="name">Raffaello</div>
-                    <div class="image"><img src="images/product-dop-item-2.jpg" alt=""></div>
-                    <div class="price">10 USD</div>
-                    <a href="" class="add-item">
-                        <img src="{{ asset('bundles/app/images/check.svg') }}" alt="">
-                        <span>Добавить</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+
+        {{
+            sonata_block_render(
+                { 'type': 'product.block.list' },
+                {
+                    'items_count' : 10,
+                    'category_slug' : app.request.get('category'),
+                    'list_type': constant('ProductBundle\\Block\\ListProductBlockService::BUY_WITH_LIST'),
+                }
+            )
+        }}
+
         <button class="mfp-close" type="button"><img src="{{ asset('bundles/app/images/cart.svg') }}" alt=""></button>
     </div>
 </div>

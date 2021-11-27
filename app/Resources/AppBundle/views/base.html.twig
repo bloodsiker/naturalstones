@@ -153,10 +153,18 @@
                             if (200 === response.code) {
                                 $('.header-cart-info').html('');
                                 $('.countProductInCart').html(response.count);
+                                $('#modalCountProduct').text(response.count + ' ' + declOfNum(response.count))
+                                $('#modalTotalProduct').text(response.total)
                             }
                         }
                     });
                 });
+
+                let declOfNum = (number) => {
+                    const titles = ['товар', 'товара', 'товаров'];
+                    const cases = [2, 0, 1, 1, 1, 2];
+                    return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
+                }
 
                 $('#get_more_products').on('click', function (e) {
                     e.preventDefault();

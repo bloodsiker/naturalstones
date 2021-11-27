@@ -9,11 +9,11 @@
                     <button type="button" class="btn btn-default">{{ file.bookFile.path|file_extension|upper }}</button>
                 {% endfor %}
             </div>
-        {% elseif field_description.name == 'sizes' %}
+        {% elseif field_description.name == 'size' %}
             {% set route_name = field_description.options.route.name %}
-            {% for size in object.sizes %}
-                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, size, field_description.options.route.parameters) }}" class="label label-primary">{{ size }}</a>
-            {% endfor %}
+            {% if object.size %}
+                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, object.size, field_description.options.route.parameters) }}" class="label label-primary">{{ object.size }}</a>
+            {% endif %}
         {% elseif field_description.name == 'colours' %}
             {% set route_name = field_description.options.route.name %}
             {% for colour in object.colours %}

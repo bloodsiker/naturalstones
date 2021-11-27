@@ -243,7 +243,7 @@ strong {
   text-align: center;
   border-radius: 99px;
   line-height: 1.19;
-  background: #f2bdbd;
+  background: #f08383;
   min-width: 128px;
 }
 
@@ -856,8 +856,7 @@ footer {
 
 .filter-outer h1 {
   margin-bottom: 0;
-  text-transform: uppercase;
-  color: #f97676;
+  color: #000000;
   margin-right: 10px;
 }
 
@@ -1517,7 +1516,7 @@ footer {
 }
 
 .main-video-content .desc-logo {
-  margin-bottom: 32px;
+  margin-bottom: 12px;
 }
 
 .main-video-content .desc {
@@ -2245,7 +2244,7 @@ footer {
 
 .product-add-form .cart-button:hover {
   color: #fff;
-  background: #fbdfdf;
+  background: #f08383;
 }
 
 .cart-product-amount {
@@ -2337,6 +2336,11 @@ footer {
   border-color: #f08383;
 }
 
+.product-sizes-check .size-radiobox i.product-sizes-active {
+  color: #f08383;
+  border-color: #f08383;
+}
+
 .product-sizes-check .size-radiobox i {
   border-radius: 50%;
   border: 1px solid #E6E6E6;
@@ -2353,7 +2357,7 @@ footer {
   transition: all 0.3s ease-out;
   padding: 8px;
   line-height: 1.2;
-  font-size: 20px;
+  font-size: 18px;
   color: #000;
 }
 
@@ -2810,7 +2814,7 @@ footer {
 
 .modal-slider .slick-arrow {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  background: #fbdfdf;
+  background: #f79c9d;
 }
 
 .modal-slider .slick-arrow:after {
@@ -2826,7 +2830,7 @@ footer {
 }
 
 .modal-slider .slick-arrow:hover {
-  background: #703fb3;
+  background: #ef8283;
 }
 
 .dop-items-block {
@@ -2908,6 +2912,14 @@ footer {
 .dop-items-block .add-item.added img {
   filter: grayscale(0);
 }
+.dop-items-block .old-price {
+  font-size: 16px;
+  text-decoration: line-through;
+  margin-right: 5px;
+}
+.dop-items-block .old-price ~ span {
+  color: #f08383;
+}
 
 .modal-cart-block {
   margin-bottom: 25px;
@@ -2929,7 +2941,7 @@ footer {
   -ms-flex-pack: center;
   justify-content: center;
   text-align: center;
-  background: #fbdfdf;
+  background: #f69c9d;
   border-radius: 50%;
   height: 46px;
   width: 46px;
@@ -3450,6 +3462,14 @@ footer {
 .order-form-items .price {
   font-weight: bold;
   font-size: 18px;
+}
+.order-form-items .old-price {
+  font-size: 18px;
+  text-decoration: line-through;
+  margin-right: 5px;
+}
+.order-form-items .old-price ~ span {
+  color: #f08383;
 }
 
 .order-form-promokod {
@@ -4030,7 +4050,7 @@ footer {
 .product-description-container {
   font-size: 1.125rem;
   line-height: 1.7;
-  margin-bottom: 5rem;
+  margin-bottom: 2rem;
   color: #525252;
 }
 
@@ -4039,6 +4059,37 @@ footer {
   margin-bottom: 1rem;
   font-weight: 500;
   font-size: 1.8rem;
+}
+.slice {
+  overflow: hidden;
+  position: relative;
+  transition: height .2s;
+}
+.slice-masked:before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  pointer-events: none;
+  background: -webkit-linear-gradient(top,rgba(255,255,255,0) 0%,#fff 100%);
+  background: linear-gradient(to bottom,rgba(255,255,255,0) 0%,#fff 100%);
+}
+.slice-btn {
+  margin: -20px 0 50px 0;
+  text-align: center;
+}
+.slice-btn span {
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  color: #5a5858;
+  padding: 10px 50px;
+  font-size: 18px;
+  border: 1px solid #5a5858;
+  border-radius: 20px;
 }
 
 /* ========================== MEDIA ===========================*/
@@ -4727,7 +4778,7 @@ footer {
   }
 
   .video-slide-down {
-    display: none;
+    /*display: none;*/
   }
 
   .video-instagram {

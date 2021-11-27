@@ -1,5 +1,6 @@
 link_actions: Действия
 search_placeholder: поиск
+object_clone_success: Продукт успешно скопирован
 short_object_description_placeholder: не выбрано
 
 Dashboard: '<i class="fa fa-home"></i>'
@@ -8,6 +9,7 @@ actions:
     btn:
         preview: Посмотреть
         on_site: На сайте
+        clone: Copy
 
 admin:
     fields:

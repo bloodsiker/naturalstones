@@ -39,16 +39,18 @@ product:
         is_active: Активно
         is_woman: Для женщин
         is_man: Для мужчин
+        is_main_product: Главный продукт
         image: Изображение
         category: Категория
         colours: Цвет(а)
         stones: Камни
-        sizes: Размер(ы)
+        size: Размер
         price: Цена
         discount: Цена со скидкой
         tags: Тег(и)
         views: Просмотры
         product_image: Дополнительные изображения
+        product_group: Группа продуктов
         updated_at: Изменена
         created_at: Создана
     buttons:

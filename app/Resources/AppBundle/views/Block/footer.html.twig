@@ -1,8 +1,10 @@
 <div class="container">
     <div class="footer-content">
-        <div class="footer-logo"><img src="{{ asset('bundles/app/images/logo.jpg') }}" alt=""></div>
+        <div class="footer-logo"><img src="{{ asset('bundles/app/images/logo.jpg') }}" alt="Naturalstones Jewerly"></div>
         <div class="footer-block">
-            <a href="" class="footer-instagram"><img src="{{ asset('bundles/app/images/instagram.svg') }}" alt=""></a>
+            <a href="https://www.instagram.com/naturalstones.jewerly/" target="_blank" class="footer-instagram">
+                <img src="{{ asset('bundles/app/images/instagram.svg') }}" alt="Naturalstones Jewerly">
+            </a>
             <div class="inner">
                 <div class="title">Работаем без выходных <span>с 8:00 до 22:00</span></div>
                 <div class="copyright">&copy; {{ 'now'|date('Y') }} Все права защищены</div>
@@ -11,8 +13,8 @@
         <div class="footer-pay">
             <div class="title">Платежные системы и способы</div>
             <ul class="footer-pay-list">
-                <li><a href=""><img src="{{ asset('bundles/app/images/pay-systems/pay-system-8.png') }}" alt=""></a></li>
-                <li><a href=""><img src="{{ asset('bundles/app/images/pay-systems/pay-system-9.png') }}" alt=""></a></li>
+                <li><img src="{{ asset('bundles/app/images/pay-systems/pay-system-8.png') }}" alt=""></li>
+                <li><img src="{{ asset('bundles/app/images/pay-systems/pay-system-9.png') }}" alt=""></li>
             </ul>
         </div>
     </div>
@@ -20,10 +22,10 @@
 
 
 {{
-sonata_block_render(
-    { 'type': 'page.block.site_variable' },
-    {
-        'placement': 'footer-counters'
-    }
-)
+    sonata_block_render(
+        { 'type': 'page.block.site_variable' },
+        {
+            'placement': 'footer-counters'
+        }
+    )
 }}

@@ -19,7 +19,23 @@ class ProductRepository extends EntityRepository
         $qb = $this->createQueryBuilder('p');
         $qb
             ->where('p.isActive = 1')
+            ->andWhere('p.isMainProduct = 1')
             ->orderBy('p.id', 'DESC')
+        ;
+
+        return $qb;
+    }
+
+    public function productGroupQueryBuilder($groupId): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->where('p.isActive = 1')
+            ->andWhere('p.size IS NOT NULL')
+            ->innerJoin('p.size', 'size', 'WITH', 'size.id = p.size')
+            ->andWhere('p.productGroup IS NOT NULL')
+            ->andWhere('p.productGroup = :groupId')->setParameter('groupId', $groupId)
+            ->orderBy('size.name', 'ASC')
         ;
 
         return $qb;

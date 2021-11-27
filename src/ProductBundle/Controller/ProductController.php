@@ -188,6 +188,10 @@ class ProductController extends Controller
             throw $this->createNotFoundException(self::PRODUCT_404);
         }
 
+        $sizes = $repo->productGroupQueryBuilder($product->getProductGroup())
+            ->getQuery()
+            ->getResult();
+
         $router = $this->get('router');
         $breadcrumb = $this->get('app.breadcrumb');
         if ($product->getCategory()) {
@@ -217,6 +221,6 @@ class ProductController extends Controller
         $repo->incViewCounter($product->getId());
         $this->container->get('product.helper.views')->doView($product);
 
-        return $this->render('ProductBundle::product_view.html.twig', ['product' => $product]);
+        return $this->render('ProductBundle::product_view.html.twig', ['product' => $product, 'sizes' => $sizes]);
     }
 }

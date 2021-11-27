@@ -8,9 +8,11 @@
         </div>
         {% for mProduct in products.product %}
             <div class="order-form-items">
-                <a class="item-image" href="{{ product_path(mProduct.item) }}"><img alt="{{ mProduct.item.name }}" class="lazyload" data-src="{{ asset(mProduct.item.image.getPath()) }}" src=""></a>
+                <a class="item-image" href="{{ product_path(mProduct.item) }}">
+                    <img alt="{{ mProduct.item.name }}" class="lazyload" data-src="{{ asset(mProduct.item.image.getPath()) }}" src="{{ mProduct.item.name }}">
+                </a>
                 <div class="inner">
-                    <div class="item-name"><a href="{{ product_path(mProduct.item) }}">{{ mProduct.item.name }}</a></div>
+                    <div class="item-name"><a href="{{ product_path(mProduct.item) }}">{{ mProduct.item.name }} {% if mProduct.item.size %}({{ mProduct.item.size }}){% endif %} </a></div>
                     <div class="count">{{ mProduct.count }} шт.</div>
                     {% if mProduct.item.discount %}
                         <div class="price">

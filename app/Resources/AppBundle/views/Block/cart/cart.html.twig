@@ -5,9 +5,9 @@
     {% if products.product is defined %}
         {% for mProduct in products.product %}
             <div class="header-cart-item">
-                <a href="" class="image"><img class="lazyload" data-src="{{ asset(mProduct.item.image.getPath()) }}" src="" alt=""></a>
+                <a href="{{ product_path(mProduct.item) }}" class="image"><img class="lazyload" data-src="{{ asset(mProduct.item.image.getPath()) }}" src="" alt=""></a>
                 <div class="inner">
-                    <a href="{{ product_path(mProduct.item) }}" class="name">{{ mProduct.item.name }} - ({{ mProduct.count }} шт)</a>
+                    <a href="{{ product_path(mProduct.item) }}" class="name">{{ mProduct.item.name }} {% if mProduct.item.size %}({{ mProduct.item.size }}){% endif %} - {{ mProduct.count }} шт</a>
                     {% if mProduct.item.discount %}
                         <div class="price">
                             <span class="old-price">{{ mProduct.item.price }} грн</span>

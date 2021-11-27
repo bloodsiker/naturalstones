@@ -20,6 +20,9 @@
                                 <a href="{{ product_path(mProduct.item) }}" class="item-image"><img alt="{{ mProduct.item.name }}" class="lazyload" data-src="{{ asset(mProduct.item.image.getPath()) }}" src=""></a>
                                 <div class="item-name">
                                     <a href="{{ product_path(mProduct.item) }}">{{ mProduct.item.name }}</a>
+                                    {% if mProduct.item.size %}
+                                        <i>({{ mProduct.item.size }})</i>
+                                    {% endif  %}
                                     {% if mProduct.item.discount %}
                                         <span>Скидка</span>
                                     {% endif  %}

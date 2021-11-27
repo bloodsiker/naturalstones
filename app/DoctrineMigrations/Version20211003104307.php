@@ -81,6 +81,7 @@ final class Version20211003104307 extends AbstractMigration
         $product->addColumn('id', 'integer', array('unsigned' => true, 'notnull' => true, 'autoincrement' => true));
         $product->addColumn('image_id', 'integer', ['unsigned' => true, 'notnull' => false]);
         $product->addColumn('category_id', 'integer', ['unsigned' => true, 'notnull' => false]);
+        $product->addColumn('size_id', 'integer', ['unsigned' => true, 'notnull' => false]);
         $product->addColumn('name', 'string', array('length' => 255, 'notnull' => false));
         $product->addColumn('slug', 'string', array('length' => 255, 'notnull' => false));
         $product->addColumn('instagram_link', 'string', array('length' => 255, 'notnull' => false));
@@ -88,16 +89,19 @@ final class Version20211003104307 extends AbstractMigration
         $product->addColumn('price', 'float', array('notnull' => false, 'default' => 0));
         $product->addColumn('discount', 'float', array('notnull' => false));
         $product->addColumn('views', 'integer', array('unsigned' => true, 'notnull' => false, 'default' => 0));
+        $product->addColumn('product_group', 'integer', array('unsigned' => true, 'notnull' => false, 'default' => 0));
         $product->addColumn('is_active', 'boolean', array('notnull' => true));
         $product->addColumn('is_available', 'boolean', array('notnull' => true));
         $product->addColumn('is_man', 'boolean', array('notnull' => true));
         $product->addColumn('is_woman', 'boolean', array('notnull' => true));
+        $product->addColumn('is_main_product', 'boolean', array('notnull' => true));
         $product->addColumn('created_at', 'datetime', array('notnull' => true));
         $product->addColumn('updated_at', 'datetime', array('notnull' => false));
         $product->setPrimaryKey(['id']);
-        $product->addIndex(['image_id', 'category_id']);
+        $product->addIndex(['image_id', 'category_id', 'size_id']);
         $product->addForeignKeyConstraint($category, ['category_id'], ['id'], ['onDelete' => 'set null']);
         $product->addForeignKeyConstraint($schema->getTable('media_image'), ['image_id'], ['id'], ['onDelete' => 'set null']);
+        $product->addForeignKeyConstraint($size, ['size_id'], ['id'], ['onDelete' => 'set null']);
 
         $productImages = $schema->createTable('product_product_has_image');
         $productImages->addColumn('id', 'integer', array('unsigned' => true, 'notnull' => true, 'autoincrement' => true));
@@ -116,12 +120,12 @@ final class Version20211003104307 extends AbstractMigration
         $productStone->addForeignKeyConstraint($product, ['product_id'], ['id'], ['onDelete' => 'cascade']);
         $productStone->addForeignKeyConstraint($schema->getTable('share_stones'), ['stone_id'], ['id'], ['onDelete' => 'cascade']);
 
-        $productSize = $schema->createTable('product_product_sizes');
-        $productSize->addColumn('product_id', 'integer', array('unsigned' => true, 'notnull' => true));
-        $productSize->addColumn('size_id', 'integer', array('unsigned' => true, 'notnull' => true));
-        $productSize->addIndex(['product_id', 'size_id']);
-        $productSize->addForeignKeyConstraint($product, ['product_id'], ['id'], ['onDelete' => 'cascade']);
-        $productSize->addForeignKeyConstraint($schema->getTable('share_sizes'), ['size_id'], ['id'], ['onDelete' => 'cascade']);
+//        $productSize = $schema->createTable('product_product_sizes');
+//        $productSize->addColumn('product_id', 'integer', array('unsigned' => true, 'notnull' => true));
+//        $productSize->addColumn('size_id', 'integer', array('unsigned' => true, 'notnull' => true));
+//        $productSize->addIndex(['product_id', 'size_id']);
+//        $productSize->addForeignKeyConstraint($product, ['product_id'], ['id'], ['onDelete' => 'cascade']);
+//        $productSize->addForeignKeyConstraint($schema->getTable('share_sizes'), ['size_id'], ['id'], ['onDelete' => 'cascade']);
 
         $productTags = $schema->createTable('product_product_colours');
         $productTags->addColumn('product_id', 'integer', array('unsigned' => true, 'notnull' => true));

@@ -175,7 +175,7 @@ class CRUDController extends Controller
     /**
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    private function getRepository()
+    protected function getRepository()
     {
         return $this->container->get('doctrine')->getRepository($this->admin->getClass());
     }

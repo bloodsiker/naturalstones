@@ -8,7 +8,7 @@
             )
         }}
 
-        <h1>{{ product.name }}</h1>
+        <h1>{{ product.name }} {{ product.size }}</h1>
         <div class="product-section-detail">
 
             <div class="product-gallery">
@@ -28,29 +28,34 @@
                 <div class="product-info-top clearfix">
                     <form action="#" method="post" class="product-add-form">
                         <div class="top-block">
+                            {% if sizes|length > 0 %}
                             <div class="inner-block">
                                 <h5>Выберите размер</h5>
                                 <ul class="product-sizes-check">
-                                    {% for size in product.sizes %}
-                                        <li>
-                                            <div class="size-radiobox">
-                                                <label class="radiobox">
-                                                    <input type="radio" name="size-radio" value="{{ size.id }}">
-                                                    <i>{{ size.name }}</i>
-                                                </label>
-                                            </div>
-                                        </li>
+                                    {% for productSize in sizes %}
+                                        {% if productSize.size %}
+                                            <li>
+                                                <div class="size-radiobox">
+                                                    <a href="{{ product_path(productSize) }}">
+                                                        <i class="{% if productSize.id == product.id %}product-sizes-active{% endif %}">{{ productSize.size }}</i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        {% endif %}
                                     {% endfor %}
                                 </ul>
                                 <div class="select-block mobile-select">
                                     <select class="custom-select" data-placeholder="Размер">
                                         <option></option>
-                                        {% for size in product.sizes %}
-                                            <option value="{{ size.id }}">{{ size.name }}</option>
+                                        {% for productSize in sizes %}
+                                            {% if productSize.size %}
+                                                <option value="{{ productSize.id }}">{{ productSize.size }}</option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
                             </div>
+                            {% endif %}
                             <div class="inner-block">
                                 <h5>Выберите количество</h5>
                                 <div class="cart-product-amount">
@@ -90,7 +95,7 @@
                                         <label class="messengers-radio telegram">
                                             <input type="radio" name="mess-radio" checked>
                                             <span>
-                                                <img src="{{ asset('bundles/app/images/telegram.svg') }}" alt="">
+                                                <img src="{{ asset('bundles/app/images/telegram.svg') }}" alt="telegram">
                                             </span>
                                         </label>
                                     </li>
@@ -98,7 +103,7 @@
                                         <label class="messengers-radio viber">
                                             <input type="radio" name="mess-radio">
                                             <span>
-                                                <img src="{{ asset('bundles/app/images/viber.svg') }}" alt="">
+                                                <img src="{{ asset('bundles/app/images/viber.svg') }}" alt="viber">
                                             </span>
                                         </label>
                                     </li>

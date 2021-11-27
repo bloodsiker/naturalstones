@@ -1,0 +1,24 @@
+{% if products %}
+    <div class="modal-slider-outer">
+        <div class="dop-items-slider modal-slider js-slick">
+            {% for product in products %}
+                <div class="dop-items-block">
+                    <div class="name">{{ product.name }}</div>
+                    <div class="image"><img class="lazyload" data-src="{{ asset(product.image.path) }}" src="" alt="{{ product.name }}"></div>
+                    {% if product.discount %}
+                        <div class="price">
+                            <span class="old-price">{{ product.price}} грн</span>
+                            <span>{{ product.discount}} грн</span>
+                        </div>
+                    {% else %}
+                        <div class="price"><span>{{ product.price}} грн</span></div>
+                    {% endif %}
+                    <a href="{{ product_path(product) }}" class="add-item">
+                        <img src="{{ asset('bundles/app/images/check.svg') }}" alt="add">
+                        <span>Купить</span>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

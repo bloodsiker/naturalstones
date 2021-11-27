@@ -55,6 +55,19 @@ class ProductAdmin extends Admin
     }
 
     /**
+     * @param  object  $object
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function postPersist($object)
+    {
+        $object->setProductGroup($object->getId());
+        $this->entityManager->persist($object);
+        $this->entityManager->flush();
+    }
+
+    /**
      * @return array
      */
     public function getFormTheme()
@@ -86,6 +99,7 @@ class ProductAdmin extends Admin
         $collection->remove('acl');
 
         $collection->add('preview', 'preview');
+        $collection->add('clone', $this->getRouterIdParameter().'/clone');
     }
 
     /**
@@ -103,17 +117,17 @@ class ProductAdmin extends Admin
             ])
             ->addIdentifier('name', null, [
                 'label' => 'product.fields.name',
-                'template'  => 'ProductBundle:Admin:list_fields.html.twig',
+                'template' => 'ProductBundle:Admin:list_fields.html.twig',
             ])
             ->add('category', null, [
-                'label'     => 'product.fields.category',
+                'label' => 'product.fields.category',
             ])
             ->add('colours', null, [
                 'label' => 'product.fields.colours',
                 'template'  => 'ProductBundle:Admin:list_fields.html.twig',
             ])
-            ->add('sizes', null, [
-                'label' => 'product.fields.sizes',
+            ->add('size', null, [
+                'label' => 'product.fields.size',
                 'template'  => 'ProductBundle:Admin:list_fields.html.twig',
             ])
             ->add('price', null, [
@@ -130,13 +144,14 @@ class ProductAdmin extends Admin
                 'label' => 'product.fields.is_available',
                 'editable'  => true,
             ])
-            ->add('createdAt', null, [
-                'label' => 'product.fields.created_at',
+            ->add('isMainProduct', null, [
+                'label' => 'product.fields.is_main_product',
             ])
             ->add('_action', 'actions', [
                 'actions' => [
                     'preview' => ['template' => 'ProductBundle:CRUD:list__action_preview.html.twig'],
                     'edit' => [],
+                    'clone'   => ['template' => 'ProductBundle:CRUD:list__action_clone.html.twig'],
                 ],
             ])
         ;
@@ -163,14 +178,20 @@ class ProductAdmin extends Admin
             ->add('tags', null, [
                 'label' => 'product.fields.tags',
             ])
-            ->add('sizes', null, [
-                'label' => 'product.fields.sizes',
+            ->add('size', null, [
+                'label' => 'product.fields.size',
             ])
             ->add('isActive', null, [
                 'label' => 'product.fields.is_active',
             ])
             ->add('isAvailable', null, [
                 'label' => 'product.fields.is_available',
+            ])
+            ->add('isMainProduct', null, [
+                'label' => 'product.fields.is_main_product',
+            ])
+            ->add('productGroup', null, [
+                'label' => 'product.fields.product_group',
             ])
             ->add('createdAt', DateFilter::class, [
                 'label'         => 'product.fields.created_at',
@@ -258,6 +279,10 @@ class ProductAdmin extends Admin
                     'label' => 'product.fields.is_man',
                     'required' => false,
                 ])
+                ->add('size', ModelListType::class, [
+                    'label' => 'product.fields.size',
+                    'required' => true,
+                ])
                 ->add('colours', ModelAutocompleteType::class, [
                     'label' => 'product.fields.colours',
                     'required' => false,
@@ -276,15 +301,6 @@ class ProductAdmin extends Admin
                     'btn_catalogue' => $this->translationDomain,
                     'minimum_input_length' => 2,
                 ])
-                ->add('sizes', ModelAutocompleteType::class, [
-                    'label' => 'product.fields.sizes',
-                    'required' => false,
-                    'property' => 'name',
-                    'multiple' => true,
-                    'attr' => ['class' => 'form-control'],
-                    'btn_catalogue' => $this->translationDomain,
-                    'minimum_input_length' => 2,
-                ])
                 ->add('tags', ModelAutocompleteType::class, [
                     'label' => 'product.fields.tags',
                     'required' => false,
@@ -296,6 +312,11 @@ class ProductAdmin extends Admin
                 ])
                 ->add('views', IntegerType::class, [
                     'label' => 'product.fields.views',
+                    'required' => false,
+                    'attr' => ['readonly' => true],
+                ])
+                ->add('productGroup', IntegerType::class, [
+                    'label' => 'product.fields.product_group',
                     'required' => false,
                     'attr' => ['readonly' => true],
                 ])

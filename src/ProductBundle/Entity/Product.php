@@ -54,6 +54,14 @@ class Product
     protected $category;
 
     /**
+     * @var \ShareBundle\Entity\Size
+     *
+     * @ORM\ManyToOne(targetEntity="ShareBundle\Entity\Size")
+     * @ORM\JoinColumn(name="size_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    protected $size;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=100, nullable=false)
@@ -117,11 +125,25 @@ class Product
     protected $isAvailable;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    protected $isMainProduct;
+
+    /**
      * @var int
      *
      * @ORM\Column(type="integer", nullable=false)
      */
     protected $views;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    protected $productGroup;
 
     /**
      * @var ArrayCollection
@@ -159,18 +181,6 @@ class Product
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Size", inversedBy="products")
-     * @ORM\JoinTable(name="product_product_sizes",
-     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="size_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     * @ORM\OrderBy({"name" = "ASC"})
-     */
-    protected $sizes;
-
-    /**
-     * @var ArrayCollection
-     *
      * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasImage",
      *     mappedBy="product", cascade={"all"}, orphanRemoval=true
      * )
@@ -201,6 +211,7 @@ class Product
         $this->isAvailable = true;
         $this->isMan = false;
         $this->isWoman = true;
+        $this->isMainProduct = true;
         $this->views = 0;
         $this->price = 0;
         $this->discount = 0;
@@ -209,7 +220,6 @@ class Product
         $this->colours         = new ArrayCollection();
         $this->tags            = new ArrayCollection();
         $this->stones          = new ArrayCollection();
-        $this->sizes           = new ArrayCollection();
         $this->productHasImage = new ArrayCollection();
     }
 
@@ -221,6 +231,18 @@ class Product
     public function __toString()
     {
         return (string) $this->name;
+    }
+
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->setId(null);
+            $this->setSize(null);
+            $this->setViews(0);
+            $this->setPrice(0);
+            $this->setDiscount(0);
+            $this->setIsMainProduct(0);
+        }
     }
 
     /**
@@ -242,6 +264,18 @@ class Product
         $this->updatedAt = new \DateTime('now');
 
         $this->prePersist();
+    }
+
+    /**
+     * @param $id
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -348,6 +382,30 @@ class Product
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * Set size
+     *
+     * @param \ShareBundle\Entity\Size $size
+     *
+     * @return Product
+     */
+    public function setSize(\ShareBundle\Entity\Size $size = null)
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    /**
+     * Get size
+     *
+     * @return \ShareBundle\Entity\Size
+     */
+    public function getSize()
+    {
+        return $this->size;
     }
 
     /**
@@ -473,11 +531,11 @@ class Product
     /**
      * Set isWoman
      *
-     * @param boolean $isWoman
+     * @param  boolean  $isWoman
      *
      * @return Product
      */
-    public function setIsWoman($isWoman)
+    public function setIsWoman(bool $isWoman)
     {
         $this->isWoman = $isWoman;
 
@@ -495,13 +553,37 @@ class Product
     }
 
     /**
-     * Set views
+     * Set isMainProduct
      *
-     * @param boolean $views
+     * @param  boolean  $isMainProduct
      *
      * @return Product
      */
-    public function setViews($views)
+    public function setIsMainProduct(bool $isMainProduct)
+    {
+        $this->isMainProduct = $isMainProduct;
+
+        return $this;
+    }
+
+    /**
+     * Get isMainProduct
+     *
+     * @return boolean
+     */
+    public function getIsMainProduct()
+    {
+        return $this->isMainProduct;
+    }
+
+    /**
+     * Set views
+     *
+     * @param  boolean  $views
+     *
+     * @return Product
+     */
+    public function setViews(bool $views)
     {
         $this->views = $views;
 
@@ -516,6 +598,30 @@ class Product
     public function getViews()
     {
         return $this->views;
+    }
+
+    /**
+     * Set productGroup
+     *
+     * @param  int|null  $productGroup
+     *
+     * @return Product
+     */
+    public function setProductGroup(int $productGroup = null)
+    {
+        $this->productGroup = $productGroup;
+
+        return $this;
+    }
+
+    /**
+     * Get productGroup
+     *
+     * @return integer
+     */
+    public function getProductGroup()
+    {
+        return $this->productGroup;
     }
 
     /**
@@ -618,40 +724,6 @@ class Product
     public function getStones()
     {
         return $this->stones;
-    }
-
-    /**
-     * Add size
-     *
-     * @param \ShareBundle\Entity\Size $size
-     *
-     * @return Product
-     */
-    public function addSize(\ShareBundle\Entity\Size $size)
-    {
-        $this->sizes[] = $size;
-
-        return $this;
-    }
-
-    /**
-     * Remove size
-     *
-     * @param \ShareBundle\Entity\Size $size
-     */
-    public function removeSize(\ShareBundle\Entity\Size $size)
-    {
-        $this->sizes->removeElement($size);
-    }
-
-    /**
-     * Get sizes
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSizes()
-    {
-        return $this->sizes;
     }
 
     /**

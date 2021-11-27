@@ -50,21 +50,12 @@ class Size
     protected $isActive;
 
     /**
-     * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="ProductBundle\Entity\Product", mappedBy="tags")
-     */
-    protected $products;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->isActive = true;
         $this->type = self::TYPE_SM;
-
-        $this->products = new ArrayCollection();
     }
 
     /**
@@ -157,40 +148,6 @@ class Size
     public function getIsActive()
     {
         return $this->isActive;
-    }
-
-    /**
-     * Add product
-     *
-     * @param \ProductBundle\Entity\Book $product
-     *
-     * @return $this
-     */
-    public function addProduct(\ProductBundle\Entity\Product $product)
-    {
-        $this->products[] = $product;
-
-        return $this;
-    }
-
-    /**
-     * Remove products
-     *
-     * @param \ProductBundle\Entity\Product $product
-     */
-    public function removeProduct(\ProductBundle\Entity\Product $product)
-    {
-        $this->products->removeElement($product);
-    }
-
-    /**
-     * Get products
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getProducts()
-    {
-        return $this->products;
     }
 
     /**

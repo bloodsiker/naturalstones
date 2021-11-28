@@ -58,6 +58,7 @@ class StonesBlockService extends AbstractAdminBlockService
     {
         $resolver->setDefaults([
             'items_count' => 100,
+            'is_main' => false,
             'zodiac' => null,
             'view_all' => false,
             'title' => null,
@@ -85,7 +86,9 @@ class StonesBlockService extends AbstractAdminBlockService
 
         $qb = $repository->baseStoneQueryBuilder();
 
-        $repository->filterByShowMain($qb);
+        if ($blockContext->getSetting('is_main')) {
+            $repository->filterByShowMain($qb);
+        }
 
         if ($blockContext->getSetting('zodiac')) {
             $repository->filterByZodiac($qb, $blockContext->getSetting('zodiac'));

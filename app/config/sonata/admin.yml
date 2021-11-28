@@ -45,7 +45,7 @@ sonata_admin:
                       - group.main_image
                       - group.media
                       - group.product
-                      - group.book
+#                      - group.book
 #                      - group.genre
                       - group.share
 
@@ -71,30 +71,18 @@ sonata_admin:
                 label: group.product
                 label_catalogue: ProductBundle
                 icon: <i class="fa fa-paw"></i>
-            group.book:
-                label: group.book
-                label_catalogue: BookBundle
-                icon: <i class="fa fa-book"></i>
+#            group.book:
+#                label: group.book
+#                label_catalogue: BookBundle
+#                icon: <i class="fa fa-book"></i>
 #            group.genre:
 #                label: group.genre
 #                label_catalogue: GenreBundle
 #                icon: <i class="fa fa-object-group"></i>
-            group.article:
-                label: group.article
-                label_catalogue: ArticleBundle
-                icon: <i class="fa fa-newspaper-o"></i>
             group.share:
                 label: group.share
                 label_catalogue: ShareBundle
                 icon: <i class="fa fa-text-width"></i>
-#            group.quiz:
-#                label: group.quiz
-#                label_catalogue: QuizBundle
-#                icon: <i class="fa fa-question-circle"></i>
-#            group.comment:
-#                label: group.comment
-#                label_catalogue: CommentBundle
-#                icon: <i class="fa fa-comment"></i>
             group.order:
                 label: group.order
                 label_catalogue: OrderBundle

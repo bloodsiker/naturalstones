@@ -1,6 +1,8 @@
 Action: Действия
-Series List: Список серий
-Series Create: Создать серию
+Order List: Список заказов
+Order Create: Добавить заказ
+Order Status List: Статусы
+Order Status Create: Добавить статус
 
 form_group:
     basic: Основные
@@ -9,19 +11,32 @@ form_group:
 group:
     order: Заказы
     order_board_editor: Стол заказов
+    order_editor: Заказы
+    order_status_editor: Статусы
+    order_has_item_editor: Товары в заказе
 
-order_board:
+order:
     fields:
-        book_title: Название книги
-        user: Пользователь
-        user_name: Имя пользователя
-        vote: Голосы
+        fio: Имя клиента
+        email: E-mail клиента
+        phone: Телефон
         status: Статус
+        total_sum: Стоимость заказа
+        messenger: Мессенджер
+        comment: Комментарий
+        address: Адрес
+        items: Товары в заказе
+        quantity: Количество
         created_at: Дата создания
-        book: Книга
         id: ID
         statuses:
             new: Новый заказ
             completed: Заказ выполнен
             cancel: Отказ
-            top: В топе
+
+order_has_item:
+    fields:
+        product: Товар
+        quantity: Количество
+        price: Цена
+        discount: Цена со скидкой

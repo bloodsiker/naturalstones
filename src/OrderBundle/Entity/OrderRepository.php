@@ -6,9 +6,9 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Class OrderBoardRepository
+ * Class OrderRepository
  */
-class OrderBoardRepository extends EntityRepository
+class OrderRepository extends EntityRepository
 {
     /**
      * @return QueryBuilder

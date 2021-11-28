@@ -1,11 +1,22 @@
 services:
-    order.admin.board:
-        class: OrderBundle\Admin\OrderBoardAdmin
+    order.admin.order:
+        class: OrderBundle\Admin\OrderAdmin
         tags:
-          - { name: sonata.admin, manager_type: orm, group: "group.order", label: "group.order_board_editor" }
+            - { name: sonata.admin, manager_type: orm, group: "group.order", label: "group.order_editor" }
         arguments:
-          - ~
-          - OrderBundle\Entity\OrderBoard
-          - ~
+            - ~
+            - OrderBundle\Entity\Order
+            - ~
         calls:
-          - [ setTranslationDomain, [OrderBundle] ]
+            - [ setTranslationDomain, [ OrderBundle ] ]
+
+    order.admin.order_has_item:
+        class: OrderBundle\Admin\OrderHasItemAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.order", label: "group.order_has_item_editor", show_in_dashboard: false }
+        arguments:
+            - ~
+            - OrderBundle\Entity\OrderHasItem
+            - ~
+        calls:
+            - [ setTranslationDomain, [ OrderBundle ] ]

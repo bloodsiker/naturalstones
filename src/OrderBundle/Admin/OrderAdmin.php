@@ -60,6 +60,14 @@ class OrderAdmin extends Admin
             ->add('email', null, [
                 'label' => 'order.fields.email',
             ])
+            ->add('totalSum', null, [
+                'label' => 'order.fields.total_sum',
+            ])
+            ->add('type', 'choice', [
+                'label' => 'order.fields.type',
+                'choices' => array_flip($this->getTypes()),
+                'catalogue' => $this->getTranslationDomain(),
+            ])
             ->add('status', 'choice', [
                 'label' => 'order.fields.status',
                 'choices' => array_flip($this->getStatuses()),
@@ -88,8 +96,19 @@ class OrderAdmin extends Admin
             ->add('fio', null, [
                 'label' => 'order.fields.fio',
             ])
+            ->add('phone', null, [
+                'label' => 'order.fields.phone',
+            ])
+            ->add('type', null, [
+                'label' => 'order.fields.type',
+            ], ChoiceType::class, [
+                'choices' => $this->getTypes(),
+                'choice_translation_domain' => $this->getTranslationDomain(),
+                'expanded' => false,
+                'multiple' => false,
+            ])
             ->add('status', null, [
-                'label' => 'order_board.fields.status',
+                'label' => 'order.fields.status',
             ], ChoiceType::class, [
                 'choices' => $this->getStatuses(),
                 'choice_translation_domain' => $this->getTranslationDomain(),
@@ -159,6 +178,11 @@ class OrderAdmin extends Admin
                     'choices' => $this->getStatuses(),
                     'required' => true,
                 ])
+                ->add('type', ChoiceType::class, [
+                    'label' => 'order.fields.type',
+                    'choices' => $this->getTypes(),
+                    'required' => true,
+                ])
                 ->add('messenger', TextType::class, [
                     'label' => 'order.fields.messenger',
                     'required' => false,
@@ -182,6 +206,18 @@ class OrderAdmin extends Admin
 
         foreach ($statusesEntity as $key => $value) {
             $statusChoice["order.fields.statuses.".$value] = $key;
+        }
+
+        return $statusChoice;
+    }
+
+    private function getTypes()
+    {
+        $matchEntity = $this->getClass();
+        $statusesEntity = $matchEntity::getTypes();
+
+        foreach ($statusesEntity as $key => $value) {
+            $statusChoice["order.fields.types.".$value] = $key;
         }
 
         return $statusChoice;

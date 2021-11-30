@@ -2030,12 +2030,12 @@ footer {
 }
 
 .product-quick-toggle {
-  background: #E6D9F8;
+  background: #f08383;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.13);
   width: 100%;
   position: relative;
   z-index: 2;
-  border: 1px solid #702FCB;
+  border: 1px solid #f08383;
   display: none;
   -ms-flex-align: center;
   align-items: center;
@@ -2055,7 +2055,7 @@ footer {
 }
 
 .product-quick-toggle:hover {
-  background: #E6D9F8;
+  background: #f2bdbd;
   color: #fbdfdf;
 }
 

@@ -5,8 +5,6 @@ namespace BookBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use GenreBundle\Entity\Genre;
-use SeriesBundle\Entity\Series;
-use ShareBundle\Entity\Author;
 use ShareBundle\Entity\Tag;
 
 /**

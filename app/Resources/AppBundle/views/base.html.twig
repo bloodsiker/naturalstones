@@ -112,6 +112,28 @@
                 //
                 // })
 
+                $('.quick-cart').on('click', function (e) {
+                    e.preventDefault();
+                    let url = $(this).data('url');
+                    let phone = $("input[name='phone']").val();
+                    let messenger = $("input[name='messenger']:checked").val();
+                    console.log(phone);
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: { phone: phone, messenger: messenger },
+                        success: function (response) {
+                            if (response.type === 'error') {
+                                alert(response.message);
+                                return false;
+                            }
+                            if (response.type === 'success') {
+                                window.location = response.url;
+                            }
+                        }
+                    });
+                })
+
                 $('.header-cart-link').on('click', function (e) {
                     e.preventDefault();
                     let _this = $(this),

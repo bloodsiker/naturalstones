@@ -45,11 +45,11 @@
                                     {% endfor %}
                                 </ul>
                                 <div class="select-block mobile-select">
-                                    <select class="custom-select" data-placeholder="Размер">
+                                    <select class="custom-select change-size" data-placeholder="Размер">
                                         <option></option>
                                         {% for productSize in sizes %}
                                             {% if productSize.size %}
-                                                <option value="{{ productSize.id }}">{{ productSize.size }}</option>
+                                                <option data-url="{{ product_path(productSize, true) }}" {% if productSize.id == product.id %}selected{% endif %} value="{{ productSize.id }}">{{ productSize.size }}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>
@@ -93,7 +93,7 @@
                                 <ul class="messengers-list">
                                     <li>
                                         <label class="messengers-radio telegram">
-                                            <input type="radio" name="mess-radio" checked>
+                                            <input type="radio" name="messenger" value="telegram" checked>
                                             <span>
                                                 <img src="{{ asset('bundles/app/images/telegram.svg') }}" alt="telegram">
                                             </span>
@@ -101,7 +101,7 @@
                                     </li>
                                     <li>
                                         <label class="messengers-radio viber">
-                                            <input type="radio" name="mess-radio">
+                                            <input type="radio" name="messenger" value="viber">
                                             <span>
                                                 <img src="{{ asset('bundles/app/images/viber.svg') }}" alt="viber">
                                             </span>
@@ -191,7 +191,7 @@
                                         <td>
                                             {% if product.stones is iterable %}
                                                 {% for stone in product.stones %}
-                                                    <a href="{{ path('product_stone_list', { 'slug': stone.slug }) }}">
+                                                    <a href="{{ path('product_stone_list', { 'slug': stone.slug }) }}" class="link">
                                                         <em>{{ stone.name }}</em>
                                                     </a>
                                                     {{ loop.last ? '' : ' , ' }}

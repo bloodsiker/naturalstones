@@ -1,1 +1,16 @@
+quick_order:
+    path: /quick-order
+    defaults:
+        _controller: OrderBundle:Order:quickOrder
 
+full_order:
+    path: /order
+    defaults:
+        _controller: OrderBundle:Order:order
+
+success_order:
+    path: /order/{hash}/success
+    defaults:
+        _controller: OrderBundle:Order:success
+    requirements:
+        hash: "([a-zA-Z\\-0-9\\_]+)?"

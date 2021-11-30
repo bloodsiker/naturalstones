@@ -403,6 +403,15 @@ $(document).ready(function() {
 		$('.product-quick-block').slideToggle(300);
 	});
 
+	$('.quick-cart').on('click', function () {
+		let phone = $('.quick-phone').val();
+	})
+
+	$('.change-size').on('select2:select', function (e) {
+		let url = $(e.params.data.element).data('url');
+		window.location = url;
+	});
+
 	/*модалка*/
 	if($('.popup-open').length){
 		$('.popup-open').magnificPopup({

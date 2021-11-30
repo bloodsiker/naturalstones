@@ -18,6 +18,9 @@ class Order
     const STATUS_COMPLETED = 2;
     const STATUS_CANCEL    = 3;
 
+    const TYPE_ORDER_CART = 1;
+    const TYPE_ORDER_QUICK = 2;
+
     /**
      * @var int
      *
@@ -63,6 +66,13 @@ class Order
     protected $totalSum;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="smallint", nullable=false, options={"default": 0})
+     */
+    protected $type;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="text", nullable=true)
@@ -94,7 +104,7 @@ class Order
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="OrderBundle\Entity\OrderHasItem",
-     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
+     *     mappedBy="order", cascade={"all"}, orphanRemoval=true
      * )
      * @ORM\OrderBy({"orderNum" = "ASC"})
      */
@@ -106,9 +116,11 @@ class Order
     public function __construct()
     {
         $this->totalSum = 0;
+        $this->status = self::STATUS_NEW;
+        $this->type = self::TYPE_ORDER_CART;
         $this->createdAt = new \DateTime('now');
 
-        $this->orderHasItems   = new ArrayCollection();
+        $this->orderHasItems = new ArrayCollection();
     }
 
     /**
@@ -188,7 +200,7 @@ class Order
     /**
      * Set email
      *
-     * @param string $email
+     * @param  string|null  $email
      *
      * @return $this
      */
@@ -212,13 +224,37 @@ class Order
     /**
      * Set phone
      *
-     * @param string $phone
+     * @param  string|null  $phone
      *
      * @return $this
      */
     public function setPhone(string $phone = null)
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set type
+     *
+     * @param  string|null  $type
+     *
+     * @return $this
+     */
+    public function setType(string $type = null)
+    {
+        $this->type = $type;
 
         return $this;
     }
@@ -390,5 +426,27 @@ class Order
             self::STATUS_COMPLETED => 'completed',
             self::STATUS_CANCEL    => 'cancel',
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTypes()
+    {
+        return [
+            self::TYPE_ORDER_CART  => 'cart',
+            self::TYPE_ORDER_QUICK => 'quick',
+        ];
+    }
+
+    public static function getNameStatus($status)
+    {
+        $statuses = [
+            self::STATUS_NEW       => 'order.fields.statuses.new',
+            self::STATUS_COMPLETED => 'order.fields.statuses.completed',
+            self::STATUS_CANCEL    => 'order.fields.statuses.cancel',
+        ];
+
+        return $statuses[$status];
     }
 }

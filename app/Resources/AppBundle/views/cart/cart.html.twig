@@ -124,7 +124,7 @@
                 <div class="top">
                     <h5>Нет времени оформлять?</h5>
                     <div class="messengers-input">
-                        <input class="telegram phone-input" name="phone" type="text" placeholder="+38 (___) ___-__-__">
+                        <input class="telegram phone-input quick-phone" name="phone" type="text" placeholder="+38 (___) ___-__-__">
                     </div>
                 </div>
                 <div class="middle">
@@ -132,7 +132,7 @@
                     <ul class="messengers-list">
                         <li>
                             <label class="messengers-radio telegram">
-                                <input type="radio" name="mess-radio" checked>
+                                <input type="radio" name="messenger" value="telegram" checked>
                                 <span>
                                      <img src="{{ asset('bundles/app/images/telegram.svg') }}" alt="telegram">
                                 </span>
@@ -140,7 +140,7 @@
                         </li>
                         <li>
                             <label class="messengers-radio viber">
-                                <input type="radio" name="mess-radio">
+                                <input type="radio" name="messenger" value="viber">
                                 <span>
                                     <img src="{{ asset('bundles/app/images/viber.svg') }}" alt="viber">
                                 </span>
@@ -149,7 +149,7 @@
                     </ul>
                 </div>
                 <div class="bottom">
-                    <a href="#quickModal" class="button popup-open" data-effect="mfp-zoom-in">Быстрый заказ</a>
+                    <a href="" data-url="{{ path('quick_order') }}" class="button quick-cart">Быстрый заказ</a>
                 </div>
             </div>
         </div>

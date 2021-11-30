@@ -86,7 +86,6 @@ class Cart
     public function getProductsInfo()
     {
         $productsInCart = $this->getProductInCart();
-//        dump($productsInCart);die;
         $productRepository = $this->entityManager->getRepository(Product::class);
 
         $productsInfo = [];

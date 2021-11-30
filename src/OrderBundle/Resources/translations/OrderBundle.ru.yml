@@ -21,6 +21,7 @@ order:
         email: E-mail клиента
         phone: Телефон
         status: Статус
+        type: Как оформлен заказ
         total_sum: Стоимость заказа
         messenger: Мессенджер
         comment: Комментарий
@@ -33,6 +34,9 @@ order:
             new: Новый заказ
             completed: Заказ выполнен
             cancel: Отказ
+        types:
+            cart: Заказ с корзины
+            quick: Быстрый заказ
 
 order_has_item:
     fields:

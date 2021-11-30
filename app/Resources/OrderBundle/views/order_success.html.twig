@@ -1,0 +1,89 @@
+<section class="section">
+    <div class="container">
+        <div class="form-content">
+            <h4>Спасибо за заказ!</h4>
+        </div>
+        <div class="order-form">
+            <div class="order-form-content">
+                <div class="order-check-block" >
+                    <ul class="order-check-list">
+                        <li>
+                            <div class="name"><strong>Информация о заказе:</strong></div>
+                        </li>
+                        <li>
+                            <div class="name">Статус заказа</div>
+                            <div class="value">{{ order.getNameStatus(order.status)| trans({}, 'OrderBundle') }}</div>
+                        </li>
+                        {% if order.fio %}
+                            <li>
+                                <div class="name">Имя покупателя</div>
+                                <div class="value">{{ order.fio }}</div>
+                            </li>
+                        {% endif %}
+                        {% if order.phone %}
+                            <li>
+                                <div class="name">Телефон покупателя</div>
+                                <div class="value">{{ order.phone  }}</div>
+                            </li>
+                        {% endif %}
+                        {% if order.email %}
+                            <li>
+                                <div class="name">E-mail</div>
+                                <div class="value">{{ order.email }}</div>
+                            </li>
+                        {% endif %}
+                        {% if order.address %}
+                            <li>
+                                <div class="name">Адрес доставки</div>
+                                <div class="value">{{ order.address }}</div>
+                            </li>
+                        {% endif %}
+                        {% if order.comment %}
+                            <li>
+                                <div class="name">Комментарий</div>
+                                <div class="value">{{ order.comment }}</div>
+                            </li>
+                        {% endif %}
+                    </ul>
+
+                    <br>
+                    <br>
+                    <p>В ближайшее время с Вами свяжутся наши менеджеры</p>
+                </div>
+            </div>
+
+
+            <div class="order-form-total">
+                <div class="top-block">
+                    <h4>Ваш заказ</h4>
+                    <a href="{{ path('cart') }}" class="redact-link">Редактировать</a>
+                </div>
+                {% for oProduct in order.orderHasItems %}
+                    <div class="order-form-items">
+                        <a class="item-image" href="{{ product_path(oProduct.product) }}">
+                            <img alt="{{ oProduct.product.name }}" class="lazyload" data-src="{{ asset(oProduct.product.image.getPath()) }}" src="{{ oProduct.product.name }}">
+                        </a>
+                        <div class="inner">
+                            <div class="item-name"><a href="{{ product_path(oProduct.product) }}">{{ oProduct.product.name }} {% if oProduct.product.size %}({{ oProduct.product.size }}){% endif %} </a></div>
+                            <div class="count">{{ oProduct.quantity }} шт.</div>
+                            {% if oProduct.product.discount %}
+                                <div class="price">
+                                    <span class="old-price">{{ oProduct.product.price }} грн</span>
+                                    <span>{{ oProduct.product.discount|number_format(2, ',') }} грн</span>
+                                </div>
+                            {% else %}
+                                <div class="price"><span>{{ oProduct.product.price|number_format(2, ',') }} грн</span></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+                <ul class="order-form-calculate">
+                    <li>
+                        <span>Сумма заказа:</span>
+                        <span class="total-price">{{ order.totalSum|number_format(2, ',') }} грн</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

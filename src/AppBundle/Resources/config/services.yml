@@ -81,3 +81,6 @@ services:
         arguments:
             - '@session'
             - '@app.entity_manager'
+
+    app.helper.encrypt:
+        class: AppBundle\Helper\EncryptHelper

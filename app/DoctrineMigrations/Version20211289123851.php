@@ -27,15 +27,16 @@ final class Version20211289123851 extends AbstractMigration
     {
         $order = $schema->createTable('order_order');
         $order->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
-        $order->addColumn('fio', 'string', ['length' => 100, 'notnull' => true]);
-        $order->addColumn('email', 'string', ['length' => 100, 'notnull' => true]);
-        $order->addColumn('phone', 'string', ['length' => 100, 'notnull' => true]);
+        $order->addColumn('fio', 'string', ['length' => 100, 'notnull' => false]);
+        $order->addColumn('email', 'string', ['length' => 100, 'notnull' => false]);
+        $order->addColumn('phone', 'string', ['length' => 100, 'notnull' => false]);
         $order->addColumn('messenger', 'string', ['length' => 100, 'notnull' => false]);
         $order->addColumn('address', 'text', array('length' => 65535, 'notnull' => false));
         $order->addColumn('comment', 'text', array('length' => 65535, 'notnull' => false));
         $order->addColumn('total_sum', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0]);
+        $order->addColumn('status', 'smallint', ['unsigned' => true, 'notnull' => false, 'length' => 2]);
+        $order->addColumn('type', 'smallint', ['unsigned' => true, 'notnull' => true, 'length' => 1]);
         $order->addColumn('created_at', 'datetime', ['notnull' => true]);
-        $order->addColumn('status', 'integer', ['unsigned' => true, 'notnull' => false, 'length' => 2]);
         $order->setPrimaryKey(['id']);
 
         $orderHasItem = $schema->createTable('order_order_has_item');

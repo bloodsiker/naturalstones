@@ -3,7 +3,10 @@
 namespace AppBundle\Services;
 
 use Doctrine\ORM\EntityManager;
+use OrderBundle\Entity\Order;
+use OrderBundle\Entity\OrderHasItem;
 use ProductBundle\Entity\Product;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -134,6 +137,71 @@ class Cart
         $this->setCart($productsInCart);
 
         return true;
+    }
+
+    /**
+     * @param  Request  $request
+     *
+     * @return Order
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function orderCart(Request $request, $orderType = Order::TYPE_ORDER_QUICK)
+    {
+        $fio = $request->get('name');
+        $email = $request->get('email');
+        $phone = $request->get('phone');
+        $address = $request->get('address');
+        $comment = $request->get('comment');
+        $messenger = $request->get('messenger');
+
+        $productObject = null;
+        if ($request->get('product')) {
+            $productRepository = $this->entityManager->getRepository(Product::class);
+            $productObject = $productRepository->find($request->get('product'));
+        }
+
+        $totalPrice = 0;
+
+        $order = new Order();
+        $order->setFio($fio);
+        $order->setEmail($email);
+        $order->setPhone($phone);
+        $order->setAddress($address);
+        $order->setComment($comment);
+        $order->setMessenger($messenger);
+        $order->setType($orderType);
+
+        if ($productObject) {
+            $products[0] = [
+                'item' => $productObject,
+                'totalPrice' => $productObject->getFinalPrice(),
+                'count' => 1,
+            ];
+        } else {
+            $products = $this->getProductsInfo()['product'];
+        }
+
+        foreach ($products as $item) {
+            $totalPrice += $item['totalPrice'];
+            $product = $item['item'];
+            $orderHasItem = new OrderHasItem();
+            $orderHasItem->setProduct($product);
+            $orderHasItem->setDiscount($product->getDiscount());
+            $orderHasItem->setPrice($product->getPrice());
+            $orderHasItem->setQuantity($item['count']);
+            $order->addOrderHasItem($orderHasItem);
+            $this->entityManager->persist($orderHasItem);
+        }
+        $order->setOrderSum($totalPrice);
+        $order->setTotalSum($totalPrice);
+        $this->entityManager->persist($order);
+        $this->entityManager->flush();
+
+        $this->clear();
+        $this->session->remove('infoCart');
+
+        return $order;
     }
 
     /**

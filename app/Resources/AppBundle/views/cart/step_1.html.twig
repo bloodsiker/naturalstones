@@ -23,14 +23,16 @@
                 </div>
 
                 <div class="messengers-input input-block">
-                    <input type="text" name="phone" placeholder="Телефон" class="phone-input" value="{{ infoCart ? infoCart.phone : null }}">
+                    <input type="text" name="phone" placeholder="Телефон*" class="phone-input {{ infoCart and infoCart.messenger is defined ? infoCart.messenger : null }}" value="{{ infoCart ? infoCart.phone : null }}" autocomplete="off">
+                    <span class="phone-error-message text-red"></span>
                 </div>
                 <div class="order-messengers">
                     <div class="note">Выберите в каком мессенджере вам ответить:</div>
                     <ul class="messengers-list">
+                        {% set checked = infoCart and infoCart.messenger is not defined %}
                         <li>
                             <label class="messengers-radio telegram">
-                                <input type="radio" name="messenger" value="telegram" {{ infoCart.messenger == 'telegram' ? 'checked' : null }}>
+                                <input type="radio" name="messenger" value="telegram" {{ infoCart and infoCart.messenger is defined and infoCart.messenger == 'telegram' or checked ? 'checked' : null }}>
                                 <span>
                                     <img alt="" src="{{ asset('bundles/app/images/telegram.svg') }}">
                                 </span>
@@ -38,7 +40,7 @@
                         </li>
                         <li>
                             <label class="messengers-radio viber">
-                                <input type="radio" name="messenger" value="viber" {{  infoCart.messenger == 'viber' ? 'checked' : null }}>
+                                <input type="radio" name="messenger" value="viber" {{ infoCart and infoCart.messenger is defined and  infoCart.messenger == 'viber' ? 'checked' : null }}>
                                 <span>
                                     <img alt="" src="{{ asset('bundles/app/images/viber.svg') }}">
                                 </span>
@@ -47,7 +49,8 @@
                     </ul>
                 </div>
                 <div class="input-block">
-                    <input type="text" name="name" placeholder="Имя" value="{{ infoCart and infoCart.name is defined ? infoCart.name : null }}">
+                    <input type="text" name="name" placeholder="Имя*" value="{{ infoCart and infoCart.name is defined ? infoCart.name : null }}">
+                    <span class="name-error-message text-red"></span>
                 </div>
                 <div class="input-block">
                     <input type="text" name="email" placeholder="E-mail (по желанию)" value="{{ infoCart and infoCart.email is defined ? infoCart.email : null }}">

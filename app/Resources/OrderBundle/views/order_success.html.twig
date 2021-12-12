@@ -1,4 +1,4 @@
-<section class="section">
+<section class="section" style="min-height: calc(var(--vh, 1vh) * 80);">
     <div class="container">
         <div class="form-content">
             <h4>Спасибо за заказ!</h4>
@@ -50,13 +50,15 @@
                     <br>
                     <p>В ближайшее время с Вами свяжутся наши менеджеры</p>
                 </div>
+                <div class="order-form-links">
+                    <a class="button white-button" href="{{ path('index') }}">Продолжить покупки</a>
+                </div>
             </div>
 
 
             <div class="order-form-total">
                 <div class="top-block">
                     <h4>Ваш заказ</h4>
-                    <a href="{{ path('cart') }}" class="redact-link">Редактировать</a>
                 </div>
                 {% for oProduct in order.orderHasItems %}
                     <div class="order-form-items">

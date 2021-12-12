@@ -85,7 +85,9 @@
                             <div class="top">
                                 <h5>Нет времени оформлять?</h5>
                                 <div class="messengers-input">
-                                    <input class="telegram phone-input" name="phone" type="text" placeholder="+38 (___) ___-__-__">
+                                    <input class="telegram phone-input" name="phone" type="text" placeholder="+38 (___) ___-__-__" autocomplete="off">
+                                    <input type="hidden" name="product" value="{{ product.id }}">
+                                    <span class="error-message text-red"></span>
                                 </div>
                             </div>
                             <div class="middle">
@@ -110,7 +112,7 @@
                                 </ul>
                             </div>
                             <div class="bottom">
-                                <a href="#quickModal" class="button popup-open" data-effect="mfp-zoom-in">Быстрый заказ</a>
+                                <a href="#" data-url="{{ path('product_quick_order') }}" class="button product-quick-cart">Быстрый заказ</a>
                             </div>
                         </div>
                     </div>

@@ -18,6 +18,8 @@ class ProductInfoViewRepository extends EntityRepository
         $qb = $this->createQueryBuilder('piv');
         $qb
             ->where('piv.product IS NOT NULL')
+            ->andWhere('product.isMainProduct = 1')
+            ->innerJoin('piv.product', 'product', 'WITH', 'product.id = piv.product')
             ->addSelect('SUM(piv.views) AS HIDDEN sumView')
             ->groupBy('piv.product')
             ->orderBy('sumView', 'DESC')

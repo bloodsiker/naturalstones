@@ -863,4 +863,12 @@ class Product
         self::WHO_MAN => 'Для мужчин',
         self::WHO_WOMAN => 'Для женщин',
     ];
+
+    /**
+     * @return float|int
+     */
+    public function getFinalPrice()
+    {
+        return $this->discount ?: $this->price;
+    }
 }

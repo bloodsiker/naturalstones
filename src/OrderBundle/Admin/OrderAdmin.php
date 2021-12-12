@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\CoreBundle\Form\Type\DateTimePickerType;
 use Sonata\CoreBundle\Form\Type\CollectionType;
+use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateTimeFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -60,8 +61,8 @@ class OrderAdmin extends Admin
             ->add('email', null, [
                 'label' => 'order.fields.email',
             ])
-            ->add('totalSum', null, [
-                'label' => 'order.fields.total_sum',
+            ->add('orderSum', null, [
+                'label' => 'order.fields.order_sum',
             ])
             ->add('type', 'choice', [
                 'label' => 'order.fields.type',
@@ -115,8 +116,11 @@ class OrderAdmin extends Admin
                 'expanded' => false,
                 'multiple' => false,
             ])
-            ->add('createdAt', DateTimeFilter::class, [
-                'label' => 'order.fields.created_at',
+            ->add('createdAt', DateFilter::class, [
+                'label'         => 'order.fields.created_at',
+                'field_type'    => DateTimePickerType::class,
+                'field_options' => array('format' => 'dd.MM.yyyy'),
+                'show_filter' => true,
             ]);
     }
 
@@ -133,15 +137,19 @@ class OrderAdmin extends Admin
             ->with('form_group.basic', ['class' => 'col-md-8', 'label' => false])
                 ->add('fio', TextType::class, [
                     'label' => 'order.fields.fio',
+                    'required' => false,
                 ])
                 ->add('email', TextType::class, [
                     'label' => 'order.fields.email',
+                    'required' => false,
                 ])
                 ->add('phone', TextType::class, [
                     'label' => 'order.fields.phone',
+                    'required' => false,
                 ])
                 ->add('address', TextareaType::class, [
                     'label' => 'order.fields.address',
+                    'required' => false,
                     'attr' => [
                         'rows' => 3,
                     ],
@@ -189,6 +197,14 @@ class OrderAdmin extends Admin
                 ])
                 ->add('totalSum', TextType::class, [
                     'label' => 'order.fields.total_sum',
+                    'attr' => ['readonly' => true],
+                ])
+                ->add('discountPromo', TextType::class, [
+                    'label' => 'order.fields.discount_promo',
+                    'attr' => ['readonly' => true],
+                ])
+                ->add('orderSum', TextType::class, [
+                    'label' => 'order.fields.order_sum',
                     'attr' => ['readonly' => true],
                 ])
             ->end();

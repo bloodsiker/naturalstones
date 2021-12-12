@@ -204,7 +204,9 @@ a:hover {
   color: #818181;
   opacity: 1;
 }
-
+.text-red {
+  color: red;
+}
 .page {
   overflow: hidden;
   display: -ms-flexbox;

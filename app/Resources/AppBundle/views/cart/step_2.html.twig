@@ -27,29 +27,35 @@
                         <li>
                             <div class="name">Имя покупателя</div>
                             <div class="value">{{ infoCart.name ?: null }}</div>
+                            <input type="hidden" name="name" value="{{ infoCart.name ?: null }}">
                         </li>
                         <li>
                             <div class="name">Телефон покупателя</div>
                             <div class="value">{{ infoCart.phone ?: null  }}</div>
+                            <input type="hidden" name="phone" value="{{ infoCart.phone ?: null }}">
+                            <input type="hidden" name="messenger" value="{{ infoCart.messenger ?: null }}">
                         </li>
                         <li>
                             <div class="name">E-mail</div>
-                            <div class="value">{{ infoCart.email ?: null }}</div>
+                            <div class="value">{{ infoCart.email ?: 'Не указан' }}</div>
+                            <input type="hidden" name="email" value="{{ infoCart.email ?: null }}">
                         </li>
                         <li>
                             <div class="name">Адрес доставки</div>
-                            <div class="value">{{ infoCart.address ?: null }}</div>
+                            <div class="value">{{ infoCart.address ?: 'Не указан' }}</div>
+                            <input type="hidden" name="address" value="{{ infoCart.address ?: null }}">
                         </li>
                         <li>
                             <div class="name">Комментарий</div>
-                            <div class="value">{{ infoCart.comment ?: null }}</div>
+                            <div class="value">{{ infoCart.comment ?: 'Не указан' }}</div>
+                            <input type="hidden" name="comment" value="{{ infoCart.comment ?: null }}">
                         </li>
                     </ul>
                     <a href="{{ path('step-1') }}" class="button white-button change-link">Изменить</a>
                 </div>
                 <div class="order-form-links">
                     <a class="button white-button" href="{{ path('cart') }}">Отменить</a>
-                    <button class="button" type="submit">Подтвердить</button>
+                    <button class="button" type="submit" data-url="{{ path('full_order') }}" id="sendFullCard">Подтвердить</button>
                 </div>
             </div>
 

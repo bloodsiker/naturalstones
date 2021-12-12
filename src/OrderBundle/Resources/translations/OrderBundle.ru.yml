@@ -22,7 +22,9 @@ order:
         phone: Телефон
         status: Статус
         type: Как оформлен заказ
-        total_sum: Стоимость заказа
+        total_sum: Сумма заказа
+        discount_promo: Скидка по промокоду
+        order_sum: Итог
         messenger: Мессенджер
         comment: Комментарий
         address: Адрес

@@ -59,11 +59,25 @@ class Order
     protected $messenger;
 
     /**
-     * @var int
+     * @var float
      *
-     * @ORM\Column(type="float", nullable=false, options={"default": 0})
+     * @ORM\Column(type="float", nullable=false, options={"default": 0,00})
      */
     protected $totalSum;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="float", nullable=false, options={"default": 0,00})
+     */
+    protected $orderSum;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="float", nullable=false, options={"default": 0,00})
+     */
+    protected $discountPromo;
 
     /**
      * @var int
@@ -116,6 +130,8 @@ class Order
     public function __construct()
     {
         $this->totalSum = 0;
+        $this->orderSum = 0;
+        $this->discountPromo = 0;
         $this->status = self::STATUS_NEW;
         $this->type = self::TYPE_ORDER_CART;
         $this->createdAt = new \DateTime('now');
@@ -176,11 +192,11 @@ class Order
     /**
      * Set fio
      *
-     * @param string $fio
+     * @param string|null $fio
      *
      * @return $this
      */
-    public function setFio(string $fio)
+    public function setFio(string $fio = null)
     {
         $this->fio = $fio;
 
@@ -351,6 +367,54 @@ class Order
     public function setTotalSum(float $totalSum = 0)
     {
         $this->totalSum = $totalSum;
+
+        return $this;
+    }
+
+    /**
+     * Get orderSum
+     *
+     * @return int
+     */
+    public function getOrderSum()
+    {
+        return $this->orderSum;
+    }
+
+    /**
+     * Set orderSum
+     *
+     * @param float $orderSum
+     *
+     * @return $this
+     */
+    public function setOrderSum(float $orderSum = 0)
+    {
+        $this->orderSum = $orderSum;
+
+        return $this;
+    }
+
+    /**
+     * Get discountPromo
+     *
+     * @return int
+     */
+    public function getDiscountPromo()
+    {
+        return $this->discountPromo;
+    }
+
+    /**
+     * Set discountPromo
+     *
+     * @param float $discountPromo
+     *
+     * @return $this
+     */
+    public function setDiscountPromo(float $discountPromo = 0)
+    {
+        $this->discountPromo = $discountPromo;
 
         return $this;
     }

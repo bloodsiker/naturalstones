@@ -28,7 +28,6 @@ class OrderController extends Controller
     public function quickOrderAction(Request $request)
     {
         $phone = $request->get('phone');
-        $messenger = $request->get('messenger');
         if (!$phone) {
             return new JsonResponse([
                 'type' => 'error',
@@ -36,7 +35,6 @@ class OrderController extends Controller
             ]);
         }
 
-        $em = $this->get('doctrine.orm.entity_manager');
         $router = $this->get('router');
         $encrypt = $this->get('app.helper.encrypt');
         $cartService = $this->get('app.cart');
@@ -49,28 +47,7 @@ class OrderController extends Controller
             ]);
         }
 
-        $totalPrice = 0;
-
-        $order = new Order();
-        $order->setPhone($phone);
-        $order->setMessenger($messenger);
-        $order->setType(Order::TYPE_ORDER_QUICK);
-        foreach ($cart['product'] as $item) {
-            $totalPrice += $item['totalPrice'];
-            $product = $item['item'];
-            $orderHasItem = new OrderHasItem();
-            $orderHasItem->setProduct($product);
-            $orderHasItem->setDiscount($product->getDiscount());
-            $orderHasItem->setPrice($product->getPrice());
-            $orderHasItem->setQuantity($item['count']);
-            $order->addOrderHasItem($orderHasItem);
-            $em->persist($orderHasItem);
-        }
-        $order->setTotalSum($totalPrice);
-        $em->persist($order);
-        $em->flush();
-
-        $cartService->clear();
+        $order = $cartService->orderCart($request);
 
         return new JsonResponse([
             'type' => 'success',
@@ -78,53 +55,62 @@ class OrderController extends Controller
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function orderAction(Request $request)
+    public function productQuickOrderAction(Request $request)
     {
-        $orderId = $request->get('orderId');
-        if ($orderId) {
-            $em = $this->get('doctrine.orm.entity_manager');
-            $repository = $em->getRepository(OrderBoard::class);
-            $order = $repository->find((int) $orderId);
-            if ($order) {
-                if ($request->isXmlHttpRequest() && $request->getMethod() === 'POST') {
-                    $ip = ip2long($request->server->get('REMOTE_ADDR'));
-                    $resultVoted = $em->getRepository(OrderBoardVotesResult::class)
-                        ->findOneBy(['ip' => $ip, 'orderBoard' => $order]);
-                    if (!$resultVoted) {
-                        $order->increaseVote();
-                        $em->persist($order);
-
-                        $resultVoted = new OrderBoardVotesResult();
-                        $resultVoted->setOrderBoard($order);
-                        $resultVoted->setIp($ip);
-                        $em->persist($resultVoted);
-                        $em->flush();
-
-                        return new JsonResponse([
-                            'count' => $order->getVote(),
-                            'message' => 'Вы поддержали книгу',
-                            'type' => 'success',
-                        ]);
-                    } else {
-                        return new JsonResponse([
-                            'count' => $order->getVote(),
-                            'message' => 'Ранее, Вы уже отдавали голос за эту книгу',
-                            'type' => 'error',
-                        ]);
-                    }
-                }
-            }
+        if (!$request->get('phone')) {
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => 'Не указан номер телефона'
+            ]);
         }
 
-        return new JsonResponse();
+        if (!$request->get('product')) {
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => 'Не выбран товар для заказа'
+            ]);
+        }
+
+        $router = $this->get('router');
+        $encrypt = $this->get('app.helper.encrypt');
+        $cartService = $this->get('app.cart');
+
+        $order = $cartService->orderCart($request);
+
+        return new JsonResponse([
+            'type' => 'success',
+            'url' => $router->generate('success_order', ['hash' => $encrypt->stringEncrypt($order->getId())], Router::ABSOLUTE_URL)
+        ]);
+    }
+
+    public function orderAction(Request $request)
+    {
+        $phone = $request->get('phone');
+        if (!$phone) {
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => 'Не указан номер телефона'
+            ]);
+        }
+
+        $router = $this->get('router');
+        $encrypt = $this->get('app.helper.encrypt');
+        $cartService = $this->get('app.cart');
+        $cart = $cartService->getProductsInfo();
+
+        if (!isset($cart['product']) || !count($cart['product'])) {
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => 'В корзине нет товаров!'
+            ]);
+        }
+
+        $order = $cartService->orderCart($request, Order::TYPE_ORDER_CART);
+
+        return new JsonResponse([
+            'type' => 'success',
+            'url' => $router->generate('success_order', ['hash' => $encrypt->stringEncrypt($order->getId())], Router::ABSOLUTE_URL)
+        ]);
     }
 
     public function successAction(Request $request)
@@ -139,7 +125,6 @@ class OrderController extends Controller
 
         }
 
-//        dump($order);die;
         return $this->render('OrderBundle::order_success.html.twig', ['order' => $order]);
     }
 }

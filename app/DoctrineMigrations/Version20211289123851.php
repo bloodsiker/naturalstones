@@ -33,7 +33,9 @@ final class Version20211289123851 extends AbstractMigration
         $order->addColumn('messenger', 'string', ['length' => 100, 'notnull' => false]);
         $order->addColumn('address', 'text', array('length' => 65535, 'notnull' => false));
         $order->addColumn('comment', 'text', array('length' => 65535, 'notnull' => false));
-        $order->addColumn('total_sum', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0]);
+        $order->addColumn('total_sum', 'decimal', ['precision' => 6, 'scale' => 2, 'notnull' => true, 'default' => 0.00]);
+        $order->addColumn('discount_promo', 'decimal', ['precision' => 6, 'scale' => 2, 'notnull' => true, 'default' => 0.00]);
+        $order->addColumn('order_sum', 'decimal', ['precision' => 6, 'scale' => 2, 'notnull' => true, 'default' => 0.00]);
         $order->addColumn('status', 'smallint', ['unsigned' => true, 'notnull' => false, 'length' => 2]);
         $order->addColumn('type', 'smallint', ['unsigned' => true, 'notnull' => true, 'length' => 1]);
         $order->addColumn('created_at', 'datetime', ['notnull' => true]);

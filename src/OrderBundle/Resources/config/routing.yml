@@ -3,6 +3,11 @@ quick_order:
     defaults:
         _controller: OrderBundle:Order:quickOrder
 
+product_quick_order:
+    path: /product-quick-order
+    defaults:
+        _controller: OrderBundle:Order:productQuickOrder
+
 full_order:
     path: /order
     defaults:

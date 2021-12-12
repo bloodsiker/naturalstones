@@ -3,7 +3,6 @@
 namespace OrderBundle\Controller;
 
 use OrderBundle\Entity\Order;
-use OrderBundle\Entity\OrderHasItem;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +37,7 @@ class OrderController extends Controller
         $router = $this->get('router');
         $encrypt = $this->get('app.helper.encrypt');
         $cartService = $this->get('app.cart');
+        $telegramService = $this->get('app.send_telegram');
         $cart = $cartService->getProductsInfo();
 
         if (!isset($cart['product']) || !count($cart['product'])) {
@@ -48,6 +48,7 @@ class OrderController extends Controller
         }
 
         $order = $cartService->orderCart($request);
+        $telegramService->sendMessageFromQuickForm($order);
 
         return new JsonResponse([
             'type' => 'success',
@@ -74,8 +75,10 @@ class OrderController extends Controller
         $router = $this->get('router');
         $encrypt = $this->get('app.helper.encrypt');
         $cartService = $this->get('app.cart');
+        $telegramService = $this->get('app.send_telegram');
 
         $order = $cartService->orderCart($request);
+        $telegramService->sendMessageFromQuickForm($order);
 
         return new JsonResponse([
             'type' => 'success',
@@ -96,6 +99,7 @@ class OrderController extends Controller
         $router = $this->get('router');
         $encrypt = $this->get('app.helper.encrypt');
         $cartService = $this->get('app.cart');
+        $telegramService = $this->get('app.send_telegram');
         $cart = $cartService->getProductsInfo();
 
         if (!isset($cart['product']) || !count($cart['product'])) {
@@ -106,6 +110,7 @@ class OrderController extends Controller
         }
 
         $order = $cartService->orderCart($request, Order::TYPE_ORDER_CART);
+        $telegramService->sendMessageFromCart($order);
 
         return new JsonResponse([
             'type' => 'success',
@@ -122,7 +127,6 @@ class OrderController extends Controller
         $order = $repo->find((int) $idOrder);
         if (!$order) {
             throw $this->createNotFoundException(self::ORDER_404);
-
         }
 
         return $this->render('OrderBundle::order_success.html.twig', ['order' => $order]);

@@ -76,6 +76,13 @@ services:
     app.breadcrumb:
         class: "AppBundle\\Services\\BreadcrumbService"
 
+    app.send_telegram:
+        class: "AppBundle\\Services\\SendTelegramService"
+        arguments:
+            - '@router'
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+
     app.cart:
         class: AppBundle\Services\Cart
         arguments:

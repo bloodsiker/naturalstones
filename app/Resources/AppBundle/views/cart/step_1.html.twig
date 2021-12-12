@@ -23,16 +23,16 @@
                 </div>
 
                 <div class="messengers-input input-block">
-                    <input type="text" name="phone" placeholder="Телефон*" class="phone-input {{ infoCart and infoCart.messenger is defined ? infoCart.messenger : null }}" value="{{ infoCart ? infoCart.phone : null }}" autocomplete="off">
+                    <input type="text" name="phone" placeholder="Телефон*" class="phone-input {{ infoCart.messenger is defined ? infoCart.messenger : null }}" value="{{ infoCart.phone is defined ? infoCart.phone : null }}" autocomplete="off">
                     <span class="phone-error-message text-red"></span>
                 </div>
                 <div class="order-messengers">
                     <div class="note">Выберите в каком мессенджере вам ответить:</div>
                     <ul class="messengers-list">
-                        {% set checked = infoCart and infoCart.messenger is not defined %}
+                        {% set checked = infoCart.messenger is not defined %}
                         <li>
                             <label class="messengers-radio telegram">
-                                <input type="radio" name="messenger" value="telegram" {{ infoCart and infoCart.messenger is defined and infoCart.messenger == 'telegram' or checked ? 'checked' : null }}>
+                                <input type="radio" name="messenger" value="telegram" {{ infoCart.messenger is defined and infoCart.messenger == 'telegram' or checked ? 'checked' : null }}>
                                 <span>
                                     <img alt="" src="{{ asset('bundles/app/images/telegram.svg') }}">
                                 </span>
@@ -40,7 +40,7 @@
                         </li>
                         <li>
                             <label class="messengers-radio viber">
-                                <input type="radio" name="messenger" value="viber" {{ infoCart and infoCart.messenger is defined and  infoCart.messenger == 'viber' ? 'checked' : null }}>
+                                <input type="radio" name="messenger" value="viber" {{ infoCart.messenger is defined and  infoCart.messenger == 'viber' ? 'checked' : null }}>
                                 <span>
                                     <img alt="" src="{{ asset('bundles/app/images/viber.svg') }}">
                                 </span>
@@ -49,17 +49,17 @@
                     </ul>
                 </div>
                 <div class="input-block">
-                    <input type="text" name="name" placeholder="Имя*" value="{{ infoCart and infoCart.name is defined ? infoCart.name : null }}">
+                    <input type="text" name="name" placeholder="Имя*" value="{{ infoCart.name is defined ? infoCart.name : null }}">
                     <span class="name-error-message text-red"></span>
                 </div>
                 <div class="input-block">
-                    <input type="text" name="email" placeholder="E-mail (по желанию)" value="{{ infoCart and infoCart.email is defined ? infoCart.email : null }}">
+                    <input type="text" name="email" placeholder="E-mail (по желанию)" value="{{ infoCart.email is defined ? infoCart.email : null }}">
                 </div>
                 <div class="input-block">
-                    <input type="text" name="address" placeholder="Адрес" value="{{ infoCart and infoCart.address is defined ? infoCart.address : null }}">
+                    <input type="text" name="address" placeholder="Адрес" value="{{ infoCart.address is defined ? infoCart.address : null }}">
                 </div>
                 <div class="input-block">
-                    <textarea name="comment" id="" cols="30" rows="3" placeholder="Комментарий">{{ infoCart and infoCart.comment is defined ? infoCart.comment : null }}</textarea>
+                    <textarea name="comment" id="" cols="30" rows="3" placeholder="Комментарий">{{ infoCart.comment is defined ? infoCart.comment : null }}</textarea>
                 </div>
                 <div class="order-form-links">
                     <a class="button white-button" href="{{ path('cart') }}">Отменить</a>

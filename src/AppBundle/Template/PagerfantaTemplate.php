@@ -42,7 +42,7 @@ class PagerfantaTemplate extends DefaultTemplate
      *
      * @return mixed|string
      */
-    public function pageWithText($page, $text, $rel = null)
+    public function pageWithText($page, $text, $rel = null) :string
     {
         $search = array('%href%', '%text%', '%rel%');
 
@@ -73,7 +73,7 @@ class PagerfantaTemplate extends DefaultTemplate
      *
      * @return mixed|string
      */
-    public function current($page)
+    public function current($page) :string
     {
         return $this->generateSpan($this->option('css_current_class'), $page);
     }
@@ -91,7 +91,7 @@ class PagerfantaTemplate extends DefaultTemplate
     /**
      * @return string
      */
-    public function previousDisabled()
+    public function previousDisabled() :string
     {
         return $this->option('prev_message');
     }
@@ -101,7 +101,7 @@ class PagerfantaTemplate extends DefaultTemplate
      *
      * @return string
      */
-    public function previousEnabled($page)
+    public function previousEnabled($page) :string
     {
         return str_replace(['%href%'], $this->generateRoute($page), $this->previousDisabled());
     }
@@ -109,7 +109,7 @@ class PagerfantaTemplate extends DefaultTemplate
     /**
      * @return string
      */
-    public function nextDisabled()
+    public function nextDisabled() :string
     {
         return $this->option('next_message');
     }
@@ -119,7 +119,7 @@ class PagerfantaTemplate extends DefaultTemplate
      *
      * @return string
      */
-    public function nextEnabled($page)
+    public function nextEnabled($page) :string
     {
         return str_replace(['%href%'], $this->generateRoute($page), $this->nextDisabled());
     }

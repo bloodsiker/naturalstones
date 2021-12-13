@@ -21,7 +21,7 @@
         ]
     },
     "require": {
-        "php": ">=7.1",
+        "php": "~7.4",
         "a2lix/translation-form-bundle": "2.0",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-migrations-bundle": "^1.0",
@@ -75,7 +75,10 @@
         ]
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "7.4"
+        }
     },
     "extra": {
         "symfony-app-dir": "app",

@@ -1,8 +1,8 @@
 sonata_seo:
-    encoding:         UTF-8
+    encoding: UTF-8
     page:
-        title:            Topbook - скачать книги в fb2, epub, pdf, txt форматах
-        default:          sonata.seo.page.default
+        title: Naturalstones Jewerly - Изделия из натуральных камней
+        default: sonata.seo.page.default
         metas: ~
 
         head:

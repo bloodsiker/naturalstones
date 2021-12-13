@@ -31,10 +31,11 @@ class DefaultController extends Controller
         $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} | " : null;
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'TopBook.com.ua - скачать книги в fb2, epub, pdf, txt форматах'.$page,
-            'description' => $pageDesc.'Электронная библиотека, скачать книги, читать рецензии, отзывы, книжные рейтинги.',
-            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'title' => 'Naturalstones Jewerly - Изделия из натуральных камней'.$page,
+            'description' => $pageDesc.'Когда хочется дарить яркие эмоции и незабываемые впечатления своим родным и близким выбирайте прекрасные изделия от компании «Naturalstones Jewerly»',
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
             'og' => [
+                'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);
@@ -51,13 +52,11 @@ class DefaultController extends Controller
         $breadcrumb->addBreadcrumb(['title' => 'Корзина']);
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => '100 лучших книг на сайте | TopBook.com.ua - скачать книги в fb2, epub, pdf, txt форматах',
-            'description' => '100 лучших книг на сайте | Электронная библиотека, скачать книги, читать рецензии, отзывы, книжные рейтинги.',
-            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'title' => 'Корзина | Naturalstones Jewerly - Изделия из натуральных камней',
+            'description' => 'Корзина | Оформить заказ',
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
             'og' => [
-                'og:site_name' => 'TopBook.com.ua - скачать книги в fb2, epub, pdf, txt форматах',
-                'og:type' => 'article',
-                'og:title' => '100 лучших книг на сайте',
+                'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);
@@ -71,13 +70,12 @@ class DefaultController extends Controller
         $breadcrumb->addBreadcrumb(['title' => 'Оформление заказа']);
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => '100 лучших книг на сайте | TopBook.com.ua - скачать книги в fb2, epub, pdf, txt форматах',
-            'description' => '100 лучших книг на сайте | Электронная библиотека, скачать книги, читать рецензии, отзывы, книжные рейтинги.',
-            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'title' => 'Корзина, шаг 1 | Naturalstones Jewerly - Изделия из натуральных камней',
+            'description' => 'Корзина, шаг 1 | Оформить заказ',
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
             'og' => [
-                'og:site_name' => 'TopBook.com.ua - скачать книги в fb2, epub, pdf, txt форматах',
-                'og:type' => 'article',
-                'og:title' => '100 лучших книг на сайте',
+                'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
+                'og:title' => 'Корзина, шаг 1',
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);
@@ -93,13 +91,12 @@ class DefaultController extends Controller
         $breadcrumb->addBreadcrumb(['title' => 'Оформление заказа']);
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => '100 лучших книг на сайте | TopBook.com.ua - скачать книги в fb2, epub, pdf, txt форматах',
-            'description' => '100 лучших книг на сайте | Электронная библиотека, скачать книги, читать рецензии, отзывы, книжные рейтинги.',
-            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'title' => 'Корзина, шаг 2 | Naturalstones Jewerly - Изделия из натуральных камней',
+            'description' => 'Корзина, шаг 2 | Оформить заказ',
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
             'og' => [
-                'og:site_name' => 'TopBook.com.ua - скачать книги в fb2, epub, pdf, txt форматах',
-                'og:type' => 'article',
-                'og:title' => '100 лучших книг на сайте',
+                'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
+                'og:title' => 'Корзина, шаг 2',
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);

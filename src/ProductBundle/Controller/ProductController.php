@@ -43,9 +43,9 @@ class ProductController extends Controller
         $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Последние новинки книг в библиотеке ТопБук'.$page,
-            'description' => "{$pageDesc} Последние новинки книг | Электронная библиотека, скачать книги бесплатно и без регистрации, читать рецензии, отзывы, книжные рейтинги.",
-            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'title' => ' Naturalstones Jewerly - Изделия из натуральных камней'.$page,
+            'description' => "{$pageDesc} Список изделий ",
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
             'og' => [
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
@@ -72,9 +72,9 @@ class ProductController extends Controller
         $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Последние новинки книг в библиотеке ТопБук'.$page,
-            'description' => "{$pageDesc} Последние новинки книг | Электронная библиотека, скачать книги бесплатно и без регистрации, читать рецензии, отзывы, книжные рейтинги.",
-            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'title' => ' Naturalstones Jewerly - Изделия из натуральных камней'.$page,
+            'description' => "{$pageDesc} Список изделий для мужчин и женщин",
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
             'og' => [
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
@@ -102,9 +102,9 @@ class ProductController extends Controller
         $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Последние новинки книг в библиотеке ТопБук'.$page,
-            'description' => "{$pageDesc} Последние новинки книг | Электронная библиотека, скачать книги бесплатно и без регистрации, читать рецензии, отзывы, книжные рейтинги.",
-            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'title' => ' Naturalstones Jewerly - Изделия из натуральных камней'.$page,
+            'description' => "{$pageDesc} Изделия по тегу " . $tag->getName(),
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
             'og' => [
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
@@ -132,9 +132,9 @@ class ProductController extends Controller
         $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Последние новинки книг в библиотеке ТопБук'.$page,
-            'description' => "{$pageDesc} Последние новинки книг | Электронная библиотека, скачать книги бесплатно и без регистрации, читать рецензии, отзывы, книжные рейтинги.",
-            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'title' => 'Naturalstones Jewerly - Изделия из натуральных камней'.$page,
+            'description' => "{$pageDesc} Изделия по цвету",
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
             'og' => [
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
@@ -162,9 +162,9 @@ class ProductController extends Controller
         $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Последние новинки книг в библиотеке ТопБук'.$page,
-            'description' => "{$pageDesc} Последние новинки книг | Электронная библиотека, скачать книги бесплатно и без регистрации, читать рецензии, отзывы, книжные рейтинги.",
-            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'title' => 'Naturalstones Jewerly - Изделия из натуральных камней'.$page,
+            'description' => "{$pageDesc} Изделия по камню " . $stone->getName(),
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
             'og' => [
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
@@ -202,14 +202,14 @@ class ProductController extends Controller
         }
         $breadcrumb->addBreadcrumb(['title' => $product->getName()]);
 
-        $title = $product->getName().' -  скачать книгу без регистрации в fb2, epub, pdf, txt | ТопБук - Электронная библиотека для любителей книг';
+        $title = $product->getName().' -  купить изделие из натуральных камней | Naturalstones Jewerly - Изделия из натуральных камней';
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $title,
             'description' => mb_substr($product->getDescription(), 0, 150),
-            'keywords' => 'скачать книги, отзывы на книги, краткое содержание, без регистрации',
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
             'og' => [
-                'og:site_name' => 'TopBook.com.ua - скачать книги без регистрации в fb2, epub, pdf, txt форматах',
+                'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
                 'og:type' => 'article',
                 'og:title' => $title,
                 'og:url' => $request->getSchemeAndHttpHost(),

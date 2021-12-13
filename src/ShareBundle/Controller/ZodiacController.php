@@ -35,13 +35,13 @@ class ZodiacController extends Controller
         $breadcrumb->addBreadcrumb(['title' => 'Камни для знака зодиака ' . $zodiac->getName()]);
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => $zodiac->getName().' | Книги | Страница '.$request->get('page', 1).' | TopBook.com.ua - скачать книги бесплатно и без регистрации',
-            'description' => "Скачать книги автора {$zodiac->getName()} бесплатно и без регистрации",
-            'keywords' => "книги автора {$zodiac->getName()}, скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, без регистрации, топбук",
+            'title' => $zodiac->getName().' | Изделия | Страница '.$request->get('page', 1).' | Naturalstones Jewerly - Изделия из натуральных камней',
+            'description' => "Купить изделия для знака зодиака {$zodiac->getName()} ",
+            'keywords' => "{$zodiac->getName()}, Натуральные камни, серебро, браслеты, кольца, чокеры, подвески",
             'og' => [
-                'og:site_name' => 'TopBook.com.ua - электронная библиотека',
+                'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
                 'og:type' => 'website',
-                'og:title' => $zodiac->getName().' | Книги | Страница '.$request->get('page', 1).' | TopBook.com.ua - скачать книги бесплатно и без регистрации',
+                'og:title' => $zodiac->getName().' | Изделия | Страница '.$request->get('page', 1).' | Naturalstones Jewerly - Изделия из натуральных камней',
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);

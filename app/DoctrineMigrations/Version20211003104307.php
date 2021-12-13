@@ -74,6 +74,7 @@ final class Version20211003104307 extends AbstractMigration
         $category->addColumn('id', 'integer', array('unsigned' => true, 'notnull' => true, 'autoincrement' => true));
         $category->addColumn('name', 'string', array('length' => 255, 'notnull' => false));
         $category->addColumn('slug', 'string', array('length' => 255, 'notnull' => false));
+        $category->addColumn('type', 'integer', array('columnDefinition' => 'TINYINT(2) UNSIGNED DEFAULT 1 NOT NULL'));
         $category->addColumn('is_active', 'boolean', array('notnull' => true));
         $category->setPrimaryKey(['id']);
 

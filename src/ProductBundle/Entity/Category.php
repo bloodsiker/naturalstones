@@ -15,6 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
+
+    const TYPE_MAIN      = 1;
+    const TYPE_SECONDARY = 2;
+
     /**
      * @var int
      *
@@ -41,6 +45,13 @@ class Category
     /**
      * @var bool
      *
+     * @ORM\Column(type="smallint", nullable=false)
+     */
+    protected $type;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(type="boolean", nullable=false)
      */
     protected $isActive;
@@ -58,6 +69,7 @@ class Category
     public function __construct()
     {
         $this->isActive = true;
+        $this->type = 1;
 
         $this->products = new ArrayCollection();
     }
@@ -152,6 +164,30 @@ class Category
     }
 
     /**
+     * Set type
+     *
+     * @param int $type
+     *
+     * @return Category
+     */
+    public function setType(int $type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * Set isActive
      *
      * @param boolean $isActive
@@ -207,5 +243,13 @@ class Category
     public function getBooksPublishing()
     {
         return $this->products;
+    }
+
+    public static function getTypes()
+    {
+        return [
+            self::TYPE_MAIN => 'main',
+            self::TYPE_SECONDARY => 'secondary',
+        ];
     }
 }

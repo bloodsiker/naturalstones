@@ -80,6 +80,7 @@ services:
         class: "AppBundle\\Services\\SendTelegramService"
         arguments:
             - '@router'
+            - '@product.router.helper'
         calls:
             - [ setContainer, [ '@service_container' ] ]
 

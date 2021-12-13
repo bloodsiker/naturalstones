@@ -43,6 +43,16 @@ services:
         tags:
             - { name: sonata.block }
 
+    app.block.service.feedback:
+        class: "AppBundle\\Block\\FeedbackBlockService"
+        arguments:
+            - app.block.service.feedback
+            - '@templating'
+            - '@request_stack'
+            - '@app.send_telegram'
+        tags:
+            - { name: sonata.block }
+
     app.block.service.get_state_value:
         class: "AppBundle\\Block\\GetStateValueBlockService"
         arguments:

@@ -1833,6 +1833,22 @@ footer {
   height: 180px;
   margin-top: 0px;
 }
+.successFeedback {
+  display: none;
+  text-align: center;
+  width: 80%;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 0 0 60px;
+}
+.successFeedback img {
+  width: 300px;
+}
+.successFeedback h4 {
+  font-size: 24px;
+  text-align: center;
+}
 
 /* seo-content =======================================*/
 
@@ -5232,6 +5248,18 @@ footer {
   .order-payment-list {
     -ms-flex-pack: center;
     justify-content: center;
+  }
+
+  .successFeedback {
+    width: 90%;
+    padding: 0 10px 60px;
+  }
+  .successFeedback img {
+    width: 250px;
+  }
+  .successFeedback h4 {
+    font-size: 18px;
+    text-align: center;
   }
 }
 

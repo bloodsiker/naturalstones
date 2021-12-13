@@ -26,6 +26,8 @@ sonata_block:
             contexts: [ cms ]
         app.block.service.cart:
             contexts: [ cms ]
+        app.block.service.feedback:
+            contexts: [ cms ]
         app.block.service.search:
             contexts: [cms]
         app.block.service.breadcrumb:

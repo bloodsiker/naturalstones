@@ -9,8 +9,9 @@
 namespace AppBundle\Services;
 
 use OrderBundle\Entity\Order;
-use Symfony\Component\DependencyInjection\Container;
+use ProductBundle\Helper\ProductRouterHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
 
 /**
@@ -23,11 +24,17 @@ class SendTelegramService
     private $route;
 
     /**
+     * @var ProductRouterHelper
+     */
+    private $productRouterHelper;
+
+    /**
      * SendTelegramService constructor.
      */
-    public function __construct(Router $router)
+    public function __construct(Router $router, ProductRouterHelper $productRouterHelper)
     {
         $this->route = $router;
+        $this->productRouterHelper = $productRouterHelper;
     }
 
     public function sendMessageFromQuickForm(Order $order)
@@ -40,20 +47,27 @@ class SendTelegramService
         $html .= "<b>Сумма заказа:</b> " . number_format($order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
         foreach ($order->getOrderHasItems() as $orderItem) {
             $product = $orderItem->getProduct();
-            $html .= "--- <b>" . $product->getName() . ' ' . $product->getSize() . "</b> - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
+            $link = $this->productRouterHelper->getGenrePath($product, true);
+            $html .= "--- " . sprintf("<a href='%s'>%s %s</a>", $link, $product->getName(), $product->getSize()  ) ." - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
             if ($orderItem->getDiscount()) {
                 $html .= ' (Скидка ' . $orderItem->getDiscount() . ' грн)' . PHP_EOL;
             } else {
                 $html .= PHP_EOL;
             }
         }
-        $html .= sprintf("<a href='%s'>Ссылка на заказ</a>", $adminOrderLink);
+
+        $keyboard['inline_keyboard'] = [
+            [
+                ['text'=> 'Заказ', 'url' => $adminOrderLink]
+            ]
+        ];
 
         $this->requestTelegram("sendMessage", [
             'chat_id' => $this->container->getParameter('telegram_chat_id'),
             'text' => urldecode($html),
             'parse_mode' => 'html',
             'disable_web_page_preview' => true,
+            'reply_markup' => json_encode($keyboard),
         ]);
     }
 
@@ -77,14 +91,40 @@ class SendTelegramService
         $html .= "<b>Сумма заказа:</b> " . number_format($order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
         foreach ($order->getOrderHasItems() as $orderItem) {
             $product = $orderItem->getProduct();
-            $html .= "--- <b>" . $product->getName() . ' ' . $product->getSize() . "</b> - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
+            $link = $this->productRouterHelper->getGenrePath($product, true);
+            $html .= "---" . sprintf("<a href='%s'>%s %s</a>", $link, $product->getName(), $product->getSize()  ) ." - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
             if ($orderItem->getDiscount()) {
                 $html .= ' (Скидка ' . $orderItem->getDiscount() . ' грн)' . PHP_EOL;
             } else {
                 $html .= PHP_EOL;
             }
         }
-        $html .= sprintf("<a href='%s'>Ссылка на заказ</a>", $adminOrderLink);
+
+        $keyboard['inline_keyboard'] = [
+            [
+                ['text'=> 'Заказ', 'url' => $adminOrderLink]
+            ]
+        ];
+
+        $this->requestTelegram("sendMessage", [
+            'chat_id' => $this->container->getParameter('telegram_chat_id'),
+            'text' => urldecode($html),
+            'parse_mode' => 'html',
+            'disable_web_page_preview' => true,
+            'reply_markup' => json_encode($keyboard),
+        ]);
+    }
+
+    /**
+     * @param  Request  $request
+     */
+    public function sendFeedback(Request $request)
+    {
+        $html = "Не нашли то, что искали?" . PHP_EOL;
+        $html .= "<b>Имя:</b> " . $request->get('name') . PHP_EOL;
+        $html .= "<b>Телефон:</b> " . $request->get('phone') . PHP_EOL;
+        $html .= "<b>Email:</b> " . $request->get('email') . PHP_EOL;
+        $html .= "<b>Сообщение:</b> " . $request->get('message') . PHP_EOL;
 
         $this->requestTelegram("sendMessage", [
             'chat_id' => $this->container->getParameter('telegram_chat_id'),
@@ -92,6 +132,8 @@ class SendTelegramService
             'parse_mode' => 'html',
             'disable_web_page_preview' => true,
         ]);
+
+        return true;
     }
 
 

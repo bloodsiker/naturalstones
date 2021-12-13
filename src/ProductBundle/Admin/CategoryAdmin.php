@@ -6,6 +6,7 @@ use AdminBundle\Admin\BaseAdmin as Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -21,6 +22,15 @@ class CategoryAdmin extends Admin
     ];
 
     /**
+     * {@inheritdoc}
+     */
+    public function setTranslationDomain($translationDomain)
+    {
+        $this->translationDomain = $translationDomain;
+        $this->formOptions['translation_domain'] = $translationDomain;
+    }
+
+    /**
      * @param ListMapper $listMapper
      */
     protected function configureListFields(ListMapper $listMapper)
@@ -34,6 +44,11 @@ class CategoryAdmin extends Admin
             ])
             ->add('slug', null, [
                 'label' => 'category.fields.slug',
+            ])
+            ->add('type', 'choice', [
+                'label' => 'category.fields.type',
+                'choices' => array_flip($this->getTypes()),
+                'catalogue' => $this->getTranslationDomain(),
             ])
             ->add('isActive', null, [
                 'label' => 'category.fields.is_active',
@@ -57,6 +72,9 @@ class CategoryAdmin extends Admin
             ])
             ->add('slug', null, [
                 'label' => 'category.fields.slug',
+            ])
+            ->add('type', null, [
+                'label' => 'category.fields.type',
             ])
             ->add('isActive', null, [
                 'label' => 'category.fields.is_active',
@@ -84,6 +102,24 @@ class CategoryAdmin extends Admin
                     'label' => 'category.fields.is_active',
                     'required' => false,
                 ])
+                ->add('type', ChoiceType::class, [
+                    'label' => 'category.fields.type',
+                    'choices' => $this->getTypes(),
+                    'required' => true,
+                ])
             ->end();
+    }
+
+    private function getTypes()
+    {
+        $matchEntity = $this->getClass();
+        $typesEntity = $matchEntity::getTypes();
+
+        $typesChoice = [];
+        foreach ($typesEntity as $key => $value) {
+            $typesChoice["category.fields.types.".$value] = $key;
+        }
+
+        return $typesChoice;
     }
 }

@@ -76,3 +76,7 @@ category:
         name: Название
         slug: Сегмент URL (slug)
         is_active: Активно
+        type: Тип
+        types:
+            main: Украшения
+            secondary: Дополнительно

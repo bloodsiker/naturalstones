@@ -81,6 +81,7 @@ services:
         arguments:
             - '@router'
             - '@product.router.helper'
+            - '@monolog.http_client'
         calls:
             - [ setContainer, [ '@service_container' ] ]
 

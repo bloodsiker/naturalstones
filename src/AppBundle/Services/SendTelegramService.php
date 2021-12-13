@@ -13,6 +13,7 @@ use ProductBundle\Helper\ProductRouterHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * Class SendTelegramService
@@ -28,13 +29,16 @@ class SendTelegramService
      */
     private $productRouterHelper;
 
+    private HttpClientInterface $client;
+
     /**
      * SendTelegramService constructor.
      */
-    public function __construct(Router $router, ProductRouterHelper $productRouterHelper)
+    public function __construct(Router $router, ProductRouterHelper $productRouterHelper, HttpClientInterface $client)
     {
         $this->route = $router;
         $this->productRouterHelper = $productRouterHelper;
+        $this->client = $client;
     }
 
     public function sendMessageFromQuickForm(Order $order)
@@ -146,6 +150,6 @@ class SendTelegramService
             $url = $telegramUrlApi . $method;
         }
 
-        return file_get_contents($url);
+        return $this->client->request('GET', $url);
     }
 }

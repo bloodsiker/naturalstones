@@ -7,11 +7,8 @@
 
     {% set isFile       = object is instanceof("\\MediaBundle\\Entity\\MediaFile") %}
     {% set isImage      = object is instanceof("\\MediaBundle\\Entity\\MediaImage") %}
-    {% set isGallery    = object is instanceof("\\MediaBundle\\Entity\\MediaGallery") %}
 
-    {% if isImage or isGallery %}
-        {{ _media.image(object.path, 'max-height: 100px;') }}
-    {% elseif isFile %}
+    {% if isFile %}
         {% set extension = object.path|file_extension %}
 
         {% if extension in ['mp3', 'ogg'] %}

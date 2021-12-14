@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Size
 {
-    const TYPE_ML = 'мл';
+    const TYPE_MM = 'мм';
     const TYPE_SM = 'см';
 
     /**
@@ -156,7 +156,7 @@ class Size
     public static function getTypes()
     {
         return [
-            self::TYPE_ML => self::TYPE_ML,
+            self::TYPE_MM => self::TYPE_MM,
             self::TYPE_SM => self::TYPE_SM,
         ];
     }

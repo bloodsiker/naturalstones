@@ -61,7 +61,7 @@ class ZodiacBlockService extends AbstractAdminBlockService
         $resolver->setDefaults([
             'items_count' => 100,
             'title' => null,
-            'is_main' => false,
+            'mobile_select' => false,
             'template'  => 'ShareBundle:Block:zodiac.html.twig',
         ]);
     }

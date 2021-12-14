@@ -4,7 +4,7 @@
     </div>
 {% endif %}
 
-{% if not settings.is_main %}
+{% if settings.mobile_select %}
     <div class="list-zodiac list-zodiac-page">
         {% for zodiac in zodiacs %}
             <a href="{{ path('zodiac_stone_list', {'slug': zodiac.slug}) }}" class="zodiac-item {% if app.request.get('slug') == zodiac.slug %}active{% endif %}">

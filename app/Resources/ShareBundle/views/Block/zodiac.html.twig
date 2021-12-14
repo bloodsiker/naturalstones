@@ -11,3 +11,14 @@
         </a>
     {% endfor %}
 </div>
+
+{% if not settings.is_main %}
+    <div class="select-block mobile-select">
+        <select class="custom-select change-zodiac" data-placeholder="Размер">
+            <option></option>
+            {% for zodiac in zodiacs %}
+                <option data-url="{{ path('zodiac_stone_list', {'slug': zodiac.slug}) }}" {% if zodiac.slug == app.request.get('slug') %}selected{% endif %} value="{{ zodiac.id }}">{{ zodiac.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% endif %}

@@ -2229,7 +2229,7 @@ footer {
   margin-bottom: 28px;
 }
 
-.product-add-form .mobile-select {
+.mobile-select {
   display: none;
 }
 
@@ -5493,7 +5493,7 @@ footer {
     height: 380px;
   }
 
-  .product-add-form .mobile-select {
+  .mobile-select {
     display: block;
   }
 
@@ -5539,6 +5539,10 @@ footer {
   }
 
   .product-sizes-check {
+    display: none;
+  }
+
+  .list-zodiac {
     display: none;
   }
 

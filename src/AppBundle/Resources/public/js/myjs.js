@@ -626,7 +626,7 @@ $(document).ready(function() {
 		let phone = $('.quick-phone').val();
 	})
 
-	$('.change-size').on('select2:select', function (e) {
+	$('.change-size, .change-zodiac').on('select2:select', function (e) {
 		let url = $(e.params.data.element).data('url');
 		window.location = url;
 	});

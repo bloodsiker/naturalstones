@@ -14,11 +14,17 @@
             <div class="product-gallery">
                 <div class="product-big-slider js-slick">
                     <div class="product-big-item">
-                        <img src="{{ asset(product.image.path) }}" alt="{{ product.name }}">
+                        {% if product.instagramLink %}
+                            <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
+                        {% endif %}
+                        <img src="{{ asset(product.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
                     </div>
                     {% for productImage in product.productHasImage %}
                         <div class="product-big-item">
-                            <img src="{{ asset(productImage.image.path) }}" alt="{{ product.name }}">
+                            {% if product.instagramLink %}
+                                <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
+                            {% endif %}
+                            <img src="{{ asset(productImage.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
                         </div>
                     {% endfor %}
                 </div>

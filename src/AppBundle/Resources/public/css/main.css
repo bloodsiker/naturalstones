@@ -2020,9 +2020,21 @@ footer {
 .product-big-item {
   height: 534px;
   display: none;
+  position: relative;
 }
 
-.product-big-item img {
+.product-big-item a {
+  display: block;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.product-big-item .insta_link {
+  width: 60px;
+  height: 60px;
+}
+
+.product-big-item img.big-slider-img {
   width: 100%;
   height: 100%;
   object-fit: cover;

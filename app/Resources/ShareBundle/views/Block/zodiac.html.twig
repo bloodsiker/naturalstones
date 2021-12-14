@@ -3,16 +3,16 @@
         <h4>{{ settings.title }}</h4>
     </div>
 {% endif %}
-<div class="list-zodiac">
-    {% for zodiac in zodiacs %}
-        <a href="{{ path('zodiac_stone_list', {'slug': zodiac.slug}) }}" class="zodiac-item {% if app.request.get('slug') == zodiac.slug %}active{% endif %}">
-            <img src="{{ zodiac.image ? asset(zodiac.image.path) : null }}" alt="{{ zodiac.name }}">
-            <div class="head-zodiac">{{ zodiac.name }}</div>
-        </a>
-    {% endfor %}
-</div>
 
 {% if not settings.is_main %}
+    <div class="list-zodiac list-zodiac-page">
+        {% for zodiac in zodiacs %}
+            <a href="{{ path('zodiac_stone_list', {'slug': zodiac.slug}) }}" class="zodiac-item {% if app.request.get('slug') == zodiac.slug %}active{% endif %}">
+                <img src="{{ zodiac.image ? asset(zodiac.image.path) : null }}" alt="{{ zodiac.name }}">
+                <div class="head-zodiac">{{ zodiac.name }}</div>
+            </a>
+        {% endfor %}
+    </div>
     <div class="select-block mobile-select">
         <select class="custom-select change-zodiac" data-placeholder="Размер">
             <option></option>
@@ -20,5 +20,14 @@
                 <option data-url="{{ path('zodiac_stone_list', {'slug': zodiac.slug}) }}" {% if zodiac.slug == app.request.get('slug') %}selected{% endif %} value="{{ zodiac.id }}">{{ zodiac.name }}</option>
             {% endfor %}
         </select>
+    </div>
+{% else %}
+    <div class="list-zodiac">
+        {% for zodiac in zodiacs %}
+            <a href="{{ path('zodiac_stone_list', {'slug': zodiac.slug}) }}" class="zodiac-item {% if app.request.get('slug') == zodiac.slug %}active{% endif %}">
+                <img src="{{ zodiac.image ? asset(zodiac.image.path) : null }}" alt="{{ zodiac.name }}">
+                <div class="head-zodiac">{{ zodiac.name }}</div>
+            </a>
+        {% endfor %}
     </div>
 {% endif %}

@@ -18,8 +18,7 @@ class CategoryRepository extends EntityRepository
         $qb = $this->createQueryBuilder('c');
         $qb
             ->where('c.isActive = 1')
-            ->orderBy('c.id', 'DESC')
-        ;
+            ->orderBy('c.id', 'DESC');
 
         return $qb;
     }

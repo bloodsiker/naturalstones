@@ -80,15 +80,12 @@
     <section class="section">
         <div class="container">
 
-            <div class="filter-outer">
-                <h1>Новые товары</h1>
-            </div>
-
             {{
                 sonata_block_render(
                     { 'type': 'product.block.list' },
                     {
                         'items_count' : 8,
+                        'title' : 'Новые товары',
                         'page': app.request.get('page') ? app.request.get('page') : 1,
                         'show_paginator': false,
                         'ajax_paginator': false

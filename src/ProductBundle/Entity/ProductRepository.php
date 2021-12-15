@@ -35,7 +35,7 @@ class ProductRepository extends EntityRepository
             ->innerJoin('p.size', 'size', 'WITH', 'size.id = p.size')
             ->andWhere('p.productGroup IS NOT NULL')
             ->andWhere('p.productGroup = :groupId')->setParameter('groupId', $groupId)
-            ->orderBy('size.name', 'ASC')
+            ->orderBy('size.name', 'DESC')
         ;
 
         return $qb;

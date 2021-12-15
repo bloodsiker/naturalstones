@@ -171,7 +171,7 @@
                                             {% if product.colours is iterable %}
                                                 {% for colour in product.colours %}
                                                     <a href="{{ path('product_colour_list', { 'slug': colour.slug }) }}">
-                                                        <em style="color: {{ '#'~colour.colour }}">{{ colour.name }}</em>
+                                                        <em style="color: {{ '#'~(colour.colour == 'ffffff' ? '000000' : colour.colour) }}">{{ colour.name }}</em>
                                                     </a>
                                                     {{ loop.last ? '' : ' , ' }}
                                                 {% endfor %}

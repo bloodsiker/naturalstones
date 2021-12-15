@@ -76,6 +76,7 @@ class ListProductBlockService extends AbstractAdminBlockService
             'list_type'        => null,
             'items_count'      => 20,
             'page'             => 1,
+            'filter'           => false,
             'category'         => null,
             'category_slug'    => null,
             'tag'              => null,
@@ -151,6 +152,18 @@ class ListProductBlockService extends AbstractAdminBlockService
             $repository->filterExclude($qb, $blockContext->getSetting('exclude_ids'));
         }
 
+        $maxPriceQb = $minPriceQb = clone $qb;
+        $maxPrice = $maxPriceQb->resetDQLPart('select')->select('MAX(p.price) as max')->getQuery()->getSingleResult();
+        $minPrice = $minPriceQb->resetDQLPart('select')->select('MIN(p.price) as min')->getQuery()->getSingleResult();
+
+        if ($request->get('min_price')) {
+            $qb->andWhere('p.price >= :minPrice')->setParameter('minPrice', $request->get('min_price'));
+        }
+
+        if ($request->get('max_price')) {
+            $qb->andWhere('p.price <= :maxPrice')->setParameter('maxPrice', $request->get('max_price'));
+        }
+
         $paginator = new Pagerfanta(new DoctrineORMAdapter($qb, true, false));
         $paginator->setAllowOutOfRangePages(true);
         $paginator->setMaxPerPage((int) $limit);
@@ -161,6 +174,8 @@ class ListProductBlockService extends AbstractAdminBlockService
 
         return $this->renderResponse($request->isXmlHttpRequest() ? self::TEMPLATE_AJAX : $template, [
             'products'  => $paginator,
+            'maxPrice'  => $maxPrice['max'],
+            'minPrice'  => $minPrice['min'],
             'block'     => $block,
             'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
         ], $response);

@@ -1,3 +1,11 @@
+<div class="filter-outer">
+    <h1>{{ settings.category.name }}</h1>
+
+    {% if settings.filter %}
+        {% include 'AppBundle:Block:filter.html.twig' %}
+    {% endif %}
+</div>
+
 {% if products %}
     <div class="catalog-flex">
         {% include 'ProductBundle:Block:large_list_ajax.html.twig' %}

@@ -207,6 +207,9 @@ a:hover {
 .text-red {
   color: red;
 }
+.mt-40 {
+  margin-top: 40px!important;
+}
 .page {
   overflow: hidden;
   display: -ms-flexbox;
@@ -1052,7 +1055,7 @@ footer {
   margin-bottom: 9px;
 }
 
-.filter-podmenu-choose li .btn-filter {
+.filter-podmenu-choose li .btn-filter, .filter-podmenu .btn-filter {
   display: block;
   margin-top: 10px;
   padding: 9px 0;
@@ -1319,7 +1322,7 @@ footer {
   position: relative;
 }
 .ribbon {
-  z-index: 10;
+  z-index: 4;
   position: absolute;
   top: -1px;
   right: 5px;

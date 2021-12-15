@@ -144,8 +144,8 @@ $(document).ready(function() {
 	    $inputFrom = $(".js-input-from"),
 	    $inputTo = $(".js-input-to"),
 	    instance,
-	    min = 20,
-	    max = 1000,
+		min = $inputFrom.data('min'),
+		max = $inputTo.data('max'),
 	    from = 0,
 	    to = 0;
 
@@ -153,8 +153,8 @@ $(document).ready(function() {
 		    type: "double",
 		    min: min,
 		    max: max,
-		    from: 20,
-		    to: 600,
+		    from: $inputFrom.val(),
+		    to: $inputTo.val(),
 	   	 	grid: false,
 		    onStart: updateInputs,
 		    onChange: updateInputs
@@ -704,23 +704,38 @@ $(document).ready(function() {
 		});
 	}
 
-	let filterUpdate = function() {
+	let filterUpdate = function(e) {
+		e.preventDefault();
+
 		let url = $('.filter-form input[name=url]').val();
 		let filter = '';
 		let sortUrl = '';
-		let sort = '';
-
-		if ($('.sort-select :selected').val()) {
-			sortUrl = 'sort=' + $(this).val();
-		}
+		let priceUrl = '';
+		let sort = $('select[name=sort] :selected').val();
 
 		if (sort) {
-			sort += '&' + sortUrl;
-		} else {
-			sort += '?' + sortUrl;
+			sortUrl = 'sort=' + sort;
 		}
 
-		window.location = url + sort;
+		priceUrl = 'min_price=' + $('#priceFrom').val() + '&max_price=' + $('#priceTo').val();
+
+		if (priceUrl) {
+			if (filter) {
+				filter += '&' + priceUrl;
+			} else {
+				filter += '?' + priceUrl;
+			}
+		}
+
+		if (sortUrl) {
+			if (filter) {
+				filter += '&' + sortUrl;
+			} else {
+				filter += '?' + sortUrl;
+			}
+		}
+
+		window.location = url + filter;
 
 		// $('.filter .part-checkbox:checked').each(function() {
 		//     if (sort) {
@@ -731,6 +746,7 @@ $(document).ready(function() {
 		// });
 	}
 
+	$('.btn-filter').on('click', filterUpdate);
 	$(document).on('change', '.filter-form .sort-select', filterUpdate);
 
 	$('.slice-this').wTextSlicer({

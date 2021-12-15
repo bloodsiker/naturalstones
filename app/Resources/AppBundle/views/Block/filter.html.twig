@@ -1,227 +1,228 @@
 <form action="#" method="post" class="filter-form">
     <input type="hidden" name="url" value="{{ app.request.pathinfo }}">
-{#    <div class="filter-content">#}
-{#        <div class="filter-content-inner">#}
-{#            <div class="title">Фильтры</div>#}
+    <div class="filter-content">
+        <div class="filter-content-inner">
+            <div class="title">Фильтры</div>
 
-{#            <div class="filter-block">#}
-{#                <div class="filter-toggle"><span>Цвет</span><i></i></div>#}
-{#                <div class="filter-podmenu">#}
-{#                    <ul class="filter-podmenu-choose">#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="color-check">#}
-{#                                <i></i>#}
-{#                                <span>#}
-{#                                                        <small class="color"#}
-{#                                                               style="background: #fff; box-shadow: 1px 0px 6px rgba(0, 0, 0, 0.08);"></small>#}
-{#                                                        Белый#}
-{#                                                    </span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="color-check">#}
-{#                                <i></i>#}
-{#                                <span>#}
-{#                                                        <small class="color" style="background: #FFF500;"></small>#}
-{#                                                        Желтый#}
-{#                                                    </span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="color-check">#}
-{#                                <i></i>#}
-{#                                <span>#}
-{#                                                        <small class="color" style="background: #24C12B;"></small>#}
-{#                                                        Зеленый#}
-{#                                                    </span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="color-check">#}
-{#                                <i></i>#}
-{#                                <span>#}
-{#                                                        <small class="color" style="background: #DD6B2B;"></small>#}
-{#                                                        Коралловый#}
-{#                                                    </span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="color-check">#}
-{#                                <i></i>#}
-{#                                <span>#}
-{#                                                        <small class="color" style="background: #FF0000;"></small>#}
-{#                                                        Красный#}
-{#                                                    </span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="color-check">#}
-{#                                <i></i>#}
-{#                                <span>#}
-{#                                                        <small class="color" style="background: #F8E6CB;"></small>#}
-{#                                                        Кремовый#}
-{#                                                    </span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="color-check">#}
-{#                                <i></i>#}
-{#                                <span>#}
-{#                                                        <small class="color" style="background: #FF6B00;"></small>#}
-{#                                                        Оранжевый#}
-{#                                                    </span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="color-check">#}
-{#                                <i></i>#}
-{#                                <span>#}
-{#                                                        <small class="color" style="background: #EA6A61;"></small>#}
-{#                                                        Персиковый#}
-{#                                                    </span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="color-check">#}
-{#                                <i></i>#}
-{#                                <span>#}
-{#                                                        <small class="color" style="background: #FA94DD;"></small>#}
-{#                                                        Розовый#}
-{#                                                    </span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="color-check">#}
-{#                                <i></i>#}
-{#                                <span>#}
-{#                                                        <small class="color" style="background: #0085FF;"></small>#}
-{#                                                        Синий#}
-{#                                                    </span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="color-check">#}
-{#                                <i></i>#}
-{#                                <span>#}
-{#                                                        <small class="color" style="background: #7000FF;"></small>#}
-{#                                                        Сиреневый#}
-{#                                                    </span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <a href="" class="btn-filter">Применить</a>#}
-{#                        </li>#}
-{#                    </ul>#}
-{#                </div>#}
-{#            </div>#}
+            <div class="filter-block">
+                <div class="filter-toggle"><span>Цвет</span><i></i></div>
+                <div class="filter-podmenu">
+                    <ul class="filter-podmenu-choose">
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="color-check">
+                                <i></i>
+                                <span>
+                                                        <small class="color"
+                                                               style="background: #fff; box-shadow: 1px 0px 6px rgba(0, 0, 0, 0.08);"></small>
+                                                        Белый
+                                                    </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="color-check">
+                                <i></i>
+                                <span>
+                                                        <small class="color" style="background: #FFF500;"></small>
+                                                        Желтый
+                                                    </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="color-check">
+                                <i></i>
+                                <span>
+                                                        <small class="color" style="background: #24C12B;"></small>
+                                                        Зеленый
+                                                    </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="color-check">
+                                <i></i>
+                                <span>
+                                                        <small class="color" style="background: #DD6B2B;"></small>
+                                                        Коралловый
+                                                    </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="color-check">
+                                <i></i>
+                                <span>
+                                                        <small class="color" style="background: #FF0000;"></small>
+                                                        Красный
+                                                    </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="color-check">
+                                <i></i>
+                                <span>
+                                                        <small class="color" style="background: #F8E6CB;"></small>
+                                                        Кремовый
+                                                    </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="color-check">
+                                <i></i>
+                                <span>
+                                                        <small class="color" style="background: #FF6B00;"></small>
+                                                        Оранжевый
+                                                    </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="color-check">
+                                <i></i>
+                                <span>
+                                                        <small class="color" style="background: #EA6A61;"></small>
+                                                        Персиковый
+                                                    </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="color-check">
+                                <i></i>
+                                <span>
+                                                        <small class="color" style="background: #FA94DD;"></small>
+                                                        Розовый
+                                                    </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="color-check">
+                                <i></i>
+                                <span>
+                                                        <small class="color" style="background: #0085FF;"></small>
+                                                        Синий
+                                                    </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="color-check">
+                                <i></i>
+                                <span>
+                                                        <small class="color" style="background: #7000FF;"></small>
+                                                        Сиреневый
+                                                    </span>
+                            </label>
+                        </li>
+                        <li>
+                            <a href="" class="btn-filter">Применить</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-{#            <div class="filter-block">#}
-{#                <div class="filter-toggle"><span>Состав</span><i></i></div>#}
-{#                <div class="filter-podmenu">#}
-{#                    <ul class="filter-podmenu-choose">#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="type-check">#}
-{#                                <i></i>#}
-{#                                <span>Розы</span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="type-check">#}
-{#                                <i></i>#}
-{#                                <span>Тюльпаны</span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="type-check">#}
-{#                                <i></i>#}
-{#                                <span>Пионы</span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="type-check">#}
-{#                                <i></i>#}
-{#                                <span>Ромашки</span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="type-check">#}
-{#                                <i></i>#}
-{#                                <span>Розы</span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="type-check">#}
-{#                                <i></i>#}
-{#                                <span>Тюльпаны</span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="type-check">#}
-{#                                <i></i>#}
-{#                                <span>Пионы</span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <label class="filter-checkbox">#}
-{#                                <input type="checkbox" name="type-check">#}
-{#                                <i></i>#}
-{#                                <span>Ромашки</span>#}
-{#                            </label>#}
-{#                        </li>#}
-{#                    </ul>#}
-{#                </div>#}
-{#            </div>#}
+            <div class="filter-block">
+                <div class="filter-toggle"><span>Состав</span><i></i></div>
+                <div class="filter-podmenu">
+                    <ul class="filter-podmenu-choose">
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="type-check">
+                                <i></i>
+                                <span>Розы</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="type-check">
+                                <i></i>
+                                <span>Тюльпаны</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="type-check">
+                                <i></i>
+                                <span>Пионы</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="type-check">
+                                <i></i>
+                                <span>Ромашки</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="type-check">
+                                <i></i>
+                                <span>Розы</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="type-check">
+                                <i></i>
+                                <span>Тюльпаны</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="type-check">
+                                <i></i>
+                                <span>Пионы</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" name="type-check">
+                                <i></i>
+                                <span>Ромашки</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-{#            <div class="filter-block">#}
-{#                <div class="filter-toggle"><span>Цена</span><i></i></div>#}
-{#                <div class="filter-podmenu with-diapazon">#}
-{#                    <div class="range-slider-content">#}
-{#                        <div class="extra-controls">#}
-{#                                                <span class="value-block">#}
-{#                                                    <input type="text" class="js-input-from" value="0"/>#}
-{#                                                </span>#}
-{#                            <span class="divider">-</span>#}
-{#                            <span class="value-block">#}
-{#                                                     <input type="text" class="js-input-to" value="0"/>#}
-{#                                                </span>#}
-{#                            <span class="valuta">USD</span>#}
-{#                        </div>#}
-{#                        <div class="range-slider">#}
-{#                            <input type="text" class="js-range-slider" value=""/>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
+            <div class="filter-block">
+                <div class="filter-toggle"><span>Цена</span><i></i></div>
+                <div class="filter-podmenu with-diapazon">
+                    <div class="range-slider-content">
+                        <div class="extra-controls">
+                            <span class="value-block">
+                                <input type="text" class="js-input-from" id="priceFrom" data-min="{{ minPrice }}" value="{{ app.request.get('min_price') ? app.request.get('min_price') : minPrice is defined ? minPrice : 0 }}"/>
+                            </span>
+                            <span class="divider">-</span>
+                            <span class="value-block">
+                                 <input type="text" class="js-input-to" id="priceTo" data-max="{{ maxPrice }}"  value="{{ app.request.get('max_price') ? app.request.get('max_price') : maxPrice is defined ? maxPrice : 0 }}"/>
+                            </span>
+                            <span class="valuta">грн</span>
+                        </div>
+                        <div class="range-slider">
+                            <input type="text" class="js-range-slider" value=""/>
+                        </div>
+                    </div>
+                    <a href="" class="btn-filter mt-40">Применить</a>
+                </div>
+            </div>
 
-{#            <div class="catalog-filter-close">#}
-{#                <img src="images/cross.svg" alt="">#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="filter-overlay"></div>#}
-{#    </div>#}
+            <div class="catalog-filter-close">
+                <img src="images/cross.svg" alt="">
+            </div>
+        </div>
+        <div class="filter-overlay"></div>
+    </div>
 
     <div class="filter-open">Фильтры <i>+</i></div>
 
     <div class="filter-block select-block">
-        <select class="sort-select" data-placeholder="Сортировка">
+        <select class="sort-select" name="sort" data-placeholder="Сортировка">
             <option></option>
             <option value="asc">По умолчанию</option>
             <option value="asc" {{ app.request.get('sort') == 'asc' ? 'selected' : null }}>По возрастанию цены</option>

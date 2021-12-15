@@ -12,7 +12,7 @@
                         {% for colour in colours %}
                             <li>
                                 <label class="filter-checkbox">
-                                    <input type="checkbox" name="colour" {{ colour.id in app.request.get('colour') ? 'checked' : null }} value="{{ colour.id }}">
+                                    <input type="checkbox" name="colour" {{ is_constrain(colour.id, app.request.get('colour')) }} value="{{ colour.id }}">
                                     <i></i>
                                     <span>
                                         <small class="color" style="background: #{{ colour.colour }}; box-shadow: 1px 0px 6px rgba(0, 0, 0, 0.08);"></small>
@@ -37,7 +37,7 @@
                             {% for stone in stones %}
                                 <li>
                                     <label class="filter-checkbox">
-                                        <input type="checkbox" name="stone" {{ stone.id in app.request.get('stone') ? 'checked' : null }} value="{{ stone.id }}">
+                                        <input type="checkbox" name="stone" {{ is_constrain(stone.id, app.request.get('stone')) }} value="{{ stone.id }}">
                                         <i></i>
                                         <span>{{ stone.name}}</span>
                                     </label>

@@ -52,6 +52,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFunction('replace_highlight', array($this, 'replaceHighlight')),
             new \Twig_SimpleFunction('book_change_end', array($this, 'countBookChangeEnd')),
             new \Twig_SimpleFunction('icon_order_status', array($this, 'iconOrderStatus')),
+            new \Twig_SimpleFunction('is_constrain', array($this, 'isConstrain')),
         );
     }
 
@@ -150,6 +151,19 @@ class AppExtension extends \Twig_Extension
     public function isInstanceOf($var, $instance)
     {
         return $var instanceof $instance;
+    }
+
+    /**
+     * @param $id
+     * @param $string
+     *
+     * @return string|null
+     */
+    public function isConstrain($id, $string)
+    {
+        $explode = explode(',', $string);
+
+        return in_array($id, $explode) ? 'checked' : null;
     }
 
     /**

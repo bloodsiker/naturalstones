@@ -104,52 +104,5 @@
             <script src="{{ asset('bundles/app/js/ion.rangeSlider.min.js') }}"></script>
             <script src="{{ asset('bundles/app/js/myjs.js') }}"></script>
         {% endblock %}
-
-        <script>
-            let filterUpdate = function(e) {
-                e.preventDefault();
-
-                let url = $('.filter-form input[name=url]').val();
-                let filter = '';
-                let sortUrl = '';
-                let priceUrl = '';
-                let sort = $('select[name=sort] :selected').val();
-
-                if (sort) {
-                    sortUrl = 'sort=' + sort;
-                }
-
-                priceUrl = 'min_price=' + $('#priceFrom').val() + '&max_price=' + $('#priceTo').val();
-
-                if (priceUrl) {
-                    if (filter) {
-                        filter += '&' + priceUrl;
-                    } else {
-                        filter += '?' + priceUrl;
-                    }
-                }
-
-                if (sortUrl) {
-                    if (filter) {
-                        filter += '&' + sortUrl;
-                    } else {
-                        filter += '?' + sortUrl;
-                    }
-                }
-
-                window.location = url + filter;
-
-                // $('.filter .part-checkbox:checked').each(function() {
-                //     if (sort) {
-                //         sort += ',' + $(this).val();
-                //     } else {
-                //         sort = 'part=' + $(this).val();
-                //     }
-                // });
-            }
-
-            $('.btn-filter').on('click', filterUpdate);
-            $(document).on('change', '.filter-form .sort-select', filterUpdate);
-        </script>
     </body>
 </html>

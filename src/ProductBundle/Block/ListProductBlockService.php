@@ -124,10 +124,6 @@ class ListProductBlockService extends AbstractAdminBlockService
             }
         }
 
-        if ($request->get('sort')) {
-            $qb->resetDQLPart('orderBy')->orderBy('p.price', $request->get('sort'));
-        }
-
         if ($blockContext->getSetting('category')) {
             $repository->filterByCategory($qb, $blockContext->getSetting('category'));
         }
@@ -156,12 +152,43 @@ class ListProductBlockService extends AbstractAdminBlockService
         $maxPrice = $maxPriceQb->resetDQLPart('select')->select('MAX(p.price) as max')->getQuery()->getSingleResult();
         $minPrice = $minPriceQb->resetDQLPart('select')->select('MIN(p.price) as min')->getQuery()->getSingleResult();
 
+        $stonesQb = clone $qb;
+        $productStones = $stonesQb->getQuery()->getResult();
+        $stoneArray = [];
+        $colourArray = [];
+        foreach ($productStones as $productStone) {
+            $stones = $productStone->getStones()->getValues();
+            $colours = $productStone->getColours()->getValues();
+            foreach ($stones as $stone) {
+                if (!array_key_exists($stone->getId(), $stoneArray)) {
+                    $stoneArray[$stone->getId()] = $stone;
+                }
+            }
+            foreach ($colours as $colour) {
+                if (!array_key_exists($colour->getId(), $colourArray)) {
+                    $colourArray[$colour->getId()] = $colour;
+                }
+            }
+        }
+
         if ($request->get('min_price')) {
             $qb->andWhere('p.price >= :minPrice')->setParameter('minPrice', $request->get('min_price'));
         }
 
         if ($request->get('max_price')) {
             $qb->andWhere('p.price <= :maxPrice')->setParameter('maxPrice', $request->get('max_price'));
+        }
+
+        if ($request->get('sort')) {
+            $qb->resetDQLPart('orderBy')->orderBy('p.price', $request->get('sort'));
+        }
+
+        if ($request->get('stone')) {
+            $repository->filterByStones($qb, explode(',', $request->get('stone')));
+        }
+
+        if ($request->get('colour')) {
+            $repository->filterByColours($qb, explode(',', $request->get('colour')));
         }
 
         $paginator = new Pagerfanta(new DoctrineORMAdapter($qb, true, false));
@@ -176,6 +203,8 @@ class ListProductBlockService extends AbstractAdminBlockService
             'products'  => $paginator,
             'maxPrice'  => $maxPrice['max'],
             'minPrice'  => $minPrice['min'],
+            'stones'    => $stoneArray,
+            'colours'   => $colourArray,
             'block'     => $block,
             'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
         ], $response);

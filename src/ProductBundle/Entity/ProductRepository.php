@@ -75,10 +75,22 @@ class ProductRepository extends EntityRepository
             ->setParameter('colour', $colour);
     }
 
+    public function filterByColours(QueryBuilder $qb, $colourIds) : QueryBuilder
+    {
+        return $qb->innerJoin('p.colours', 'colour', 'WITH', 'colour.id IN (:colour)')
+            ->setParameter('colour', $colourIds);
+    }
+
     public function filterByStone(QueryBuilder $qb, $stone) : QueryBuilder
     {
         return $qb->innerJoin('p.stones', 'stone', 'WITH', 'stone.id = :stone')
             ->setParameter('stone', $stone);
+    }
+
+    public function filterByStones(QueryBuilder $qb, $stoneIds) : QueryBuilder
+    {
+        return $qb->innerJoin('p.stones', 'stone', 'WITH', 'stone.id IN (:stone)')
+            ->setParameter('stone', $stoneIds);
     }
 
     /**

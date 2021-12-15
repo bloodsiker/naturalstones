@@ -711,6 +711,8 @@ $(document).ready(function() {
 		let filter = '';
 		let sortUrl = '';
 		let priceUrl = '';
+		let stoneUrl = '';
+		let colourUrl = '';
 		let sort = $('select[name=sort] :selected').val();
 
 		if (sort) {
@@ -719,11 +721,43 @@ $(document).ready(function() {
 
 		priceUrl = 'min_price=' + $('#priceFrom').val() + '&max_price=' + $('#priceTo').val();
 
+		$('.filter-stones input[name=stone]:checked').each(function() {
+			if (stoneUrl) {
+				stoneUrl += ',' + $(this).val();
+			} else {
+				stoneUrl = 'stone=' + $(this).val();
+			}
+		});
+
+		$('.filter-colours input[name=colour]:checked').each(function() {
+			if (colourUrl) {
+				colourUrl += ',' + $(this).val();
+			} else {
+				colourUrl = 'colour=' + $(this).val();
+			}
+		});
+
 		if (priceUrl) {
 			if (filter) {
 				filter += '&' + priceUrl;
 			} else {
 				filter += '?' + priceUrl;
+			}
+		}
+
+		if (stoneUrl) {
+			if (filter) {
+				filter += '&' + stoneUrl;
+			} else {
+				filter += '?' + stoneUrl;
+			}
+		}
+
+		if (colourUrl) {
+			if (filter) {
+				filter += '&' + colourUrl;
+			} else {
+				filter += '?' + colourUrl;
 			}
 		}
 
@@ -736,14 +770,6 @@ $(document).ready(function() {
 		}
 
 		window.location = url + filter;
-
-		// $('.filter .part-checkbox:checked').each(function() {
-		//     if (sort) {
-		//         sort += ',' + $(this).val();
-		//     } else {
-		//         sort = 'part=' + $(this).val();
-		//     }
-		// });
 	}
 
 	$('.btn-filter').on('click', filterUpdate);

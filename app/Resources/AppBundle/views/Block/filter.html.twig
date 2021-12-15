@@ -226,7 +226,7 @@
             <option></option>
             <option value="asc">По умолчанию</option>
             <option value="asc" {{ app.request.get('sort') == 'asc' ? 'selected' : null }}>По возрастанию цены</option>
-            <option value="desc" {{ app.request.get('desc') == 'asc' ? 'selected' : null }}>По убыванию цены</option>
+            <option value="desc" {{ app.request.get('sort') == 'desc' ? 'selected' : null }}>По убыванию цены</option>
         </select>
     </div>
 

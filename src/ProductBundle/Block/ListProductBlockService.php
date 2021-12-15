@@ -123,6 +123,10 @@ class ListProductBlockService extends AbstractAdminBlockService
             }
         }
 
+        if ($request->get('sort')) {
+            $qb->resetDQLPart('orderBy')->orderBy('p.price', $request->get('sort'));
+        }
+
         if ($blockContext->getSetting('category')) {
             $repository->filterByCategory($qb, $blockContext->getSetting('category'));
         }

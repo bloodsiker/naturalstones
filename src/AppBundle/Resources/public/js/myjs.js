@@ -704,6 +704,35 @@ $(document).ready(function() {
 		});
 	}
 
+	let filterUpdate = function() {
+		let url = $('.filter-form input[name=url]').val();
+		let filter = '';
+		let sortUrl = '';
+		let sort = '';
+
+		if ($('.sort-select :selected').val()) {
+			sortUrl = 'sort=' + $(this).val();
+		}
+
+		if (sort) {
+			sort += '&' + sortUrl;
+		} else {
+			sort += '?' + sortUrl;
+		}
+
+		window.location = url + sort;
+
+		// $('.filter .part-checkbox:checked').each(function() {
+		//     if (sort) {
+		//         sort += ',' + $(this).val();
+		//     } else {
+		//         sort = 'part=' + $(this).val();
+		//     }
+		// });
+	}
+
+	$(document).on('change', '.filter-form .sort-select', filterUpdate);
+
 	$('.slice-this').wTextSlicer({
 		height: '350',
 		textExpand: 'Развернуть описание',

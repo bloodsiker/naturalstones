@@ -5465,7 +5465,7 @@ footer {
   }
 
   .modal-cart-block .desc span {
-    display: block;
+    /*display: block;*/
   }
 
   .modal-cart-block .cart-links {

@@ -155,7 +155,9 @@ class ProductController extends Controller
         $slug = $request->get('slug');
         $repo = $this->getDoctrine()->getManager()->getRepository(Stone::class);
         $stone = $repo->findOneBy(['slug' => $slug]);
+        $router = $this->get('router');
         $breadcrumb = $this->get('app.breadcrumb');
+        $breadcrumb->addBreadcrumb(['title' => 'Все камни',  'href' => $router->generate('stone_list')]);
         $breadcrumb->addBreadcrumb(['title' => 'Камень: ' . $stone->getName()]);
 
         $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;

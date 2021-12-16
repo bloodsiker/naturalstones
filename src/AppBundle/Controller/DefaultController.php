@@ -5,7 +5,12 @@ namespace AppBundle\Controller;
 use BookBundle\Entity\Book;
 use BookBundle\Entity\BookCollection;
 use GenreBundle\Entity\Genre;
+use ProductBundle\Entity\Category;
+use ProductBundle\Entity\Product;
+use ShareBundle\Entity\Colour;
+use ShareBundle\Entity\Stone;
 use ShareBundle\Entity\Tag;
+use ShareBundle\Entity\Zodiac;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -136,57 +141,43 @@ class DefaultController extends Controller
         $hostname = $request->getSchemeAndHttpHost();
         $router = $this->get('router');
         $urls[] = ['loc' => $router->generate('index'), 'changefreq' => 'weekly', 'priority' => '1.0'];
-        $urls[] = ['loc' => $router->generate('top_100'), 'changefreq' => 'weekly', 'priority' => '0.75'];
-        $urls[] = ['loc' => $router->generate('collection_list'), 'changefreq' => 'weekly', 'priority' => '0.75'];
+        $urls[] = ['loc' => $router->generate('stone_list'), 'changefreq' => 'weekly', 'priority' => '0.75'];
 
-        $urls[] = ['loc' => $router->generate('book_list'), 'changefreq' => 'weekly', 'priority' => '0.75'];
-        $books = $em->getRepository(Book::class)->findBy(['isActive' => true]);
-        foreach ($books as $book) {
-            $urls[] = ['loc' => $router->generate('book_view', ['id' => $book->getId(), 'slug' => $book->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.75'];
+        $categories = $em->getRepository(Category::class)->findBy(['isActive' => true]);
+        foreach ($categories as $category) {
+            $urls[] = ['loc' => $router->generate('product_list', ['slug' => $category->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.75'];
         }
 
-        $collectionsGenres = $em->getRepository(BookCollection::class)->getGenresCollection();
-        foreach ($collectionsGenres as $collectionsGenre) {
-            $urls[] = ['loc' => $router->generate('collection_category', ['genre' => $collectionsGenre->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.75'];
+        $products = $em->getRepository(Product::class)->findBy(['isActive' => true], ['id' => 'DESC']);
+        foreach ($products as $product) {
+            $urls[] = ['loc' => $router->generate('product_view', ['category' => $product->getCategory()->getSlug(), 'id' => $product->getId(), 'slug' => $product->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.75'];
         }
 
-        $collections = $em->getRepository(BookCollection::class)->findBy(['isActive' => true]);
-        foreach ($collections as $collection) {
-            $urls[] = ['loc' => $router->generate('collection_view', ['slug' => $collection->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
+        $stones = $em->getRepository(Stone::class)->findBy(['isActive' => true]);
+        foreach ($stones as $stone) {
+            $urls[] = ['loc' => $router->generate('product_stone_list', ['slug' => $stone->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
         }
 
-        $years = $em->getRepository(Book::class)->getUniqueYear();
-        foreach ($years as $year) {
-            $urls[] = ['loc' => $router->generate('year_books', ['year' => (int) $year->getYear()]), 'changefreq' => 'weekly', 'priority' => '0.3'];
+        $zodiacs = $em->getRepository(Zodiac::class)->findBy(['isActive' => true]);
+        foreach ($zodiacs as $zodiac) {
+            $urls[] = ['loc' => $router->generate('zodiac_stone_list', ['slug' => $zodiac->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
         }
 
-        $urls[] = ['loc' => $router->generate('search'), 'changefreq' => 'weekly', 'priority' => '0.3'];
-        $urls[] = ['loc' => $router->generate('order_board'), 'changefreq' => 'weekly', 'priority' => '0.3'];
-        $statuses = ['new', 'completed', 'cancel', 'top'];
-        foreach ($statuses as $status) {
-            $urls[] = ['loc' => $router->generate('order_board_status', ['status' => $status]), 'changefreq' => 'weekly', 'priority' => '0.3'];
+        $colours = $em->getRepository(Colour::class)->findBy(['isActive' => true]);
+        foreach ($colours as $colour) {
+            $urls[] = ['loc' => $router->generate('product_colour_list', ['slug' => $colour->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
         }
 
         $tags = $em->getRepository(Tag::class)->findBy(['isActive' => true]);
         foreach ($tags as $tag) {
-            $urls[] = ['loc' => $router->generate('tag_books', ['slug' => $tag->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
+            $urls[] = ['loc' => $router->generate('product_tags_list', ['slug' => $tag->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
         }
 
-        $urls[] = ['loc' => $router->generate('genre_list'), 'changefreq' => 'weekly', 'priority' => '0.5'];
-        $genres = $em->getRepository(Genre::class)->findBy(['isActive' => true, 'parent' => null]);
-        foreach ($genres as $genre) {
-            $urls[] = ['loc' => $router->generate('genre_books', ['genre' => $genre->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
-            if ($genre->getChildren()->count()) {
-                foreach ($genre->getChildren()->getValues() as $subGenre) {
-                    if ($subGenre->getIsActive()) {
-                        $urls[] = ['loc' => $router->generate('sub_genre_books',
-                            ['genre' => $genre->getSlug(), 'sub_genre' => $subGenre->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
-                    }
-                }
-            }
+        foreach (['man', 'woman'] as $who) {
+            $urls[] = ['loc' => $router->generate('product_who_list', ['who' => $who]), 'changefreq' => 'weekly', 'priority' => '0.5'];
         }
 
-        $urls[] = ['loc' => $router->generate('last_comments'), 'changefreq' => 'weekly', 'priority' => '0.3'];
+//        $urls[] = ['loc' => $router->generate('search'), 'changefreq' => 'weekly', 'priority' => '0.3'];
 
         $response = new Response($this->renderView('AppBundle:Block:sitemap.html.twig', ['urls' => $urls, 'hostname' => $hostname]));
         $response->headers->set('Content-Type', 'application/xml; charset=utf-8');

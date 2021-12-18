@@ -94,6 +94,32 @@
 
         </div>
 
+
+        <div class="container-search" style="display: none">
+            <div class="absolute">
+                <button title="Закрыть" class="btn btn-close" type="button">
+                    <img src="{{ asset('bundles/app/images/close.png') }}" alt="">
+                </button>
+            </div>
+            <div class="container-form-search">
+                <meta itemprop="url" content="{{ app.request.schemeAndHttpHost }}"/>
+                <form method="get" name="search-overlay" action="{{ path('search') }}" itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
+                    <div class="border-b">
+                        <div class="flex">
+                            <input type="search" autofocus="" placeholder="Поиск по сайту"
+                                   class="input input-transparent"
+                                   name="search" value="" autocomplete="off">
+                            <button title="Найти"
+                                    class="btn btn-search-modal"
+                                    type="input">
+                                <img src="{{ asset('bundles/app/images/search-modal.png') }}" alt="">
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         {% block footer_javascripts %}
             <script src="{{ asset('bundles/app/js/jquery-1.12.4.min.js') }}"></script>
             <script src="{{ asset('bundles/app/js/jquery.inputmask.js') }}"></script>

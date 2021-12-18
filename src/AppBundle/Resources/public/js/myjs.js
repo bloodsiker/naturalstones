@@ -5,10 +5,12 @@ $(document).ready(function() {
 	$('.btn-search').on('click', function (e) {
 		e.preventDefault();
 		$('.container-search').show();
+		$('.page').addClass('bluer');
 	});
 
 	$('.btn-close').on('click', function (e) {
 		e.preventDefault();
+		$('.page').removeClass('bluer');
 		$('.container-search').hide();
 	})
 

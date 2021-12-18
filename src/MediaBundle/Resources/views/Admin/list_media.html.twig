@@ -26,4 +26,10 @@
             </div>
         {% endif %}
     {% endif %}
+
+    {% if isImage %}
+        {{ _media.image(object.path, 'max-height: 100px;') }}
+        <br>
+        <span>{{ object.description }}</span>
+    {% endif %}
 {% endblock %}

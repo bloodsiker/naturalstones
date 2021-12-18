@@ -30,7 +30,6 @@
     {% set v = asset('bundles/admin/images/preview_placeholder.png') %}
     {% set image_preview_path = src %}
     {% if src is not empty %}
-        {% set image_preview_path = src|imagine_filter('admin_preview') %}
         {% set image_preview_path = src %}
     {% endif %}
 

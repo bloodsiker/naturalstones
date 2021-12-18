@@ -4,7 +4,7 @@
     {% if object is instanceof('\\PageBundle\\Entity\\SiteVariable') %}
         {% if field_description.name == 'placement' %}
             <div class="btn-group" role="group" aria-label="...">
-                <button type="button" class="btn btn-default">{{ object.getVariablePosition[value] }}</button>
+                <button type="button" class="btn btn-default">{{ object.placement }}</button>
             </div>
         {% endif %}
     {% endif %}

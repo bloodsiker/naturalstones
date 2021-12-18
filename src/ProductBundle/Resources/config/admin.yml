@@ -44,3 +44,14 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [ ProductBundle ] ]
+
+    sonata.admin.product_search_history:
+        class: ProductBundle\Admin\ProductSearchHistoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'group.product', label: "group.product_search_history_editor" }
+        arguments:
+            - ~
+            - ProductBundle\Entity\ProductSearchHistory
+            - ~
+        calls:
+            - [ setTranslationDomain, [ ProductBundle ] ]

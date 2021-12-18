@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use ProductBundle\Entity\Product;
+use ProductBundle\Entity\ProductSearchHistory;
 use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
@@ -109,6 +110,14 @@ class SearchBlockService extends AbstractAdminBlockService
             $results = new Pagerfanta(new QueryAdapter($qb, true, false));
             $results->setMaxPerPage($limit);
             $results->setCurrentPage($page);
+
+            $ip = $request->server->get('REMOTE_ADDR');
+            $history = new ProductSearchHistory();
+            $history->setSearch($search);
+            $history->setIp($ip);
+
+            $this->em->persist($history);
+            $this->em->flush();
         }
 
         $template = !is_null($blockContext->getSetting('list_type'))

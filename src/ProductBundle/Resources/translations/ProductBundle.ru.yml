@@ -4,6 +4,8 @@ Product Create: Добавить товар
 Category List: Категории
 Category Create: Добавить категорию
 Product Info View List: Список просмотров товаров
+Product Search History List: Поисковые запросы
+Product Search History Create: Добавить поисковые запрос
 
 btn_search_related: Показать релевантные книги по тегам
 btn_search_tags: Показать релевантные теги по тексту
@@ -27,6 +29,7 @@ group:
     category_editor: Категории
     product_info_view_editor: Просмотры товаров
     product_has_image_editor: Дополнительные изображения
+    product_search_history_editor: Поисковые запросы
 
 product:
     fields:
@@ -80,3 +83,10 @@ category:
         types:
             main: Украшения
             secondary: Дополнительно
+
+history_search:
+    fields:
+        id: ID
+        ip: IP
+        search: Поисковый запрос
+        created_at: Создана

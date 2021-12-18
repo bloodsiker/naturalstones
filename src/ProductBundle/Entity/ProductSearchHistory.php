@@ -52,6 +52,16 @@ class ProductSearchHistory
     }
 
     /**
+     * "String" representation of class
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->search;
+    }
+
+    /**
      * Get id
      *
      * @return integer

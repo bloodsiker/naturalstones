@@ -1,0 +1,52 @@
+<div class="filter-outer">
+    {% if app.request.get('search') %}
+        <h1>Результаты поиска по запросу <span class="highlight">{{ app.request.get('search')|raw }}</span></h1>
+    {% endif %}
+</div>
+
+<div class="container-form">
+    <meta itemprop="url" content="{{ app.request.schemeAndHttpHost }}"/>
+    <form action="{{ path('search') }}" class="form" itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
+        <meta itemprop="target" content="{{ url('search') }}/search?search={search}"/>
+        <div class="inputs">
+            <input type="text" name="search" itemprop="query-input" placeholder="Искать...(название книги, автор)" value="{{ app.request.get('search') }}">
+            <button>Искать</button>
+        </div>
+    </form>
+</div>
+
+<div class="catalog-flex">
+    {% if products|length %}
+        {% for product in products %}
+            <div class="catalog-block">
+                {% if product.discount %}
+                    {% set diff = product.price - product.discount %}
+                    <div class="ribbon discount"><div>{{ (diff * 100 / product.price)|round }}%</div></div>
+                {% endif %}
+                <a href="{{ product_path(product) }}" class="image"><img class="lazyload" data-src="{{ asset(product.image.path) }}" src="" alt="{{ product.name }}"></a>
+                <div class="name"><a href="">{{ product.name }}</a></div>
+                {% if product.discount %}
+                    <div class="price">
+                        <span class="old-price">{{ product.price}} грн</span>
+                        <span>{{ product.discount}} грн</span>
+                    </div>
+                {% else %}
+                    <div class="price"><span>{{ product.price}} грн</span></div>
+                {% endif %}
+                <a href="{{ product_path(product) }}" class="button">Купить</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-result">
+            <span>⚆ _ ⚆</span>
+            <div>
+                Увы, ничего не нашлось.
+            </div>
+        </div>
+
+    {% endif %}
+</div>
+
+{% if products.maxPerPage is defined and products.count > products.maxPerPage %}
+    {{ pagerfanta(products, { 'omitFirstPage': true}) }}
+{% endif %}

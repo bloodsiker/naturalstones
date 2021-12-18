@@ -2,10 +2,10 @@
 
 namespace AppBundle\Block;
 
-use BookBundle\Entity\Book;
 use Doctrine\ORM\EntityManager;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
+use ProductBundle\Entity\Product;
 use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
@@ -20,9 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
  */
 class SearchBlockService extends AbstractAdminBlockService
 {
-    const DEFAULT_TEMPLATE = 'BookBundle:Block:large_list.html.twig';
-    const HEADER_FORM_TEMPLATE = 'AppBundle:Block:search.html.twig';
-    const AJAX_TEMPLATE = 'AppBundle:Block:search_ajax_result.html.twig';
+    const DEFAULT_TEMPLATE = 'AppBundle:search/Block:large_list.html.twig';
 
     /**
      * @var EntityManager
@@ -100,36 +98,24 @@ class SearchBlockService extends AbstractAdminBlockService
             ? $blockContext->getSetting('search') : $request->get('search');
 
         if ($search) {
-            $repository = $this->em->getRepository(Book::class);
+            $repository = $this->em->getRepository(Product::class);
 
-            $qb = $repository->createQueryBuilder('b');
+            $qb = $repository->baseProductQueryBuilder();
             $qb
-                ->where('b.isActive = 1')
-                ->innerJoin('b.authors', 'author')
-                ->andWhere('b.name LIKE :search')
-                ->orWhere('author.name LIKE :search')
+                ->andWhere('p.name LIKE :search')
                 ->setParameter('search', '%'.$search.'%')
-                ->orderBy('b.views', 'DESC');
+                ->orderBy('p.views', 'DESC');
 
-            if ($request->isXmlHttpRequest() && $request->getMethod() === 'POST') {
-                $qb
-                    ->setFirstResult(0)
-                    ->setMaxResults($limit)
-                ;
-
-                $results = $qb->getQuery()->getResult();
-            } else {
-                $results = new Pagerfanta(new DoctrineORMAdapter($qb, true, false));
-                $results->setMaxPerPage($limit);
-                $results->setCurrentPage($page);
-            }
+            $results = new Pagerfanta(new QueryAdapter($qb, true, false));
+            $results->setMaxPerPage($limit);
+            $results->setCurrentPage($page);
         }
 
         $template = !is_null($blockContext->getSetting('list_type'))
             ? $blockContext->getSetting('list_type') : $blockContext->getTemplate();
 
-        return $this->renderResponse($request->isXmlHttpRequest() ? self::AJAX_TEMPLATE : $template, [
-            'books'       => $results ?? [],
+        return $this->renderResponse($template, [
+            'products'    => $results ?? [],
             'search'      => $search,
             'block'       => $block,
             'settings'    => array_merge($blockContext->getSettings(), $block->getSettings()),

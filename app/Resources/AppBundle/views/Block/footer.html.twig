@@ -6,7 +6,7 @@
                 <img src="{{ asset('bundles/app/images/instagram.svg') }}" alt="Naturalstones Jewerly">
             </a>
             <div class="inner">
-                <div class="title">Работаем без выходных <span>с 8:00 до 22:00</span></div>
+                <div class="title">Работаем без выходных <span>с 00:00 до 23:59</span></div>
                 <div class="copyright">&copy; {{ 'now'|date('Y') }} Все права защищены</div>
             </div>
         </div>
@@ -20,6 +20,30 @@
     </div>
 </div>
 
+<div class="container-search" style="display: none">
+    <div class="absolute">
+        <button title="Закрыть" class="btn btn-close" type="button">
+            <img src="{{ asset('bundles/app/images/close.png') }}" alt="">
+        </button>
+    </div>
+    <div class="container-form-search">
+        <meta itemprop="url" content="{{ app.request.schemeAndHttpHost }}"/>
+        <form method="get" name="search-overlay" action="{{ path('search') }}" itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
+            <div class="border-b">
+                <div class="flex">
+                    <input type="search" autofocus="" placeholder="Поиск по сайту"
+                         class="input input-transparent"
+                         name="search" value="" autocomplete="off">
+                    <button title="Найти"
+                            class="btn btn-search-modal"
+                            type="input">
+                        <img src="{{ asset('bundles/app/images/search-modal.png') }}" alt="">
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 {{
     sonata_block_render(

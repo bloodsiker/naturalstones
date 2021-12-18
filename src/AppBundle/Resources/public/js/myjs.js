@@ -2,6 +2,16 @@ $(document).ready(function() {
 
 	$('.phone-input').inputmask("+38 (999) 999-99-99");
 
+	$('.btn-search').on('click', function (e) {
+		e.preventDefault();
+		$('.container-search').show();
+	});
+
+	$('.btn-close').on('click', function (e) {
+		e.preventDefault();
+		$('.container-search').hide();
+	})
+
 	/*Убирание placeholder*/
 	 $('input, textarea').focus(function(){
 	   $(this).data('placeholder',$(this).attr('placeholder'))

@@ -1,21 +1,13 @@
-<div class="col-cont">
+<section class="simple-section">
     <div class="container">
-        {% if app.request.get('search') %}
-            <h1>Результаты поиска по запросу <span class="highlight">{{ app.request.get('search')|raw }}</span></h1>
-        {% endif %}
-        <hr class="line">
 
-        <meta itemprop="url" content="{{ app.request.schemeAndHttpHost }}"/>
-        <form action="{{ path('search') }}" class="form" itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
-            <meta itemprop="target" content="{{ url('search') }}/search?search={search}"/>
-            <div class="inputs">
-                <input type="text" name="search" itemprop="query-input" placeholder="Искать...(название книги, автор)" value="{{ app.request.get('search') }}">
-                <button>Искать</button>
-            </div>
-        </form>
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
 
-        <div class="grid">
-            {{
+        {{
             sonata_block_render(
                 { 'type': 'app.block.service.search' },
                 {
@@ -24,8 +16,6 @@
                     'search' : app.request.get('search', null),
                 }
             )
-            }}
-        </div>
-
+        }}
     </div>
-</div>
+</section>

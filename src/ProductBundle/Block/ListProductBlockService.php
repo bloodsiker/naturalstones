@@ -3,7 +3,7 @@
 namespace ProductBundle\Block;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
@@ -191,7 +191,7 @@ class ListProductBlockService extends AbstractAdminBlockService
             $repository->filterByColours($qb, explode(',', $request->get('colour')));
         }
 
-        $paginator = new Pagerfanta(new DoctrineORMAdapter($qb, true, false));
+        $paginator = new Pagerfanta(new QueryAdapter($qb, true, false));
         $paginator->setAllowOutOfRangePages(true);
         $paginator->setMaxPerPage((int) $limit);
         $paginator->setCurrentPage((int) $page);

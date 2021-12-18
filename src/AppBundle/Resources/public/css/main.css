@@ -204,11 +204,19 @@ a:hover {
   color: #818181;
   opacity: 1;
 }
+.flex {
+  display: flex;
+}
 .text-red {
   color: red;
 }
 .mt-40 {
   margin-top: 40px!important;
+}
+.border-b {
+  border: 0px solid #c7c7c7;
+  border-bottom-width: 1px;
+  padding-bottom: 0.25rem;
 }
 .page {
   overflow: hidden;
@@ -318,6 +326,7 @@ h1 {
   -ms-flex-align: center;
   align-items: center;
   padding: 5px 0;
+  position: relative;
 }
 
 .main-logo {
@@ -690,6 +699,138 @@ footer {
 
 .footer-pay-list img:hover {
   opacity: 0.75;
+}
+
+/********  Search  ********/
+.btn-search {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 80px;
+  top: 30px;
+}
+.btn-search-modal {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 15px 0;
+  border-radius: 0.25rem;
+}
+.btn-search-modal:hover, .btn-close:hover {
+  background: #4d4d4d;
+}
+.btn-search-modal img {
+  width: 25px;
+  height: 25px;
+}
+.btn-close {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 11px 15px 9px;
+  border-radius: 0.25rem;
+}
+.btn-close img {
+  width: 25px;
+  height: 25px;
+}
+.btn-search img {
+  width: 35px;
+  height: 35px;
+}
+.container-search {
+  z-index: 100;
+  color: #a8a8a8;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  backdrop-filter: blur(25px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: rgba(0,0,0, 0.75);
+  --animate-duration: 1s;
+  --animate-delay: 1s;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+.container-search .absolute {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+}
+.container-form-search {
+  position: relative;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  max-width: 858px;
+  margin-top: 9rem;
+  --animate-duration: 1s;
+  --animate-delay: 1s;
+  margin-left: auto;
+  margin-right: auto;
+}
+.container-form-search .input {
+  padding: 0.74rem 1rem;
+  font-size: 1.5rem;
+  color: #ffffff;
+  width: 100%;
+  font-weight: 300;
+  font-family: Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,Helvetica Neue,Arial,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+}
+.input.input-transparent {
+  background-color: transparent;
+  border-color: transparent;
+}
+.container-form {
+  margin-bottom: 30px;
+}
+.form {
+  margin: 15px 0;
+}
+.form>.inputs {
+  display: flex;
+}
+.form>.inputs input {
+  border: 1px solid #d6cfcf;
+  width: 90%;
+  border-radius: 3px 0 0 3px;
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 15px;
+  color: #000;
+  background-color: #fff;
+  -webkit-appearance: none;
+  box-shadow: none!important;
+}
+.form>.inputs button {
+  width: 10%;
+  border-radius: 0 3px 3px 0!important;
+  padding: 0 15px;
+  line-height: 40px;
+  background-color: #f08383;
+  color: #fff;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+}
+.no-result {
+  text-align: center;
+  width: 100%;
+  color: #a8a8a8;
+  margin-top: 6rem;
+  margin-bottom: 6rem;
+}
+.no-result span {
+  font-size: 10rem;
+}
+.no-result div {
+  margin-top: 1.25rem;
 }
 
 /* catalog-section ============================================*/
@@ -4594,6 +4735,36 @@ footer {
     flex: 0 0 100%;
     max-width: 100%;
   }
+  .container-form-search {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-top: 5rem;
+  }
+  .container-search .absolute {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+  .btn-search {
+    right: 50px;
+    top: 25px;
+  }
+  .btn-search img {
+    width: 30px;
+    height: 30px;
+  }
+  .form>.inputs input {
+    width: 75%;
+  }
+  .form>.inputs button {
+    width: 25%;
+  }
+  .container-form-search .input{
+    font-size: 1rem;
+  }
+  .no-result span {
+    font-size: 5rem;
+  }
 
   .catalog-flex {
     margin-bottom: 20px;
@@ -5281,6 +5452,13 @@ footer {
 @media (max-width: 480px) {
   .catalog-block {
     width: calc(50% - 10px);
+  }
+
+  .form>.inputs input {
+    width: 75%;
+  }
+  .form>.inputs button {
+    width: 25%;
   }
 
   .stone-item {

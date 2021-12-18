@@ -103,6 +103,7 @@ class SearchBlockService extends AbstractAdminBlockService
             $qb = $repository->baseProductQueryBuilder();
             $qb
                 ->andWhere('p.name LIKE :search')
+                ->orWhere('p.description LIKE :search')
                 ->setParameter('search', '%'.$search.'%')
                 ->orderBy('p.views', 'DESC');
 

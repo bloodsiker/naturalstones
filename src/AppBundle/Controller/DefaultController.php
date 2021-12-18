@@ -120,9 +120,9 @@ class DefaultController extends Controller
         $breadcrumb->addBreadcrumb(['title' => 'Поиск']);
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Поиск по каталогу книг | TopBook.com.ua - скачать книги в fb2, epub, pdf, txt форматах',
-            'description' => 'Поиск по каталогу книг | ТопБук - электронная библиотека. Тут Вы можете скачать бесплатно книги',
-            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, топбук',
+            'title' => 'Поиск по каталогу | Naturalstones Jewerly - Изделия из натуральных камней',
+            'description' => 'Поиск по каталогу | Naturalstones Jewerly - Изделия из натуральных камней',
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
         ]);
 
         return $this->render('AppBundle:search:search.html.twig');

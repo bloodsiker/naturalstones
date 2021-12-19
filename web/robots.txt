@@ -12,5 +12,5 @@ Disallow: /comment/vote
 Disallow: /inc_download/book
 Disallow: /download/book_file/*
 
-Sitemap: http://topbook.com.ua/sitemap.xml
-Host: http://topbook.com.ua
+Sitemap: https://naturalstones-jewerly.com.ua/sitemap.xml
+Host: https://naturalstones-jewerly.com.ua/

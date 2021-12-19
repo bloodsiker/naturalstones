@@ -26,5 +26,11 @@
             {% set image_preview_path = value ? value.path : null %}
             <img src="{{ image_preview_path|default(v) }}?{{ random() }}" style="max-height: 100px;"/>
         {% endif %}
+    {% elseif object is instanceof('\\ProductBundle\\Entity\\ProductInfoView') %}
+
+        {% if field_description.name == 'product' %}
+            {% set route_name = field_description.options.route.name %}
+            <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, object.product, field_description.options.route.parameters) }}" class="sonata-link-identifier">{{ object.product.name ~ ' ' ~ object.product.size.name}}</a>
+        {% endif %}
     {% endif %}
 {% endblock %}

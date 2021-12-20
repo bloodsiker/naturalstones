@@ -9,8 +9,8 @@ Disallow: /admin/*
 Disallow: /_page/
 Disallow: /order-board/vote
 Disallow: /comment/vote
-Disallow: /inc_download/book
-Disallow: /download/book_file/*
+Disallow: /order/*/success
+
 
 Sitemap: https://naturalstones-jewerly.com.ua/sitemap.xml
 Host: https://naturalstones-jewerly.com.ua/

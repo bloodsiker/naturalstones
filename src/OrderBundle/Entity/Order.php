@@ -59,6 +59,13 @@ class Order
     protected $messenger;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $instagram;
+
+    /**
      * @var float
      *
      * @ORM\Column(type="float", nullable=false, options={"default": 0,00})
@@ -247,6 +254,30 @@ class Order
     public function setPhone(string $phone = null)
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get instagram
+     *
+     * @return string
+     */
+    public function getInstagram()
+    {
+        return $this->instagram;
+    }
+
+    /**
+     * Set instagram
+     *
+     * @param  string|null  $instagram
+     *
+     * @return $this
+     */
+    public function setInstagram(string $instagram = null)
+    {
+        $this->instagram = $instagram;
 
         return $this;
     }

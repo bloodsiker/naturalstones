@@ -151,6 +151,7 @@ class Cart
         $fio = $request->get('name');
         $email = $request->get('email');
         $phone = $request->get('phone');
+        $instagram = $request->get('instagram');
         $address = $request->get('address');
         $comment = $request->get('comment');
         $messenger = $request->get('messenger');
@@ -167,6 +168,7 @@ class Cart
         $order->setFio($fio);
         $order->setEmail($email);
         $order->setPhone($phone);
+        $order->setInstagram($instagram);
         $order->setAddress($address);
         $order->setComment($comment);
         $order->setMessenger($messenger);

@@ -2313,6 +2313,10 @@ footer {
   border-color: #8A66AA;
 }
 
+.messengers-input .instagram {
+  border-color: #d82b4d;
+}
+
 .messengers-list {
   display: -ms-flexbox;
   display: flex;

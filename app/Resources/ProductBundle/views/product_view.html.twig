@@ -92,6 +92,7 @@
                                 <h5>Нет времени оформлять?</h5>
                                 <div class="messengers-input">
                                     <input class="telegram phone-input" name="phone" type="text" placeholder="+38 (___) ___-__-__" autocomplete="off">
+                                    <input class="" name="instagram" type="text" placeholder="https://instagram.com" style="display: none" autocomplete="off">
                                     <input type="hidden" name="product" value="{{ product.id }}">
                                     <span class="error-message text-red"></span>
                                 </div>
@@ -112,6 +113,14 @@
                                             <input type="radio" name="messenger" value="viber">
                                             <span>
                                                 <img src="{{ asset('bundles/app/images/viber.svg') }}" alt="viber">
+                                            </span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="messengers-radio instagram">
+                                            <input type="radio" name="messenger" value="instagram">
+                                            <span>
+                                                <img src="{{ asset('bundles/app/images/inst.png') }}" width="39px" alt="instagram">
                                             </span>
                                         </label>
                                     </li>
@@ -222,9 +231,9 @@
                             <div class="product-description-tab">
                                 <div class="product-desc-text">
                                     <ul>
-                                        <li>Доставляем в пределах города с 9:00 до 20:00 - <strong>БЕСПЛАТНО</strong>;</li>
-                                        <li>Букет будет доставлен через <strong>30 - 150 минут</strong> после оплаты;</li>
-                                        <li>Доставка по области, а так же в другое время расчитывается <strong>индивидуально</strong>.</li>
+                                        <li>Оплата принимается на карты <strong>Приват банка</strong> и <strong>Monobank</strong>;</li>
+                                        <li>Заказ будет отправлен в тот же день после оплаты;</li>
+                                        <li>Доставка в другие страны рассчитывается <strong>индивидуально</strong>.</li>
                                     </ul>
                                 </div>
                                 <div class="product-pay-list">

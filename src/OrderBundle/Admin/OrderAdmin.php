@@ -100,6 +100,9 @@ class OrderAdmin extends Admin
             ->add('phone', null, [
                 'label' => 'order.fields.phone',
             ])
+            ->add('instagram', null, [
+                'label' => 'order.fields.instagram',
+            ])
             ->add('type', null, [
                 'label' => 'order.fields.type',
             ], ChoiceType::class, [
@@ -193,6 +196,10 @@ class OrderAdmin extends Admin
                 ])
                 ->add('messenger', TextType::class, [
                     'label' => 'order.fields.messenger',
+                    'required' => false,
+                ])
+                ->add('instagram', TextType::class, [
+                    'label' => 'order.fields.instagram',
                     'required' => false,
                 ])
                 ->add('totalSum', TextType::class, [

@@ -125,6 +125,7 @@
                     <h5>Нет времени оформлять?</h5>
                     <div class="messengers-input">
                         <input class="telegram phone-input quick-phone" name="phone" type="text" placeholder="+38 (___) ___-__-__" autocomplete="off">
+                        <input class="" name="instagram" type="text" placeholder="https://instagram.com" style="display: none" autocomplete="off">
                         <span class="error-message text-red"></span>
                     </div>
                 </div>
@@ -144,6 +145,14 @@
                                 <input type="radio" name="messenger" value="viber">
                                 <span>
                                     <img src="{{ asset('bundles/app/images/viber.svg') }}" alt="viber">
+                                </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="messengers-radio instagram">
+                                <input type="radio" name="messenger" value="instagram">
+                                <span>
+                                    <img src="{{ asset('bundles/app/images/inst.png') }}" width="39px" alt="instagram">
                                 </span>
                             </label>
                         </li>

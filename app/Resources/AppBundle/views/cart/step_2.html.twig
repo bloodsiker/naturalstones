@@ -29,10 +29,17 @@
                             <div class="value">{{ infoCart.name ?: null }}</div>
                             <input type="hidden" name="name" value="{{ infoCart.name ?: null }}">
                         </li>
+                        {% set messenger = infoCart.messenger ?: null %}
                         <li>
-                            <div class="name">Телефон покупателя</div>
-                            <div class="value">{{ infoCart.phone ?: null  }}</div>
+                            {% if messenger == 'viber' or messenger == 'telegram' %}
+                                <div class="name">Телефон покупателя</div>
+                                <div class="value">{{ infoCart.phone ?: null  }}</div>
+                            {% else %}
+                                <div class="name">Инстаграм покупателя</div>
+                                <div class="value">{{ infoCart.instagram ?: null  }}</div>
+                            {% endif %}
                             <input type="hidden" name="phone" value="{{ infoCart.phone ?: null }}">
+                            <input type="hidden" name="instagram" value="{{ infoCart.instagram ?: null }}">
                             <input type="hidden" name="messenger" value="{{ infoCart.messenger ?: null }}">
                         </li>
                         <li>

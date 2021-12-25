@@ -368,18 +368,27 @@ $(document).ready(function() {
 
 	$('#nextStep').on('click', function (e) {
 		let phone = $("input[name='phone']").val();
+		let instagram = $("input[name='instagram']").val();
 		let name = $("input[name='name']").val();
+		let messenger = $("input[name='messenger']:checked").val();
 
 		$('.phone-error-message, .name-error-message').empty();
-		let lastSymbol = phone.toString().slice(-1);
-		if (!phone.length) {
-			$('.phone-error-message').text('Укажите номер телефона');
-			return false;
-		}
+		if (messenger === 'telegram' || messenger === 'viber') {
+			let lastSymbol = phone.toString().slice(-1);
+			if (!phone.length) {
+				$('.phone-error-message').text('Укажите номер телефона');
+				return false;
+			}
 
-		if (lastSymbol === '_') {
-			$('.phone-error-message').text('Укажите верно номер телефона');
-			return false;
+			if (lastSymbol === '_') {
+				$('.phone-error-message').text('Укажите верно номер телефона');
+				return false;
+			}
+		} else if (messenger === 'instagram') {
+			if (!instagram.length) {
+				$('.phone-error-message').text('Укажите ссылку на инстаграм');
+				return false;
+			}
 		}
 
 		if (!name.length) {
@@ -392,24 +401,32 @@ $(document).ready(function() {
 		e.preventDefault();
 		let url = $(this).data('url');
 		let phone = $("input[name='phone']").val();
+		let instagram = $("input[name='instagram']").val();
 		let messenger = $("input[name='messenger']:checked").val();
 
 		$('.error-message').empty();
-		let lastSymbol = phone.toString().slice(-1);
-		if (!phone.length) {
-			$('.error-message').text('Укажите номер телефона');
-			return false;
-		}
+		if (messenger === 'telegram' || messenger === 'viber') {
+			let lastSymbol = phone.toString().slice(-1);
+			if (!phone.length) {
+				$('.error-message').text('Укажите номер телефона');
+				return false;
+			}
 
-		if (lastSymbol === '_') {
-			$('.error-message').text('Укажите верно номер телефона');
-			return false;
+			if (lastSymbol === '_') {
+				$('.error-message').text('Укажите верно номер телефона');
+				return false;
+			}
+		} else if (messenger === 'instagram') {
+			if (!instagram.length) {
+				$('.error-message').text('Укажите ссылку на инстаграм');
+				return false;
+			}
 		}
 
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: { phone: phone, messenger: messenger },
+			data: { phone: phone, messenger: messenger, instagram: instagram },
 			success: function (response) {
 				if (response.type === 'error') {
 					alert(response.message);
@@ -426,25 +443,33 @@ $(document).ready(function() {
 		e.preventDefault();
 		let url = $(this).data('url');
 		let phone = $("input[name='phone']").val();
+		let instagram = $("input[name='instagram']").val();
 		let product = $("input[name='product']").val();
 		let messenger = $("input[name='messenger']:checked").val();
 
 		$('.error-message').empty();
-		let lastSymbol = phone.toString().slice(-1);
-		if (!phone.length) {
-			$('.error-message').text('Укажите номер телефона');
-			return false;
-		}
+		if (messenger === 'telegram' || messenger === 'viber') {
+			let lastSymbol = phone.toString().slice(-1);
+			if (!phone.length) {
+				$('.error-message').text('Укажите номер телефона');
+				return false;
+			}
 
-		if (lastSymbol === '_') {
-			$('.error-message').text('Укажите верно номер телефона');
-			return false;
+			if (lastSymbol === '_') {
+				$('.error-message').text('Укажите верно номер телефона');
+				return false;
+			}
+		} else if (messenger === 'instagram') {
+			if (!instagram.length) {
+				$('.error-message').text('Укажите ссылку на инстаграм');
+				return false;
+			}
 		}
 
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: { phone: phone, messenger: messenger, product: product },
+			data: { phone: phone, messenger: messenger, product: product, instagram: instagram },
 			success: function (response) {
 				if (response.type === 'error') {
 					alert(response.message);
@@ -463,6 +488,7 @@ $(document).ready(function() {
 		let name = $("input[name='name']").val();
 		let email = $("input[name='email']").val();
 		let phone = $("input[name='phone']").val();
+		let instagram = $("input[name='instagram']").val();
 		let address = $("input[name='address']").val();
 		let comment = $("input[name='comment']").val();
 		let messenger = $("input[name='messenger']").val();
@@ -470,7 +496,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: { name: name, email: email, phone: phone, address: address,  comment: comment, messenger: messenger },
+			data: { name: name, email: email, phone: phone, address: address,  comment: comment, messenger: messenger, instagram: instagram },
 			success: function (response) {
 				if (response.type === 'error') {
 					alert(response.message);
@@ -603,12 +629,23 @@ $(document).ready(function() {
 	// Работа смены границ в инпуте
 	$(".messengers-radio.telegram").on('click', function () {
 		$(".messengers-input input").removeClass().addClass('telegram');
+		$(".messengers-input input[name=phone]").show();
+		$(".messengers-input input[name=instagram]").val('').hide();
 	});
 	$(".messengers-radio.whatsapp").on('click', function () {
 		$(".messengers-input input").removeClass().addClass('whatsapp');
+		$(".messengers-input input[name=phone]").show();
+		$(".messengers-input input[name=instagram]").val('').hide();
 	});
 	$(".messengers-radio.viber").on('click', function () {
 		$(".messengers-input input").removeClass().addClass('viber');
+		$(".messengers-input input[name=phone]").show();
+		$(".messengers-input input[name=instagram]").val('').hide();
+	});
+	$(".messengers-radio.instagram").on('click', function () {
+		$(".messengers-input input").removeClass().addClass('instagram');
+		$(".messengers-input input[name=phone]").val('').hide();
+		$(".messengers-input input[name=instagram]").show();
 	});
 
 	/*Табы характеристик*/

@@ -47,7 +47,11 @@ class SendTelegramService
 
         $html = "<b>Заказ #" . $order->getId() . "</b>" . PHP_EOL;
         $html .= "Форма быстрого заказа" . PHP_EOL;
-        $html .= "<b>Телефон:</b> " . $order->getPhone() . ' - ' . $order->getMessenger() . PHP_EOL;
+        if ($order->getMessenger() === 'instagram') {
+            $html .= "<b>Ссылка на инстаграм:</b> " . $order->getInstagram() . PHP_EOL;
+        } else {
+            $html .= "<b>Телефон:</b> " . $order->getPhone() . ' - ' . $order->getMessenger() . PHP_EOL;
+        }
         $html .= "<b>Сумма заказа:</b> " . number_format($order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
         foreach ($order->getOrderHasItems() as $orderItem) {
             $product = $orderItem->getProduct();
@@ -82,7 +86,11 @@ class SendTelegramService
         $html = "<b>Заказ #" . $order->getId() . "</b>" . PHP_EOL;
         $html .= "Заказ с корзины" . PHP_EOL;
         $html .= "<b>Имя:</b> " . $order->getFio() . PHP_EOL;
-        $html .= "<b>Телефон:</b> " . $order->getPhone() . ' - ' . $order->getMessenger() . PHP_EOL;
+        if ($order->getMessenger() === 'instagram') {
+            $html .= "<b>Ссылка на инстаграм:</b> " . $order->getInstagram() . PHP_EOL;
+        } else {
+            $html .= "<b>Телефон:</b> " . $order->getPhone() . ' - ' . $order->getMessenger() . PHP_EOL;
+        }
         if ($order->getEmail()) {
             $html .= "<b>Email:</b> " . $order->getEmail() . PHP_EOL;
         }

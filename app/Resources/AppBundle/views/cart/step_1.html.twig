@@ -23,7 +23,9 @@
                 </div>
 
                 <div class="messengers-input input-block">
-                    <input type="text" name="phone" placeholder="Телефон*" class="phone-input {{ infoCart.messenger is defined ? infoCart.messenger : null }}" value="{{ infoCart.phone is defined ? infoCart.phone : null }}" autocomplete="off">
+                    {% set messenger = infoCart.messenger is defined ? infoCart.messenger : null %}
+                    <input type="text" name="phone" placeholder="Телефон*" class="phone-input {{ messenger }}" {% if messenger == 'instagram' %} style="display: none" {% endif %} value="{{ infoCart.phone is defined ? infoCart.phone : null }}" autocomplete="off">
+                    <input class="{{ infoCart.messenger is defined ? infoCart.messenger : null }}" name="instagram" type="text" placeholder="https://instagram.com" {% if messenger == 'viber' or messenger == 'telegram' or messenger is empty %} style="display: none" {% endif %} value="{{ infoCart.instagram is defined ? infoCart.instagram : null }}" autocomplete="off">
                     <span class="phone-error-message text-red"></span>
                 </div>
                 <div class="order-messengers">
@@ -43,6 +45,14 @@
                                 <input type="radio" name="messenger" value="viber" {{ infoCart.messenger is defined and  infoCart.messenger == 'viber' ? 'checked' : null }}>
                                 <span>
                                     <img alt="" src="{{ asset('bundles/app/images/viber.svg') }}">
+                                </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="messengers-radio instagram">
+                                <input type="radio" name="messenger" value="instagram" {{ infoCart.messenger is defined and  infoCart.messenger == 'instagram' ? 'checked' : null }}>
+                                <span>
+                                    <img src="{{ asset('bundles/app/images/inst.png') }}" width="39px" alt="instagram">
                                 </span>
                             </label>
                         </li>

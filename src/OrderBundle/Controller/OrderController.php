@@ -27,10 +27,17 @@ class OrderController extends Controller
     public function quickOrderAction(Request $request)
     {
         $phone = $request->get('phone');
-        if (!$phone) {
+        if (in_array($request->get('messenger'), ['telegram', 'viber']) && !$phone) {
             return new JsonResponse([
                 'type' => 'error',
                 'message' => 'Не указан номер телефона'
+            ]);
+        }
+
+        if ($request->get('messenger') === 'instagram' && !$request->get('instagram')) {
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => 'Не указана ссылка на инстаграм'
             ]);
         }
 
@@ -58,10 +65,17 @@ class OrderController extends Controller
 
     public function productQuickOrderAction(Request $request)
     {
-        if (!$request->get('phone')) {
+        if (in_array($request->get('messenger'), ['telegram', 'viber']) && !$request->get('phone')) {
             return new JsonResponse([
                 'type' => 'error',
                 'message' => 'Не указан номер телефона'
+            ]);
+        }
+
+        if ($request->get('messenger') === 'instagram' && !$request->get('instagram')) {
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => 'Не указана ссылка на инстаграм'
             ]);
         }
 
@@ -89,10 +103,17 @@ class OrderController extends Controller
     public function orderAction(Request $request)
     {
         $phone = $request->get('phone');
-        if (!$phone) {
+        if (in_array($request->get('messenger'), ['telegram', 'viber']) && !$phone) {
             return new JsonResponse([
                 'type' => 'error',
                 'message' => 'Не указан номер телефона'
+            ]);
+        }
+
+        if ($request->get('messenger') === 'instagram' && !$request->get('instagram')) {
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => 'Не указана ссылка на инстаграм'
             ]);
         }
 

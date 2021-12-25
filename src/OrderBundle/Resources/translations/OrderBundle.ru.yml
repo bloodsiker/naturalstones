@@ -26,6 +26,7 @@ order:
         discount_promo: Скидка по промокоду
         order_sum: Итог
         messenger: Мессенджер
+        instagram: Instagram
         comment: Комментарий
         address: Адрес
         items: Товары в заказе

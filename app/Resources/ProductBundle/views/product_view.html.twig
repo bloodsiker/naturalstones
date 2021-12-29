@@ -314,3 +314,21 @@
         }}
     </div>
 </section>
+
+<script>
+    let ids = JSON.parse(window.localStorage.getItem('product_ids'));
+    if (ids) {
+        let productId = '{{ product.id }}';
+
+        ids = ids.filter(function(value, key) {
+           if (key > 18) {
+               return false;
+           }
+           return value !== productId;
+        });
+        ids.unshift(productId);
+        localStorage.setItem('product_ids', JSON.stringify(ids))
+    } else {
+        localStorage.setItem('product_ids', JSON.stringify(['{{ product.id }}']))
+    }
+</script>

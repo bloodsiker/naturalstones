@@ -284,6 +284,7 @@
                     'title' : 'Похожие товары',
                     'items_count' : 10,
                     'exclude_ids' : product.id,
+                    'category_slug' : app.request.get('category'),
                     'page': app.request.get('page') ? app.request.get('page') : 1,
                     'list_type': constant('ProductBundle\\Block\\ListProductBlockService::SIMILAR_LIST')
                 }

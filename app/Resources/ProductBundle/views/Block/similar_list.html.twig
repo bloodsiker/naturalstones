@@ -1,4 +1,4 @@
-{% if products %}
+{% if products|length %}
     <div class="similar-products-block">
         <div class="similar-title"><span>{{ settings['title'] is defined ? settings['title']  : null }}</span></div>
         <div class="similar-products-slider js-slick">

@@ -277,6 +277,11 @@
             </div>
         </div>
 
+    </div>
+</section>
+
+<section class="section section-grey">
+    <div class="container">
         {{
             sonata_block_render(
                 { 'type': 'product.block.list' },
@@ -290,12 +295,16 @@
                 }
             )
         }}
+    </div>
+</section>
 
+<section class="section">
+    <div class="container">
         {{
             sonata_block_render(
                 { 'type': 'product.block.list' },
                 {
-                    'title' : 'С этим товаром покупают',
+                    'title' : 'Вы просматривали',
                     'items_count' : 10,
                     'exclude_ids' : product.id,
                     'page': app.request.get('page') ? app.request.get('page') : 1,
@@ -303,6 +312,5 @@
                 }
             )
         }}
-
     </div>
 </section>

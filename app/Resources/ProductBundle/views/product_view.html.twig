@@ -172,7 +172,7 @@
                             </div>
                             <div class="product-description-tab">
                                 <table class="product-char-table">
-                                    {% if product.metals is iterable %}
+                                    {% if product.metals|length %}
                                         <tr>
                                             <td>
                                                 <div class="name">Метал</div>
@@ -185,7 +185,7 @@
                                             </td>
                                         </tr>
                                     {% endif %}
-                                    {% if product.colours is iterable %}
+                                    {% if product.colours|length %}
                                         <tr>
                                             <td>
                                                 <div class="name">Цвет</div>
@@ -214,7 +214,7 @@
                                             {% endif %}
                                         </td>
                                     </tr>
-                                    {% if product.stones is iterable %}
+                                    {% if product.stones|length %}
                                         <tr>
                                             <td>
                                                 <div class="name">Камни</div>

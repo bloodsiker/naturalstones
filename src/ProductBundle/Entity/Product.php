@@ -691,7 +691,7 @@ class Product
      */
     public function removeMetal(\ShareBundle\Entity\Metal $metal)
     {
-        $this->colours->removeElement($metal);
+        $this->metals->removeElement($metal);
     }
 
     /**

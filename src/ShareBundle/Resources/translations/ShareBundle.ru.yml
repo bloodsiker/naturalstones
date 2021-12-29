@@ -10,6 +10,8 @@ Size List: Список размеров
 Size Create: Добавить размер
 Zodiac List: Список знаков зодиака
 Zodiac Create: Добавить знак зодиака
+Metal List: Список металов
+Metal Create: Добавить металов
 
 form_group:
     basic: Основные
@@ -26,6 +28,7 @@ group:
     zodiac_editor: Знаки зодиака
     size_editor: Размеры
     colour_editor: Цвета
+    metal_editor: Метал
 
 stone:
     fields:
@@ -54,6 +57,14 @@ colour:
         id: ID
         name: Название
         colour: Цвет
+        slug: Сегмент URL (slug)
+        is_active: Активен
+        created_at: Дата создания
+
+metal:
+    fields:
+        id: ID
+        name: Название
         slug: Сегмент URL (slug)
         is_active: Активен
         created_at: Дата создания

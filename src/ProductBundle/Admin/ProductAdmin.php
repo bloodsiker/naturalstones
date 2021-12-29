@@ -283,6 +283,15 @@ class ProductAdmin extends Admin
                     'label' => 'product.fields.size',
                     'required' => true,
                 ])
+                ->add('metals', ModelAutocompleteType::class, [
+                    'label' => 'product.fields.metals',
+                    'required' => false,
+                    'property' => 'name',
+                    'multiple' => true,
+                    'attr' => ['class' => 'form-control'],
+                    'btn_catalogue' => $this->translationDomain,
+                    'minimum_input_length' => 2,
+                ])
                 ->add('colours', ModelAutocompleteType::class, [
                     'label' => 'product.fields.colours',
                     'required' => false,

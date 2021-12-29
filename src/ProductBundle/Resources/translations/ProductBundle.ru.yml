@@ -46,6 +46,7 @@ product:
         image: Изображение
         category: Категория
         colours: Цвет(а)
+        metals: Метал
         stones: Камни
         size: Размер
         price: Цена

@@ -21,6 +21,17 @@ services:
         calls:
             - [ setTranslationDomain, [ ShareBundle ] ]
 
+    share.admin.metal:
+        class: ShareBundle\Admin\MetalAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.share", label: "group.metal_editor" }
+        arguments:
+            - ~
+            - ShareBundle\Entity\Metal
+            - ShareBundle:ShareAdmin
+        calls:
+            - [ setTranslationDomain, [ ShareBundle ] ]
+
     share.admin.size:
         class: ShareBundle\Admin\SizeAdmin
         tags:

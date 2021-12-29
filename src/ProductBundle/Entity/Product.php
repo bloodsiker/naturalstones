@@ -159,6 +159,17 @@ class Product
     /**
      * @var ArrayCollection
      *
+     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Metal")
+     * @ORM\JoinTable(name="product_product_metals",
+     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="metal_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     */
+    protected $metals;
+
+    /**
+     * @var ArrayCollection
+     *
      * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Tag", inversedBy="products")
      * @ORM\JoinTable(name="product_product_tags",
      *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
@@ -218,6 +229,7 @@ class Product
         $this->createdAt = new \DateTime('now');
 
         $this->colours         = new ArrayCollection();
+        $this->metals          = new ArrayCollection();
         $this->tags            = new ArrayCollection();
         $this->stones          = new ArrayCollection();
         $this->productHasImage = new ArrayCollection();
@@ -627,13 +639,13 @@ class Product
     /**
      * Add colours
      *
-     * @param \ShareBundle\Entity\Colour $genres
+     * @param \ShareBundle\Entity\Colour $colour
      *
      * @return Product
      */
-    public function addColour(\ShareBundle\Entity\Colour $genres)
+    public function addColour(\ShareBundle\Entity\Colour $colour)
     {
-        $this->colours[] = $genres;
+        $this->colours[] = $colour;
 
         return $this;
     }
@@ -656,6 +668,40 @@ class Product
     public function getColours()
     {
         return $this->colours;
+    }
+
+    /**
+     * Add metals
+     *
+     * @param \ShareBundle\Entity\Metal $metal
+     *
+     * @return Product
+     */
+    public function addMetal(\ShareBundle\Entity\Metal $metal)
+    {
+        $this->metals[] = $metal;
+
+        return $this;
+    }
+
+    /**
+     * Remove colours
+     *
+     * @param \ShareBundle\Entity\Metal $metal
+     */
+    public function removeMetal(\ShareBundle\Entity\Metal $metal)
+    {
+        $this->colours->removeElement($metal);
+    }
+
+    /**
+     * Get metals
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMetals()
+    {
+        return $this->metals;
     }
 
     /**

@@ -172,21 +172,34 @@
                             </div>
                             <div class="product-description-tab">
                                 <table class="product-char-table">
-                                    <tr>
-                                        <td>
-                                            <div class="name">Цвет</div>
-                                        </td>
-                                        <td>
-                                            {% if product.colours is iterable %}
+                                    {% if product.metals is iterable %}
+                                        <tr>
+                                            <td>
+                                                <div class="name">Метал</div>
+                                            </td>
+                                            <td>
+                                                {% for metal in product.metals %}
+                                                    <em>{{ metal.name }}</em>
+                                                    {{ loop.last ? '' : ' , ' }}
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if product.colours is iterable %}
+                                        <tr>
+                                            <td>
+                                                <div class="name">Цвет</div>
+                                            </td>
+                                            <td>
                                                 {% for colour in product.colours %}
                                                     <a href="{{ path('product_colour_list', { 'slug': colour.slug }) }}">
                                                         <em style="color: {{ '#'~(colour.colour == 'ffffff' ? '000000' : colour.colour) }}">{{ colour.name }}</em>
                                                     </a>
                                                     {{ loop.last ? '' : ' , ' }}
                                                 {% endfor %}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
                                     <tr>
                                         <td>
                                             <div class="name">Кому</div>
@@ -201,21 +214,21 @@
                                             {% endif %}
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="name">Камни</div>
-                                        </td>
-                                        <td>
-                                            {% if product.stones is iterable %}
+                                    {% if product.stones is iterable %}
+                                        <tr>
+                                            <td>
+                                                <div class="name">Камни</div>
+                                            </td>
+                                            <td>
                                                 {% for stone in product.stones %}
                                                     <a href="{{ path('product_stone_list', { 'slug': stone.slug }) }}" class="link">
                                                         <em>{{ stone.name }}</em>
                                                     </a>
                                                     {{ loop.last ? '' : ' , ' }}
                                                 {% endfor %}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
                                 </table>
                             </div>
                         </div>

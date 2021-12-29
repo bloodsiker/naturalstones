@@ -169,6 +169,9 @@ class ProductAdmin extends Admin
             ->add('category', null, [
                 'label' => 'product.fields.category',
             ])
+            ->add('metals', null, [
+                'label' => 'product.fields.metals',
+            ])
             ->add('colours', null, [
                 'label' => 'product.fields.colours',
             ])

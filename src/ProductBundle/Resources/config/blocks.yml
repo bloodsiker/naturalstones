@@ -17,3 +17,13 @@ services:
             - '@?doctrine'
         tags:
             - { name: sonata.block }
+
+    product.block.viewed:
+        class: ProductBundle\Block\ListViewedProductBlockService
+        arguments:
+            - product.block.viewed
+            - '@templating'
+            - '@?doctrine'
+            - '@request_stack'
+        tags:
+            - { name: sonata.block }

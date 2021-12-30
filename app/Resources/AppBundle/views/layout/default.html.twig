@@ -57,6 +57,17 @@
         {% endif %}
         {{ sonata_page_render_container('content_bottom', page) }}
     {% endif %}
+
+    {{
+        sonata_block_render(
+            { 'type': 'product.block.viewed' },
+            {
+                'class': 'section-grey',
+                'items_count': 7,
+            }
+        )
+    }}
+
 {% endblock %}
 
 {% block footer %}

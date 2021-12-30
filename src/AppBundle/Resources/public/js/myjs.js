@@ -14,6 +14,22 @@ $(document).ready(function() {
 		$('.container-search').hide();
 	})
 
+	// показываем просмотренные товары
+	let ids = JSON.parse(window.localStorage.getItem('product_ids'));
+	if (ids) {
+		let url = $('#load-viewed-product').data('url');
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: { ids: ids },
+			success: function (response) {
+				$('#load-viewed-product').html(response);
+			}
+		});
+	} else {
+		$('#section-viewed').hide();
+	}
+
 	/*Убирание placeholder*/
 	 $('input, textarea').focus(function(){
 	   $(this).data('placeholder',$(this).attr('placeholder'))

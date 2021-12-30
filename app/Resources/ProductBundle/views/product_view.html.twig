@@ -280,7 +280,7 @@
     </div>
 </section>
 
-<section class="section section-grey">
+<section class="section">
     <div class="container">
         {{
             sonata_block_render(
@@ -290,23 +290,6 @@
                     'items_count' : 10,
                     'exclude_ids' : product.id,
                     'category_slug' : app.request.get('category'),
-                    'page': app.request.get('page') ? app.request.get('page') : 1,
-                    'list_type': constant('ProductBundle\\Block\\ListProductBlockService::SIMILAR_LIST')
-                }
-            )
-        }}
-    </div>
-</section>
-
-<section class="section">
-    <div class="container">
-        {{
-            sonata_block_render(
-                { 'type': 'product.block.list' },
-                {
-                    'title' : 'Вы просматривали',
-                    'items_count' : 10,
-                    'exclude_ids' : product.id,
                     'page': app.request.get('page') ? app.request.get('page') : 1,
                     'list_type': constant('ProductBundle\\Block\\ListProductBlockService::SIMILAR_LIST')
                 }

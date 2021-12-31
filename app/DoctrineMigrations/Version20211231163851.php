@@ -25,7 +25,7 @@ final class Version20211231163851 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $productHasProducts = $schema->createTable('product_product_has_products');
+        $productHasProducts = $schema->createTable('product_product_has_product');
         $productHasProducts->addColumn('id', 'integer', array('unsigned' => true, 'notnull' => true, 'autoincrement' => true));
         $productHasProducts->addColumn('product_id', 'integer', array('unsigned' => true, 'notnull' => true));
         $productHasProducts->addColumn('product_set_id', 'integer', array('unsigned' => true, 'notnull' => true));
@@ -42,6 +42,6 @@ final class Version20211231163851 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        $schema->dropTable('product_product_has_products');
+        $schema->dropTable('product_product_has_product');
     }
 }

@@ -71,6 +71,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="middle-block">
+                            <h5>Что входит в набор</h5>
+                            <table class="table-product-set">
+                                {% for prodSet in product.productHasProduct %}
+                                    <tr>
+                                        <td><a href="{{ product_path(prodSet.productSet) }}" class="link">{{ prodSet.productSet.name }}</a></td>
+                                        <td>{{ prodSet.productSet.size }}</td>
+                                        <td>{{ prodSet.quantity }} шт.</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
                         <div class="bottom-block">
                             <div class="total-price">{{ product.price }} грн</div>
                             {{

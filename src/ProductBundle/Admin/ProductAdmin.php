@@ -12,10 +12,10 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\CoreBundle\Form\Type\CollectionType;
-use Sonata\CoreBundle\Form\Type\DateTimePickerType;
 use Sonata\CoreBundle\Validator\ErrorElement;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
+use Sonata\Form\Type\CollectionType;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -244,6 +244,18 @@ class ProductAdmin extends Admin
                     'link_parameters' => ['context' => $context],
                     'admin_code' => 'sonata.admin.product_has_image',
                 ])
+                ->add('productHasProduct', CollectionType::class, [
+                    'label' => 'product.fields.product_set_products',
+                    'required' => false,
+                    'constraints' => new Valid(),
+                    'by_reference' => false,
+                ], [
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                    'sortable' => 'orderNum',
+                    'link_parameters' => ['context' => $context],
+                    'admin_code' => 'sonata.admin.product_has_product',
+                ])
             ->end()
             ->with('form_group.additional', ['class' => 'col-md-4', 'name' => null])
                 ->add('isActive', null, [
@@ -284,7 +296,7 @@ class ProductAdmin extends Admin
                 ])
                 ->add('size', ModelListType::class, [
                     'label' => 'product.fields.size',
-                    'required' => true,
+                    'required' => false,
                 ])
                 ->add('metals', ModelAutocompleteType::class, [
                     'label' => 'product.fields.metals',

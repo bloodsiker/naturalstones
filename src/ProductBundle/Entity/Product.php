@@ -200,6 +200,16 @@ class Product
     protected $productHasImage;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasProduct",
+     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"orderNum" = "ASC"})
+     */
+    protected $productHasProduct;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=false)
@@ -218,21 +228,23 @@ class Product
      */
     public function __construct()
     {
-        $this->isActive = true;
-        $this->isAvailable = true;
-        $this->isMan = false;
-        $this->isWoman = true;
+        $this->size          = null;
+        $this->isActive      = true;
+        $this->isAvailable   = true;
+        $this->isMan         = false;
+        $this->isWoman       = true;
         $this->isMainProduct = true;
-        $this->views = 0;
-        $this->price = 0;
-        $this->discount = 0;
+        $this->views     = 0;
+        $this->price     = 0;
+        $this->discount  = 0;
         $this->createdAt = new \DateTime('now');
 
-        $this->colours         = new ArrayCollection();
-        $this->metals          = new ArrayCollection();
-        $this->tags            = new ArrayCollection();
-        $this->stones          = new ArrayCollection();
-        $this->productHasImage = new ArrayCollection();
+        $this->colours           = new ArrayCollection();
+        $this->metals            = new ArrayCollection();
+        $this->tags              = new ArrayCollection();
+        $this->stones            = new ArrayCollection();
+        $this->productHasImage   = new ArrayCollection();
+        $this->productHasProduct = new ArrayCollection();
     }
 
     /**
@@ -903,6 +915,43 @@ class Product
     public function getProductHasImage()
     {
         return $this->productHasImage;
+    }
+
+    /**
+     * Add productHasProduct.
+     *
+     * @param \ProductBundle\Entity\ProductHasProduct $productHasProduct
+     *
+     * @return Product
+     */
+    public function addProductHasProduct(\ProductBundle\Entity\ProductHasProduct $productHasProduct)
+    {
+        $productHasProduct->setProduct($this);
+        $this->productHasProduct[] = $productHasProduct;
+
+        return $this;
+    }
+
+    /**
+     * Remove productHasProduct.
+     *
+     * @param \ProductBundle\Entity\ProductHasProduct $productHasProduct
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductHasProduct(\ProductBundle\Entity\ProductHasProduct $productHasProduct)
+    {
+        return $this->productHasProduct->removeElement($productHasProduct);
+    }
+
+    /**
+     * Get productHasProduct.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProductHasProduct()
+    {
+        return $this->productHasProduct;
     }
 
     public static $whois = [

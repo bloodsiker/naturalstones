@@ -54,6 +54,7 @@ product:
         tags: Тег(и)
         views: Просмотры
         product_image: Дополнительные изображения
+        product_set_products: Набор продуктов
         product_group: Группа продуктов
         updated_at: Изменена
         created_at: Создана
@@ -65,6 +66,17 @@ product_has_image:
         id: ID
         product: Продукт
         image: Изображение
+        order_num: ''
+
+product_has_product:
+    fields:
+        id: ID
+        product: Продукт
+        product_set: Продукт который входит в набор
+        quantity: Количество
+        size: Размер
+        price: Цена
+        discount: Скидка
         order_num: ''
 
 product_view:

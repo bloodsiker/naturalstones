@@ -858,7 +858,7 @@ jQuery.fn.wTextSlicer = function(options){
 	},options);
 	return this.each(function() {
 		var a = $(this),
-			h = a.outerHeight();
+			h = a.outerHeight() + 10;
 		if ( h > options.height ) {
 			a.addClass('slice slice-masked').attr('data-height',h).height(options.height).after('<div class="slice-btn"><span>'+options.textExpand+'</span></div>');
 		};

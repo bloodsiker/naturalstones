@@ -1574,6 +1574,9 @@ footer {
   color: #919191;
   margin-bottom: 10px;
 }
+.catalog-block .product-category:hover {
+  text-decoration: underline;
+}
 
 .catalog-block .name a:hover {
   text-decoration: underline;

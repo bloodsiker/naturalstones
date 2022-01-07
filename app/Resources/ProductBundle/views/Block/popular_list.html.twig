@@ -10,7 +10,7 @@
                         <div class="ribbon discount"><div>{{ (diff * 100 / product.price)|round }}%</div></div>
                     {% endif %}
                     <a href="{{ product_path(product) }}" class="image"><img class="lazyload" data-src="{{ asset(product.image.path) }}" src="" alt="{{ product.name }}"></a>
-                    <div class="product-category">{{ product.category.name }}</div>
+                    <div class="product-category"><a href="{{ path('product_list', {'slug': product.category.slug}) }}">{{ product.category.name }}</a></div>
                     <div class="name"><a href="">{{ product.name }}</a></div>
                     {% if product.discount %}
                         <div class="price">

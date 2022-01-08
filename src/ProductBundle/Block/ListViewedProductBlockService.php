@@ -95,7 +95,7 @@ class ListViewedProductBlockService extends AbstractAdminBlockService
 
         if ($request->isXmlHttpRequest() ) {
             $repository = $this->doctrine->getRepository(Product::class);
-            $ids = $request->get('ids');
+            $ids = array_slice($request->get('ids'), 0, 8);
 
             $qb = $repository->baseProductQueryBuilder();
 

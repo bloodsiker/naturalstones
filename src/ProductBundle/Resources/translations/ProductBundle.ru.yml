@@ -95,7 +95,7 @@ category:
         type: Тип
         types:
             main: Украшения
-            secondary: Дополнительно
+            secondary: Фурнитура
 
 history_search:
     fields:

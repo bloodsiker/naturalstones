@@ -11,7 +11,7 @@
             </ul>
         </div>
         <div class="header-menu-block">
-            <div class="type">Дополнительно</div>
+            <div class="type">Фурнитура</div>
             <ul class="header-menu">
                 {% for sCategory in secondary %}
                     <li><a href="{{ path('product_list', { 'slug': sCategory.slug }) }}">{{ sCategory.name}}</a></li>
@@ -33,7 +33,7 @@
                 </ul>
             </div>
             <div class="video-menu-block">
-                <div class="type">Дополнительно</div>
+                <div class="type">Фурнитура</div>
                 <ul class="video-menu">
                     {% for sCategory in secondary %}
                         <li><a href="{{ path('product_list', { 'slug': sCategory.slug }) }}">{{ sCategory.name}}</a></li>

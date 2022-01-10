@@ -19,6 +19,19 @@ $(document).ready(function() {
 		$('.container-search').hide();
 	})
 
+	// При ховере на фото продукта, показываем другую фотку
+	$('.image').hover(function () {
+		let img = $(this).find('img');
+		let hoverImg = img.attr('data-hover-img');
+		if (hoverImg) {
+			img.attr('src', hoverImg);
+		}
+	}, function(){
+		let img = $(this).find('img');
+		let originImg = img.attr('data-src');
+		img.attr('src', originImg);
+	});
+
 	// показываем просмотренные товары
 	let ids = JSON.parse(window.localStorage.getItem('product_ids'));
 	if (ids) {

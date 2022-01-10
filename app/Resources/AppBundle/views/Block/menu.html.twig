@@ -155,6 +155,16 @@
                     </ul>
                 </div>
             {% endif %}
+            {% if scrapers|length %}
+                <div class="video-menu-block">
+                    <div class="type">Скребки Гуаша</div>
+                    <ul class="video-menu">
+                        {% for scCategory in scrapers %}
+                            <li><a href="{{ path('product_list', { 'slug': scCategory.slug }) }}">{{ scCategory.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
             {% if giftBox|length %}
                 <div class="video-menu-block">
                     <div class="type">Подарочные упаковки</div>

@@ -8,7 +8,13 @@
                         {% set diff = product.price - product.discount %}
                         <div class="ribbon discount"><div>{{ (diff * 100 / product.price)|round }}%</div></div>
                     {% endif %}
-                    <a href="{{ product_path(product) }}" class="image"><img class="lazyload" data-src="{{ asset(product.image.path) }}" src="" alt="{{ product.name }}"></a>
+                    <a href="{{ product_path(product) }}" class="image">
+                        {% set hoverImg = null %}
+                        {% if product.productHasImage|length > 0 %}
+                            {% set hoverImg = asset(product.productHasImage.first().getImage().path) %}
+                        {% endif %}
+                        <img class="lazyload" data-src="{{ asset(product.image.path) }}" src="" data-hover-img="{{ hoverImg }}" alt="{{ product.name }}">
+                    </a>
                     <div class="product-category"><a href="{{ path('product_list', {'slug': product.category.slug}) }}">{{ product.category.name }}</a></div>
                     <div class="name"><a href="{{ product_path(product) }}">{{ product.name }}</a></div>
                     {% if product.discount %}

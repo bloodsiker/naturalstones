@@ -1,21 +1,9 @@
 $(document).ready(function() {
 
 	// Адаптация меню под мобильные
-	$('.header-menu-outer').find('.type').each(function(i){
+	$('.header-menu-desctop').find('.topmenu').each(function(i) {
 		$(this).find('.submenu').width(this.offsetWidth);
 	})
-
-	$('.type').on('click', function () {
-		$('.submenu').removeClass('submenu-visible');
-		$(this).find('.submenu').addClass('submenu-visible');
-	});
-
-	$(document).mouseup( function(e){
-		let div = $(".topmenu");
-		if ( !div.is(e.target) && div.has(e.target).length === 0 ) {
-			$('.submenu').removeClass('submenu-visible');
-		}
-	});
 
 	$('.phone-input').inputmask("+38 (999) 999-99-99");
 
@@ -774,13 +762,15 @@ $(document).ready(function() {
 	});
 
 	/*работа шапки при скролле*/
-	if($('.index-header').length){
+	if ($('.index-header').length){
 		$(window).scroll(function(){
-			var headerTop = $( window ).height();
+			let headerTop = $( window ).height();
 			if ($(this).scrollTop() > headerTop + 60){
+				$('.header-menu-desctop').find('.topmenu').each(function(i) {
+					$(this).find('.submenu').width(this.offsetWidth);
+				})
 				$(".index-header").fadeIn(300);
-			}
-			else{
+			} else{
 				$(".index-header").fadeOut(300);
 			}
 		});

@@ -420,12 +420,19 @@ h1 {
   background: none;
   box-shadow: none;
 }
+.type:hover .submenu {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+}
 .submenu {
   position: absolute;
-  top: 40px;
+  top: 28px;
   margin-left: -20px;
+  min-width: 200px;
   background: #fafafa;
   border: 1px solid #ededed;
+  border-radius: 10px;
   z-index: 5;
   visibility: hidden;
   opacity: 0;

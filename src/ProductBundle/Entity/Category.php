@@ -20,6 +20,7 @@ class Category
     const TYPE_SECONDARY = 2;
     const TYPE_INDIVIDUAL = 3;
     const TYPE_GIFT_BOX = 4;
+    const TYPE_SCRAPERS = 5;
 
     /**
      * @var int
@@ -254,6 +255,7 @@ class Category
             self::TYPE_SECONDARY => 'secondary',
             self::TYPE_INDIVIDUAL => 'individual',
             self::TYPE_GIFT_BOX => 'gift_box',
+            self::TYPE_SCRAPERS => 'scrapers',
         ];
     }
 }

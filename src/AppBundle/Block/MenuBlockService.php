@@ -83,6 +83,7 @@ class MenuBlockService extends AbstractAdminBlockService
         $secondary = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_SECONDARY);
         $individual = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_INDIVIDUAL);
         $giftBox = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_GIFT_BOX);
+        $scrapers = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_SCRAPERS);
 
         return $this->renderResponse($blockContext->getTemplate(), [
             'settings'      => $blockContext->getSettings(),
@@ -91,6 +92,7 @@ class MenuBlockService extends AbstractAdminBlockService
             'secondary'     => $secondary->getQuery()->getResult(),
             'individual'    => $individual->getQuery()->getResult(),
             'giftBox'       => $giftBox->getQuery()->getResult(),
+            'scrapers'      => $scrapers->getQuery()->getResult(),
         ]);
     }
 }

@@ -1,5 +1,22 @@
 $(document).ready(function() {
 
+	// Адаптация меню под мобильные
+	$('.header-menu-outer').find('.type').each(function(i){
+		$(this).find('.submenu').width(this.offsetWidth);
+	})
+
+	$('.type').on('click', function () {
+		$('.submenu').removeClass('submenu-visible');
+		$(this).find('.submenu').addClass('submenu-visible');
+	});
+
+	$(document).mouseup( function(e){
+		let div = $(".topmenu");
+		if ( !div.is(e.target) && div.has(e.target).length === 0 ) {
+			$('.submenu').removeClass('submenu-visible');
+		}
+	});
+
 	$('.phone-input').inputmask("+38 (999) 999-99-99");
 
 	$('.btn-search').on('click', function (e) {

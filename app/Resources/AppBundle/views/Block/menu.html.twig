@@ -1,6 +1,59 @@
 
 {% if (settings['type'] == 'header') %}
-    <div class="header-menu-outer">
+    <div class="header-menu-outer header-menu-desctop">
+        <div class="title">Меню</div>
+        {% if individual|length %}
+            <div class="header-menu-block topmenu">
+                <div class="type">
+                    <div class="type-title">Индивидуальные заказы</div>
+                    <ul class="header-menu submenu">
+                        {% for iCategory in individual %}
+                            <li><a href="{{ path('product_list', { 'slug': iCategory.slug }) }}">{{ iCategory.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+        {% if main|length %}
+            <div class="header-menu-block topmenu">
+                <div class="type">
+                    <div class="type-title">Украшения</div>
+                    <ul class="header-menu submenu">
+                        {% for mCategory in main %}
+                            <li><a href="{{ path('product_list', { 'slug': mCategory.slug }) }}">{{ mCategory.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+        {% if secondary|length %}
+            <div class="header-menu-block topmenu">
+                <div class="type">
+                    <div class="type-title">Фурнитура</div>
+                    <ul class="header-menu submenu">
+                        {% for sCategory in secondary %}
+                            <li><a href="{{ path('product_list', { 'slug': sCategory.slug }) }}">{{ sCategory.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+        {% if giftBox|length %}
+            <div class="header-menu-block topmenu">
+                <div class="type">
+                    <div class="type-title"> Подарочные упаковки</div>
+                    <ul class="header-menu submenu">
+                        {% for gCategory in giftBox %}
+                            <li><a href="{{ path('product_list', { 'slug': gCategory.slug }) }}">{{ gCategory.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+        <div class="header-menu-close"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></div>
+    </div>
+
+    <div class="header-menu-outer header-menu-mobile">
         <div class="title">Меню</div>
         {% if individual|length %}
             <div class="header-menu-block">

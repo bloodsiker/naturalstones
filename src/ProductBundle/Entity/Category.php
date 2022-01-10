@@ -18,6 +18,7 @@ class Category
 
     const TYPE_MAIN      = 1;
     const TYPE_SECONDARY = 2;
+    const TYPE_INDIVIDUAL = 3;
 
     /**
      * @var int
@@ -250,6 +251,7 @@ class Category
         return [
             self::TYPE_MAIN => 'main',
             self::TYPE_SECONDARY => 'secondary',
+            self::TYPE_INDIVIDUAL => 'individual',
         ];
     }
 }

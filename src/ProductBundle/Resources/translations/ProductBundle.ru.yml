@@ -96,6 +96,7 @@ category:
         types:
             main: Украшения
             secondary: Фурнитура
+            individual: Индивидуальные заказы
 
 history_search:
     fields:

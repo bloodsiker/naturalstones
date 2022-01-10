@@ -2,44 +2,72 @@
 {% if (settings['type'] == 'header') %}
     <div class="header-menu-outer">
         <div class="title">Меню</div>
-        <div class="header-menu-block">
-            <div class="type">Украшения</div>
-            <ul class="header-menu">
-                {% for mCategory in main %}
-                    <li><a href="{{ path('product_list', { 'slug': mCategory.slug }) }}">{{ mCategory.name}}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="header-menu-block">
-            <div class="type">Фурнитура</div>
-            <ul class="header-menu">
-                {% for sCategory in secondary %}
-                    <li><a href="{{ path('product_list', { 'slug': sCategory.slug }) }}">{{ sCategory.name}}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
+        {% if individual|length %}
+            <div class="header-menu-block">
+                <div class="type">Индивидуальные заказы</div>
+                <ul class="header-menu">
+                    {% for iCategory in individual %}
+                        <li><a href="{{ path('product_list', { 'slug': iCategory.slug }) }}">{{ iCategory.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if main|length %}
+            <div class="header-menu-block">
+                <div class="type">Украшения</div>
+                <ul class="header-menu">
+                    {% for mCategory in main %}
+                        <li><a href="{{ path('product_list', { 'slug': mCategory.slug }) }}">{{ mCategory.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if secondary|length %}
+            <div class="header-menu-block">
+                <div class="type">Фурнитура</div>
+                <ul class="header-menu">
+                    {% for sCategory in secondary %}
+                        <li><a href="{{ path('product_list', { 'slug': sCategory.slug }) }}">{{ sCategory.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
         <div class="header-menu-close"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></div>
     </div>
 {% elseif (settings['type'] == 'video') %}
     <div class="video-menu-outer">
         <div class="title">Меню</div>
         <div class="video-menu-flex">
-            <div class="video-menu-block">
-                <div class="type">Украшения</div>
-                <ul class="video-menu">
-                    {% for mCategory in main %}
-                        <li><a href="{{ path('product_list', { 'slug': mCategory.slug }) }}">{{ mCategory.name}}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="video-menu-block">
-                <div class="type">Фурнитура</div>
-                <ul class="video-menu">
-                    {% for sCategory in secondary %}
-                        <li><a href="{{ path('product_list', { 'slug': sCategory.slug }) }}">{{ sCategory.name}}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
+            {% if individual|length %}
+                <div class="video-menu-block">
+                    <div class="type">Индивидуальные заказы</div>
+                    <ul class="video-menu">
+                        {% for iCategory in individual %}
+                            <li><a href="{{ path('product_list', { 'slug': iCategory.slug }) }}">{{ iCategory.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if main|length %}
+                <div class="video-menu-block">
+                    <div class="type">Украшения</div>
+                    <ul class="video-menu">
+                        {% for mCategory in main %}
+                            <li><a href="{{ path('product_list', { 'slug': mCategory.slug }) }}">{{ mCategory.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if secondary|length %}
+                <div class="video-menu-block">
+                    <div class="type">Фурнитура</div>
+                    <ul class="video-menu">
+                        {% for sCategory in secondary %}
+                            <li><a href="{{ path('product_list', { 'slug': sCategory.slug }) }}">{{ sCategory.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
         </div>
         <div class="video-menu-close"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></div>
     </div>

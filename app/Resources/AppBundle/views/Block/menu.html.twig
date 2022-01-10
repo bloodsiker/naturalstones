@@ -32,6 +32,16 @@
                 </ul>
             </div>
         {% endif %}
+        {% if giftBox|length %}
+            <div class="header-menu-block">
+                <div class="type">Подарочные упаковки</div>
+                <ul class="header-menu">
+                    {% for gCategory in giftBox %}
+                        <li><a href="{{ path('product_list', { 'slug': gCategory.slug }) }}">{{ gCategory.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
         <div class="header-menu-close"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></div>
     </div>
 {% elseif (settings['type'] == 'video') %}
@@ -64,6 +74,16 @@
                     <ul class="video-menu">
                         {% for sCategory in secondary %}
                             <li><a href="{{ path('product_list', { 'slug': sCategory.slug }) }}">{{ sCategory.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if giftBox|length %}
+                <div class="video-menu-block">
+                    <div class="type">Подарочные упаковки</div>
+                    <ul class="video-menu">
+                        {% for gCategory in giftBox %}
+                            <li><a href="{{ path('product_list', { 'slug': gCategory.slug }) }}">{{ gCategory.name}}</a></li>
                         {% endfor %}
                     </ul>
                 </div>

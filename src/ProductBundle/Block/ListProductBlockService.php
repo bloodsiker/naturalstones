@@ -24,6 +24,8 @@ class ListProductBlockService extends AbstractAdminBlockService
     const BUY_WITH_LIST = 'ProductBundle:Block:buy_with_list.html.twig';
     const TEMPLATE_AJAX  = 'ProductBundle:Block:large_list_ajax.html.twig';
 
+    const CATEGORY_NABORI = 5;
+
     /**
      * @var Registry $doctrine
      */
@@ -73,6 +75,7 @@ class ListProductBlockService extends AbstractAdminBlockService
     {
         $resolver->setDefaults([
             'title'            => null,
+            'title_url'        => null,
             'list_type'        => null,
             'items_count'      => 20,
             'page'             => 1,
@@ -125,6 +128,10 @@ class ListProductBlockService extends AbstractAdminBlockService
         }
 
         if ($blockContext->getSetting('category')) {
+            if (!$blockContext->getSetting('category') instanceof Category) {
+                $category = $repositoryCategory->find($blockContext->getSetting('category'));
+                $blockContext->setSetting('category', $category);
+            }
             $repository->filterByCategory($qb, $blockContext->getSetting('category'));
         }
 

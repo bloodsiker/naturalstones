@@ -85,7 +85,8 @@
                     { 'type': 'product.block.list' },
                     {
                         'items_count' : 8,
-                        'title' : 'Новые товары',
+                        'title' : 'Наборы',
+                        'category' : constant('ProductBundle\\Block\\ListProductBlockService::CATEGORY_NABORI'),
                         'page': app.request.get('page') ? app.request.get('page') : 1,
                         'show_paginator': false,
                         'ajax_paginator': false

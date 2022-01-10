@@ -97,6 +97,7 @@ category:
             main: Украшения
             secondary: Фурнитура
             individual: Индивидуальные заказы
+            gift_box: Подарочные упаковки
 
 history_search:
     fields:

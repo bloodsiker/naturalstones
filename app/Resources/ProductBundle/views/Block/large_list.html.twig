@@ -1,5 +1,9 @@
 <div class="filter-outer">
-    <h1>{{ settings.title }}</h1>
+    {% if settings.title_url %}
+        <h1><a href="{{ settings.title_url }}">{{ settings.title }}</a></h1>
+    {% else %}
+        <h1>{{ settings.title }}</h1>
+    {% endif %}
 
     {% if settings.filter %}
         {% include 'AppBundle:Block:filter.html.twig' %}

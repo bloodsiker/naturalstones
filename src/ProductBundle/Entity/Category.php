@@ -19,6 +19,7 @@ class Category
     const TYPE_MAIN      = 1;
     const TYPE_SECONDARY = 2;
     const TYPE_INDIVIDUAL = 3;
+    const TYPE_GIFT_BOX = 4;
 
     /**
      * @var int
@@ -252,6 +253,7 @@ class Category
             self::TYPE_MAIN => 'main',
             self::TYPE_SECONDARY => 'secondary',
             self::TYPE_INDIVIDUAL => 'individual',
+            self::TYPE_GIFT_BOX => 'gift_box',
         ];
     }
 }

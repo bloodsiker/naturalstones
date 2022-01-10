@@ -51,7 +51,7 @@ class ProductExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function getProductPath(Product $product, $needAbsolute = false) : string
+    public function getProductPath(Product $product, $needAbsolute = false)
     {
         return $this->productRouterHelper->getGenrePath($product, $needAbsolute);
     }

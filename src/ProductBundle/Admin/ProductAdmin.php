@@ -88,6 +88,9 @@ class ProductAdmin extends Admin
             ->with('description')
                 ->addConstraint(new NotNull())
             ->end()
+            ->with('category')
+                ->addConstraint(new NotNull())
+            ->end()
         ;
     }
 

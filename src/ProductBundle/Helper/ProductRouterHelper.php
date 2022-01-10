@@ -31,19 +31,22 @@ class ProductRouterHelper
      * @param  Product  $product
      * @param  false  $needAbsolute
      *
-     * @return string
+     * @return string|null
      */
-    public function getGenrePath(Product $product, $needAbsolute = false) : string
+    public function getGenrePath(Product $product, $needAbsolute = false)
     {
-        $path = $this->router->generate(
-            self::PRODUCT_ROUTE,
-            [
-                'category' => $product->getCategory()->getSlug(),
-                'id' => $product->getId(),
-                'slug' => $product->getSlug(),
-            ],
-            $needAbsolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
-        );
+        $path = null;
+        if ($product->getCategory()) {
+            $path = $this->router->generate(
+                self::PRODUCT_ROUTE,
+                [
+                    'category' => $product->getCategory()->getSlug(),
+                    'id' => $product->getId(),
+                    'slug' => $product->getSlug(),
+                ],
+                $needAbsolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
+            );
+        }
 
         return $path;
     }

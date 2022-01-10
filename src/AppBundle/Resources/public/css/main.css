@@ -651,9 +651,7 @@ footer {
   font-size: 12px;
   color: #DCDADF;
 }
-
-.footer-instagram {
-  background: #f08383;
+.footer-social-icon {
   border-radius: 50%;
   width: 55px;
   height: 55px;
@@ -664,10 +662,25 @@ footer {
   text-align: center;
   -ms-flex-pack: center;
   justify-content: center;
-  margin-right: 63px;
+  margin-right: 10px;
   -ms-flex-negative: 0;
   flex-shrink: 0;
   transition: all 0.3s ease-out;
+}
+.footer-facebook {
+  background: #275296;
+  margin-right: 10px;
+}
+.footer-facebook img {
+  width: 32px;
+}
+.footer-facebook:hover {
+  background: #4775bd;
+}
+
+.footer-instagram {
+  background: #f08383;
+  margin-right: 63px;
 }
 
 .footer-instagram:hover {
@@ -1665,7 +1678,19 @@ footer {
   display: none;
 }
 
+.video-facebook {
+  left: 20px;
+  bottom: 80px;
+}
+.video-facebook img {
+  width: 32px;
+}
+
 .video-instagram {
+  left: 20px;
+  bottom: 20px;
+}
+.video-icon {
   background: rgba(0, 0, 0, 0.54);
   border-radius: 50%;
   width: 55px;
@@ -1682,11 +1707,9 @@ footer {
   transition: all 0.3s ease-out;
   position: absolute;
   z-index: 6;
-  left: 20px;
-  bottom: 20px;
 }
 
-.video-instagram:hover {
+.video-icon:hover {
   background: rgba(28, 13, 48, 0.75);
 }
 
@@ -4677,6 +4700,11 @@ footer {
     top: 20px;
   }
 
+  .video-facebook {
+    left: 10px;
+    bottom: 70px;
+  }
+
   .video-instagram {
     left: 10px;
     bottom: 15px;
@@ -5048,7 +5076,7 @@ footer {
     /*display: none;*/
   }
 
-  .video-instagram {
+  .video-icon {
     height: 48px;
     width: 48px;
   }

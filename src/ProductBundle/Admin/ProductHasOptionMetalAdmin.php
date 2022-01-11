@@ -74,10 +74,10 @@ class ProductHasOptionMetalAdmin extends Admin
                 'required'      => true,
                 'btn_delete'    => false,
             ], ['link_parameters' => $linkParameters])
-            ->add('price', TextType::class, [
-                'label' => 'product_has_option_metal.fields.price',
-                'required' => false,
-            ])
+//            ->add('price', TextType::class, [
+//                'label' => 'product_has_option_metal.fields.price',
+//                'required' => false,
+//            ])
             ->add('orderNum', HiddenType::class, [
                 'label' => 'product_has_option_metal.fields.order_num',
             ])

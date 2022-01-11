@@ -360,22 +360,22 @@ class ProductAdmin extends Admin
                     ])
                 ->end()
             ->end()
-            ->with('product.tab.product_option_metal', ['tab' => true])
-                ->with('form_group.product_option', ['class' => 'col-md-12', 'label' => null])
-                    ->add('productHasOptionMetal', CollectionType::class, [
-                        'label' => 'product.fields.product_option_metal',
-                        'required' => false,
-                        'constraints' => new Valid(),
-                        'by_reference' => false,
-                    ], [
-                        'edit' => 'inline',
-                        'inline' => 'table',
-                        'sortable' => 'orderNum',
-                        'link_parameters' => ['context' => $context],
-                        'admin_code' => 'sonata.admin.product_has_option_metal',
-                    ])
-                ->end()
-            ->end()
+//            ->with('product.tab.product_option_metal', ['tab' => true])
+//                ->with('form_group.product_option', ['class' => 'col-md-12', 'label' => null])
+//                    ->add('productHasOptionMetal', CollectionType::class, [
+//                        'label' => 'product.fields.product_option_metal',
+//                        'required' => false,
+//                        'constraints' => new Valid(),
+//                        'by_reference' => false,
+//                    ], [
+//                        'edit' => 'inline',
+//                        'inline' => 'table',
+//                        'sortable' => 'orderNum',
+//                        'link_parameters' => ['context' => $context],
+//                        'admin_code' => 'sonata.admin.product_has_option_metal',
+//                    ])
+//                ->end()
+//            ->end()
             ->with('product.tab.product_group', ['tab' => true])
                 ->with('form_group.product_group', ['class' => 'col-md-12', 'name' => null])
                     ->add('productHasProduct', CollectionType::class, [

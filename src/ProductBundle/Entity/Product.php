@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @ORM\Entity(repositoryClass="ProductBundle\Entity\ProductRepository")
  * @ORM\Table(name="product_product")
- * @ORM\HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks()
  *
  * @Vich\Uploadable
  */
@@ -308,6 +308,13 @@ class Product
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now');
+        if (empty($this->discount)) {
+            $this->discount = 0;
+        }
+
+        if (empty($this->price)) {
+            $this->price = 0;
+        }
 
         $this->prePersist();
     }
@@ -871,7 +878,7 @@ class Product
      *
      * @return $this
      */
-    public function setPrice(float $price)
+    public function setPrice($price = 0)
     {
         $this->price = $price;
 
@@ -895,7 +902,7 @@ class Product
      *
      * @return $this
      */
-    public function setDiscount(float $discount)
+    public function setDiscount($discount = 0)
     {
         $this->discount = $discount;
 

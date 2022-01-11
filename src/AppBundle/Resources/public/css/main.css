@@ -2601,7 +2601,7 @@ footer {
   background: transparent;
 }
 
-.product-sizes-check {
+.product-sizes-check, .product-colours-check {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
@@ -2609,7 +2609,7 @@ footer {
   margin: 0 -7px;
 }
 
-.product-sizes-check li {
+.product-sizes-check li, .product-colours-check li {
   margin: 0 7px 14px;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -2644,6 +2644,50 @@ footer {
 }
 
 .product-sizes-check .size-radiobox i {
+  border-radius: 50%;
+  border: 1px solid #E6E6E6;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s ease-out;
+  padding: 8px;
+  line-height: 1.2;
+  font-size: 18px;
+  color: #000;
+}
+
+.product-colours-check .colour-radiobox {
+  text-align: center;
+  width: 45px;
+  height: 45px;
+}
+
+.product-colours-check .colour-radiobox input {
+  display: none;
+}
+
+.product-colours-check .colour-radiobox input:checked + i {
+  border-color: #E6E6E6;
+  box-shadow: 0px 0px 4px;
+}
+
+.product-colours-check .colour-radiobox label {
+  cursor: pointer;
+}
+
+.product-colours-check .colour-radiobox label:hover i {
+  border-color: #E6E6E6;
+  box-shadow: 1px 1px 6px;
+}
+
+.product-colours-check .colour-radiobox i {
   border-radius: 50%;
   border: 1px solid #E6E6E6;
   display: -ms-flexbox;
@@ -4886,6 +4930,11 @@ footer {
 
   .header-menu-desctop {
     display: none!important;
+  }
+
+  .product-colours-check .colour-radiobox {
+    width: 35px;
+    height: 35px;
   }
 
   .header-menu-mobile .type {

@@ -58,14 +58,25 @@ $(document).ready(function() {
 	 });
 
 	// Слайдер одного товара
-	if($('.product-big-slider').length){
-		$('.product-big-slider').slick({
+	if ($('.product-big-slider').length) {
+		let slickSlider = $('.product-big-slider').slick({
 			slidesToShow: 1,
 			slidesToScroll: 1,
 			fade: true,
 			speed: 800,
-		  	arrows: true,
-	      	dots: true,
+			arrows: true,
+			dots: true,
+		});
+
+		// Переключаем слайд при клике на цвет товаров
+		$('.switch-colour').on('click', function () {
+			let colourId = $(this).data('option-colour');
+
+			let slide = $('.product-big-slider').find('.product-big-item[data-option-colour=' + colourId + ']');
+			if (slide[0]) {
+				let indexSlick = slide.data('slick-index');
+				slickSlider.slick('slickGoTo', parseInt(indexSlick));
+			}
 		});
 	}
 

@@ -30,7 +30,7 @@
 
                     {% for productImageColour in product.productHasOptionColour %}
                         {% if productImageColour.image %}
-                            <div class="product-big-item">
+                            <div class="product-big-item" data-option-colour="{{ productImageColour.id }}">
                                 {% if product.instagramLink %}
                                     <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
                                 {% endif %}
@@ -56,33 +56,56 @@
                 <div class="product-info-top clearfix">
                     <form action="#" method="post" class="product-add-form">
                         <div class="top-block">
-                            {% if sizes|length > 0 %}
-                            <div class="inner-block">
-                                <h5>Выберите размер</h5>
-                                <ul class="product-sizes-check">
-                                    {% for productSize in sizes %}
-                                        {% if productSize.size %}
-                                            <li>
-                                                <div class="size-radiobox">
-                                                    <a href="{{ product_path(productSize) }}">
-                                                        <i class="{% if productSize.id == product.id %}product-sizes-active{% endif %}">{{ productSize.size }}</i>
-                                                    </a>
-                                                </div>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                                <div class="select-block mobile-select">
-                                    <select class="custom-select change-size" data-placeholder="Размер">
-                                        <option></option>
-                                        {% for productSize in sizes %}
-                                            {% if productSize.size %}
-                                                <option data-url="{{ product_path(productSize, true) }}" {% if productSize.id == product.id %}selected{% endif %} value="{{ productSize.id }}">{{ productSize.size }}</option>
+                            {% if product.productHasOptionColour|length > 0 %}
+                                <div class="inner-block">
+                                    <h5>Выберите цвет</h5>
+                                    <ul class="product-colours-check">
+                                        {% for productImageColour in product.productHasOptionColour %}
+                                            {% if productImageColour.colour %}
+                                                <li>
+                                                    <div class="colour-radiobox">
+                                                        <label class="radiobox">
+                                                            <input type="radio" name="size-radio">
+                                                            <i class="switch-colour"
+                                                               data-option-colour="{{ productImageColour.id }}"
+                                                               title="{{ productImageColour.colour.name }}"
+                                                               style="background-color: #{{ productImageColour.colour.colour }}"></i>
+                                                        </label>
+                                                    </div>
+                                                </li>
                                             {% endif %}
                                         {% endfor %}
-                                    </select>
+                                    </ul>
                                 </div>
-                            </div>
+                            {% endif %}
+
+                            {% if sizes|length > 0 %}
+                                <div class="inner-block">
+                                    <h5>Выберите размер</h5>
+                                    <ul class="product-sizes-check">
+                                        {% for productSize in sizes %}
+                                            {% if productSize.size %}
+                                                <li>
+                                                    <div class="size-radiobox">
+                                                        <a href="{{ product_path(productSize) }}">
+                                                            <i class="{% if productSize.id == product.id %}product-sizes-active{% endif %}">{{ productSize.size }}</i>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                    <div class="select-block mobile-select">
+                                        <select class="custom-select change-size" data-placeholder="Размер">
+                                            <option></option>
+                                            {% for productSize in sizes %}
+                                                {% if productSize.size %}
+                                                    <option data-url="{{ product_path(productSize, true) }}" {% if productSize.id == product.id %}selected{% endif %} value="{{ productSize.id }}">{{ productSize.size }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
                             {% endif %}
                             <div class="inner-block">
                                 <h5>Выберите количество</h5>

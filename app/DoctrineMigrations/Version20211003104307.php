@@ -121,12 +121,12 @@ final class Version20211003104307 extends AbstractMigration
         $productStone->addForeignKeyConstraint($product, ['product_id'], ['id'], ['onDelete' => 'cascade']);
         $productStone->addForeignKeyConstraint($schema->getTable('share_stones'), ['stone_id'], ['id'], ['onDelete' => 'cascade']);
 
-//        $productSize = $schema->createTable('product_product_sizes');
-//        $productSize->addColumn('product_id', 'integer', array('unsigned' => true, 'notnull' => true));
-//        $productSize->addColumn('size_id', 'integer', array('unsigned' => true, 'notnull' => true));
-//        $productSize->addIndex(['product_id', 'size_id']);
-//        $productSize->addForeignKeyConstraint($product, ['product_id'], ['id'], ['onDelete' => 'cascade']);
-//        $productSize->addForeignKeyConstraint($schema->getTable('share_sizes'), ['size_id'], ['id'], ['onDelete' => 'cascade']);
+        $productSize = $schema->createTable('product_product_sizes');
+        $productSize->addColumn('product_id', 'integer', array('unsigned' => true, 'notnull' => true));
+        $productSize->addColumn('size_id', 'integer', array('unsigned' => true, 'notnull' => true));
+        $productSize->addIndex(['product_id', 'size_id']);
+        $productSize->addForeignKeyConstraint($product, ['product_id'], ['id'], ['onDelete' => 'cascade']);
+        $productSize->addForeignKeyConstraint($schema->getTable('share_sizes'), ['size_id'], ['id'], ['onDelete' => 'cascade']);
 
         $productTags = $schema->createTable('product_product_colours');
         $productTags->addColumn('product_id', 'integer', array('unsigned' => true, 'notnull' => true));

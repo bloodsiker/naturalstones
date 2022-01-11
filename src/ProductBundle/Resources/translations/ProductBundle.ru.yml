@@ -22,6 +22,8 @@ text_or: или
 form_group:
     basic: Основные
     additional: Дополнительные
+    product_group: Набор
+    product_option: Опции
 
 group:
     product: Товары
@@ -56,10 +58,17 @@ product:
         product_image: Дополнительные изображения
         product_set_products: Набор продуктов
         product_group: Группа продуктов
+        product_option_metal: Опции для выбора метала
+        product_option_colour: Опции для выбора цвета
         updated_at: Изменена
         created_at: Создана
     buttons:
         link_add: Добавить новый
+    tab:
+        product: Товар
+        product_group: Набор товаров
+        product_option_colour: Опции цвета
+        product_option_metal: Опции метала
 
 product_has_image:
     fields:
@@ -77,6 +86,25 @@ product_has_product:
         size: Размер
         price: Цена
         discount: Скидка
+        order_num: ''
+
+product_has_option_metal:
+    fields:
+        id: ID
+        product: Продукт
+        image: Изображение
+        metal: Метал
+        price: Цена
+        order_num: ''
+
+
+product_has_option_colour:
+    fields:
+        id: ID
+        product: Продукт
+        image: Изображение
+        colour: Цвет
+        price: Цена
         order_num: ''
 
 product_view:

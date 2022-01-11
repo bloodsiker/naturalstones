@@ -34,6 +34,28 @@ services:
         calls:
             - [ setTranslationDomain, [ ProductBundle ] ]
 
+    sonata.admin.product_has_option_metal:
+        class: ProductBundle\Admin\ProductHasOptionMetalAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'group.product', label: "group.product_has_option_metal_editor", show_in_dashboard: false }
+        arguments:
+            - ~
+            - ProductBundle\Entity\ProductHasOptionMetal
+            - ~
+        calls:
+            - [ setTranslationDomain, [ ProductBundle ] ]
+
+    sonata.admin.product_has_option_colour:
+        class: ProductBundle\Admin\ProductHasOptionColourAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'group.product', label: "group.product_has_option_colour_editor", show_in_dashboard: false }
+        arguments:
+            - ~
+            - ProductBundle\Entity\ProductHasOptionColour
+            - ~
+        calls:
+            - [ setTranslationDomain, [ ProductBundle ] ]
+
     sonata.admin.product_category:
         class: ProductBundle\Admin\CategoryAdmin
         tags:

@@ -210,6 +210,26 @@ class Product
     protected $productHasProduct;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasOptionMetal",
+     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"orderNum" = "ASC"})
+     */
+    protected $productHasOptionMetal;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasOptionColour",
+     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"orderNum" = "ASC"})
+     */
+    protected $productHasOptionColour;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=false)
@@ -245,6 +265,8 @@ class Product
         $this->stones            = new ArrayCollection();
         $this->productHasImage   = new ArrayCollection();
         $this->productHasProduct = new ArrayCollection();
+        $this->productHasOptionMetal  = new ArrayCollection();
+        $this->productHasOptionColour = new ArrayCollection();
     }
 
     /**
@@ -883,7 +905,7 @@ class Product
     /**
      * Add ProductHasImage.
      *
-     * @param \ProductBundle\Entity\ProductHasImage $bookHasRelated
+     * @param \ProductBundle\Entity\ProductHasImage $productHasImage
      *
      * @return Product
      */
@@ -952,6 +974,80 @@ class Product
     public function getProductHasProduct()
     {
         return $this->productHasProduct;
+    }
+
+    /**
+     * Add productHasOptionMetal.
+     *
+     * @param \ProductBundle\Entity\ProductHasOptionMetal $productHasOptionMetal
+     *
+     * @return Product
+     */
+    public function addProductHasOptionMetal(\ProductBundle\Entity\ProductHasOptionMetal $productHasOptionMetal)
+    {
+        $productHasOptionMetal->setProduct($this);
+        $this->productHasOptionMetal[] = $productHasOptionMetal;
+
+        return $this;
+    }
+
+    /**
+     * Remove productHasOptionMetal.
+     *
+     * @param \ProductBundle\Entity\ProductHasOptionMetal $productHasOptionMetal
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductHasOptionMetal(\ProductBundle\Entity\ProductHasOptionMetal $productHasOptionMetal)
+    {
+        return $this->productHasOptionMetal->removeElement($productHasOptionMetal);
+    }
+
+    /**
+     * Get productHasOptionMetal.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProductHasOptionMetal()
+    {
+        return $this->productHasOptionMetal;
+    }
+
+    /**
+     * Add productHasOptionColour.
+     *
+     * @param \ProductBundle\Entity\ProductHasOptionColour $productHasOptionColour
+     *
+     * @return Product
+     */
+    public function addProductHasOptionColour(\ProductBundle\Entity\ProductHasOptionColour $productHasOptionColour)
+    {
+        $productHasOptionColour->setProduct($this);
+        $this->productHasOptionColour[] = $productHasOptionColour;
+
+        return $this;
+    }
+
+    /**
+     * Remove productHasOptionColour.
+     *
+     * @param \ProductBundle\Entity\ProductHasOptionColour $productHasOptionColour
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductHasOptionColour(\ProductBundle\Entity\ProductHasOptionColour $productHasOptionColour)
+    {
+        return $this->productHasOptionColour->removeElement($productHasOptionColour);
+    }
+
+    /**
+     * Get productHasOptionColour.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProductHasOptionColour()
+    {
+        return $this->productHasOptionColour;
     }
 
     public static $whois = [

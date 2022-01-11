@@ -1,16 +1,16 @@
-{% set preview_container_id = 'image_preview_'~random() %}
-<span class="inner-field-short-description" id="{{ preview_container_id }}">
-    {% if object and admin.hasRoute('edit') and admin.hasAccess('edit') %}
-        <a href="{{ admin.generateObjectUrl('edit', object, link_parameters) }}" target="_blank">{{ description }}</a>
-    {% else %}
-        {{ description }}
-    {% endif %}
+{% if object is mediainstanceof('\\MediaBundle\\Entity\\MediaImage') and object.path %}
+    {% set preview_container_id = 'image_preview_'~random() %}
+    <span class="inner-field-short-description" id="{{ preview_container_id }}">
+        {% if object and admin.hasRoute('edit') and admin.hasAccess('edit') %}
+            <a href="{{ admin.generateObjectUrl('edit', object, link_parameters) }}" target="_blank">{{ description }}</a>
+        {% else %}
+            {{ description }}
+        {% endif %}
 
-    {% if object is mediainstanceof('\\MediaBundle\\Entity\\MediaImage') and object.path %}
         {#{% set imagePreviewPath = object.path|imagine_filter('admin_preview_220x124') %}#}
         {% set imagePreviewPath = object.path %}
         <script>
-            var {{ preview_container_id }} = jQuery('#{{ preview_container_id }}').parent().parent().find('img:first');
+            let {{ preview_container_id }} = jQuery('#{{ preview_container_id }}').parent().parent().find('img:first');
             if ({{ preview_container_id }}.length) {
                 {{ preview_container_id }}.attr('src', '{{ imagePreviewPath~'?r='~random() }}');
             } else {
@@ -21,5 +21,32 @@
                 );
             }
         </script>
-    {% endif %}
-</span>
+    </span>
+{% elseif object is mediainstanceof('\\ShareBundle\\Entity\\Colour') %}
+
+    {% set colour_container_id = 'colour_preview_'~random() %}
+    <span class="inner-field-short-description" id="{{ colour_container_id }}">
+         {% if object and admin.hasRoute('edit') and admin.hasAccess('edit') %}
+             <a href="{{ admin.generateObjectUrl('edit', object, link_parameters) }}" target="_blank">{{ description }}</a>
+         {% else %}
+             {{ description }}
+         {% endif %}
+
+        <script>
+            jQuery('#{{ colour_container_id }}').parent().before(
+                '<div class="colour-field-short-description" style="float: left">' +
+                    '<span class="colorpicker__preview" style="background-color: #{{ object.colour }}; margin: 0;height: 31px;border-radius: 3px;margin-right: 5px;"></span>' +
+                '</div>'
+            );
+        </script>
+    </span>
+{% else %}
+    {% set container_id = 'container_'~random() %}
+    <span class="inner-field-short-description" id="{{ container_id }}">
+        {% if object and admin.hasRoute('edit') and admin.hasAccess('edit') %}
+            <a href="{{ admin.generateObjectUrl('edit', object, link_parameters) }}" target="_blank">{{ description }}</a>
+        {% else %}
+            {{ description }}
+        {% endif %}
+    </span>
+{% endif %}

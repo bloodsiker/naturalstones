@@ -108,10 +108,10 @@
             </div>
         {% endif %}
         {% if scrapers|length %}
-            <div class="header-menu-block topmenu">
+            <div class="header-menu-block">
                 <div class="type">
                     <div class="type-title">Скребки Гуаша</div>
-                    <ul class="header-menu submenu">
+                    <ul class="header-menu">
                         {% for scCategory in scrapers %}
                             <li><a href="{{ path('product_list', { 'slug': scCategory.slug }) }}">{{ scCategory.name}}</a></li>
                         {% endfor %}

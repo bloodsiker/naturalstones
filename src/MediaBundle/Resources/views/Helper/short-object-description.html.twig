@@ -33,11 +33,16 @@
          {% endif %}
 
         <script>
-            jQuery('#{{ colour_container_id }}').parent().before(
-                '<div class="colour-field-short-description" style="float: left">' +
+            let {{ colour_container_id }} = jQuery('#{{ colour_container_id }}').parent().parent().find('.colorpicker__preview:first');
+            if ({{ colour_container_id }}.length) {
+                {{ colour_container_id }}.css('background-color', '#{{ object.colour }}');
+            } else {
+                jQuery('#{{ colour_container_id }}').parent().before(
+                    '<div class="colour-field-short-description" style="float: left">' +
                     '<span class="colorpicker__preview" style="background-color: #{{ object.colour }}; margin: 0;height: 31px;border-radius: 3px;margin-right: 5px;"></span>' +
-                '</div>'
-            );
+                    '</div>'
+                );
+            }
         </script>
     </span>
 {% else %}

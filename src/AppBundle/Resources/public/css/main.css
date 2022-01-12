@@ -2533,6 +2533,16 @@ footer {
   min-width: 125px;
 }
 
+.total-price .old-price {
+  font-size: 18px;
+  text-decoration: line-through;
+  margin-right: 14px;
+}
+
+.total-price .old-price ~ span {
+  color: #f08383;
+}
+
 .product-add-form .cart-button {
   -ms-flex-positive: 1;
   flex-grow: 1;

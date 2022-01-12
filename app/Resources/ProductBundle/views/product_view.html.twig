@@ -131,7 +131,17 @@
                             </div>
                         {% endif %}
                         <div class="bottom-block">
-                            <div class="total-price">{{ product.price }} грн</div>
+                            <div class="total-price">
+                                {% if product.discount %}
+                                    <div class="price">
+                                        <span class="old-price">{{ product.price}} грн</span><br>
+                                        <span>{{ product.discount}} грн</span>
+                                    </div>
+                                {% else %}
+                                    <div class="price"><span>{{ product.price}} грн</span></div>
+                                {% endif %}
+{#                                {{ product.price }} грн#}
+                            </div>
                             {{
                                 sonata_block_render(
                                     { 'type': 'app.block.service.cart' },

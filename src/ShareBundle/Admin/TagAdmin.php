@@ -104,6 +104,7 @@ class TagAdmin extends Admin
             ])
             ->add('isActive', null, [
                 'label' => 'tag.fields.is_active',
+                'editable' => true,
             ])
             ->addIdentifier('name', null, [
                 'label' => 'tag.fields.name',

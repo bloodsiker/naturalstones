@@ -296,6 +296,18 @@ class ProductAdmin extends Admin
                         'property' => 'name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
+                        'callback' => function($admin, $property, $value) {
+                            if (!$value) {
+                                return;
+                            }
+
+                            $datagrid = $admin->getDatagrid();
+                            $queryBuilder = $datagrid->getQuery();
+                            $queryBuilder->andWhere($queryBuilder->getRootAlias() . '.isActive = 1');
+                            $datagrid->setValue($property, null, $value);
+
+                            return true;
+                        },
                         'btn_catalogue' => $this->translationDomain,
                         'minimum_input_length' => 2,
                     ])
@@ -305,6 +317,18 @@ class ProductAdmin extends Admin
                         'property' => 'name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
+                        'callback' => function($admin, $property, $value) {
+                            if (!$value) {
+                                return;
+                            }
+
+                            $datagrid = $admin->getDatagrid();
+                            $queryBuilder = $datagrid->getQuery();
+                            $queryBuilder->andWhere($queryBuilder->getRootAlias() . '.isActive = 1');
+                            $datagrid->setValue($property, null, $value);
+
+                            return true;
+                        },
                         'btn_catalogue' => $this->translationDomain,
                         'minimum_input_length' => 2,
                     ])
@@ -314,6 +338,18 @@ class ProductAdmin extends Admin
                         'property' => 'name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
+                        'callback' => function($admin, $property, $value) {
+                            if (!$value) {
+                                return;
+                            }
+
+                            $datagrid = $admin->getDatagrid();
+                            $queryBuilder = $datagrid->getQuery();
+                            $queryBuilder->andWhere($queryBuilder->getRootAlias() . '.isActive = 1');
+                            $datagrid->setValue($property, null, $value);
+
+                            return true;
+                        },
                         'btn_catalogue' => $this->translationDomain,
                         'minimum_input_length' => 2,
                     ])
@@ -323,6 +359,18 @@ class ProductAdmin extends Admin
                         'property' => 'name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
+                        'callback' => function($admin, $property, $value) {
+                            if (!$value) {
+                                return;
+                            }
+
+                            $datagrid = $admin->getDatagrid();
+                            $queryBuilder = $datagrid->getQuery();
+                            $queryBuilder->andWhere($queryBuilder->getRootAlias() . '.isActive = 1');
+                            $datagrid->setValue($property, null, $value);
+
+                            return true;
+                        },
                         'btn_catalogue' => $this->translationDomain,
                         'minimum_input_length' => 2,
                     ])

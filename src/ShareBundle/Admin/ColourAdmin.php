@@ -105,6 +105,7 @@ class ColourAdmin extends Admin
             ])
             ->add('isActive', null, [
                 'label' => 'colour.fields.is_active',
+                'editable' => true,
             ])
             ->add('_action', 'actions', [
                 'actions' => [

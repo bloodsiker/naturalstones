@@ -97,6 +97,7 @@ class MetalAdmin extends Admin
             ])
             ->add('isActive', null, [
                 'label' => 'metal.fields.is_active',
+                'editable' => true,
             ])
             ->add('_action', 'actions', [
                 'actions' => [

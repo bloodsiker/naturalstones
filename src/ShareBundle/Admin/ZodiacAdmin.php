@@ -81,6 +81,7 @@ class ZodiacAdmin extends Admin
             ])
             ->add('isActive', null, [
                 'label' => 'zodiac.fields.is_active',
+                'editable' => true,
             ])
             ->add('isShowMain', null, [
                 'label' => 'zodiac.fields.is_show_main',

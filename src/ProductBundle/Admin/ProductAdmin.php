@@ -4,6 +4,7 @@ namespace ProductBundle\Admin;
 
 use AdminBundle\Admin\BaseAdmin as Admin;
 use AdminBundle\Form\Type\TextCounterType;
+use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use Doctrine\ORM\EntityManager;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -16,6 +17,7 @@ use Sonata\CoreBundle\Validator\ErrorElement;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
 use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateTimePickerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,7 +30,7 @@ use Symfony\Component\Validator\Constraints\Valid;
  */
 class ProductAdmin extends Admin
 {
-
+    use FixAdminFormTranslationDomainTrait;
     /**
      * @var EntityManager $entityManager
      */
@@ -408,6 +410,29 @@ class ProductAdmin extends Admin
                     ])
                 ->end()
             ->end()
+            ->with('product.tab.product_option', ['tab' => true])
+                ->with('form_group.product_option', ['class' => 'col-md-8', 'label' => null])
+                    ->add('productHasOption', CollectionType::class, [
+                        'label' => 'product.fields.product_option',
+                        'required' => false,
+                        'constraints' => new Valid(),
+                        'by_reference' => false,
+                    ], [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                        'sortable' => 'orderNum',
+                        'link_parameters' => ['context' => $context],
+                        'admin_code' => 'sonata.admin.product_has_option',
+                    ])
+                ->end()
+                ->with('form_group.product_option_2', ['class' => 'col-md-4', 'label' => null])
+                    ->add('optionType', ChoiceType::class, [
+                        'label' => 'product.fields.option_type',
+                        'choices' => $this->getTypes(),
+                        'required' => true,
+                    ])
+                ->end()
+            ->end()
 //            ->with('product.tab.product_option_metal', ['tab' => true])
 //                ->with('form_group.product_option', ['class' => 'col-md-12', 'label' => null])
 //                    ->add('productHasOptionMetal', CollectionType::class, [
@@ -441,5 +466,18 @@ class ProductAdmin extends Admin
                 ->end()
             ->end()
         ;
+    }
+
+    private function getTypes()
+    {
+        $matchEntity = $this->getClass();
+        $typesEntity = $matchEntity::getTypes();
+
+        $typesChoice = [];
+        foreach ($typesEntity as $key => $value) {
+            $typesChoice["product.fields.types.".$value] = $key;
+        }
+
+        return $typesChoice;
     }
 }

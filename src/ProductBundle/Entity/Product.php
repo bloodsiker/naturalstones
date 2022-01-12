@@ -21,6 +21,8 @@ class Product
     const WHO_MAN = 'man';
     const WHO_WOMAN = 'woman';
 
+    const TYPE_LETTERS = 1;
+
     /**
      * @var int
      *
@@ -146,6 +148,13 @@ class Product
     protected $productGroup;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="smallint", nullable=false)
+     */
+    protected $optionType;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Colour", inversedBy="products")
@@ -212,6 +221,16 @@ class Product
     /**
      * @var ArrayCollection
      *
+     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasOption",
+     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"orderNum" = "ASC"})
+     */
+    protected $productHasOption;
+
+    /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasOptionMetal",
      *     mappedBy="product", cascade={"all"}, orphanRemoval=true
      * )
@@ -265,6 +284,7 @@ class Product
         $this->stones            = new ArrayCollection();
         $this->productHasImage   = new ArrayCollection();
         $this->productHasProduct = new ArrayCollection();
+        $this->productHasOption       = new ArrayCollection();
         $this->productHasOptionMetal  = new ArrayCollection();
         $this->productHasOptionColour = new ArrayCollection();
     }
@@ -910,6 +930,30 @@ class Product
     }
 
     /**
+     * Set optionType
+     *
+     * @param int $optionType
+     *
+     * @return $this
+     */
+    public function setOptionType(int $optionType)
+    {
+        $this->optionType = $optionType;
+
+        return $this;
+    }
+
+    /**
+     * Get optionType
+     *
+     * @return int
+     */
+    public function getOptionType()
+    {
+        return $this->optionType;
+    }
+
+    /**
      * Add ProductHasImage.
      *
      * @param \ProductBundle\Entity\ProductHasImage $productHasImage
@@ -981,6 +1025,43 @@ class Product
     public function getProductHasProduct()
     {
         return $this->productHasProduct;
+    }
+
+    /**
+     * Add productHasOption.
+     *
+     * @param \ProductBundle\Entity\ProductHasOption $productHasOption
+     *
+     * @return Product
+     */
+    public function addProductHasOption(\ProductBundle\Entity\ProductHasOption $productHasOption)
+    {
+        $productHasOption->setProduct($this);
+        $this->productHasOption[] = $productHasOption;
+
+        return $this;
+    }
+
+    /**
+     * Remove productHasOption.
+     *
+     * @param \ProductBundle\Entity\ProductHasOption $productHasOption
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductHasOption(\ProductBundle\Entity\ProductHasOption $productHasOption)
+    {
+        return $this->productHasOption->removeElement($productHasOption);
+    }
+
+    /**
+     * Get productHasOption.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProductHasOption()
+    {
+        return $this->productHasOption;
     }
 
     /**
@@ -1061,6 +1142,13 @@ class Product
         self::WHO_MAN => 'Для мужчин',
         self::WHO_WOMAN => 'Для женщин',
     ];
+
+    public static function getTypes()
+    {
+        return [
+            self::TYPE_LETTERS => 'letters',
+        ];
+    }
 
     /**
      * @return float|int

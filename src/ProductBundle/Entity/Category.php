@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
-
     const TYPE_MAIN      = 1;
     const TYPE_SECONDARY = 2;
     const TYPE_INDIVIDUAL = 3;

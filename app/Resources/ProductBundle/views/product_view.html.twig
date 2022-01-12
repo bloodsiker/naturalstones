@@ -108,6 +108,26 @@
                                     </div>
                                 </div>
                             {% endif %}
+
+                            {% if product.productHasOption|length > 0 %}
+                                <div class="inner-block">
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_LETTERS') %}
+                                        <h5>Выберите букву</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select" data-placeholder="Буквы">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span id="letterError" class="text-red"></span>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
                             <div class="inner-block">
                                 <h5>Выберите количество</h5>
                                 <div class="cart-product-amount">

@@ -34,6 +34,17 @@ services:
         calls:
             - [ setTranslationDomain, [ ProductBundle ] ]
 
+    sonata.admin.product_has_option:
+        class: ProductBundle\Admin\ProductHasOptionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'group.product', label: "group.product_has_option_editor", show_in_dashboard: false }
+        arguments:
+            - ~
+            - ProductBundle\Entity\ProductHasOption
+            - ~
+        calls:
+            - [ setTranslationDomain, [ ProductBundle ] ]
+
     sonata.admin.product_has_option_metal:
         class: ProductBundle\Admin\ProductHasOptionMetalAdmin
         tags:

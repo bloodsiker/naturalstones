@@ -3,6 +3,7 @@
 namespace ProductBundle\Admin;
 
 use AdminBundle\Admin\BaseAdmin as Admin;
+use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -14,21 +15,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class CategoryAdmin extends Admin
 {
+    use FixAdminFormTranslationDomainTrait;
+
     protected $datagridValues = [
         '_page'       => 1,
         '_per_page'   => 25,
         '_sort_by'    => 'id',
         '_sort_order' => 'ASC',
     ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTranslationDomain($translationDomain)
-    {
-        $this->translationDomain = $translationDomain;
-        $this->formOptions['translation_domain'] = $translationDomain;
-    }
 
     /**
      * @param ListMapper $listMapper

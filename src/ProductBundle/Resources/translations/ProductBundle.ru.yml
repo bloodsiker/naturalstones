@@ -55,18 +55,23 @@ product:
         discount: Цена со скидкой
         tags: Тег(и)
         views: Просмотры
+        option_type: Тип
         product_image: Дополнительные изображения
         product_set_products: Набор продуктов
         product_group: Группа продуктов
+        product_option: Дополнительные опции
         product_option_metal: Опции для выбора метала
         product_option_colour: Опции для выбора цвета
         updated_at: Изменена
         created_at: Создана
+        types:
+            letters: Буквы
     buttons:
         link_add: Добавить новый
     tab:
         product: Товар
         product_group: Набор товаров
+        product_option: Дополнительные опции
         product_option_colour: Опции цвета
         product_option_metal: Опции метала
 
@@ -75,6 +80,15 @@ product_has_image:
         id: ID
         product: Продукт
         image: Изображение
+        order_num: ''
+
+product_has_option:
+    fields:
+        id: ID
+        product: Продукт
+        value: Название
+        image: Изображение
+        price: Цена
         order_num: ''
 
 product_has_product:

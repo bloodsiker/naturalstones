@@ -45,5 +45,6 @@ order_has_item:
     fields:
         product: Товар
         quantity: Количество
+        colour: Цвет
         price: Цена
         discount: Цена со скидкой

@@ -491,6 +491,18 @@ $(document).ready(function() {
 		let instagram = $("input[name='instagram']").val();
 		let product = $("input[name='product']").val();
 		let messenger = $("input[name='messenger']:checked").val();
+		let colourId = null;
+
+		if ($('.product-colours-check').length) {
+			const isChecked = !!$('input[type="radio"][name=colour_id]:checked').length;
+			colourId = $('input[type="radio"][name=colour_id]:checked').val();
+
+			$('#colourError').text('').hide();
+			if (!isChecked) {
+				$('#colourError').text('Вы не выбрали цвет товара').show();
+				return false;
+			}
+		}
 
 		$('.error-message').empty();
 		if (messenger === 'telegram' || messenger === 'viber') {
@@ -514,7 +526,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: { phone: phone, messenger: messenger, product: product, instagram: instagram },
+			data: { phone: phone, messenger: messenger, product: product, instagram: instagram, colour_id: colourId },
 			success: function (response) {
 				if (response.type === 'error') {
 					alert(response.message);
@@ -580,19 +592,34 @@ $(document).ready(function() {
 		$('.header-cart-info').hide();
 	});
 
-	$('.product-add-form').on('click','.add-to-cart', function () {
+	$('.product-add-form').on('click','.add-to-cart', function (e) {
+		e.preventDefault();
+
 		let _this = $(this),
 			item_id = _this.data('id'),
 			url = _this.data('url'),
 			action = _this.data('action'),
-			quantity = $('#quantity').val();
+			quantity = $('#quantity').val(),
+			colourId = null;
+
+		if ($('.product-colours-check').length) {
+			const isChecked = !!$('input[type="radio"][name=colour_id]:checked').length;
+			colourId = $('input[type="radio"][name=colour_id]:checked').val();
+
+			$('#colourError').text('').hide();
+			if (!isChecked) {
+				$('#colourError').text('Вы не выбрали цвет товара').show();
+				return false;
+			}
+		}
 
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: { action: action, item_id: item_id, quantity: quantity },
+			data: { action: action, item_id: item_id, quantity: quantity, colour_id: colourId },
 			success: function (response) {
 				if (200 === response.code) {
+					openPopup(_this);
 					$('.header-cart-info').html('');
 					$('.countProductInCart').html(response.count);
 					$('#modalCountProduct').text(response.count + ' ' + declOfNum(response.count))
@@ -725,25 +752,44 @@ $(document).ready(function() {
 		window.location = url;
 	});
 
-	/*модалка*/
-	if($('.popup-open').length){
-		$('.popup-open').magnificPopup({
-		  removalDelay: 300,
-		  fixedContentPos: true,
-		  callbacks: {
-		    beforeOpen: function() {
-		       this.st.mainClass = this.st.el.attr('data-effect');
-		    }
-		  },
-		  midClick: true
-		});
+	// Модалка
+	let openPopup = (el) => {
+		if (el !== undefined) {
+			$.magnificPopup.open({
+				items: {
+					src: $(el).attr('href'),
+				},
+				removalDelay: 300,
+				fixedContentPos: true,
+				callbacks: {
+					beforeOpen: function() {
+						this.st.mainClass = $(el).attr('data-effect');
+					}
+				},
+				midClick: true
+			});
+			$(".modal-slider").slick('setPosition');
+		}
 	}
 
-	if($('.modal-slider').length){
-		$(".popup-open").click(function() {
-	  		$(".modal-slider").slick('setPosition');
-		});
-	}
+	// if ($('.popup-open').length) {
+	// 	$('.popup-open').magnificPopup({
+	// 		removalDelay: 300,
+	// 		fixedContentPos: true,
+	// 		callbacks: {
+	// 			beforeOpen: function () {
+	// 				this.st.mainClass = this.st.el.attr('data-effect');
+	// 			}
+	// 		},
+	// 		midClick: true
+	// 	});
+	// }
+	//
+	// if ($('.modal-slider').length) {
+	// 	$(".popup-open").click(function () {
+	// 		$(".modal-slider").slick('setPosition');
+	// 	});
+	// }
 
 	// Добавление доп. товара
 	// $(".add-item").click(function(e){

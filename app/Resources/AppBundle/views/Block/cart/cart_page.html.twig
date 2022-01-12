@@ -13,7 +13,7 @@
             </tr>
             </thead>
             <tbody>
-                {% for mProduct in products.product %}
+                {% for key, mProduct in products.product %}
                     <tr>
                         <td>
                             <div class="cart-item">
@@ -23,9 +23,13 @@
                                     {% if mProduct.item.size %}
                                         <i>({{ mProduct.item.size }})</i>
                                     {% endif  %}
-                                    {% if mProduct.item.discount %}
-                                        <span>Скидка</span>
-                                    {% endif  %}
+{#                                    {% if mProduct.item.discount %}#}
+{#                                        <span>Скидка</span>#}
+{#                                    {% endif  %}#}
+                                    {% if mProduct.colour is defined %}
+                                        <br>
+                                        <i style="font-size: 14px;">Цвет:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px; background: #{{ mProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ mProduct.colour.name }}</i>
+                                    {% endif %}
                                 </div>
                             </div>
                         </td>
@@ -43,7 +47,7 @@
                             <div class="cart-product-amount">
                                 <span class="qtyminus" data-recalculate="1">−</span>
                                 <input type="text"
-                                       data-id="{{ mProduct.item.id }}"
+                                       data-id="{{ key }}"
                                        data-url="{{ block_ajax_path }}"
                                        data-action="{{ constant('AppBundle\\Block\\CartBlockService::ACTION_CART_RECALCULATE') }}"
                                        data-template="{{ constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART_PAGE') }}"
@@ -59,7 +63,7 @@
                         </td>
                         <td>
                             <a href="#"
-                               data-id="{{ mProduct.item.id }}"
+                               data-id="{{ key }}"
                                data-url="{{ block_ajax_path }}"
                                data-template="{{ constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART_PAGE') }}"
                                data-action="{{ constant('AppBundle\\Block\\CartBlockService::ACTION_REMOVE') }}"

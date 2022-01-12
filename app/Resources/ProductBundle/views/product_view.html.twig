@@ -65,7 +65,7 @@
                                                 <li>
                                                     <div class="colour-radiobox">
                                                         <label class="radiobox">
-                                                            <input type="radio" name="size-radio">
+                                                            <input type="radio" name="colour_id" value="{{ productImageColour.colour.id }}">
                                                             <i class="switch-colour"
                                                                data-option-colour="{{ productImageColour.id }}"
                                                                title="{{ productImageColour.colour.name }}"
@@ -76,6 +76,7 @@
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
+                                    <span id="colourError" class="text-red"></span>
                                 </div>
                             {% endif %}
 

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use OrderBundle\Entity\Order;
 use OrderBundle\Entity\OrderHasItem;
 use ProductBundle\Entity\Product;
+use ShareBundle\Entity\Colour;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -55,25 +56,40 @@ class Cart
      * Add product to cart
      *
      * @param string $type
-     * @param int    $id
+     * @param string $id
      * @param int    $count
+     * @param int|null $colour
      *
      * @return mixed
      */
-    public function addProductToCart($type, int $id, int $count)
+    public function addProductToCart($type, string $id, int $count, $colour = null)
     {
         $productsInCart = $this->getProductInCart() ?: [];
 
         $count = $count < 1 ? 1 : $count;
 
+        $key = $id;
+        if ($colour) {
+            $key = sprintf('%s:colour:%s', $id, $colour);
+        }
+
         if (array_key_exists($type, $productsInCart)) {
-            if (array_key_exists($id, $productsInCart[$type])) {
-                $productsInCart[$type][$id]['count'] += $count;
+            if (array_key_exists($key, $productsInCart[$type])) {
+                $productsInCart[$type][$key]['id'] = $id;
+                $productsInCart[$type][$key]['count'] += $count;
             } else {
-                $productsInCart[$type][$id]['count'] = $count;
+                $productsInCart[$type][$key]['id'] = $id;
+                $productsInCart[$type][$key]['count'] = $count;
+            }
+            if ($colour) {
+                $productsInCart[$type][$key]['colour'] = $colour;
             }
         } else {
-            $productsInCart[$type][$id]['count'] = $count;
+            $productsInCart[$type][$key]['id'] = $id;
+            $productsInCart[$type][$key]['count'] = $count;
+            if ($colour) {
+                $productsInCart[$type][$key]['colour'] = $colour;
+            }
         }
 
         $this->setCart($productsInCart);
@@ -90,17 +106,24 @@ class Cart
     {
         $productsInCart = $this->getProductInCart();
         $productRepository = $this->entityManager->getRepository(Product::class);
+        $colourRepository = $this->entityManager->getRepository(Colour::class);
 
         $productsInfo = [];
 
         if ($productsInCart && is_array($productsInCart)) {
             if (array_key_exists(self::TYPE_PRODUCT, $productsInCart)) {
-                foreach ($productsInCart[self::TYPE_PRODUCT] as $id => $data) {
-                    $infoProduct = $productRepository->find($id);
+                foreach ($productsInCart[self::TYPE_PRODUCT] as $key => $data) {
+                    $infoProduct = $productRepository->find($data['id']);
                     if ($infoProduct) {
-                        $productsInfo[self::TYPE_PRODUCT][$id]['item'] = $infoProduct;
-                        $productsInfo[self::TYPE_PRODUCT][$id]['count'] = $data['count'];
-                        $productsInfo[self::TYPE_PRODUCT][$id]['totalPrice'] = $data['count'] * ($infoProduct->getDiscount() ?: $infoProduct->getPrice());
+                        $productsInfo[self::TYPE_PRODUCT][$key]['item'] = $infoProduct;
+                        $productsInfo[self::TYPE_PRODUCT][$key]['count'] = $data['count'];
+                        $productsInfo[self::TYPE_PRODUCT][$key]['totalPrice'] = $data['count'] * ($infoProduct->getDiscount() ?: $infoProduct->getPrice());
+                        if (isset($data['colour'])) {
+                            $infoColour = $colourRepository->find($data['colour']);
+                            if ($infoColour) {
+                                $productsInfo[self::TYPE_PRODUCT][$key]['colour'] = $infoColour;
+                            }
+                        }
                     }
                 }
             }
@@ -113,25 +136,25 @@ class Cart
      * Recalculate product in cart
      *
      * @param string $type
-     * @param int    $id
+     * @param string $key
      * @param int    $count
      *
      * @return bool
      */
-    public function recalculateCart($type, int $id, int $count)
+    public function recalculateCart($type, string $key, int $count)
     {
         $productsInCart = $this->getProductInCart() ?: [];
 
         $count = $count < 1 ? 1 : $count;
 
         if (array_key_exists($type, $productsInCart)) {
-            if (array_key_exists($id, $productsInCart[$type])) {
-                $productsInCart[$type][$id]['count'] = $count;
+            if (array_key_exists($key, $productsInCart[$type])) {
+                $productsInCart[$type][$key]['count'] = $count;
             } else {
-                $productsInCart[$type][$id]['count'] = $count;
+                $productsInCart[$type][$key]['count'] = $count;
             }
         } else {
-            $productsInCart[$type][$id]['count'] = $count;
+            $productsInCart[$type][$key]['count'] = $count;
         }
 
         $this->setCart($productsInCart);
@@ -155,11 +178,17 @@ class Cart
         $address = $request->get('address');
         $comment = $request->get('comment');
         $messenger = $request->get('messenger');
+        $colour = $request->get('colour_id');
 
         $productObject = null;
         if ($request->get('product')) {
             $productRepository = $this->entityManager->getRepository(Product::class);
             $productObject = $productRepository->find($request->get('product'));
+        }
+        $colourObject = null;
+        if ($colour) {
+            $colourRepository = $this->entityManager->getRepository(Colour::class);
+            $colourObject = $colourRepository->find($colour);
         }
 
         $totalPrice = 0;
@@ -179,6 +208,7 @@ class Cart
                 'item' => $productObject,
                 'totalPrice' => $productObject->getFinalPrice(),
                 'count' => 1,
+                'colour' => $colourObject,
             ];
         } else {
             $products = $this->getProductsInfo()['product'];
@@ -189,6 +219,7 @@ class Cart
             $product = $item['item'];
             $orderHasItem = new OrderHasItem();
             $orderHasItem->setProduct($product);
+            $orderHasItem->setColour($item['colour']);
             $orderHasItem->setDiscount($product->getDiscount());
             $orderHasItem->setPrice($product->getPrice());
             $orderHasItem->setQuantity($item['count']);
@@ -252,15 +283,15 @@ class Cart
      * Remove product in cart
      *
      * @param string $type
-     * @param int    $id
+     * @param string $key
      *
      * @return bool
      */
-    public function deleteProduct($type, int $id)
+    public function deleteProduct($type, string $key)
     {
         $productsInCart = $this->getProductInCart();
 
-        unset($productsInCart[$type][$id]);
+        unset($productsInCart[$type][$key]);
 
         $this->setCart($productsInCart);
 

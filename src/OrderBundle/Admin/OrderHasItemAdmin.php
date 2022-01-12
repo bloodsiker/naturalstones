@@ -29,6 +29,9 @@ class OrderHasItemAdmin extends Admin
             ->add('product', null, [
                 'label' => 'order_has_item.fields.product',
             ])
+            ->add('colour', null, [
+                'label' => 'order_has_item.fields.colour',
+            ])
             ->add('quantity', null, [
                 'label' => 'order_has_item.fields.quantity',
             ])
@@ -65,6 +68,13 @@ class OrderHasItemAdmin extends Admin
         $formMapper
             ->add('product', ModelListType::class, [
                 'label' => 'order_has_item.fields.product',
+                'required' => true,
+                'btn_delete' => false,
+                'btn_add' => false,
+                'btn_edit' => false,
+            ], ['link_parameters' => $linkParameters])
+            ->add('colour', ModelListType::class, [
+                'label' => 'order_has_item.fields.colour',
                 'required' => true,
                 'btn_delete' => false,
                 'btn_add' => false,

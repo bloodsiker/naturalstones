@@ -39,6 +39,14 @@ class OrderHasItem
     protected $product;
 
     /**
+     * @var \ProductBundle\Entity\Product
+     *
+     * @ORM\ManyToOne(targetEntity="ShareBundle\Entity\Colour", fetch="EAGER")
+     * @ORM\JoinColumn(name="colour_id", referencedColumnName="id", nullable=true)
+     */
+    protected $colour;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
@@ -142,6 +150,30 @@ class OrderHasItem
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * Set colour.
+     *
+     * @param \ShareBundle\Entity\Colour $colour
+     *
+     * @return $this
+     */
+    public function setColour(\ShareBundle\Entity\Colour $colour = null)
+    {
+        $this->colour = $colour;
+
+        return $this;
+    }
+
+    /**
+     * Get colour.
+     *
+     * @return \ShareBundle\Entity\Colour
+     */
+    public function getColour()
+    {
+        return $this->colour;
     }
 
     /**

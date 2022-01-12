@@ -115,7 +115,8 @@ class CartBlockService extends AbstractAdminBlockService
         $type = Cart::TYPE_PRODUCT;
         $action = $request->get('action');
         $item = $request->get('item_id');
-        $count = $request->get('quantity');
+        $count = $request->get('quantity') ?: 1;
+        $colour = $request->get('colour_id');
         $template = $request->get('template');
 
         if ($blockContext->getSetting('action') === self::ACTION_SHOW) {
@@ -130,7 +131,7 @@ class CartBlockService extends AbstractAdminBlockService
 
             switch ($action) {
                 case self::ACTION_ADD:
-                    $countItems = $this->addToCart($type, $item, $count);
+                    $countItems = $this->addToCart($type, $item, $count, $colour);
                     return new JsonResponse(['code' => 200, 'count' => $countItems, 'total' => $this->cart->getTotalPrice()]);
                     break;
                 case self::ACTION_REMOVE:
@@ -167,18 +168,19 @@ class CartBlockService extends AbstractAdminBlockService
      * Add product to cart
      *
      * @param string $type
-     * @param int    $id
+     * @param string $id
      * @param int    $count
+     * @param int|null $colour
      *
      * @return mixed
      *
      * @throws \Exception
      */
-    private function addToCart($type, int $id, int $count)
+    private function addToCart($type, string $id, int $count, $colour = null)
     {
         switch ($type) {
             case Cart::TYPE_PRODUCT:
-                $countItem = $this->cart->addProductToCart(Cart::TYPE_PRODUCT, $id, $count);
+                $countItem = $this->cart->addProductToCart(Cart::TYPE_PRODUCT, $id, $count, $colour);
                 break;
             default:
                 throw new \Exception('Undefined type product');
@@ -189,18 +191,18 @@ class CartBlockService extends AbstractAdminBlockService
 
     /**
      * @param string $type
-     * @param int    $id
+     * @param string $key
      * @param int    $count
      *
      * @return bool
      *
      * @throws \Exception
      */
-    private function recalculateCart($type, int $id, int $count)
+    private function recalculateCart($type, string $key, int $count)
     {
         switch ($type) {
             case Cart::TYPE_PRODUCT:
-                $countItem = $this->cart->recalculateCart(Cart::TYPE_PRODUCT, $id, $count);
+                $countItem = $this->cart->recalculateCart(Cart::TYPE_PRODUCT, $key, $count);
                 break;
             default:
                 throw new \Exception('Undefined type product');
@@ -221,13 +223,13 @@ class CartBlockService extends AbstractAdminBlockService
      * Remove product from cart
      *
      * @param string $type
-     * @param int $id
+     * @param string $id
      *
      * @return bool
      */
-    private function removeProductFromCart($type, int $id)
+    private function removeProductFromCart($type, string $key)
     {
-        $this->cart->deleteProduct($type, $id);
+        $this->cart->deleteProduct($type, $key);
 
         return true;
     }

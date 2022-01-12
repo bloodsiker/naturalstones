@@ -57,12 +57,16 @@ class SendTelegramService
             $product = $orderItem->getProduct();
             $link = $this->productRouterHelper->getGenrePath($product, true);
             $html .= "--- " . sprintf("<a href='%s'>%s %s</a>", $link, $product->getName(), $product->getSize()  ) ." - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
+            if ($orderItem->getColour()) {
+                $html .= " Цвет: " . $orderItem->getColour()->getName();
+            }
             if ($orderItem->getDiscount()) {
                 $html .= ' (Скидка ' . $orderItem->getDiscount() . ' грн)' . PHP_EOL;
             } else {
                 $html .= PHP_EOL;
             }
         }
+        $html .= '<b>Итог: </b>' . $order->getTotalSum() . 'грн';
 
         $keyboard['inline_keyboard'] = [
             [
@@ -105,12 +109,16 @@ class SendTelegramService
             $product = $orderItem->getProduct();
             $link = $this->productRouterHelper->getGenrePath($product, true);
             $html .= "---" . sprintf("<a href='%s'>%s %s</a>", $link, $product->getName(), $product->getSize()  ) ." - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
+            if ($orderItem->getColour()) {
+                $html .= " Цвет: " . $orderItem->getColour()->getName();
+            }
             if ($orderItem->getDiscount()) {
                 $html .= ' (Скидка ' . $orderItem->getDiscount() . ' грн)' . PHP_EOL;
             } else {
                 $html .= PHP_EOL;
             }
         }
+        $html .= '<b>Итог: </b>' . $order->getTotalSum() . 'грн';
 
         $keyboard['inline_keyboard'] = [
             [

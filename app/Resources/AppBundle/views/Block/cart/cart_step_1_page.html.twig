@@ -12,7 +12,13 @@
                     <img alt="{{ mProduct.item.name }}" class="lazyload" data-src="{{ asset(mProduct.item.image.getPath()) }}" src="{{ mProduct.item.name }}">
                 </a>
                 <div class="inner">
-                    <div class="item-name"><a href="{{ product_path(mProduct.item) }}">{{ mProduct.item.name }} {% if mProduct.item.size %}({{ mProduct.item.size }}){% endif %} </a></div>
+                    <div class="item-name">
+                        <a href="{{ product_path(mProduct.item) }}">{{ mProduct.item.name }} {% if mProduct.item.size %}({{ mProduct.item.size }}){% endif %}</a>
+                        {% if mProduct.colour is defined %}
+                            <br>
+                            <span style="font-size: 14px;">Цвет: </span><i style="display: inline-block; padding: 2px 8px; border: 1px solid #E6E6E6; background: #{{ mProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ mProduct.colour.name }}</i>
+                        {% endif %}
+                    </div>
                     <div class="count">{{ mProduct.count }} шт.</div>
                     {% if mProduct.item.discount %}
                         <div class="price">
@@ -25,21 +31,21 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="order-form-promokod">
-            <div class="promokod-block">
-                <input type="text" placeholder="Введите промокод">
-                <button class="button white-button">Применить</button>
-            </div>
-        </div>
+{#        <div class="order-form-promokod">#}
+{#            <div class="promokod-block">#}
+{#                <input type="text" placeholder="Введите промокод">#}
+{#                <button class="button white-button">Применить</button>#}
+{#            </div>#}
+{#        </div>#}
         <ul class="order-form-calculate">
             <li>
                 <span>Сумма заказа: </span>
                 <span>{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>
             </li>
-            <li>
-                <span>Скидка по промокоду: </span>
-                <span>0 грн</span>
-            </li>
+{#            <li>#}
+{#                <span>Скидка по промокоду: </span>#}
+{#                <span>0 грн</span>#}
+{#            </li>#}
             <li>
                 <span>Итого:</span>
                 <span class="total-price">{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>

@@ -30,6 +30,10 @@
                                         <br>
                                         <i style="font-size: 14px;">Цвет:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px; background: #{{ mProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ mProduct.colour.name }}</i>
                                     {% endif %}
+                                    {% if mProduct.letter is defined %}
+                                        <br>
+                                        <i style="font-size: 14px;">Буква:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.letter }}</i>
+                                    {% endif %}
                                 </div>
                             </div>
                         </td>

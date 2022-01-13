@@ -60,13 +60,15 @@ class SendTelegramService
             if ($orderItem->getColour()) {
                 $html .= " Цвет: " . $orderItem->getColour()->getName();
             }
+            if ($orderItem->getOptions()) {
+                $html .= " Параметры : " . $orderItem->getOptions();
+            }
             if ($orderItem->getDiscount()) {
                 $html .= ' (Скидка ' . $orderItem->getDiscount() . ' грн)' . PHP_EOL;
             } else {
                 $html .= PHP_EOL;
             }
         }
-        $html .= '<b>Итог: </b>' . $order->getTotalSum() . 'грн';
 
         $keyboard['inline_keyboard'] = [
             [
@@ -112,13 +114,15 @@ class SendTelegramService
             if ($orderItem->getColour()) {
                 $html .= " Цвет: " . $orderItem->getColour()->getName();
             }
+            if ($orderItem->getOptions()) {
+                $html .= " Параметры : " . $orderItem->getOptions();
+            }
             if ($orderItem->getDiscount()) {
                 $html .= ' (Скидка ' . $orderItem->getDiscount() . ' грн)' . PHP_EOL;
             } else {
                 $html .= PHP_EOL;
             }
         }
-        $html .= '<b>Итог: </b>' . $order->getTotalSum() . 'грн';
 
         $keyboard['inline_keyboard'] = [
             [

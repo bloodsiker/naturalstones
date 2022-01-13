@@ -72,6 +72,10 @@
                                     <br>
                                     <span style="font-size: 14px;">Цвет: </span><i style="display: inline-block; padding: 2px 8px; border: 1px solid #E6E6E6; background: #{{ oProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ oProduct.colour.name }}</i>
                                 {% endif %}
+                                {% if oProduct.options %}
+                                    <br>
+                                    <span style="font-size: 14px;">{{ oProduct.options }}</span>
+                                {% endif %}
                             </div>
                             <div class="count">{{ oProduct.quantity }} шт.</div>
                             {% if oProduct.product.discount %}

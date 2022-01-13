@@ -114,7 +114,7 @@
                                     {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_LETTERS') %}
                                         <h5>Выберите букву</h5>
                                         <div class="select-block">
-                                            <select class="custom-select" data-placeholder="Буквы">
+                                            <select class="custom-select select-letters" data-placeholder="Буквы">
                                                 <option></option>
                                                 {% for productOption in product.productHasOption %}
                                                     {% if productOption.value %}

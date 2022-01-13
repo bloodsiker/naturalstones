@@ -2,6 +2,8 @@
 
 namespace OrderBundle\Admin;
 
+use AdminBundle\Form\Type\TextareaCounterType;
+use AdminBundle\Form\Type\TextCounterType;
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
 
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -99,6 +101,9 @@ class OrderHasItemAdmin extends Admin
                 'attr' => [
                     'readonly' => true,
                 ]
+            ])
+            ->add('options', TextareaCounterType::class, [
+                'label' => 'order_has_item.fields.option',
             ])
         ;
     }

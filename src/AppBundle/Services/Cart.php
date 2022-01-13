@@ -62,7 +62,7 @@ class Cart
      *
      * @return mixed
      */
-    public function addProductToCart($type, string $id, int $count, $colour = null)
+    public function addProductToCart($type, string $id, int $count, $colour = null, $letter = null)
     {
         $productsInCart = $this->getProductInCart() ?: [];
 
@@ -70,7 +70,10 @@ class Cart
 
         $key = $id;
         if ($colour) {
-            $key = sprintf('%s:colour:%s', $id, $colour);
+            $key .= sprintf(':colour:%s', $colour);
+        }
+        if ($letter) {
+            $key .= sprintf(':letter:%s', $letter);
         }
 
         if (array_key_exists($type, $productsInCart)) {
@@ -84,11 +87,17 @@ class Cart
             if ($colour) {
                 $productsInCart[$type][$key]['colour'] = $colour;
             }
+            if ($letter) {
+                $productsInCart[$type][$key]['letter'] = $letter;
+            }
         } else {
             $productsInCart[$type][$key]['id'] = $id;
             $productsInCart[$type][$key]['count'] = $count;
             if ($colour) {
                 $productsInCart[$type][$key]['colour'] = $colour;
+            }
+            if ($letter) {
+                $productsInCart[$type][$key]['letter'] = $letter;
             }
         }
 
@@ -123,6 +132,9 @@ class Cart
                             if ($infoColour) {
                                 $productsInfo[self::TYPE_PRODUCT][$key]['colour'] = $infoColour;
                             }
+                        }
+                        if (isset($data['letter'])) {
+                            $productsInfo[self::TYPE_PRODUCT][$key]['letter'] = $data['letter'];
                         }
                     }
                 }
@@ -179,6 +191,7 @@ class Cart
         $comment = $request->get('comment');
         $messenger = $request->get('messenger');
         $colour = $request->get('colour_id');
+        $letter = $request->get('letter');
 
         $productObject = null;
         if ($request->get('product')) {
@@ -209,20 +222,26 @@ class Cart
                 'totalPrice' => $productObject->getFinalPrice(),
                 'count' => 1,
                 'colour' => $colourObject,
+                'letter' => $letter,
             ];
         } else {
             $products = $this->getProductsInfo()['product'];
         }
 
         foreach ($products as $item) {
+            $option = null;
+            if (isset($item['letter']) && $item['letter']) {
+                $option .= 'Буква: ' . $item['letter'] . PHP_EOL;
+            }
             $totalPrice += $item['totalPrice'];
             $product = $item['item'];
             $orderHasItem = new OrderHasItem();
             $orderHasItem->setProduct($product);
-            $orderHasItem->setColour($item['colour']);
+            $orderHasItem->setColour($item['colour'] ?? null);
             $orderHasItem->setDiscount($product->getDiscount());
             $orderHasItem->setPrice($product->getPrice());
             $orderHasItem->setQuantity($item['count']);
+            $orderHasItem->setOptions($option);
             $order->addOrderHasItem($orderHasItem);
             $this->entityManager->persist($orderHasItem);
         }

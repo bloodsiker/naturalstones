@@ -47,6 +47,13 @@ class OrderHasItem
     protected $colour;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    protected $options;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
@@ -196,6 +203,30 @@ class OrderHasItem
     public function setQuantity(int $quantity)
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * Get options
+     *
+     * @return string
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Set options
+     *
+     * @param string|null $options
+     *
+     * @return $this
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
 
         return $this;
     }

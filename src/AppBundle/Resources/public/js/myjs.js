@@ -492,6 +492,7 @@ $(document).ready(function() {
 		let product = $("input[name='product']").val();
 		let messenger = $("input[name='messenger']:checked").val();
 		let colourId = null;
+		let letter = null;
 
 		if ($('.product-colours-check').length) {
 			const isChecked = !!$('input[type="radio"][name=colour_id]:checked').length;
@@ -500,6 +501,16 @@ $(document).ready(function() {
 			$('#colourError').text('').hide();
 			if (!isChecked) {
 				$('#colourError').text('Вы не выбрали цвет товара').show();
+				return false;
+			}
+		}
+
+		if ($('.select-letters').length) {
+			letter = $('.select-letters option:selected').val();
+
+			$('#letterError').text('').hide();
+			if (!letter) {
+				$('#letterError').text('Вы не выбрали букву').show();
 				return false;
 			}
 		}
@@ -526,7 +537,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: { phone: phone, messenger: messenger, product: product, instagram: instagram, colour_id: colourId },
+			data: { phone: phone, messenger: messenger, product: product, instagram: instagram, colour_id: colourId, letter: letter },
 			success: function (response) {
 				if (response.type === 'error') {
 					alert(response.message);
@@ -600,7 +611,8 @@ $(document).ready(function() {
 			url = _this.data('url'),
 			action = _this.data('action'),
 			quantity = $('#quantity').val(),
-			colourId = null;
+			colourId = null,
+			letter = null;
 
 		if ($('.product-colours-check').length) {
 			const isChecked = !!$('input[type="radio"][name=colour_id]:checked').length;
@@ -613,10 +625,20 @@ $(document).ready(function() {
 			}
 		}
 
+		if ($('.select-letters').length) {
+			letter = $('.select-letters option:selected').val();
+
+			$('#letterError').text('').hide();
+			if (!letter) {
+				$('#letterError').text('Вы не выбрали букву').show();
+				return false;
+			}
+		}
+
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: { action: action, item_id: item_id, quantity: quantity, colour_id: colourId },
+			data: { action: action, item_id: item_id, quantity: quantity, colour_id: colourId, letter: letter },
 			success: function (response) {
 				if (200 === response.code) {
 					openPopup(_this);

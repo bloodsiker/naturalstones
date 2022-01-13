@@ -137,83 +137,89 @@ class OrderAdmin extends Admin
         $context = $this->getPersistentParameter('context');
 
         $formMapper
-            ->with('form_group.basic', ['class' => 'col-md-8', 'label' => false])
-                ->add('fio', TextType::class, [
-                    'label' => 'order.fields.fio',
-                    'required' => false,
-                ])
-                ->add('email', TextType::class, [
-                    'label' => 'order.fields.email',
-                    'required' => false,
-                ])
-                ->add('phone', TextType::class, [
-                    'label' => 'order.fields.phone',
-                    'required' => false,
-                ])
-                ->add('address', TextareaType::class, [
-                    'label' => 'order.fields.address',
-                    'required' => false,
-                    'attr' => [
-                        'rows' => 3,
-                    ],
-                ])
-                ->add('comment', TextareaType::class, [
-                    'label' => 'order.fields.comment',
-                    'required' => false,
-                    'attr' => [
-                        'rows' => 3,
-                    ],
-                ])
-                ->add('orderHasItems', CollectionType::class, [
-                    'label' => 'order.fields.items',
-                    'required' => false,
-                    'constraints' => new Valid(),
-                    'by_reference' => false,
-                ], [
-                    'edit' => 'inline',
-                    'inline' => 'table',
-                    'sortable' => 'orderNum',
-                    'link_parameters' => ['context' => $context],
-                    'admin_code' => 'order.admin.order_has_item',
-                ])
-                ->add('createdAt', DateTimePickerType::class, [
-                    'label'     => 'order.fields.created_at',
-                    'required' => true,
-                    'format' => 'YYYY-MM-dd HH:mm',
-                    'attr' => ['readonly' => true],
-                ])
+            ->with('order.tab.order', ['tab' => true])
+                ->with('form_group.basic', ['class' => 'col-md-8', 'label' => false])
+                    ->add('fio', TextType::class, [
+                        'label' => 'order.fields.fio',
+                        'required' => false,
+                    ])
+                    ->add('email', TextType::class, [
+                        'label' => 'order.fields.email',
+                        'required' => false,
+                    ])
+                    ->add('phone', TextType::class, [
+                        'label' => 'order.fields.phone',
+                        'required' => false,
+                    ])
+                    ->add('address', TextareaType::class, [
+                        'label' => 'order.fields.address',
+                        'required' => false,
+                        'attr' => [
+                            'rows' => 3,
+                        ],
+                    ])
+                    ->add('comment', TextareaType::class, [
+                        'label' => 'order.fields.comment',
+                        'required' => false,
+                        'attr' => [
+                            'rows' => 3,
+                        ],
+                    ])
+                    ->add('createdAt', DateTimePickerType::class, [
+                        'label'     => 'order.fields.created_at',
+                        'required' => true,
+                        'format' => 'YYYY-MM-dd HH:mm',
+                        'attr' => ['readonly' => true],
+                    ])
+                ->end()
+                ->with('form_group.additional', ['class' => 'col-md-4', 'label' => false])
+                    ->add('status', ChoiceType::class, [
+                        'label' => 'order.fields.status',
+                        'choices' => $this->getStatuses(),
+                        'required' => true,
+                    ])
+                    ->add('type', ChoiceType::class, [
+                        'label' => 'order.fields.type',
+                        'choices' => $this->getTypes(),
+                        'required' => true,
+                    ])
+                    ->add('messenger', TextType::class, [
+                        'label' => 'order.fields.messenger',
+                        'required' => false,
+                    ])
+                    ->add('instagram', TextType::class, [
+                        'label' => 'order.fields.instagram',
+                        'required' => false,
+                    ])
+                    ->add('totalSum', TextType::class, [
+                        'label' => 'order.fields.total_sum',
+                        'attr' => ['readonly' => true],
+                    ])
+                    ->add('discountPromo', TextType::class, [
+                        'label' => 'order.fields.discount_promo',
+                        'attr' => ['readonly' => true],
+                    ])
+                    ->add('orderSum', TextType::class, [
+                        'label' => 'order.fields.order_sum',
+                        'attr' => ['readonly' => true],
+                    ])
+                ->end()
             ->end()
-            ->with('form_group.additional', ['class' => 'col-md-4', 'label' => false])
-                ->add('status', ChoiceType::class, [
-                    'label' => 'order.fields.status',
-                    'choices' => $this->getStatuses(),
-                    'required' => true,
-                ])
-                ->add('type', ChoiceType::class, [
-                    'label' => 'order.fields.type',
-                    'choices' => $this->getTypes(),
-                    'required' => true,
-                ])
-                ->add('messenger', TextType::class, [
-                    'label' => 'order.fields.messenger',
-                    'required' => false,
-                ])
-                ->add('instagram', TextType::class, [
-                    'label' => 'order.fields.instagram',
-                    'required' => false,
-                ])
-                ->add('totalSum', TextType::class, [
-                    'label' => 'order.fields.total_sum',
-                    'attr' => ['readonly' => true],
-                ])
-                ->add('discountPromo', TextType::class, [
-                    'label' => 'order.fields.discount_promo',
-                    'attr' => ['readonly' => true],
-                ])
-                ->add('orderSum', TextType::class, [
-                    'label' => 'order.fields.order_sum',
-                    'attr' => ['readonly' => true],
-                ])
+            ->with('order.tab.order_has_product', ['tab' => true])
+                ->with('form_group.order_has_product', ['class' => 'col-md-12', 'label' => null])
+                    ->add('orderHasItems', CollectionType::class, [
+                        'label' => 'order.fields.items',
+                        'required' => false,
+                        'constraints' => new Valid(),
+                        'by_reference' => false,
+                    ], [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                        'sortable' => 'orderNum',
+                        'link_parameters' => ['context' => $context],
+                        'admin_code' => 'order.admin.order_has_item',
+                    ])
+                ->end()
             ->end();
     }
 

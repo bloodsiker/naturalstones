@@ -7,6 +7,7 @@ Order Status Create: Добавить статус
 form_group:
     basic: Основные
     additional: Дополнительные
+    order_has_product: Товары в заказе
 
 group:
     order: Заказы
@@ -40,6 +41,9 @@ order:
         types:
             cart: Заказ с корзины
             quick: Быстрый заказ
+    tab:
+        order: Заказ
+        order_has_product: Товары в заказе
 
 order_has_item:
     fields:
@@ -48,3 +52,4 @@ order_has_item:
         colour: Цвет
         price: Цена
         discount: Цена со скидкой
+        option: Параметры

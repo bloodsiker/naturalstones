@@ -117,6 +117,7 @@ class CartBlockService extends AbstractAdminBlockService
         $item = $request->get('item_id');
         $count = $request->get('quantity') ?: 1;
         $colour = $request->get('colour_id');
+        $letter = $request->get('letter');
         $template = $request->get('template');
 
         if ($blockContext->getSetting('action') === self::ACTION_SHOW) {
@@ -131,7 +132,7 @@ class CartBlockService extends AbstractAdminBlockService
 
             switch ($action) {
                 case self::ACTION_ADD:
-                    $countItems = $this->addToCart($type, $item, $count, $colour);
+                    $countItems = $this->addToCart($type, $item, $count, $colour, $letter);
                     return new JsonResponse(['code' => 200, 'count' => $countItems, 'total' => $this->cart->getTotalPrice()]);
                     break;
                 case self::ACTION_REMOVE:
@@ -176,11 +177,11 @@ class CartBlockService extends AbstractAdminBlockService
      *
      * @throws \Exception
      */
-    private function addToCart($type, string $id, int $count, $colour = null)
+    private function addToCart($type, string $id, int $count, $colour = null, $letter = null)
     {
         switch ($type) {
             case Cart::TYPE_PRODUCT:
-                $countItem = $this->cart->addProductToCart(Cart::TYPE_PRODUCT, $id, $count, $colour);
+                $countItem = $this->cart->addProductToCart(Cart::TYPE_PRODUCT, $id, $count, $colour, $letter);
                 break;
             default:
                 throw new \Exception('Undefined type product');

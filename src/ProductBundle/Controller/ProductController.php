@@ -43,9 +43,9 @@ class ProductController extends Controller
         $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => ' Naturalstones Jewerly - Изделия из натуральных камней'.$page,
-            'description' => "{$pageDesc} Список изделий ",
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
+            'title' => "Список изделий, {$category->getName()} | Naturalstones Jewerly - Изделия из натуральных камней".$page,
+            'description' => "{$pageDesc} Список изделий, {$category->getName()}",
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
             'og' => [
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
@@ -72,9 +72,9 @@ class ProductController extends Controller
         $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => ' Naturalstones Jewerly - Изделия из натуральных камней'.$page,
-            'description' => "{$pageDesc} Список изделий для мужчин и женщин",
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
+            'title' => " Naturalstones Jewerly - Изделия из натуральных камней для {$whoIs}" . $page,
+            'description' => "{$pageDesc} Большой выбор ювелирных изделий для мужчин и женщин",
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
             'og' => [
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
@@ -101,11 +101,15 @@ class ProductController extends Controller
         $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
         $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
 
+        $title = "Ювелирные изделия по тегу {$tag->getName()} | Naturalstones Jewerly - Изделия из натуральных камней".$page;
+
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => ' Naturalstones Jewerly - Изделия из натуральных камней'.$page,
-            'description' => "{$pageDesc} Изделия по тегу " . $tag->getName(),
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
+            'title' => $title,
+            'description' => "{$pageDesc} Большой выбор ювелирных изделий по тегу " . $tag->getName(),
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
             'og' => [
+                'og:type' => 'website',
+                'og:title' => $title,
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);
@@ -131,11 +135,15 @@ class ProductController extends Controller
         $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
         $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
 
+        $title = "Ювелирные изделия цвета {$colour->getName()} | Naturalstones Jewerly - Изделия из натуральных камней".$page;
+
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Naturalstones Jewerly - Изделия из натуральных камней'.$page,
-            'description' => "{$pageDesc} Изделия по цвету",
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
+            'title' => $title,
+            'description' => "{$pageDesc} Большой выбор ювелирных изделий цвета {$colour->getName()}",
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
             'og' => [
+                'og:type' => 'website',
+                'og:title' => $title,
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);
@@ -163,11 +171,15 @@ class ProductController extends Controller
         $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
         $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
 
+        $title = "Натуральный камень {$stone->getName()} | Naturalstones Jewerly - Изделия из натуральных камней".$page;
+
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Naturalstones Jewerly - Изделия из натуральных камней'.$page,
+            'title' => $title,
             'description' => "{$pageDesc} Изделия по камню " . $stone->getName(),
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
             'og' => [
+                'og:type' => 'website',
+                'og:title' => $title,
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);
@@ -209,7 +221,7 @@ class ProductController extends Controller
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $title,
             'description' => mb_substr($product->getDescription(), 0, 150),
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
             'og' => [
                 'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
                 'og:type' => 'article',

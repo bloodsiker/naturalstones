@@ -12,8 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
  */
 class StoneController extends Controller
 {
-    const AUTHOR_404 = 'Stone doesn\'t exist';
-
     /**
      * @param Request $request
      *
@@ -26,13 +24,13 @@ class StoneController extends Controller
         $breadcrumb = $this->get('app.breadcrumb');
         $breadcrumb->addBreadcrumb(['title' => 'Все камни']);
 
-        $title = 'Все камни | Naturalstones Jewerly - Изделия из натуральных камней';
-        $description = "Список камней";
+        $title = 'Все натуральные камни | Naturalstones Jewerly - Изделия из натуральных камней';
+        $description = "Список всех натуральных камней";
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $title,
             'description' => $description.' | Naturalstones Jewerly - Изделия из натуральных камней',
-            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, без регистрации, топбук',
+            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
             'og' => [
                 'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
                 'og:type' => 'website',

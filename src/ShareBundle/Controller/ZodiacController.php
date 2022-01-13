@@ -34,14 +34,16 @@ class ZodiacController extends Controller
         $breadcrumb = $this->get('app.breadcrumb');
         $breadcrumb->addBreadcrumb(['title' => 'Камни для знака зодиака ' . $zodiac->getName()]);
 
+        $title = 'Изделия для знака зодиака - ' . $zodiac->getName().' | Изделия | Страница '.$request->get('page', 1).' | Naturalstones Jewerly - Изделия из натуральных камней';
+
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => $zodiac->getName().' | Изделия | Страница '.$request->get('page', 1).' | Naturalstones Jewerly - Изделия из натуральных камней',
+            'title' => $title,
             'description' => "Купить изделия для знака зодиака {$zodiac->getName()} ",
-            'keywords' => "{$zodiac->getName()}, Натуральные камни, серебро, браслеты, кольца, чокеры, подвески",
+            'keywords' => "{$zodiac->getName()}, Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала",
             'og' => [
                 'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
                 'og:type' => 'website',
-                'og:title' => $zodiac->getName().' | Изделия | Страница '.$request->get('page', 1).' | Naturalstones Jewerly - Изделия из натуральных камней',
+                'og:title' => $title,
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);

@@ -10,11 +10,7 @@
         }}
 
         {% if category.description %}
-            <div class="product-description-container" style="
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 15px;
-    background: #fafafa;">
+            <div class="product-description-container category-description">
                 {{ category.description|raw }}
             </div>
         {% endif %}

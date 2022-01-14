@@ -1007,6 +1007,12 @@ footer {
     transform: rotate(360deg);
   }
 }
+.category-description {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 15px;
+  background: #fafafa;
+}
 
 .pagination {
   display: -ms-flexbox;

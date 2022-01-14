@@ -249,6 +249,13 @@ class Product
     protected $productHasOptionColour;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
+     */
+    protected $orderNum;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=false)
@@ -276,6 +283,7 @@ class Product
         $this->views     = 0;
         $this->price     = 0;
         $this->discount  = 0;
+        $this->orderNum  = 0;
         $this->createdAt = new \DateTime('now');
 
         $this->colours           = new ArrayCollection();
@@ -951,6 +959,30 @@ class Product
     public function getOptionType()
     {
         return $this->optionType;
+    }
+
+    /**
+     * Set orderNum.
+     *
+     * @param int $orderNum
+     *
+     * @return $this
+     */
+    public function setOrderNum($orderNum)
+    {
+        $this->orderNum = $orderNum;
+
+        return $this;
+    }
+
+    /**
+     * Get orderNum.
+     *
+     * @return int
+     */
+    public function getOrderNum()
+    {
+        return $this->orderNum;
     }
 
     /**

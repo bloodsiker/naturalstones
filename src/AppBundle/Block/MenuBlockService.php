@@ -79,11 +79,11 @@ class MenuBlockService extends AbstractAdminBlockService
 
         $qb = $repository->baseCategoryQueryBuilder();
 
-        $main = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_MAIN);
-        $secondary = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_SECONDARY);
-        $individual = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_INDIVIDUAL);
-        $giftBox = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_GIFT_BOX);
-        $scrapers = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_SCRAPERS);
+        $main = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_MAIN)->orderBy('c.orderNum', 'DESC');
+        $secondary = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_SECONDARY)->orderBy('c.orderNum', 'DESC');
+        $individual = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_INDIVIDUAL)->orderBy('c.orderNum', 'DESC');
+        $giftBox = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_GIFT_BOX)->orderBy('c.orderNum', 'DESC');
+        $scrapers = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_SCRAPERS)->orderBy('c.orderNum', 'DESC');
 
         return $this->renderResponse($blockContext->getTemplate(), [
             'settings'      => $blockContext->getSettings(),

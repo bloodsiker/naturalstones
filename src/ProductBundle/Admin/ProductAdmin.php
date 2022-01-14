@@ -376,6 +376,9 @@ class ProductAdmin extends Admin
                         'btn_catalogue' => $this->translationDomain,
                         'minimum_input_length' => 2,
                     ])
+                    ->add('orderNum', IntegerType::class, [
+                        'label' => 'product.fields.order_num',
+                    ])
                     ->add('views', IntegerType::class, [
                         'label' => 'product.fields.views',
                         'required' => false,

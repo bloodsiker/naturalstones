@@ -64,6 +64,7 @@ product:
         product_option_colour: Опции для выбора цвета
         updated_at: Изменена
         created_at: Создана
+        order_num: Сортировка
         types:
             letters: Буквы
     buttons:
@@ -132,9 +133,12 @@ category:
     fields:
         id: ID
         name: Название
+        image: Изображение
+        description: Описание
         slug: Сегмент URL (slug)
         is_active: Активно
         type: Тип
+        order_num: Сортировка
         types:
             main: Украшения
             secondary: Фурнитура

@@ -31,11 +31,26 @@ class Category
     protected $id;
 
     /**
+     * @var \MediaBundle\Entity\MediaImage
+     *
+     * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaImage")
+     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    protected $image;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $description;
 
     /**
      * @var string
@@ -66,12 +81,20 @@ class Category
     protected $products;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
+     */
+    protected $orderNum;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->isActive = true;
         $this->type = 1;
+        $this->orderNum = 0;
 
         $this->products = new ArrayCollection();
     }
@@ -139,6 +162,54 @@ class Category
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \MediaBundle\Entity\MediaImage $image
+     *
+     * @return $this
+     */
+    public function setImage(\MediaBundle\Entity\MediaImage $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \MediaBundle\Entity\MediaImage
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -220,7 +291,7 @@ class Category
      *
      * @return $this
      */
-    public function addBookPublishing(\ProductBundle\Entity\Product $product)
+    public function addProduct(\ProductBundle\Entity\Product $product)
     {
         $this->products[] = $product;
 
@@ -232,7 +303,7 @@ class Category
      *
      * @param \ProductBundle\Entity\Product $product
      */
-    public function removeBookPublishing(\ProductBundle\Entity\Product $product)
+    public function removeProduct(\ProductBundle\Entity\Product $product)
     {
         $this->products->removeElement($product);
     }
@@ -242,9 +313,33 @@ class Category
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getBooksPublishing()
+    public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * Set orderNum.
+     *
+     * @param int $orderNum
+     *
+     * @return $this
+     */
+    public function setOrderNum($orderNum)
+    {
+        $this->orderNum = $orderNum;
+
+        return $this;
+    }
+
+    /**
+     * Get orderNum.
+     *
+     * @return int
+     */
+    public function getOrderNum()
+    {
+        return $this->orderNum;
     }
 
     public static function getTypes()

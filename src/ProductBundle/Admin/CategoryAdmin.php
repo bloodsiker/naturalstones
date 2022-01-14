@@ -4,10 +4,13 @@ namespace ProductBundle\Admin;
 
 use AdminBundle\Admin\BaseAdmin as Admin;
 use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelListType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -48,6 +51,10 @@ class CategoryAdmin extends Admin
                 'label' => 'category.fields.is_active',
                 'editable'  => true,
             ])
+            ->add('orderNum', null, [
+                'label' => 'category.fields.order_num',
+                'editable'  => true,
+            ])
             ->add('_action', 'actions', [
                 'actions' => [
                     'edit' => [],
@@ -69,6 +76,11 @@ class CategoryAdmin extends Admin
             ])
             ->add('type', null, [
                 'label' => 'category.fields.type',
+            ], ChoiceType::class, [
+                'choices' => $this->getTypes(),
+                'choice_translation_domain' => $this->getTranslationDomain(),
+                'expanded' => false,
+                'multiple' => false,
             ])
             ->add('isActive', null, [
                 'label' => 'category.fields.is_active',
@@ -85,6 +97,14 @@ class CategoryAdmin extends Admin
                 ->add('name', TextType::class, [
                     'label' => 'category.fields.name',
                 ])
+                ->add('description', CKEditorType::class, [
+                    'label' => 'category.fields.description',
+                    'config_name' => 'default',
+                    'required' => true,
+                    'attr' => [
+                        'rows' => 3,
+                    ],
+                ])
                 ->add('slug', TextType::class, [
                     'label' => 'category.fields.slug',
                     'required' => false,
@@ -96,10 +116,17 @@ class CategoryAdmin extends Admin
                     'label' => 'category.fields.is_active',
                     'required' => false,
                 ])
+                ->add('image', ModelListType::class, [
+                    'label' => 'category.fields.image',
+                    'required' => true,
+                ])
                 ->add('type', ChoiceType::class, [
                     'label' => 'category.fields.type',
                     'choices' => $this->getTypes(),
                     'required' => true,
+                ])
+                ->add('orderNum', IntegerType::class, [
+                    'label' => 'category.fields.order_num',
                 ])
             ->end();
     }

@@ -55,6 +55,7 @@ product:
         discount: Цена со скидкой
         tags: Тег(и)
         views: Просмотры
+        order_num: Сортировка
         option_type: Тип
         product_image: Дополнительные изображения
         product_set_products: Набор продуктов

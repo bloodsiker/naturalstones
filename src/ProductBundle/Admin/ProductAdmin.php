@@ -152,6 +152,10 @@ class ProductAdmin extends Admin
             ->add('isMainProduct', null, [
                 'label' => 'product.fields.is_main_product',
             ])
+            ->add('orderNum', null, [
+                'label' => 'product.fields.order_num',
+                'editable'  => true,
+            ])
             ->add('_action', 'actions', [
                 'actions' => [
                     'preview' => ['template' => 'ProductBundle:CRUD:list__action_preview.html.twig'],

@@ -20,7 +20,8 @@ class ProductRepository extends EntityRepository
         $qb
             ->where('p.isActive = 1')
             ->andWhere('p.isMainProduct = 1')
-            ->orderBy('p.id', 'DESC')
+            ->orderBy('p.orderNum', 'DESC')
+            ->addOrderBy('p.id', 'DESC')
         ;
 
         return $qb;

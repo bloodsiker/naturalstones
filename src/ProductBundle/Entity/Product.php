@@ -283,7 +283,7 @@ class Product
         $this->views     = 0;
         $this->price     = 0;
         $this->discount  = 0;
-        $this->orderNum  = 0;
+        $this->orderNum  = 1;
         $this->createdAt = new \DateTime('now');
 
         $this->colours           = new ArrayCollection();

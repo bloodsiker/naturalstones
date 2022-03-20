@@ -14,6 +14,18 @@
                 </div>
             </div>
         {% endif %}
+        {% if gematit|length %}
+            <div class="header-menu-block topmenu">
+                <div class="type">
+                    <div class="type-title">Гематит</div>
+                    <ul class="header-menu submenu">
+                        {% for gCategory in gematit %}
+                            <li><a href="{{ path('product_list', { 'slug': gCategory.slug }) }}">{{ gCategory.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
         {% if main|length %}
             <div class="header-menu-block topmenu">
                 <div class="type">
@@ -73,6 +85,16 @@
                 <ul class="header-menu">
                     {% for iCategory in individual %}
                         <li><a href="{{ path('product_list', { 'slug': iCategory.slug }) }}">{{ iCategory.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if gematit|length %}
+            <div class="header-menu-block">
+                <div class="type">Украшения</div>
+                <ul class="header-menu">
+                    {% for gCategory in gematit %}
+                        <li><a href="{{ path('product_list', { 'slug': gCategory.slug }) }}">{{ gCategory.name}}</a></li>
                     {% endfor %}
                 </ul>
             </div>

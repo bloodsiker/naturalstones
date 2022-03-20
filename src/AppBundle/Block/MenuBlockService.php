@@ -84,6 +84,7 @@ class MenuBlockService extends AbstractAdminBlockService
         $individual = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_INDIVIDUAL)->orderBy('c.orderNum', 'DESC');
         $giftBox = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_GIFT_BOX)->orderBy('c.orderNum', 'DESC');
         $scrapers = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_SCRAPERS)->orderBy('c.orderNum', 'DESC');
+        $gematit = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_GEMATIT)->orderBy('c.orderNum', 'DESC');
 
         return $this->renderResponse($blockContext->getTemplate(), [
             'settings'      => $blockContext->getSettings(),
@@ -93,6 +94,7 @@ class MenuBlockService extends AbstractAdminBlockService
             'individual'    => $individual->getQuery()->getResult(),
             'giftBox'       => $giftBox->getQuery()->getResult(),
             'scrapers'      => $scrapers->getQuery()->getResult(),
+            'gematit'       => $gematit->getQuery()->getResult(),
         ]);
     }
 }

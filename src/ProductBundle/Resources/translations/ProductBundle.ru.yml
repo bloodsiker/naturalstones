@@ -65,7 +65,6 @@ product:
         product_option_colour: Опции для выбора цвета
         updated_at: Изменена
         created_at: Создана
-        order_num: Сортировка
         types:
             letters: Буквы
     buttons:
@@ -146,6 +145,7 @@ category:
             individual: Индивидуальные заказы
             gift_box: Подарочные упаковки
             scrapers: Скребки Гуаша
+            gematit: Гематит
 
 history_search:
     fields:

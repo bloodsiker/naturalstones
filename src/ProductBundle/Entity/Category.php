@@ -20,6 +20,7 @@ class Category
     const TYPE_INDIVIDUAL = 3;
     const TYPE_GIFT_BOX = 4;
     const TYPE_SCRAPERS = 5;
+    const TYPE_GEMATIT = 6;
 
     /**
      * @var int
@@ -350,6 +351,7 @@ class Category
             self::TYPE_INDIVIDUAL => 'individual',
             self::TYPE_GIFT_BOX => 'gift_box',
             self::TYPE_SCRAPERS => 'scrapers',
+            self::TYPE_GEMATIT => 'gematit',
         ];
     }
 }

@@ -8,9 +8,13 @@
             )
         }}
 
-        <h1>{{ product.name }} {{ product.size }}</h1>
-        <div class="product-section-detail">
+        {% if app.user %}
+            <h1><a href="{{ path('admin_product_product_edit', { 'id': product.id }) }}" target="_blank">{{ product.name }} {{ product.size }}</a></h1>
+        {% else %}
+            <h1>{{ product.name }} {{ product.size }}</h1>
+        {% endif %}
 
+        <div class="product-section-detail">
             <div class="product-gallery">
                 <div class="product-big-slider js-slick">
                     <div class="product-big-item">

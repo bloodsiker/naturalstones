@@ -16,6 +16,7 @@ use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\CoreBundle\Form\Type\ImmutableArrayType;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -89,6 +90,7 @@ class ListProductBlockService extends AbstractAdminBlockService
             'colour'           => null,
             'stone'            => null,
             'who'              => null,
+            'discount'         => false,
             'exclude_ids'      => null,
             'show_paginator'   => false,
             'ajax_paginator'   => false,
@@ -129,6 +131,10 @@ class ListProductBlockService extends AbstractAdminBlockService
                     'label'     => 'product.block.fields.who',
                     'required'  => false,
                     'choices'   => array_merge(['' => ''], array_flip(Product::$whois)),
+                ], ],
+                ['discount', CheckboxType::class, [
+                    'label'     => 'product.block.fields.discount',
+                    'required'  => false,
                 ], ],
             ],
         ]);
@@ -190,6 +196,10 @@ class ListProductBlockService extends AbstractAdminBlockService
 
         if ($blockContext->getSetting('exclude_ids')) {
             $repository->filterExclude($qb, $blockContext->getSetting('exclude_ids'));
+        }
+
+        if ($blockContext->getSetting('discount')) {
+            $repository->filterByDiscount($qb);
         }
 
         $maxPriceQb = $minPriceQb = clone $qb;

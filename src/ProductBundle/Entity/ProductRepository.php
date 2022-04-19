@@ -70,6 +70,11 @@ class ProductRepository extends EntityRepository
         return $qb;
     }
 
+    public function filterByDiscount(QueryBuilder $qb) : QueryBuilder
+    {
+        return $qb->andWhere('p.discount != :discount')->setParameter('discount', 0);
+    }
+
     public function filterByColour(QueryBuilder $qb, $colour) : QueryBuilder
     {
         return $qb->innerJoin('p.colours', 'colour', 'WITH', 'colour.id = :colour')

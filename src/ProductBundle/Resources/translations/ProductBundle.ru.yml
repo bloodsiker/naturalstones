@@ -87,6 +87,7 @@ product:
             tag: Тег
             colour: Цвет
             stone: Камень
+            discount: Товары со скидкой
             who: Для кого (женщин/мужчин)
 
 product_has_image:

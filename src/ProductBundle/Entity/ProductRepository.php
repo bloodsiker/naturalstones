@@ -44,11 +44,11 @@ class ProductRepository extends EntityRepository
 
     /**
      * @param QueryBuilder $qb
-     * @param Category     $category
+     * @param Category|int $category
      *
      * @return QueryBuilder
      */
-    public function filterByCategory(QueryBuilder $qb, Category $category) : QueryBuilder
+    public function filterByCategory(QueryBuilder $qb, $category) : QueryBuilder
     {
         return $qb->andWhere('p.category = :category')->setParameter('category', $category);
     }
@@ -96,11 +96,11 @@ class ProductRepository extends EntityRepository
 
     /**
      * @param QueryBuilder $qb
-     * @param Tag          $tag
+     * @param Tag|int      $tag
      *
      * @return QueryBuilder
      */
-    public function filterByTag(QueryBuilder $qb, Tag $tag) : QueryBuilder
+    public function filterByTag(QueryBuilder $qb, $tag) : QueryBuilder
     {
         return $qb->innerJoin('p.tags', 'tag', 'WITH', 'tag.id = :tag')
             ->setParameter('tag', $tag);

@@ -187,32 +187,37 @@ sonata_page:
             containers:
                 header:
                     name: Header
+                    blocks:
+                        - ~
                 content_top:
                     name: Top content
+                    blocks:
+                        - ~
                 content:
                     name: Main content
-                content_side_left:
-                    name: Side left content
                     blocks:
-                      - ~
+                        - product.block.list
                 content_bottom:
                     name: Bottom content
+                    blocks:
+                        - ~
                 footer:
                     name: Footer
+                    blocks:
+                        - ~
             matrix:
                 layout: |
                     HHHHHHHH
                     TTTTTTTT
-                    LLCCCCCC
-                    LLCCCCCC
-                    LLCCCCCC
+                    CCCCCCCC
+                    CCCCCCCC
+                    CCCCCCCC
                     BBBBBBBB
                     FFFFFFFF
                 mapping:
                     H: header
                     T: content_top
                     C: content
-                    L: content_side_left
                     B: content_bottom
                     F: footer
         error:

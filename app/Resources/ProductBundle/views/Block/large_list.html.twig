@@ -1,41 +1,31 @@
-<div class="filter-outer">
-    {% if settings.title_url %}
-        <h1><a href="{{ settings.title_url }}">{{ settings.title }}</a></h1>
-    {% else %}
-        <h1>{{ settings.title }}</h1>
-    {% endif %}
+{% if products.count %}
+    <div class="filter-outer">
+        {% if settings.title_url %}
+            <h1><a href="{{ settings.title_url }}">{{ settings.title }}</a></h1>
+        {% else %}
+            <h1>{{ settings.title }}</h1>
+        {% endif %}
 
-    {% if settings.filter %}
-        {% include 'AppBundle:Block:filter.html.twig' %}
-    {% endif %}
-</div>
+        {% if settings.filter %}
+            {% include 'AppBundle:Block:filter.html.twig' %}
+        {% endif %}
+    </div>
 
-{% if products %}
     <div class="catalog-flex">
         {% include 'ProductBundle:Block:large_list_ajax.html.twig' %}
     </div>
-{% endif %}
 
-{% if settings.ajax_paginator and products.count > settings.items_count %}
-    {% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
-    <div class="more-catalog">
-        <a href="#" class="more-catalog-link" id="get_more_products" data-page="2" data-url="{{ block_ajax_path }}"> <!-- loading - класс для вращения стрелки -->
-            <i><img src="{{ asset('bundles/app/images/rotate.svg') }}" alt="" /></i>
-            <span>Загрузить еще</span>
-        </a>
-    </div>
-{% endif %}
+    {% if settings.ajax_paginator and products.count > settings.items_count %}
+        {% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+        <div class="more-catalog">
+            <a href="#" class="more-catalog-link" id="get_more_products" data-page="2" data-url="{{ block_ajax_path }}"> <!-- loading - класс для вращения стрелки -->
+                <i><img src="{{ asset('bundles/app/images/rotate.svg') }}" alt="" /></i>
+                <span>Загрузить еще</span>
+            </a>
+        </div>
+    {% endif %}
 
-{#<!--Пагинация-->#}
-{#<ul class="pagination">#}
-{#    <li><a href=""><i class="arrow prev"></i></a></li>#}
-{#    <li><a href="">1</a></li>#}
-{#    <li class="active"><a href="">2</a></li>#}
-{#    <li><a href="">3</a></li>#}
-{#    <li class="next"><a href=""><i class="arrow next"></i></a></li>#}
-{#</ul>#}
-{#<!--//Пагинация-->#}
-
-{% if settings.show_paginator and products.maxPerPage is defined and products.count > products.maxPerPage %}
-    {{ pagerfanta(products, { 'omitFirstPage': true}) }}
+    {% if settings.show_paginator and products.maxPerPage is defined and products.count > products.maxPerPage %}
+        {{ pagerfanta(products, { 'omitFirstPage': true}) }}
+    {% endif %}
 {% endif %}

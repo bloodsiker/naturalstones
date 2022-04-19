@@ -77,6 +77,17 @@ product:
         product_option: Дополнительные опции
         product_option_colour: Опции цвета
         product_option_metal: Опции метала
+    block:
+        service:
+            list: Список новостей
+        fields:
+            title: Заголовок
+            items_count: Количество товаров
+            category: Категория
+            tag: Тег
+            colour: Цвет
+            stone: Камень
+            who: Для кого (женщин/мужчин)
 
 product_has_image:
     fields:

@@ -2,15 +2,22 @@
 
 namespace ProductBundle\Block;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use ProductBundle\Block\Traits\HomepageDefaultMethodTrait;
+use ProductBundle\Block\Traits\StrictRelationSonataAdminTrait;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
+use ShareBundle\Entity\Tag;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
+use Sonata\BlockBundle\Model\BlockInterface;
+use Sonata\CoreBundle\Form\Type\ImmutableArrayType;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,16 +27,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ListProductBlockService extends AbstractAdminBlockService
 {
+    use StrictRelationSonataAdminTrait,
+        HomepageDefaultMethodTrait;
+
     const SIMILAR_LIST = 'ProductBundle:Block:similar_list.html.twig';
     const BUY_WITH_LIST = 'ProductBundle:Block:buy_with_list.html.twig';
     const TEMPLATE_AJAX  = 'ProductBundle:Block:large_list_ajax.html.twig';
 
     const CATEGORY_NABORI = 5;
-
-    /**
-     * @var Registry $doctrine
-     */
-    protected $doctrine;
 
     /**
      * @var RequestStack $requestStack
@@ -41,14 +46,12 @@ class ListProductBlockService extends AbstractAdminBlockService
      *
      * @param string          $name
      * @param EngineInterface $templating
-     * @param Registry        $doctrine
      * @param RequestStack    $requestStack
      */
-    public function __construct($name, EngineInterface $templating, Registry $doctrine, RequestStack $requestStack)
+    public function __construct($name, EngineInterface $templating, RequestStack $requestStack)
     {
         parent::__construct($name, $templating);
 
-        $this->doctrine = $doctrine;
         $this->requestStack = $requestStack;
     }
 
@@ -87,9 +90,47 @@ class ListProductBlockService extends AbstractAdminBlockService
             'stone'            => null,
             'who'              => null,
             'exclude_ids'      => null,
-            'show_paginator'   => true,
+            'show_paginator'   => false,
             'ajax_paginator'   => false,
             'template'         => 'ProductBundle:Block:large_list.html.twig',
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildEditForm(FormMapper $formMapper, BlockInterface $block)
+    {
+        $formMapper->add('settings', ImmutableArrayType::class, [
+            'translation_domain' => 'ProductBundle',
+            'label' => false,
+            'keys' => [
+                ['title', TextType::class, [
+                    'label'     => 'product.block.fields.title',
+                    'required'  => false,
+                ], ],
+                ['items_count', TextType::class, [
+                    'label'     => 'product.block.fields.items_count',
+                    'required'  => false,
+                ], ],
+                [$this->getAdminBuilder($formMapper, 'category'), null, [
+                    'required' => false,
+                ], ],
+                [$this->getAdminBuilder($formMapper, 'tag'), null, [
+                    'required' => false,
+                ], ],
+                [$this->getAdminBuilder($formMapper, 'stone'), null, [
+                    'required' => false,
+                ], ],
+                [$this->getAdminBuilder($formMapper, 'colour'), null, [
+                    'required' => false,
+                ], ],
+                ['who', ChoiceType::class, [
+                    'label'     => 'product.block.fields.who',
+                    'required'  => false,
+                    'choices'   => array_merge(['' => ''], array_flip(Product::$whois)),
+                ], ],
+            ],
         ]);
     }
 
@@ -128,10 +169,6 @@ class ListProductBlockService extends AbstractAdminBlockService
         }
 
         if ($blockContext->getSetting('category')) {
-            if (!$blockContext->getSetting('category') instanceof Category) {
-                $category = $repositoryCategory->find($blockContext->getSetting('category'));
-                $blockContext->setSetting('category', $category);
-            }
             $repository->filterByCategory($qb, $blockContext->getSetting('category'));
         }
 

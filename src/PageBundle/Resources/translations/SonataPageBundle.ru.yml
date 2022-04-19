@@ -294,6 +294,7 @@ sonata:
     page:
         template:
             wide: Широкий
+            football: Футбол
             default: C правой колонкой
             section: Секция (Лента)
             homepage: Главная страница
@@ -301,4 +302,5 @@ sonata:
             lifestyle: Lifestyle
             view: Страница контента
             amp: AMP
+            tv: TV
             error: Страница 404

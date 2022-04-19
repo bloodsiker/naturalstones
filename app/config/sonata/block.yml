@@ -52,7 +52,7 @@ sonata_block:
             contexts: [cms]
 
         product.block.list:
-            contexts: [cms]
+            contexts: [sonata_page_bundle]
         product.block.popular:
             contexts: [ cms ]
         product.block.viewed:

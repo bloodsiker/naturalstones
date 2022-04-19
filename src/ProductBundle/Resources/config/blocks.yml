@@ -2,12 +2,21 @@ services:
     product.block.list:
         class: ProductBundle\Block\ListProductBlockService
         arguments:
-          - product.block.list
-          - '@templating'
-          - '@?doctrine'
-          - '@request_stack'
+            - product.block.service.list
+            - '@templating'
+            - '@request_stack'
+        calls:
+            - [ setDoctrine, [ '@?doctrine' ] ]
+            -
+                - 'setAdmins'
+                -
+                    -
+                        tag: '@?share.admin.tag'
+                        category: '@?sonata.admin.product_category'
+                        stone: '@?share.admin.stone'
+                        colour: '@?share.admin.colour'
         tags:
-          - { name: sonata.block }
+            - { name: sonata.block }
 
     product.block.popular:
         class: ProductBundle\Block\PopularProductsBlockService

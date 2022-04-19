@@ -78,6 +78,17 @@ services:
         calls:
             - [ setTranslationDomain, [ ProductBundle ] ]
 
+    sonata.admin.product_option_label:
+        class: ProductBundle\Admin\ProductOptionLabelAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.product", label: "group.product_option_label_editor", show_in_dashboard: false }
+        arguments:
+            - ~
+            - ProductBundle\Entity\ProductOptionLabel
+            - ProductBundle:ProductAdmin
+        calls:
+            - [ setTranslationDomain, [ ProductBundle ] ]
+
     sonata.admin.product_info_view:
         class: ProductBundle\Admin\ProductInfoViewAdmin
         tags:

@@ -29,6 +29,7 @@ group:
     product: Товары
     product_editor: Товары
     category_editor: Категории
+    product_option_label_editor: Название для наборов продуктов
     product_info_view_editor: Просмотры товаров
     product_has_image_editor: Дополнительные изображения
     product_search_history_editor: Поисковые запросы
@@ -57,6 +58,7 @@ product:
         views: Просмотры
         order_num: Сортировка
         option_type: Тип
+        option_label: Название для набора
         product_image: Дополнительные изображения
         product_set_products: Набор продуктов
         product_group: Группа продуктов

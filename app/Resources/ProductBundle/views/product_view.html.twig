@@ -143,7 +143,7 @@
                         </div>
                         {% if product.productHasProduct|length %}
                             <div class="middle-block">
-                                <h5>Что входит в набор</h5>
+                                <h5>{{ product.optionLabel ? product.optionLabel.name : 'Что входит в набор' }}</h5>
                                 <table class="table-product-set">
                                     {% for prodSet in product.productHasProduct %}
                                         <tr>

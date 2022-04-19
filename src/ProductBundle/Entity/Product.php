@@ -56,6 +56,14 @@ class Product
     protected $category;
 
     /**
+     * @var \ProductBundle\Entity\ProductOptionLabel
+     *
+     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\ProductOptionLabel")
+     * @ORM\JoinColumn(name="option_label_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    protected $optionLabel;
+
+    /**
      * @var \ShareBundle\Entity\Size
      *
      * @ORM\ManyToOne(targetEntity="ShareBundle\Entity\Size")
@@ -463,6 +471,30 @@ class Product
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * Set optionLabel
+     *
+     * @param \ProductBundle\Entity\ProductOptionLabel $optionLabel
+     *
+     * @return Product
+     */
+    public function setOptionLabel(\ProductBundle\Entity\ProductOptionLabel $optionLabel = null)
+    {
+        $this->optionLabel = $optionLabel;
+
+        return $this;
+    }
+
+    /**
+     * Get optionLabel
+     *
+     * @return \ProductBundle\Entity\ProductOptionLabel
+     */
+    public function getOptionLabel()
+    {
+        return $this->optionLabel;
     }
 
     /**

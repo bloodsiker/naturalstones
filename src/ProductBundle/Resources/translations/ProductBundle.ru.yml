@@ -79,7 +79,7 @@ product:
         product_option_metal: Опции метала
     block:
         service:
-            list: Список новостей
+            list: Список товаров
         fields:
             title: Заголовок
             items_count: Количество товаров

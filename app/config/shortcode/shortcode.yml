@@ -1,0 +1,16 @@
+shortcode:
+    wrapper:
+        template: "AppBundle:shortcode:wrapper.html.twig"
+    definitions:
+        image:
+            pattern:
+                - '/\[IMAGE id=(?P<id>\d+); title=(?P<title>.*?);(?P<blank>.*?)\]/'
+            template: 'AppBundle:shortcode:image.html.twig'
+            wrap: false
+            processor: media.shortcode.processor.image
+        text:
+            pattern:
+                - '/\[TEXT id=(?P<id>\d+);\]/'
+            template: 'AppBundle:shortcode:text.html.twig'
+            wrap: false
+            processor: share.shortcode.processor.text

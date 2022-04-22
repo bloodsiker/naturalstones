@@ -1,0 +1,5 @@
+services:
+    media.shortcode.processor.image:
+        class: "MediaBundle\\Shortcode\\ImageProcessorService"
+        arguments:
+            - '@doctrine.orm.entity_manager'

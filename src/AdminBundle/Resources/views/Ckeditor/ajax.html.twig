@@ -1,0 +1,27 @@
+{% extends 'SonataAdminBundle:CRUD:base_'~(action in ['edit', 'list'] ? action : 'edit')~'.html.twig' %}
+{% set ckParameters = {'CKEditor': app.request.get('CKEditor'), 'CKEditorFuncNum': app.request.get('CKEditorFuncNum')} %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>.skin-black .wrapper { background: #ecf0f5 !important; }</style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            $(".select").click(function (e) {
+                e.preventDefault();
+                var ckParam = $(this).data("src") ? $(this).data("src") : $(this).data("id");
+                window.opener.CKEDITOR.tools.callFunction({{ app.request.get('CKEditorFuncNum')|escape('js') }}, ckParam);
+                window.close();
+            });
+        });
+    </script>
+{% endblock %}
+{% block sonata_header %}{% endblock %}
+{% block sonata_wrapper %}
+    {% block sonata_page_content %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

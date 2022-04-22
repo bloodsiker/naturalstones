@@ -5,5 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.plugins.setLang( 'pastecode', 'uk', {
 	button: 'Вставити код',
 	title: 'Вставити код',
-    code: 'Код'
+    code: 'Код',
+	select_label: 'Обрати з ВідеоМенеджера',
+	select_title: 'Обрати з ВідеоМенеджера'
 });

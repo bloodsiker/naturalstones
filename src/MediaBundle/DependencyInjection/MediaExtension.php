@@ -24,6 +24,7 @@ class MediaExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('shortcode.yml');
 //        $loader->load('upload.yml');
         $loader->load('twig.yml');
 

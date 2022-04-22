@@ -5,5 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.plugins.setLang( 'pastecode', 'en', {
 	button: 'Paste as code',
 	title: 'Paste as code',
-    code: 'Code'
+    code: 'Code',
+	select_label: 'Browse',
+	select_title: 'Browse VideoManager'
 });

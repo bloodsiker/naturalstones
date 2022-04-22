@@ -1,71 +1,289 @@
 /*global CKEDITOR*/
-/*jslint regexp: true*/
+/*jslint this: true*/
+/*jslint multivar: true*/
 
 (function () {
     'use strict';
 
     CKEDITOR.plugins.add('shortcode', {
-        requires: 'widget',
-        icons: 'quotesc,gallerysc,quizsc,adaptiveIframesc,readAlso',
+        requires: 'widget,numericinput',
+        icons: 'textsc,gallerysc,videosc,imagesc,expertsc,readsc,audiosc,filesc,instagramsc,onlinesc,quizsc,championshipsc',
         lang: ['en', 'ru', 'uk'],
         init: function (editor) {
-            CKEDITOR.dialog.add('quote', this.path + 'dialogs/quote.js');
+            CKEDITOR.dialog.add('text', this.path + 'dialogs/text.js');
             CKEDITOR.dialog.add('gallery', this.path + 'dialogs/gallery.js');
             CKEDITOR.dialog.add('quiz', this.path + 'dialogs/quiz.js');
-            CKEDITOR.dialog.add('adaptiveIframe', this.path + 'dialogs/adaptiveIframe.js');
-            CKEDITOR.dialog.add('readAlsoDialog', this.path + 'dialogs/readAlso.js');
+            CKEDITOR.dialog.add('video', this.path + 'dialogs/video.js');
+            CKEDITOR.dialog.add('imageSC', this.path + 'dialogs/image.js');
+            CKEDITOR.dialog.add('expert', this.path + 'dialogs/expert.js');
+            CKEDITOR.dialog.add('read', this.path + 'dialogs/read.js');
+            CKEDITOR.dialog.add('file', this.path + 'dialogs/file.js');
+            CKEDITOR.dialog.add('audio', this.path + 'dialogs/audio.js');
+            CKEDITOR.dialog.add('instagram', this.path + 'dialogs/instagram.js');
+            CKEDITOR.dialog.add('championship', this.path + 'dialogs/championship.js');
 
             editor.addContentsCss(this.path + 'styles/style.css');
 
-            editor.widgets.add('QuoteSC', {
-                button: editor.lang.shortcode.quote.button_title,
-                dialog: 'quote',
+            var langCode = editor.name.indexOf('_translations_uk_') === -1 ? 'ru' : 'uk';
+
+            editor.widgets.add('TextSC', {
+                button: editor.lang.shortcode.text.button_title,
+                dialog: 'text',
                 template:
-                    '<code class="quote">' +
-                        '[QUOTE text=<span class="quote__text"></span>; image=<span class="quote__img"></span>;]' +
+                    '<code class="text">' +
+                    '[TEXT id=<span class="text__id"></span>;]' +
+                    '<span class="preview"></span>' +
                     '</code>',
-                allowedContent: 'code(!quote); span(!quote__text); span(!quote__img)',
-                requiredContent: 'code(quote)',
+                allowedContent: 'code(!text); span(!text__id); span(!preview); iframe;',
+                requiredContent: 'code(text)',
                 init: function () {
-                    var text = this.element.getFirst(function (child) {
-                            return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('quote__text');
-                        }),
-                        image = this.element.getFirst(function (child) {
-                            return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('quote__img');
-                        }),
-                        id = this.element.getAttribute('id') || 'quote_' + Math.round(Math.random() * 10000);
-
-                    if (text) {
-                        this.setData('text', text.getText());
-                    }
-
-                    if (image) {
-                        this.setData('image', image.getText());
-                    }
+                    var id = this.element.getAttribute('id');
 
                     if (id) {
                         this.setData('id', id);
                     }
                 },
                 data: function () {
+                    var idElement = this.element.getFirst(function (child) {
+                            return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('text__id');
+                        });
+                        // previewElement = this.element.getFirst(function (child) {
+                        //     return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('preview');
+                        // });
+
                     if (this.data.id) {
                         this.element.setAttribute('id', this.data.id);
-                    }
 
-                    if (this.data.text) {
-                        this.element.getFirst(function (child) {
-                            return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('quote__text');
-                        }).setText(this.data.text);
-                    }
+                        if (idElement) {
+                            idElement.setText(this.data.id);
+                        }
 
-                    if (this.data.image) {
-                        this.element.getFirst(function (child) {
-                            return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('quote__img');
-                        }).setText(this.data.image);
+                        // if (previewElement) {
+                        //     previewElement.setHtml(
+                        //         '<iframe scrolling="no" width="500" height="380" frameborder="0" src="'+editor.config.filebrowserGalleryPreviewUrl + '?id='+this.data.id+'&langCode='+langCode+'"></iframe>'
+                        //     );
+                        // }
                     }
                 },
                 downcast: function () {
-                    return new CKEDITOR.htmlParser.text('[QUOTE id=' + (this.data.id || '') + '; text=' + (this.data.text || '') + '; image=' + (this.data.image || '') + ';]');
+                    return new CKEDITOR.htmlParser.text('[TEXT id=' + this.data.id + ';]');
+                }
+            });
+
+            editor.widgets.add('FileSC', {
+                button: editor.lang.shortcode.file.button_title,
+                dialog: 'file',
+                template:
+                    '<code class="file">' +
+                        '[FILE id=<span class="file__id"></span>;]' +
+                        '<span class="preview"></span>' +
+                    '</code>',
+                allowedContent: 'code(!file); span(!file__id); span(!preview); iframe;',
+                requiredContent: 'code(file)',
+                init: function () {
+                    var id = this.element.getAttribute('id');
+
+                    if (id) {
+                        this.setData('id', id);
+                    }
+                },
+                data: function () {
+                    var idElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('file__id');
+                    }),
+                    previewElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('preview');
+                    });
+
+                    if (this.data.id) {
+                        this.element.setAttribute('id', this.data.id);
+
+                        if (idElement) {
+                            idElement.setText(this.data.id);
+                        }
+
+                        if (previewElement) {
+                            previewElement.setHtml(
+                                '<iframe scrolling="no" width="500" height="60" frameborder="0" src="'+editor.config.filebrowserFilePreviewUrl + '?id='+this.data.id+'&langCode='+langCode+'"></iframe>'
+                            );
+                        }
+                    }
+                },
+                downcast: function () {
+                    return new CKEDITOR.htmlParser.text('[FILE id=' + (this.data.id || '') + ';]');
+                }
+            });
+
+            editor.widgets.add('AudioSC', {
+                button: editor.lang.shortcode.audio.button_title,
+                dialog: 'audio',
+                template:
+                    '<code class="audio">' +
+                        '[AUDIO id=<span class="audio__id"></span>;]' +
+                        '<span class="preview"></span>' +
+                    '</code>',
+                allowedContent: 'code(!audio); span(!audio__id); span(!preview); iframe;',
+                requiredContent: 'code(audio)',
+                init: function () {
+                    var id = this.element.getAttribute('id');
+
+                    if (id) {
+                        this.setData('id', id);
+                    }
+                },
+                data: function () {
+                    var idElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('audio__id');
+                    }),
+                    previewElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('preview');
+                    });
+
+                    if (this.data.id) {
+                        this.element.setAttribute('id', this.data.id);
+
+                        if (idElement) {
+                            idElement.setText(this.data.id);
+                        }
+
+                        if (previewElement) {
+                            previewElement.setHtml(
+                                '<iframe scrolling="no" width="500" height="110" frameborder="0" src="'+editor.config.filebrowserAudioPreviewUrl + '?id='+this.data.id+'&langCode='+langCode+'"></iframe>'
+                            );
+                        }
+                    }
+                },
+                downcast: function () {
+                    return new CKEDITOR.htmlParser.text('[AUDIO id=' + (this.data.id || '') + ';]');
+                }
+            });
+
+            editor.widgets.add('VideoSC', {
+                button: editor.lang.shortcode.video.button_title,
+                dialog: 'video',
+                template:
+                    '<code class="video">' +
+                        '[VIDEO id=<span class="video__id"></span>; title=<span class="video__title"></span>]' +
+                        '<span class="preview"></span>' +
+                    '</code>',
+                allowedContent: 'code(!video); span(!video__title); span(!video__id); span(!preview); iframe;',
+                requiredContent: 'code(video)',
+                init: function () {
+                    var title = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('video__title');
+                    });
+
+                    if (title) {
+                        this.setData('title', title.getText());
+                    }
+
+                    var id = this.element.getAttribute('id');
+
+                    if (id) {
+                        this.setData('id', id);
+                    }
+                },
+                data: function () {
+                    var idElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('video__id');
+                    }),
+                    title = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('video__title');
+                    }),
+                    previewElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('preview');
+                    });
+
+                    if (this.data.id) {
+                        this.element.setAttribute('id', this.data.id);
+
+                        if (idElement) {
+                            idElement.setText(this.data.id);
+                        }
+
+                        if (title) {
+                            title.setText(this.data.title);
+                        }
+
+                        if (previewElement) {
+                            previewElement.setHtml(
+                                '<iframe scrolling="no" width="500" height="430" frameborder="0" src="'+editor.config.filebrowserVideoPreviewUrl + '?id='+this.data.id+'&langCode='+langCode+'"></iframe>'
+                            );
+                        }
+                    }
+                },
+                downcast: function () {
+                    return new CKEDITOR.htmlParser.text('[VIDEO id=' + (this.data.id || '') + '; title=' + (this.data.title || '') + ']');
+                }
+            });
+
+            editor.widgets.add('ImageSC', {
+                button: editor.lang.shortcode.image.button_title,
+                dialog: 'imageSC',
+                template:
+                    '<code class="image">' +
+                        '[IMAGE id=<span class="image__id"></span>; title=<span class="image__title"></span>;<span class="image__blank"></span>]' +
+                        '<span class="preview"></span>' +
+                    '</code>',
+                allowedContent: 'code(!image); span(!image__id); span(!image__title); span(!image__blank); span(!preview); iframe;',
+                requiredContent: 'code(image)',
+                init: function () {
+                    var title = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('image__title');
+                    }),
+                    blank = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('image__blank');
+                    }),
+                    id = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('image__id');
+                    });
+
+                    if (title) {
+                        this.setData('title', title.getText());
+                    }
+                    if (blank) {
+                        this.setData('blank', blank.getText());
+                    }
+                    if (id) {
+                        this.setData('id', id.getText());
+                    }
+                },
+                data: function () {
+                    var idElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('image__id');
+                    }),
+                    title = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('image__title');
+                    }),
+                    blank = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('image__blank');
+                    }),
+                    previewElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('preview');
+                    });
+
+                    if (this.data.id) {
+                        this.element.setAttribute('id', this.data.id);
+
+                        if (idElement) {
+                            idElement.setText(this.data.id);
+                        }
+                        if (title) {
+                            title.setText(this.data.title);
+                        }
+                        if (blank) {
+                            blank.setText(this.data.blank.trim() ? this.data.blank : '');
+                        }
+
+                        if (previewElement) {
+                            previewElement.setHtml(
+                                '<iframe scrolling="no" width="500" height="430" frameborder="0" src="'+editor.config.filebrowserImagePreviewUrl + '?id='+this.data.id+'&langCode='+langCode+'"></iframe>'
+                            );
+                        }
+                    }
+                },
+                downcast: function () {
+                    return new CKEDITOR.htmlParser.text('[IMAGE id=' + this.data.id + '; title=' + (this.data.title || '') + ';' + (this.data.blank === ' blank' ? ' blank' : '') + ']');
                 }
             });
 
@@ -75,8 +293,9 @@
                 template:
                     '<code class="gallery">' +
                         '[GALLERY id=<span class="gallery__id"></span>;]' +
+                        '<span class="preview"></span>' +
                     '</code>',
-                allowedContent: 'code(!gallery); span(!gallery__id)',
+                allowedContent: 'code(!gallery); span(!gallery__id); span(!preview); iframe;',
                 requiredContent: 'code(gallery)',
                 init: function () {
                     var id = this.element.getAttribute('id');
@@ -88,6 +307,9 @@
                 data: function () {
                     var idElement = this.element.getFirst(function (child) {
                         return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('gallery__id');
+                    }),
+                    previewElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('preview');
                     });
 
                     if (this.data.id) {
@@ -95,6 +317,12 @@
 
                         if (idElement) {
                             idElement.setText(this.data.id);
+                        }
+
+                        if (previewElement) {
+                            previewElement.setHtml(
+                                '<iframe scrolling="no" width="500" height="380" frameborder="0" src="'+editor.config.filebrowserGalleryPreviewUrl + '?id='+this.data.id+'&langCode='+langCode+'"></iframe>'
+                            );
                         }
                     }
                 },
@@ -107,10 +335,11 @@
                 button: editor.lang.shortcode.quiz.button_title,
                 dialog: 'quiz',
                 template:
-                '<code class="quiz">' +
-                '[QUIZ id=<span class="quiz__id"></span>;]' +
-                '</code>',
-                allowedContent: 'code(!quiz); span(!quiz__id)',
+                    '<code class="quiz">' +
+                    '[QUIZ id=<span class="quiz__id"></span>;]' +
+                    '<span class="preview"></span>' +
+                    '</code>',
+                allowedContent: 'code(!quiz); span(!quiz__id); span(!preview); iframe;',
                 requiredContent: 'code(quiz)',
                 init: function () {
                     var id = this.element.getAttribute('id');
@@ -121,14 +350,23 @@
                 },
                 data: function () {
                     var idElement = this.element.getFirst(function (child) {
-                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('quiz__id');
-                    });
+                            return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('quiz__id');
+                        }),
+                        previewElement = this.element.getFirst(function (child) {
+                            return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('preview');
+                        });
 
                     if (this.data.id) {
                         this.element.setAttribute('id', this.data.id);
 
                         if (idElement) {
                             idElement.setText(this.data.id);
+                        }
+
+                        if (previewElement) {
+                            previewElement.setHtml(
+                                '<iframe scrolling="no" width="500" height="180" frameborder="0" src="'+editor.config.filebrowserQuizPreviewUrl + '?id='+this.data.id+'&langCode='+langCode+'"></iframe>'
+                            );
                         }
                     }
                 },
@@ -137,80 +375,242 @@
                 }
             });
 
-            editor.widgets.add('AdaptiveIframeSC', {
-                button: editor.lang.shortcode.adaptiveIframe.button_title,
-                dialog: 'adaptiveIframe',
+            editor.widgets.add('ChampionshipSC', {
+                button: editor.lang.shortcode.championship.button_title,
+                dialog: 'championship',
                 template:
-                '<div class="adaptiveIframe embed_16x9">' +
-                '<iframe class="adaptiveIframe__id" width="" height="" src="" frameborder="0" allowfullscreen></iframe>' +
-                '</div>',
-                allowedContent: 'div(!adaptiveIframe); iframe(!adaptiveIframe__id)',
-                requiredContent: 'div(adaptiveIframe)',
-                init: function () {
-                    var src = this.element.getAttribute('src');
-                    if (src) {
-                        this.setAttribute('src', src);
-                    }
-                },
-                data: function () {
-                    var idElement = this.element.getFirst(function (child) {
-                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'iframe' && child.hasClass('adaptiveIframe__id');
-                    });
-                    if (this.data.id) {
-                        if (this.data.id.indexOf("<iframe") >= 0) {
-                            if (this.element) {
-                                this.element.setHtml(this.data.id);
-                            }
-                        } else {
-                            this.element.setAttribute('attr-src', this.data.id);
-                            if (idElement) {
-                                idElement.setAttribute('src', this.data.id);
-                            }
-                        }
-                    }
-                },
-            });
-
-            editor.widgets.add('ReadAlso', {
-                button: editor.lang.shortcode.readAlso.button_title,
-                dialog: 'readAlsoDialog',
-                template:
-                    '<code class="holder">' +
-                        '[READ_ALSO holder=<span class="holder__id"></span>;]' +
+                    '<code class="championship">' +
+                    '[CHAMPIONSHIP id=<span class="championship__id"></span>; tour=<span class="championship__tour"></span>; stage=<span class="championship__stage"></span>]' +
+                    '<span class="preview"></span>' +
                     '</code>',
-                allowedContent: 'code(!holder); span(!holder__id)',
-                requiredContent: 'code(holder)',
+                allowedContent: 'code(!championship); span(!championship__id); span(!championship__tour); span(!championship__stage); span(!preview); iframe;',
+                requiredContent: 'code(championship)',
                 init: function () {
-                    var holder = this.element.getAttribute('holder');
-
-                    if (holder) {
-                        this.setData('holder', holder);
+                    var id = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('championship__id');
+                    });
+                    if (id) {
+                        this.setData('id', id.getText());
                     }
 
+                    var tour = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('championship__tour');
+                    });
+                    if (tour) {
+                        this.setData('tour', tour.getText());
+                    }
+
+                    var stage = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('championship__stage');
+                    });
+                    if (stage) {
+                        this.setData('stage', stage.getText());
+                    }
                 },
                 data: function () {
                     var idElement = this.element.getFirst(function (child) {
-                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('holder__id');
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('championship__id');
+                    }),
+                    tour = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('championship__tour');
+                    }),
+                    stage = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('championship__stage');
+                    }),
+                    previewElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('preview');
                     });
 
-                    if (this.data.holder) {
-                        this.element.setAttribute('holder', this.data.holder);
+                    if (this.data.id) {
+                        this.element.setAttribute('id', this.data.id);
 
                         if (idElement) {
-                            idElement.setText(this.data.holder);
+                            idElement.setText(this.data.id);
+                        }
+                        if (tour) {
+                            tour.setText(this.data.tour);
+                        }
+                        if (stage) {
+                            stage.setText(this.data.stage);
+                        }
+
+                        if (previewElement) {
+                            previewElement.setHtml(
+                                '<iframe scrolling="no" width="500" height="180" frameborder="0" src="'+editor.config.filebrowserChampionshipPreviewUrl + '?id='+this.data.id+'&langCode='+langCode+'"></iframe>'
+                            );
                         }
                     }
                 },
                 downcast: function () {
-                    return new CKEDITOR.htmlParser.text('[READ_ALSO holder=' + this.data.holder + ';]');
+                    return new CKEDITOR.htmlParser.text('[CHAMPIONSHIP id=' + this.data.id + '; tour=' + (this.data.tour || '') + '; stage=' + (this.data.stage || '') + ']');
+                }
+            });
+
+
+            editor.widgets.add('ExpertSC', {
+                button: editor.lang.shortcode.expert.button_title,
+                dialog: 'expert',
+                template:
+                    '<code class="expert">' +
+                        '[EXPERT id=<span class="expert__id"></span>; text=<span class="expert__text"></span>;]' +
+                        '<span class="preview"></span>' +
+                    '</code>',
+                allowedContent: 'code(!expert); span(!expert__text); span(!expert__id); span(!preview); iframe;',
+                requiredContent: 'code(expert)',
+                init: function () {
+                    var text = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('expert__text');
+                    }),
+                    id = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('expert__id');
+                    });
+
+                    if (text) {
+                        this.setData('text', text.getText());
+                    }
+
+                    if (id) {
+                        this.setData('id', id.getText());
+                    }
+                },
+                data: function () {
+                    var idElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('expert__id');
+                    }),
+                    textElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('expert__text');
+                    }),
+                    previewElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('preview');
+                    });
+
+                    if (this.data.id) {
+                        this.element.setAttribute('id', this.data.id);
+
+                        if (idElement) {
+                            idElement.setText(this.data.id);
+                        }
+
+                        if (textElement) {
+                            textElement.setText(this.data.text);
+                        }
+
+                        if (previewElement) {
+                            previewElement.setHtml(
+                                '<iframe scrolling="no" width="500" height="130" frameborder="0" src="'+editor.config.filebrowserExpertPreviewUrl + '?id='+this.data.id+'&langCode='+langCode+'"></iframe>'
+                            );
+                        }
+                    }
+                },
+                downcast: function () {
+                    return new CKEDITOR.htmlParser.text('[EXPERT id=' + (this.data.id || '') + '; text=' + (this.data.text || '') + ';]');
+                }
+            });
+
+            editor.widgets.add('ReadSC', {
+                button: editor.lang.shortcode.read.button_title,
+                dialog: 'read',
+                template:
+                    '<code class="read">' +
+                        '[READ id=<span class="read__id"></span>; title=<span class="read__title"></span>;]' +
+                        '<span class="preview"></span>' +
+                    '</code>',
+                allowedContent: 'code(!read); span(!read__id); span(!read__title); span(!preview); iframe;',
+                requiredContent: 'code(read)',
+                init: function () {
+                    var title = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('read__title');
+                    }),
+                    id = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('read__id');
+                    });
+
+                    if (title) {
+                        this.setData('title', title.getText());
+                    }
+
+                    if (id) {
+                        this.setData('id', id.getText());
+                    }
+                },
+                data: function () {
+                    var idElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('read__id');
+                    }),
+                    title = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('read__title');
+                    }),
+                    previewElement = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('preview');
+                    });
+
+                    if (this.data.id) {
+                        this.element.setAttribute('id', this.data.id);
+
+                        if (idElement) {
+                            idElement.setText(this.data.id);
+                        }
+
+                        if (title) {
+                            title.setText(this.data.title);
+                        }
+
+                        if (previewElement) {
+                            previewElement.setHtml(
+                                '<iframe scrolling="no" width="500" height="110" frameborder="0" src="'+editor.config.filebrowserArticlePreviewUrl + '?id='+this.data.id+'&langCode='+langCode+'"></iframe>'
+                            );
+                        }
+                    }
+                },
+                downcast: function () {
+                    return new CKEDITOR.htmlParser.text('[READ id=' + (this.data.id || '') + '; title=' + (this.data.title || '') + ';]');
+                }
+            });
+
+            editor.widgets.add('InstagramSC', {
+                button: editor.lang.shortcode.instagram.button_title,
+                dialog: 'instagram',
+                template:
+                    '<p class="instagram">' +
+                    '<span class="code__instagram"></span>' +
+                    '</p>',
+                allowedContent: 'p(!instagram); span(!code__instagram);',
+                requiredContent: 'p(instagram)',
+                init: function () {
+                    var code_instagram = this.element.getFirst(function (child) {
+                        return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('code__instagram');
+                    });
+
+                    if (code_instagram) {
+                        this.setData('code_instagram', code_instagram.getText());
+                    }
+                },
+                data: function () {
+                    if (this.data.code_instagram) {
+                        this.element.getFirst(function (child) {
+                            return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('code__instagram');
+                        }).setText(this.data.code_instagram);
+                    }
+                },
+                downcast: function () {
+                    return new CKEDITOR.htmlParser.text('<span class="code__instagram">' + (this.data.code_instagram || '') + '</span>');
                 }
             });
         },
         afterInit: function (editor) {
-            var quoteRegexp = /\[QUOTE id=(.+?); text=(.*?); image=(.*?);\]/g,
-                galleryRegexp = /\[GALLERY id=(.+?);\]/g,
-                readAlsoReqexp = /\[READ_ALSO holder=content_(.+?);\]/g,
-                quizRegexp = /\[QUIZ id=(.+?);\]/g;
+            var langCode = editor.name.indexOf('_translations_uk_') === -1 ? 'ru' : 'uk',
+                onlineRegexp = /\[ONLINE\ start=(.+?); finish=(.+?);\]/g,
+                textRegexp = /\[TEXT\ id=(.+?);\]/g,
+                galleryRegexp = /\[GALLERY\ id=(.+?);\]/g,
+                quizRegexp = /\[QUIZ\ id=(.+?);\]/g,
+                championshipRegexp = /\[CHAMPIONSHIP\ id=(.+?); tour=(.*?); stage=(.*?)\]/g,
+                fileRegexp = /\[FILE\ id=(.+?);\]/g,
+                audioRegexp = /\[AUDIO\ id=(.+?);\]/g,
+                videoRegexp = /\[VIDEO\ id=(.+?);\ title=(.*?)\]/g,
+                imageRegexp = /\[IMAGE\ id=(.+?);\ title=(.*?);(.*?)\]/g,
+                readRegexp = /\[READ\ id=(.+?);\ title=(.*?);\]/g,
+                expertRegexp = /\[EXPERT\ id=(.+?);\ text=(.*?);\]/g,
+                instagramRegexp = /\<span class='code__instagram'>code_instagram=(.+?);\<\/span>/g;
 
             editor.dataProcessor.dataFilter.addRules({
                 text: function (text, node) {
@@ -220,18 +620,48 @@
                         return;
                     }
 
-                    return text.replace(quoteRegexp, function (match, id, text, image) {
+                    return text.replace(textRegexp, function (match, id) {
                         var widgetWrapper,
                             outerElement = new CKEDITOR.htmlParser.element('code', {
-                                'class': 'quote',
+                                'class': 'text',
                                 'id': id
                             });
 
-                        if (match) {
-                            outerElement.setHtml('[QUOTE text=<span class="quote__text">' + text + '</span>; image=<span class="quote__img">' + image + '</span>;]');
+                        if (match && id) {
+                            outerElement.setHtml(
+                                '[TEXT id=<span class="text__id">' + id + '</span>;]' +
+                                '<span class="preview">'
+                            );
                         }
 
-                        widgetWrapper = editor.widgets.wrapElement(outerElement, 'QuoteSC');
+                        widgetWrapper = editor.widgets.wrapElement(outerElement, 'TextSC');
+
+                        return widgetWrapper.getOuterHtml();
+                    });
+                }
+            });
+
+            editor.dataProcessor.dataFilter.addRules({
+                text: function (text, node) {
+                    var dtd = node.parent && CKEDITOR.dtd[node.parent.name];
+
+                    if (dtd && !dtd.span) {
+                        return;
+                    }
+
+                    return text.replace(onlineRegexp, function (match, start, finish) {
+                        var widgetWrapper,
+                            outerElement = new CKEDITOR.htmlParser.element('code', {
+                                'class': 'online',
+                                'start': start,
+                                'finish': finish
+                            });
+
+                        if (match && start && finish) {
+                            outerElement.setHtml('[ONLINE start=<span class="online__start">' + start + '</span>; finish=<span class="online__finish">' + finish + '</span>;]');
+                        }
+
+                        widgetWrapper = editor.widgets.wrapElement(outerElement, 'OnlineSC');
 
                         return widgetWrapper.getOuterHtml();
                     });
@@ -254,36 +684,15 @@
                             });
 
                         if (match && id) {
-                            outerElement.setHtml('[GALLERY id=<span class="gallery__id">' + id + '</span>;]');
+                            outerElement.setHtml(
+                                '[GALLERY id=<span class="gallery__id">' + id + '</span>;]' +
+                                '<span class="preview">' +
+                                    '<iframe scrolling="no" width="500" height="380" frameborder="0" src="'+editor.config.filebrowserGalleryPreviewUrl + '?id='+id+'&langCode='+langCode+'"></iframe>' +
+                                '</span>'
+                            );
                         }
 
                         widgetWrapper = editor.widgets.wrapElement(outerElement, 'GallerySC');
-
-                        return widgetWrapper.getOuterHtml();
-                    });
-                }
-            });
-
-            editor.dataProcessor.dataFilter.addRules({
-                text: function (text, node) {
-                    var dtd = node.parent && CKEDITOR.dtd[node.parent.name];
-
-                    if (dtd && !dtd.span) {
-                        return;
-                    }
-
-                    return text.replace(readAlsoReqexp, function (match, holder) {
-                        var widgetWrapper,
-                            outerElement = new CKEDITOR.htmlParser.element('code', {
-                                'class': 'holder',
-                                'holder': 'content_'+holder
-                            });
-
-                        if (match && holder) {
-                            outerElement.setHtml('[READ_ALSO id=<span class="holder__id">' + holder + '</span>;]');
-                        }
-
-                        widgetWrapper = editor.widgets.wrapElement(outerElement, 'ReadAlso');
 
                         return widgetWrapper.getOuterHtml();
                     });
@@ -306,10 +715,257 @@
                             });
 
                         if (match && id) {
-                            outerElement.setHtml('[QUIZ id=<span class="quiz__id">' + id + '</span>;]');
+                            outerElement.setHtml(
+                                '[QUIZ id=<span class="quiz__id">' + id + '</span>;]' +
+                                '<span class="preview">' +
+                                '<iframe scrolling="no" width="500" height="180" frameborder="0" src="'+editor.config.filebrowserQuizPreviewUrl + '?id='+id+'&langCode='+langCode+'"></iframe>' +
+                                '</span>'
+                            );
                         }
 
                         widgetWrapper = editor.widgets.wrapElement(outerElement, 'QuizSC');
+
+                        return widgetWrapper.getOuterHtml();
+                    });
+                }
+            });
+
+            editor.dataProcessor.dataFilter.addRules({
+                text: function (text, node) {
+                    var dtd = node.parent && CKEDITOR.dtd[node.parent.name];
+
+                    if (dtd && !dtd.span) {
+                        return;
+                    }
+
+                    return text.replace(championshipRegexp, function (match, id, tour, stage) {
+                        var widgetWrapper,
+                            outerElement = new CKEDITOR.htmlParser.element('code', {
+                                'class': 'championship',
+                                'id': id
+                            });
+
+                        if (match && id) {
+                            outerElement.setHtml(
+                                '[CHAMPIONSHIP id=<span class="championship__id">' + id + '</span>; tour=<span class="championship__tour">' + (tour ? tour : '') + '</span>; stage=<span class="championship__stage">' + (stage ? stage : '') + '</span>]' +
+                                '<span class="preview">' +
+                                '<iframe scrolling="no" width="500" height="180" frameborder="0" src="'+editor.config.filebrowserChampionshipPreviewUrl + '?id='+id+'&langCode='+langCode+'"></iframe>' +
+                                '</span>'
+                            );
+                        }
+
+                        widgetWrapper = editor.widgets.wrapElement(outerElement, 'ChampionshipSC');
+
+                        return widgetWrapper.getOuterHtml();
+                    });
+                }
+            });
+
+            editor.dataProcessor.dataFilter.addRules({
+                text: function (text, node) {
+                    var dtd = node.parent && CKEDITOR.dtd[node.parent.name];
+
+                    if (dtd && !dtd.span) {
+                        return;
+                    }
+
+                    return text.replace(videoRegexp, function (match, id, title) {
+                        var widgetWrapper,
+                            outerElement = new CKEDITOR.htmlParser.element('code', {
+                                'class': 'video',
+                                'id': id
+                            });
+
+                        if (match && id) {
+                            outerElement.setHtml(
+                                '[VIDEO id=<span class="video__id">' + id + '</span>; title=<span class="video__title">' + (title ? title : ' ') + '</span>]' +
+                                '<span class="preview">' +
+                                    '<iframe scrolling="no" width="500" height="430" frameborder="0" src="'+editor.config.filebrowserVideoPreviewUrl + '?id='+id+'&langCode='+langCode+'"></iframe>' +
+                                '</span>'
+                            );
+                        }
+
+                        widgetWrapper = editor.widgets.wrapElement(outerElement, 'VideoSC');
+
+                        return widgetWrapper.getOuterHtml();
+                    });
+                }
+            });
+
+            editor.dataProcessor.dataFilter.addRules({
+                text: function (text, node) {
+                    var dtd = node.parent && CKEDITOR.dtd[node.parent.name];
+
+                    if (dtd && !dtd.span) {
+                        return;
+                    }
+
+                    return text.replace(fileRegexp, function (match, id) {
+                        var widgetWrapper,
+                            outerElement = new CKEDITOR.htmlParser.element('code', {
+                                'class': 'file',
+                                'id': id
+                            });
+
+                        if (match && id) {
+                            outerElement.setHtml(
+                                '[FILE id=<span class="file__id">' + id + '</span>;]' +
+                                '<span class="preview">' +
+                                    '<iframe scrolling="no" width="500" height="60" frameborder="0" src="'+editor.config.filebrowserFilePreviewUrl + '?id='+id+'&langCode='+langCode+'"></iframe>' +
+                                '</span>'
+                            );
+                        }
+
+                        widgetWrapper = editor.widgets.wrapElement(outerElement, 'FileSC');
+
+                        return widgetWrapper.getOuterHtml();
+                    });
+                }
+            });
+
+            editor.dataProcessor.dataFilter.addRules({
+                text: function (text, node) {
+                    var dtd = node.parent && CKEDITOR.dtd[node.parent.name];
+
+                    if (dtd && !dtd.span) {
+                        return;
+                    }
+
+                    return text.replace(audioRegexp, function (match, id) {
+                        var widgetWrapper,
+                            outerElement = new CKEDITOR.htmlParser.element('code', {
+                                'class': 'audio',
+                                'id': id
+                            });
+
+                        if (match && id) {
+                            outerElement.setHtml(
+                                '[AUDIO id=<span class="audio__id">' + id + '</span>;]' +
+                                '<span class="preview">' +
+                                    '<iframe scrolling="no" width="500" height="110" frameborder="0" src="'+editor.config.filebrowserAudioPreviewUrl + '?id='+id+'&langCode='+langCode+'"></iframe>' +
+                                '</span>'
+                            );
+                        }
+
+                        widgetWrapper = editor.widgets.wrapElement(outerElement, 'AudioSC');
+
+                        return widgetWrapper.getOuterHtml();
+                    });
+                }
+            });
+
+            editor.dataProcessor.dataFilter.addRules({
+                text: function (text, node) {
+                    var dtd = node.parent && CKEDITOR.dtd[node.parent.name];
+
+                    if (dtd && !dtd.span) {
+                        return;
+                    }
+
+                    return text.replace(imageRegexp, function (match, id, title, blank) {
+                        var widgetWrapper,
+                            outerElement = new CKEDITOR.htmlParser.element('code', {
+                                'class': 'image',
+                                'id': id
+                            });
+
+                        if (match && id > 0) {
+                            outerElement.setHtml(
+                                '[IMAGE id=<span class="image__id">' + id + '</span>; title=<span class="image__title">' + (title ? title : ' ') + '</span>;<span class="image__blank">' + (blank === ' blank'? ' blank' : ' ') + '</span>]' +
+                                '<span class="preview">' +
+                                    '<iframe scrolling="no" width="500" height="430" frameborder="0" src="'+editor.config.filebrowserImagePreviewUrl + '?id='+id+'&langCode='+langCode+'"></iframe>' +
+                                '</span>'
+                            );
+                        }
+
+                        widgetWrapper = editor.widgets.wrapElement(outerElement, 'ImageSC');
+
+                        return widgetWrapper.getOuterHtml();
+                    });
+                }
+            });
+
+            editor.dataProcessor.dataFilter.addRules({
+                text: function (text, node) {
+                    var dtd = node.parent && CKEDITOR.dtd[node.parent.name];
+
+                    if (dtd && !dtd.span) {
+                        return;
+                    }
+
+                    return text.replace(expertRegexp, function (match, id, text) {
+                        var widgetWrapper,
+                            outerElement = new CKEDITOR.htmlParser.element('code', {
+                                'class': 'expert',
+                                'id': id
+                            });
+
+                        if (match) {
+                            outerElement.setHtml(
+                                '[EXPERT id=<span class="expert__id">' + id + '</span>; text=<span class="expert__text">' + text + '</span>;]' +
+                                '<span class="preview">' +
+                                    '<iframe scrolling="no" width="500" height="130" frameborder="0" src="'+editor.config.filebrowserExpertPreviewUrl + '?id='+id+'&langCode='+langCode+'"></iframe>' +
+                                '</span>'
+                            );
+                        }
+
+                        widgetWrapper = editor.widgets.wrapElement(outerElement, 'ExpertSC');
+
+                        return widgetWrapper.getOuterHtml();
+                    });
+                }
+            });
+
+            editor.dataProcessor.dataFilter.addRules({
+                text: function (text, node) {
+                    var dtd = node.parent && CKEDITOR.dtd[node.parent.name];
+
+                    if (dtd && !dtd.span) {
+                        return;
+                    }
+
+                    return text.replace(readRegexp, function (match, id, title) {
+                        var widgetWrapper,
+                            outerElement = new CKEDITOR.htmlParser.element('code', {
+                                'class': 'read',
+                                'id': id
+                            });
+
+                        if (match && id) {
+                            outerElement.setHtml(
+                                '[READ id=<span class="read__id">' + id + '</span>; title=<span class="read__title">' + (title ? title : ' ') + '</span>;]' +
+                                '<span class="preview">' +
+                                    '<iframe scrolling="no" width="500" height="110" frameborder="0" src="'+editor.config.filebrowserArticlePreviewUrl + '?id='+id+'&langCode='+langCode+'"></iframe>' +
+                                '</span>'
+                            );
+                        }
+
+                        widgetWrapper = editor.widgets.wrapElement(outerElement, 'ReadSC');
+
+                        return widgetWrapper.getOuterHtml();
+                    });
+                }
+            });
+
+            editor.dataProcessor.dataFilter.addRules({
+                text: function (text, node) {
+                    var dtd = node.parent && CKEDITOR.dtd[node.parent.name];
+
+                    if (dtd && !dtd.span) {
+                        return;
+                    }
+
+                    return text.replace(instagramRegexp, function (match, code_instagram) {
+                        var widgetWrapper,
+                            outerElement = new CKEDITOR.htmlParser.element('code', {
+                                'class': 'instagram'
+                            });
+
+                        if (match) {
+                            outerElement.setHtml(code_instagram);
+                        }
+
+                        widgetWrapper = editor.widgets.wrapElement(outerElement, 'InstagramSC');
 
                         return widgetWrapper.getOuterHtml();
                     });

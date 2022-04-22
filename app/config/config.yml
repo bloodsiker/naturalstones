@@ -16,6 +16,7 @@ imports:
     - { resource: liip/imagine.yml }
     - { resource: knplabs/gaufrette.yml }
     - { resource: oneup/oneup-upload.yml }
+    - { resource: shortcode/shortcode.yml }
     - { resource: vich/vich_uploader.yml }
     - { resource: whiteoctober/pagerfanta.yml }
 

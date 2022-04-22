@@ -1,20 +1,19 @@
 fos_ck_editor:
-   input_sync: true
-   default_config: default
-   base_path: "/bundles/admin/js/ckeditor"
-   js_path:   "/bundles/admin/js/ckeditor/ckeditor.js"
-#   filebrowsers:
-#       - ExpertBrowse
-#       - GalleryBrowse
-#       - NewsBrowse
-   configs:
+    input_sync: true
+    default_config: default
+    base_path: "/bundles/admin/js/ckeditor"
+    js_path: "/bundles/admin/js/ckeditor/ckeditor.js"
+    filebrowsers:
+        - ImageList
+        - TextList
+    configs:
         simple:
             title: false
-            height: 80
+            height: 120
             toolbar: simple
             skin: "bootstrapck,/bundles/admin/ckeditor/skins/bootstrapck/"
             extraPlugins: 'symbol,font,wordcount'
-            templates: 'segodnya2018'
+            templates: 'naturalstones'
             protectedTags: 'html|head|body'
             extraAllowedContent: 'iframe[*]; link div span em p h1 h2 ul li section(*); *[id];'
             allowedContent: true
@@ -26,7 +25,7 @@ fos_ck_editor:
             toolbar: default
             skin: "bootstrapck,/bundles/admin/ckeditor/skins/bootstrapck/"
             extraPlugins: 'symbol,font,wordcount'
-            templates: 'segodnya2018'
+            templates: 'naturalstones'
             protectedTags: 'html|head|body'
             extraAllowedContent: 'iframe[*]; link div span em p h1 h2 ul li section(*); *[id];'
             allowedContent: true
@@ -39,7 +38,7 @@ fos_ck_editor:
             toolbar: advanced
             skin: "bootstrapck,/bundles/admin/ckeditor/skins/bootstrapck/"
             extraPlugins: 'shortcode,format_buttons,pastecode,symbol,font,horizontalrule,numericinput,wordcount'
-            templates: 'segodnya2018'
+            templates: 'naturalstones'
             protectedTags: 'html|head|body'
             extraAllowedContent: 'iframe[*]; link div span em p h1 h2 ul li section(*); *[id];'
             previewText: ''
@@ -48,16 +47,14 @@ fos_ck_editor:
             fullPage: false
             language: "%locale%"
 
-#            filebrowserImageBrowseRoute: admin_newmedia_media_media_list
-#            filebrowserImageBrowseRouteParameters:
-#                provider: media.provider.image
-#                CKEditor: true
-#
-#            filebrowserFlashBrowseRoute: admin_newmedia_media_media_list
-#            filebrowserFlashBrowseRouteParameters:
-#                provider: media.provider.video
-#                CKEditor: true
-#
+            filebrowserImageListRoute: admin_media_mediaimage_list
+            filebrowserImageListRouteParameters:
+                CKEditor: true
+
+            filebrowserTextListRoute: admin_share_text_list
+            filebrowserTextListRouteParameters:
+                CKEditor: true
+
 #            filebrowserGalleryBrowseRoute: admin_newmedia_media_gallery_list
 #            filebrowserGalleryBrowseRouteParameters:
 #                CKEditor: true
@@ -70,7 +67,7 @@ fos_ck_editor:
 #            filebrowserNewsBrowseRouteParameters:
 #                CKEditor: true
 
-   plugins:
+    plugins:
         font:
             path: '/bundles/admin/ckeditor/plugins/font/'
             filename: 'plugin.js'
@@ -102,8 +99,8 @@ fos_ck_editor:
             path: '/bundles/admin/ckeditor/plugins/wordcount/'
             filename: 'plugin.js'
 
-   toolbars:
-       configs:
+    toolbars:
+        configs:
             simple:
                 - [ "Source" ]
                 - [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "Undo", "Redo" ]
@@ -117,7 +114,7 @@ fos_ck_editor:
                 - [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "Undo", "Redo" ]
                 - [ "Find", "Replace", "SelectAll" ]
                 - [ "Link", "Unlink", "Anchor" ]
-#              "Image",
+                #              "Image",
                 - [ "Table", "-", "Iframe", "Flash", "ImageSC" ]
                 - [ "ShowBlocks" ]
                 - [ "Maximize" ]
@@ -131,9 +128,9 @@ fos_ck_editor:
                 - [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "Undo", "Redo" ]
                 - [ "Find", "Replace", "SelectAll" ]
                 - [ "Link", "Unlink", "Anchor" ]
-#              "Image",
-                - [ "Table", "-", "Iframe", "Flash", "ImageSC", "VideoSC", "GallerySC"]
-#                - [ "ReadSC", "ExpertSC", "QuoteSC" ]
+                #              "Image",
+                - [ "Table", "-", "Iframe", "Flash" ]
+                - [ "TextSC" ]
                 - [ "h2", "HorizontalRule", "PasteCode" ]
                 - [ "Symbol" ]
                 - [ "ShowBlocks" ]
@@ -144,5 +141,5 @@ fos_ck_editor:
                 - [ "NumberedList", "BulletedList", "-", "Outdent", "Indent", "-", "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock" ]
 
 twig:
-   form_themes:
-       - AdminBundle:Form:ckeditor_widget.html.twig
+    form_themes:
+        - AdminBundle:Form:ckeditor_widget.html.twig

@@ -1,0 +1,5 @@
+services:
+    share.shortcode.processor.text:
+        class: "ShareBundle\\Shortcode\\TextProcessorService"
+        arguments:
+            - '@doctrine.orm.entity_manager'

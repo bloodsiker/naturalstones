@@ -12,6 +12,8 @@ Zodiac List: Список знаков зодиака
 Zodiac Create: Добавить знак зодиака
 Metal List: Список металов
 Metal Create: Добавить металов
+Text List: Список
+Text Create: Добавить текст
 
 form_group:
     basic: Основные
@@ -29,6 +31,7 @@ group:
     size_editor: Размеры
     colour_editor: Цвета
     metal_editor: Метал
+    text_editor: Шаблон текста
 
 stone:
     fields:
@@ -41,6 +44,13 @@ stone:
         is_show_main: Отображать на главной
         zodiacs: Знаки зодиака
         created_at: Дата создания
+
+text:
+    fields:
+        id: ID
+        description: Описание
+        name: Название
+        is_active: Активен
 
 zodiac:
     fields:

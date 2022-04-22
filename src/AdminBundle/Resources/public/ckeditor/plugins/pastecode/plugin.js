@@ -85,6 +85,23 @@
 										//element.setHtml( this.getValue() );
 										editor.insertHtml( this.getValue() );
 									}
+								},
+								{
+									id: 'video_select',
+									type: 'button',
+									label: editor.lang.pastecode.select_label,
+									title: editor.lang.pastecode.select_title,
+									style: 'display: block;',
+									filebrowser: {
+										action: 'Browse',
+										url: editor.config.filebrowserVideoManagerListUrl,
+										target: 'general:contents',
+										onSelect : function(code) {
+											var dialog = this.getDialog();
+											dialog.getContentElement('general','contents').setValue(code);
+											document.getElementById(dialog.getButton('ok').domId).click();
+										}
+									}
 								}
 							]
 						}

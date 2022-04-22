@@ -1,11 +1,42 @@
-code.quote, code.gallery, code.quiz, code.holder {
+code.text,
+code.gallery,
+code.quiz,
+code.championship,
+code.video,
+code.image,
+code.expert,
+code.read,
+code.file,
+code.audio,
+code.online,
+p.instagram {
     display: block;
     color: #55f;
     background-color: #DCE9FC;
     border: 1px solid #EAF2FD;
 }
+span.preview {
+    display: block;
+    color: #000;
+}
 
-span.quote__text, span.quote__img, span.gallery__id, span.quiz__id, span.holder__id {
+span.online__start,
+span.online__finish,
+span.file__id,
+span.audio__id,
+span.text__id,
+span.gallery__id,
+span.quiz__id,
+span.championship__id,
+span.video__id,
+span.read__id,
+span.read__title,
+span.image__id, span.image__title, span.image__blank,
+span.expert__text, span.expert__id {
+    font-weight: bold;
+    color: #000;
+}
+span.code__instagram {
     font-weight: bold;
     color: #000;
 }

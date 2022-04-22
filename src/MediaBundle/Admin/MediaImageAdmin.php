@@ -53,6 +53,37 @@ class MediaImageAdmin extends Admin
     }
 
     /**
+     * @return array
+     */
+    public function getPersistentParameters()
+    {
+        if (!$this->hasRequest()) {
+            return [];
+        }
+
+        $parameters = array_filter($this->getRequest()->query->all(), function ($param) {
+            return !is_array($param);
+        });
+
+        return $parameters;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return null|string|void
+     */
+    public function getTemplate($name)
+    {
+        $parameters = $this->getPersistentParameters();
+        if (in_array($name, ['list', 'edit']) && !empty($parameters['CKEditor'])) {
+            return 'AdminBundle:Ckeditor:ajax.html.twig';
+        }
+
+        return parent::getTemplate($name);
+    }
+
+    /**
      * @param MediaFile $object
      */
     public function prePersist($object)
@@ -115,6 +146,7 @@ class MediaImageAdmin extends Admin
                 'label' => 'media.fields.created_at',
             ])
             ->add('_action', 'actions', [
+                'template' => isset($this->getPersistentParameters()['CKEditor']) ? 'AdminBundle:Ckeditor:select.html.twig' : null,
                 'actions' => [
                     'delete' => [],
                     'edit' => [],

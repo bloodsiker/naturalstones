@@ -4,18 +4,14 @@
     'use strict';
 
     CKEDITOR.plugins.setLang('shortcode', 'en', {
-        quote: {
-            button_title: 'Insert Quote shortcode',
-            dialog_title: 'Quote',
-            tab_basic_label: 'Basic settings',
-            tab_advanced_label: 'Advanced settings',
-            id: 'ID',
-            text: 'Text',
-            image: 'Image',
-            err_id_empty: 'Quote ID cannot be empty.',
-            err_text_empty: 'Quote text cannot be empty.',
-            image_select_label: 'Select',
-            image_select_title: 'Select image from media repository'
+        text: {
+            button_title: 'Вставить код шаблона',
+            dialog_title: 'Шаблон',
+            tab_basic_label: 'Основные параметры',
+            id: 'ID шаблона',
+            select_label: 'Выбрать',
+            select_title: 'Выбрать шаблон',
+            err_id_empty: 'ID шаблона не может быть пустым.'
         },
         gallery: {
             button_title: 'Insert Gallery shortcode',
@@ -24,8 +20,7 @@
             id: 'Gallery ID',
             select_label: 'Select',
             select_title: 'Select gallery from repository',
-            err_id_empty: 'Gallery ID cannot be empty.',
-            wrong_format: 'Wrong data format'
+            err_id_empty: 'Gallery ID cannot be empty.'
         },
         quiz: {
             button_title: 'Insert Quiz shortcode',
@@ -34,29 +29,83 @@
             id: 'Quiz ID',
             select_label: 'Select',
             select_title: 'Select quiz from repository',
-            err_id_empty: 'Quiz ID cannot be empty.',
-            wrong_format: 'Wrong data format'
+            err_id_empty: 'Quiz ID cannot be empty.'
         },
-        adaptiveIframe: {
-            button_title: 'Insert Iframe shortcode',
-            dialog_title: 'Adaptive iFrame',
+        championship: {
+            button_title: 'Insert championship shortcode',
+            dialog_title: 'Championship',
             tab_basic_label: 'Basic settings',
-            src: 'iFrame src',
+            id: 'Championship ID',
             select_label: 'Select',
-            err_id_empty: 'iFrame ID cannot be empty.'
+            select_title: 'Select championship from repository',
+            err_id_empty: 'Championship ID cannot be empty.'
         },
-        readAlso: {
-            button_title: 'Insert block «Read also»',
-            dialog_title: 'Read also / See also',
+        video: {
+            button_title: 'Embed Video',
+            dialog_title: 'Video',
             tab_basic_label: 'Basic settings',
-            select_default: 'Select placeholder',
-            err_id_empty: 'Placeholder cannot be empty.',
-            select_placeholder: 'Select placeholder',
-            select_content_1: 'Content Block #1',
-            select_content_2: 'Content Block #2',
-            select_content_3: 'Content Block #3',
-            select_content_4: 'Content Block #4',
-            select_content_5: 'Content Block #5'
+            id: 'Video ID',
+            err_id_empty: 'Video ID cannot be empty.',
+            select_label: 'Select',
+            select_title: 'Select Video from repository'
+        },
+        file: {
+            button_title: 'Insert File shortcode',
+            dialog_title: 'File',
+            tab_basic_label: 'Basic settings',
+            id: 'File ID',
+            select_label: 'Select',
+            select_title: 'Select file from repository',
+            err_id_empty: 'File ID cannot be empty.'
+        },
+        audio: {
+            button_title: 'Insert Audio shortcode',
+            dialog_title: 'Audio',
+            tab_basic_label: 'Basic settings',
+            id: 'Audio ID',
+            select_label: 'Select',
+            select_title: 'Select audio from repository',
+            err_id_empty: 'Audio ID cannot be empty.'
+        },
+        image: {
+            button_title: 'Insert Image shortcode',
+            dialog_title: 'Image',
+            tab_basic_label: 'Basic settings',
+            id: 'Image ID',
+            title: 'Description',
+            blank: 'Open image in new window',
+            select_label: 'Select',
+            select_title: 'Select image from repository',
+            err_id_empty: 'Image ID cannot be empty.'
+        },
+        expert: {
+            button_title: 'Insert Expert Quote shortcode',
+            dialog_title: 'Expert',
+            id: 'Expert ID',
+            text: 'Quote',
+            err_id_empty: 'Expert ID cannot be empty.',
+            err_text_empty: 'Expert quote cannot be empty.',
+            expert_select_label: 'Select',
+            expert_select_title: 'Select expert from repository'
+        },
+        instagram: {
+            button_title: 'Insert code Instagram, Twitter',
+            dialog_title: 'Instagram, Twitter',
+            tab_basic_label: 'Basic settings',
+            code_instagram: 'Insert code *blockquote*',
+            err_text_empty: 'Insert code cannot be empty.',
+        },
+        read: {
+            button_title: 'Insert Read/View also content',
+            dialog_title: 'Block Read/View',
+            tab_basic_label: 'Basic settings',
+            id: 'Article ID',
+            alternate_title: 'Alternate title',
+            err_id_empty: 'Article ID cannot be empty.',
+            select_label: 'Select',
+            select_title: 'Select Article from repository',
+            select_read: 'Read also',
+            select_view: 'View also'
         }
     });
 }());

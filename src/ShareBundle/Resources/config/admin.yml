@@ -64,3 +64,14 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [ShareBundle] ]
+
+    share.admin.text:
+        class: ShareBundle\Admin\TextAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.share", label: "group.text_editor" }
+        arguments:
+            - ~
+            - ShareBundle\Entity\Text
+            - ShareBundle:ShareAdmin
+        calls:
+            - [ setTranslationDomain, [ ShareBundle ] ]

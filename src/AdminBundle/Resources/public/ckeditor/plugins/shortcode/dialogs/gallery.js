@@ -20,9 +20,14 @@
                             children: [
                                 {
                                     id: 'id',
-                                    type: 'text',
+                                    type: 'number',
+                                    min: 1,
                                     label: editor.lang.shortcode.gallery.id,
-                                    validate: CKEDITOR.dialog.validate.regex(/^[0-9]+$/, editor.lang.shortcode.gallery.wrong_format),
+                                    validate: CKEDITOR.dialog.validate.functions(
+                                        CKEDITOR.dialog.validate.notEmpty(),
+                                        CKEDITOR.dialog.validate.integer(),
+                                        editor.lang.shortcode.gallery.err_id_empty
+                                    ),
                                     setup: function (widget) {
                                         this.setValue(widget.data.id);
                                     },
@@ -31,17 +36,22 @@
                                     }
                                 },
                                 {
-                                  type: 'button',
-                                  id: 'gallery_select',
-                                  filebrowser: {
-                                    action: 'Browse',
-                                    target: 'basic-tab:id',
-                                    url: editor.config.filebrowserBrowseUrl
-                                  },
-                                  style: 'margin-top: 17px;',
-                                  hidden: true,
-                                  label: editor.lang.shortcode.gallery.select_label,
-                                  title: editor.lang.shortcode.gallery.select_title
+                                    id: 'gallery_select',
+                                    type: 'button',
+                                    label: editor.lang.shortcode.gallery.select_label,
+                                    title: editor.lang.shortcode.gallery.select_title,
+                                    style: 'margin-top: 17px;',
+                                    hidden: true,
+                                    filebrowser: {
+                                        action: 'Browse',
+                                        url: editor.config.filebrowserGalleryListUrl,
+                                        target: 'basic-tab:id',
+                                        onSelect : function(id) {
+                                            var dialog = this.getDialog();
+                                            dialog.getContentElement('basic-tab','id').setValue(id);
+                                            document.getElementById(dialog.getButton('ok').domId).click();
+                                        }
+                                    }
                                 }
                             ]
                         }

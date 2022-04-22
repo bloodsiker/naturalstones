@@ -20,9 +20,14 @@
                             children: [
                                 {
                                     id: 'id',
-                                    type: 'text',
+                                    type: 'number',
+                                    min: 1,
                                     label: editor.lang.shortcode.quiz.id,
-                                    validate: CKEDITOR.dialog.validate.regex(/^[0-9]+$/, editor.lang.shortcode.quiz.wrong_format),
+                                    validate: CKEDITOR.dialog.validate.functions(
+                                        CKEDITOR.dialog.validate.notEmpty(),
+                                        CKEDITOR.dialog.validate.integer(),
+                                        editor.lang.shortcode.quiz.err_id_empty
+                                    ),
                                     setup: function (widget) {
                                         this.setValue(widget.data.id);
                                     },
@@ -30,6 +35,24 @@
                                         widget.setData('id', this.getValue());
                                     }
                                 },
+                                {
+                                    id: 'quiz_select',
+                                    type: 'button',
+                                    label: editor.lang.shortcode.quiz.select_label,
+                                    title: editor.lang.shortcode.quiz.select_title,
+                                    style: 'margin-top: 17px;',
+                                    hidden: true,
+                                    filebrowser: {
+                                        action: 'Browse',
+                                        url: editor.config.filebrowserQuizListUrl,
+                                        target: 'basic-tab:id',
+                                        onSelect : function(id) {
+                                            var dialog = this.getDialog();
+                                            dialog.getContentElement('basic-tab','id').setValue(id);
+                                            document.getElementById(dialog.getButton('ok').domId).click();
+                                        }
+                                    }
+                                }
                             ]
                         }
                     ]

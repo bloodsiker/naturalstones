@@ -1,0 +1,14 @@
+services:
+  shortcode:
+    class: "ShortcodeBundle\\Templating\\ShortcodeHelper"
+    arguments:
+      - '@service_container'
+    tags:
+      - { name: templating.helper, alias: shortcode }
+
+  shortcode.twig_extension:
+    class: "ShortcodeBundle\\Twig\\ShortcodeExtension"
+    arguments:
+        - '@shortcode'
+    tags:
+        - { name: twig.extension }

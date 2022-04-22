@@ -4,18 +4,14 @@
     'use strict';
 
     CKEDITOR.plugins.setLang('shortcode', 'uk', {
-        quote: {
-            button_title: 'Вставити код цитати',
-            dialog_title: 'Цитата',
-            tab_basic_label: 'Основні параметри',
-            tab_advanced_label: 'Додаткові параметри',
-            id: 'ID',
-            text: 'Текст',
-            image: 'Зображення',
-            err_id_empty: 'ID цитати не може бути пустим.',
-            err_text_empty: 'Текст цитати не може бути пустим.',
-            image_select_label: 'Обрати',
-            image_select_title: 'Обрати зображення с медіа-сховища'
+        text: {
+            button_title: 'Вставить код шаблона',
+            dialog_title: 'Шаблон',
+            tab_basic_label: 'Основные параметры',
+            id: 'ID шаблона',
+            select_label: 'Выбрать',
+            select_title: 'Выбрать шаблон',
+            err_id_empty: 'ID шаблона не может быть пустым.'
         },
         gallery: {
             button_title: 'Вставити код галереї',
@@ -24,39 +20,95 @@
             id: 'ID галереї',
             select_label: 'Обрати',
             select_title: 'Обрати галерею',
-            err_id_empty: 'ID галереї не може бути пустим.',
-            wrong_format: 'Неправильний формат даних'
+            err_id_empty: 'ID галереї не може бути порожнім.'
         },
         quiz: {
-            button_title: 'Вставить код вікторини',
-            dialog_title: 'Вікторина',
-            tab_basic_label: 'Основняе параметры',
-            id: 'ID галереи',
-            select_label: 'Выбрать',
-            select_title: 'Выбрать вікторину',
-            err_id_empty: 'ID вікторини не может быть пустым.',
-            wrong_format: 'Неправильний формат даних'
-        },
-        adaptiveIframe: {
-            button_title: 'Вставити код iFrame',
-            dialog_title: 'Адаптивний iFrame',
+            button_title: 'Вставити код опитування',
+            dialog_title: 'Опитування',
             tab_basic_label: 'Основні параметри',
-            src: 'Ссилка на iFrame',
+            id: 'ID опитування',
+            select_label: 'Обрати',
+            select_title: 'Обрати опитування',
+            err_id_empty: 'ID опитування не може бути порожнім.'
+        },
+        championship: {
+            button_title: 'Вставити таблицю чемпіонату',
+            dialog_title: 'Чемпіонат',
+            tab_basic_label: 'Основні параметри',
+            id: 'ID чемпіонату',
+            select_label: 'Обрати',
+            select_title: 'Обрати чемпіонат',
+            err_id_empty: 'ID чемпіонату не може бути порожнім.',
+            tour: 'Тур/група',
+            stage: 'Cтадія'
+        },
+        video: {
+            button_title: 'Вставити відео',
+            dialog_title: 'Відео',
+            tab_basic_label: 'Основні параметри',
+            id: 'ID відео',
+            title: 'Опис відео',
+            err_id_empty: 'ID відео не може бути порожнім.',
+            select_label: 'Обрати',
+            select_title: 'Обрати відео'
+        },
+        image: {
+            button_title: 'Вставити код зображення',
+            dialog_title: 'Зображення',
+            tab_basic_label: 'Основні параметри',
+            id: 'ID зображення',
+            title: 'Опис фото',
+            blank: 'Відкривати зображення в новому вікні',
+            select_label: 'Обрати',
+            select_title: 'Обрати зображення',
+            err_id_empty: 'ID зображення не може бути порожнім.'
+        },
+        file: {
+            button_title: 'Вставити код файлу',
+            dialog_title: 'Файл',
+            tab_basic_label: 'Основні параметри',
+            id: 'ID файлу',
+            select_label: 'Обрати',
+            select_title: 'Обрати файл',
+            err_id_empty: 'ID файлу не може бути порожнім.'
+        },
+        audio: {
+            button_title: 'Вставити код аудіо',
+            dialog_title: 'Аудіо',
+            tab_basic_label: 'Основні параметри',
+            id: 'ID аудіо',
+            select_label: 'Обрати',
+            select_title: 'Обрати аудіо',
+            err_id_empty: 'ID аудіо не може бути порожнім.'
+        },
+        expert: {
+            button_title: 'Вставити цитату експерта',
+            dialog_title: 'Експерт',
+            id: 'ID',
+            text: 'Цитата',
+            err_id_empty: 'ID експерта не може бути порожнім.',
+            err_text_empty: 'Цитата експерта не може бути порожньою.',
+            expert_select_label: 'Обрати',
+            expert_select_title: 'Обрати експерта'
+        },
+        instagram: {
+            button_title: 'Вставити код Instagram, Twitter',
+            dialog_title: 'Instagram, Twitter',
+            tab_basic_label: 'Основні параметри',
+            code_instagram: 'Код вставки *blockquote*',
+            err_text_empty: 'Код вставки не може бути пустим.',
+        },
+        read: {
+            button_title: 'Вставити блок Читай також',
+            dialog_title: 'Блок "Читати також"',
+            tab_basic_label: 'Основні параметри',
+            id: 'ID статті',
+            alternate_title: 'Альтернативний заголовок',
+            err_id_empty: 'ID статті не може бути порожнім.',
             select_label: 'Вибрати',
-            err_id_empty: 'iFrame ID не може бути пустим.'
-        },
-        readAlso: {
-            button_title: 'Вставити блок «Читай також»',
-            dialog_title: 'Читай також / Дивись також',
-            tab_basic_label: 'Основні параметри',
-            select_default: 'Оберіть площадку',
-            err_id_empty: 'Контент блок не може бути пустим.',
-            select_placeholder: 'Оберіть площадку',
-            select_content_1: 'Контент блок #1',
-            select_content_2: 'Контент блок #2',
-            select_content_3: 'Контент блок #3',
-            select_content_4: 'Контент блок #4',
-            select_content_5: 'Контент блок #5'
+            select_title: 'Вибрати статтю',
+            select_read: 'Читай також',
+            select_view: 'Дивись також'
         }
     });
 }());

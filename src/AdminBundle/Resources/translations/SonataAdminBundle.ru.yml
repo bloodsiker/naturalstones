@@ -9,6 +9,7 @@ actions:
     btn:
         preview: Посмотреть
         on_site: На сайте
+        action_select: Выбрать
         clone: Copy
 
 admin:

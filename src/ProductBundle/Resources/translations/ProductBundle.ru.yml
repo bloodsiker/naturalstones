@@ -54,6 +54,7 @@ product:
         size: Размер
         price: Цена
         discount: Цена со скидкой
+        percent: Процент скидки
         tags: Тег(и)
         views: Просмотры
         order_num: Сортировка

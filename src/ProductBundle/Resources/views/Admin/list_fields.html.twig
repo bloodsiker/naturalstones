@@ -2,13 +2,14 @@
 
 {% block field %}
     {% if object is instanceof('\\ProductBundle\\Entity\\Product') %}
-        {% if field_description.name == 'files' %}
-            {% set files = object.bookHasFiles.getValues() %}
-            <div class="btn-group" role="group" aria-label="...">
-                {% for file in files %}
-                    <button type="button" class="btn btn-default">{{ file.bookFile.path|file_extension|upper }}</button>
-                {% endfor %}
-            </div>
+        {% if field_description.name == 'price' %}
+            <p style="white-space: nowrap">
+                <span class="text-muted info" style="font-size: 12px;">
+                     {{ 'product.fields.price'|trans({}, 'ProductBundle') }}: <b>{{ object.price }}</b><br/>
+                     {{ 'product.fields.discount'|trans({}, 'ProductBundle') }}: <b>{{ object.discount }}</b><br/>
+                     {{ 'product.fields.percent'|trans({}, 'ProductBundle') }}: <b>{{ object.percent }}%</b><br/>
+                </span>
+            </p>
         {% elseif field_description.name == 'size' %}
             {% set route_name = field_description.options.route.name %}
             {% if object.size %}

@@ -137,16 +137,10 @@ class ProductAdmin extends Admin
             ])
             ->add('price', null, [
                 'label' => 'product.fields.price',
-            ])
-            ->add('discount', null, [
-                'label' => 'product.fields.discount',
+                'template'  => 'ProductBundle:Admin:list_fields.html.twig',
             ])
             ->add('isActive', null, [
                 'label' => 'product.fields.is_active',
-                'editable'  => true,
-            ])
-            ->add('isAvailable', null, [
-                'label' => 'product.fields.is_available',
                 'editable'  => true,
             ])
             ->add('isMainProduct', null, [
@@ -172,6 +166,9 @@ class ProductAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('id', null, [
+                'label' => 'product.fields.id',
+            ])
             ->add('name', null, [
                 'label' => 'product.fields.name',
             ])
@@ -282,6 +279,11 @@ class ProductAdmin extends Admin
                         'label' => 'product.fields.discount',
                         'required' => false,
                         'currency' => 'UAH',
+                        'scale' => 0,
+                    ])
+                    ->add('percent', IntegerType::class, [
+                        'label' => 'product.fields.percent',
+                        'required' => false,
                         'scale' => 0,
                     ])
                     ->add('isWoman', null, [

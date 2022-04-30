@@ -6,7 +6,7 @@ services:
         arguments:
             - ~
             - ShareBundle\Entity\Zodiac
-            - ShareBundle:ShareAdmin
+            - ~
         calls:
             - [ setTranslationDomain, [ ShareBundle ] ]
 
@@ -17,7 +17,7 @@ services:
         arguments:
             - ~
             - ShareBundle\Entity\Stone
-            - ShareBundle:ShareAdmin
+            - ~
         calls:
             - [ setTranslationDomain, [ ShareBundle ] ]
 
@@ -28,7 +28,7 @@ services:
         arguments:
             - ~
             - ShareBundle\Entity\Metal
-            - ShareBundle:ShareAdmin
+            - ~
         calls:
             - [ setTranslationDomain, [ ShareBundle ] ]
 
@@ -39,7 +39,7 @@ services:
         arguments:
             - ~
             - ShareBundle\Entity\Size
-            - ShareBundle:ShareAdmin
+            - ~
         calls:
             - [ setTranslationDomain, [ ShareBundle ] ]
 
@@ -50,7 +50,7 @@ services:
         arguments:
             - ~
             - ShareBundle\Entity\Colour
-            - ShareBundle:ShareAdmin
+            - ~
         calls:
             - [ setTranslationDomain, [ ShareBundle ] ]
 
@@ -72,6 +72,6 @@ services:
         arguments:
             - ~
             - ShareBundle\Entity\Text
-            - ShareBundle:ShareAdmin
+            - ShareBundle:TextAdmin
         calls:
             - [ setTranslationDomain, [ ShareBundle ] ]

@@ -7,10 +7,7 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\CoreBundle\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -32,6 +29,8 @@ class TextAdmin extends Admin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('acl');
+
+        $collection->add('preview', 'preview');
     }
 
     /**

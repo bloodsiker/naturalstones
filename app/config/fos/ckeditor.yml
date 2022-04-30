@@ -6,6 +6,7 @@ fos_ck_editor:
     filebrowsers:
         - ImageList
         - TextList
+        - TextPreview
     configs:
         simple:
             title: false
@@ -46,6 +47,8 @@ fos_ck_editor:
             allowedContent: true
             fullPage: false
             language: "%locale%"
+
+            filebrowserTextPreviewRoute: admin_share_text_preview
 
             filebrowserImageListRoute: admin_media_mediaimage_list
             filebrowserImageListRouteParameters:

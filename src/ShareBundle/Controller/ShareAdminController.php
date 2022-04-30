@@ -4,7 +4,6 @@ namespace ShareBundle\Controller;
 
 use AdminBundle\Controller\CRUDController as Controller;
 
-use ShareBundle\Entity\Author;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

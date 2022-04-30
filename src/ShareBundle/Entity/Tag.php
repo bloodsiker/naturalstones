@@ -72,13 +72,6 @@ class Tag
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="BookBundle\Entity\Book", mappedBy="tags")
-     */
-    protected $books;
-
-    /**
-     * @var ArrayCollection
-     *
      * @ORM\ManyToMany(targetEntity="ProductBundle\Entity\Product", mappedBy="tags")
      */
     protected $products;
@@ -90,7 +83,6 @@ class Tag
     {
         $this->isActive = true;
 
-        $this->books = new ArrayCollection();
         $this->products = new ArrayCollection();
     }
 
@@ -267,40 +259,6 @@ class Tag
     public function getMetaDescription()
     {
         return $this->metaDescription;
-    }
-
-    /**
-     * Add book
-     *
-     * @param \BookBundle\Entity\Book $book
-     *
-     * @return $this
-     */
-    public function addBook(\BookBundle\Entity\Book $book)
-    {
-        $this->books[] = $book;
-
-        return $this;
-    }
-
-    /**
-     * Remove book
-     *
-     * @param \BookBundle\Entity\Book $book
-     */
-    public function removeBook(\BookBundle\Entity\Book $book)
-    {
-        $this->books->removeElement($book);
-    }
-
-    /**
-     * Get book
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getBooks()
-    {
-        return $this->books;
     }
 
     /**

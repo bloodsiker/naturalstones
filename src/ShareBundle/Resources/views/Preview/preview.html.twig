@@ -1,0 +1,22 @@
+{% extends 'AdminBundle:Preview:preview.html.twig' %}
+
+{% block ckPreview %}
+    {% spaceless %}
+        {% if entity %}
+            {% set language = language|default('ru') %}
+            {% set languageAbbr = '('~((language == 'uk' ? 'ua' : language)|upper)~')' %}
+            <div style="font-size: 15px;color: blue;">
+                <span style="color: #000; font-weight: 600;">{{ entity.description|raw }}</span>
+            </div>
+            <div style="height: 30px;">
+                <button style="padding: 5px; margin-right: 10px; color: white;" class="btn btn-warning"
+                        onclick="popupWindow('{{ admin.generateObjectUrl('edit', entity, queryParams) }}'); return false;">
+                    <i class="fa fa-edit"></i> {{ 'btn_edit'|trans({}, 'SonataAdminBundle') }}
+                </button>
+                <button style="padding: 5px; color: white;" class="btn btn-primary" onclick="location.reload(); return false;">
+                    <i class="fa fa-refresh"></i> {{ 'btn_refresh'|trans({}, 'SonataAdminBundle') }}
+                </button>
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}

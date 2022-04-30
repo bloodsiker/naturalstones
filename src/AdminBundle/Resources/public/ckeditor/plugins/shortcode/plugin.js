@@ -46,10 +46,10 @@
                 data: function () {
                     var idElement = this.element.getFirst(function (child) {
                             return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('text__id');
+                        }),
+                        previewElement = this.element.getFirst(function (child) {
+                            return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('preview');
                         });
-                        // previewElement = this.element.getFirst(function (child) {
-                        //     return child.type === CKEDITOR.NODE_ELEMENT && child.getName() === 'span' && child.hasClass('preview');
-                        // });
 
                     if (this.data.id) {
                         this.element.setAttribute('id', this.data.id);
@@ -58,11 +58,11 @@
                             idElement.setText(this.data.id);
                         }
 
-                        // if (previewElement) {
-                        //     previewElement.setHtml(
-                        //         '<iframe scrolling="no" width="500" height="380" frameborder="0" src="'+editor.config.filebrowserGalleryPreviewUrl + '?id='+this.data.id+'&langCode='+langCode+'"></iframe>'
-                        //     );
-                        // }
+                        if (previewElement) {
+                            previewElement.setHtml(
+                                '<iframe scrolling="no" width="600" height="380" frameborder="0" src="'+editor.config.filebrowserTextPreviewUrl + '?id='+this.data.id+'&langCode='+langCode+'"></iframe>'
+                            );
+                        }
                     }
                 },
                 downcast: function () {
@@ -630,7 +630,9 @@
                         if (match && id) {
                             outerElement.setHtml(
                                 '[TEXT id=<span class="text__id">' + id + '</span>;]' +
-                                '<span class="preview">'
+                                '<span class="preview">' +
+                                    '<iframe scrolling="no" width="600" height="130" frameborder="0" src="'+editor.config.filebrowserTextPreviewUrl + '?id='+id+'&langCode='+langCode+'"></iframe>' +
+                                '</span>'
                             );
                         }
 

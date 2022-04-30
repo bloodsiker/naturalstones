@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="UTF-8">
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <link rel="stylesheet" href="{{ asset('/bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('/bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css') }}">
+    </head>
+    <body>
+        {% set queryParams = {'CKEditor': 1, 'CKEditorFuncNum': 1, 'langCode': language} %}
+        {% spaceless %}
+            {% block ckPreview %}{% endblock %}
+        {% endspaceless %}
+        <script>
+            function popupWindow(url, title, w, h) {
+                var p = 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, ',
+                    w = w || screen.width / 100 * 80,
+                    h = h || screen.height / 100 * 80,
+                    y = window.outerHeight / 2 + window.screenY - ( h / 2),
+                    x = window.outerWidth / 2 + window.screenX - ( w / 2),
+                    win = window.open(url, title, p+'width=' + w + ', height=' + h + ', top=' + y + ', left=' + x);
+                win.focus();
+                return win;
+            }
+        </script>
+    </body>
+</html>

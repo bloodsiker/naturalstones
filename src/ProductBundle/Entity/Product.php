@@ -107,6 +107,13 @@ class Product
     protected $discount;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(type="float", nullable=true)
+     */
+    protected $percent;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean", nullable=false)
@@ -291,6 +298,7 @@ class Product
         $this->views     = 0;
         $this->price     = 0;
         $this->discount  = 0;
+        $this->percent   = 0;
         $this->orderNum  = 1;
         $this->createdAt = new \DateTime('now');
 
@@ -323,6 +331,7 @@ class Product
             $this->setViews(0);
             $this->setPrice(0);
             $this->setDiscount(0);
+            $this->setPercent(0);
             $this->setIsMainProduct(0);
         }
     }
@@ -350,6 +359,16 @@ class Product
 
         if (empty($this->price)) {
             $this->price = 0;
+        }
+
+        if (empty($this->percent)) {
+            $this->percent = 0;
+        }
+
+        if ($this->percent) {
+            $this->discount = $this->price - ($this->price * $this->percent / 100);
+        } elseif ($this->discount) {
+            $this->percent = ($this->price - $this->discount) * 100 / $this->price;
         }
 
         $this->prePersist();
@@ -965,6 +984,30 @@ class Product
     public function setDiscount($discount = 0)
     {
         $this->discount = $discount;
+
+        return $this;
+    }
+
+    /**
+     * Get percent
+     *
+     * @return float
+     */
+    public function getPercent()
+    {
+        return $this->percent;
+    }
+
+    /**
+     * Set percent
+     *
+     * @param  float  $percent
+     *
+     * @return $this
+     */
+    public function setPercent($percent = 0)
+    {
+        $this->percent = $percent;
 
         return $this;
     }

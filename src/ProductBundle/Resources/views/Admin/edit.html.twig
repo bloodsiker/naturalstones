@@ -37,7 +37,7 @@
             {% if admin.hasRoute('list') and admin.hasAccess('list') %}
                 <button type="submit" class="btn btn-success" name="btn_update_and_list">
                     <i class="fa fa-save"></i> <i class="fa fa-list"aria-hidden="true"></i>
-                    {{ 'btn_save_and_exit'|trans({}, 'BookBundle') }}
+                    {{ 'btn_save_and_exit'|trans({}, 'ProductBundle') }}
                 </button>
             {% endif %}
 
@@ -71,7 +71,7 @@
             {% if admin.hasroute('list') and admin.hasAccess('list') %}
                 <button type="submit" class="btn btn-success" name="btn_create_and_list">
                     <i class="fa fa-save"></i> <i class="fa fa-list" aria-hidden="true"></i>
-                    {{ 'btn_save_and_exit'|trans({}, 'BookBundle') }}
+                    {{ 'btn_save_and_exit'|trans({}, 'ProductBundle') }}
                 </button>
             {% endif %}
             <button class="btn btn-success" type="submit" name="btn_create_and_create">

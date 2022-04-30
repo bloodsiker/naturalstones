@@ -365,10 +365,8 @@ class Product
             $this->percent = 0;
         }
 
-        if ($this->percent) {
-            $this->discount = $this->price - ($this->price * $this->percent / 100);
-        } elseif ($this->discount) {
-            $this->percent = ($this->price - $this->discount) * 100 / $this->price;
+        if ($this->percent && !$this->discount) {
+            $this->discount = round($this->price - ($this->price * $this->percent / 100), 0);
         }
 
         $this->prePersist();

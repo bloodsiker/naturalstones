@@ -93,3 +93,9 @@ services:
 
     app.helper.encrypt:
         class: AppBundle\Helper\EncryptHelper
+
+    app.image.optimizer:
+        class: AppBundle\Services\ImageOptimizer
+        calls:
+            - [ setRequest, [ '@request_stack' ] ]
+            - [ setContainer, ['@service_container']]

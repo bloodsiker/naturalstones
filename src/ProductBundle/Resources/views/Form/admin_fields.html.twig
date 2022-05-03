@@ -291,7 +291,7 @@
 
             <span class="btn-group">
                 {% if sonata_admin.field_description.associationadmin.hasroute('list') and sonata_admin.field_description.associationadmin.isGranted('LIST') and btn_list %}
-                    {% set url = sonata_admin.field_description.associationadmin.generateUrl('list', sonata_admin.field_description.getOption('link_parameters', {})|merge({'field_id': id})) %}
+                    {% set url = sonata_admin.field_description.associationadmin.generateUrl('list', sonata_admin.field_description.getOption('link_parameters', {})|merge({'field_id': id, 'field_name': sonata_admin.field_description.name})) %}
                     <a  href="{{ url }}"
                         onclick="return {{ (is_multiple_actions_in_list|default ? 'start_field_dialog_form_list_with_add_' : 'start_field_dialog_form_list_')~id }}(this);"
                         class="btn btn-info btn-sm sonata-ba-action"
@@ -303,7 +303,7 @@
                 {% endif %}
 
                 {% if sonata_admin.field_description.associationadmin.hasroute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
-                    {% set url = sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})|merge({'field_id': id})) %}
+                    {% set url = sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})|merge({'field_id': id, 'field_name': sonata_admin.field_description.name})) %}
                     <a  href="{{ url }}"
                         onclick="return start_field_dialog_form_add_{{ id }}(this);"
                         class="btn btn-success btn-sm sonata-ba-action "

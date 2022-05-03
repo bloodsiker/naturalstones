@@ -2,21 +2,22 @@ services:
     sonata.admin.media_file:
         class: MediaBundle\Admin\MediaFileAdmin
         tags:
-          - { name: sonata.admin, manager_type: orm, group: "group.media", label: "group.media_file_editor" }
+            - { name: sonata.admin, manager_type: orm, group: "group.media", label: "group.media_file_editor" }
         arguments:
-          - ~
-          - MediaBundle\Entity\MediaFile
-          - ~
+            - ~
+            - MediaBundle\Entity\MediaFile
+            - ~
         calls:
-          - [ setTranslationDomain, [MediaBundle] ]
+            - [ setTranslationDomain, [MediaBundle] ]
 
     sonata.admin.media_image:
         class: MediaBundle\Admin\MediaImageAdmin
         tags:
-        - { name: sonata.admin, manager_type: orm, group: "group.media", label: "group.media_image_editor" }
+            - { name: sonata.admin, manager_type: orm, group: "group.media", label: "group.media_image_editor" }
         arguments:
-        - ~
-        - MediaBundle\Entity\MediaImage
-        - ~
+            - ~
+            - MediaBundle\Entity\MediaImage
+            - ~
         calls:
-        - [ setTranslationDomain, [MediaBundle] ]
+            - [ setTranslationDomain, [MediaBundle] ]
+            - [ setOptimizer, ['@app.image.optimizer'] ]

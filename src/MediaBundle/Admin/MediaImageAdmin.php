@@ -4,7 +4,8 @@ namespace MediaBundle\Admin;
 
 use AdminBundle\Admin\BaseAdmin as Admin;
 use AdminBundle\Form\Type\UploadVichImageType;
-use MediaBundle\Twig\Extension\MediaExtension;
+use AppBundle\Services\ImageOptimizer;
+use MediaBundle\Entity\MediaImage;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -19,6 +20,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class MediaImageAdmin extends Admin
 {
     /**
+     * @var ImageOptimizer
+     */
+    protected $optimizer;
+
+    /**
      * @var array
      */
     protected $datagridValues = [
@@ -27,6 +33,11 @@ class MediaImageAdmin extends Admin
         '_sort_by'    => 'id',
         '_sort_order' => 'desc',
     ];
+
+    public function setOptimizer(ImageOptimizer $optimizer)
+    {
+        $this->optimizer = $optimizer;
+    }
 
     /**
      * @return mixed
@@ -84,7 +95,7 @@ class MediaImageAdmin extends Admin
     }
 
     /**
-     * @param MediaFile $object
+     * @param MediaImage $object
      */
     public function prePersist($object)
     {
@@ -92,13 +103,13 @@ class MediaImageAdmin extends Admin
     }
 
     /**
-     * @param MediaFile $object
+     * @param MediaImage $object
      */
     public function preUpdate($object)
     {
         $file = $object->getFile();
         if ($file) {
-            list($width, $height) = getimagesize($file->getRealPath());
+            [$width, $height] = getimagesize($file->getRealPath());
             if ($width && $height) {
                 $object->setWidth($width);
                 $object->setHeight($height);
@@ -112,11 +123,30 @@ class MediaImageAdmin extends Admin
     }
 
     /**
+     * @param MediaImage $object
+     */
+    public function postPersist($object)
+    {
+        parent::postPersist($object);
+
+        $this->postUpdate($object);
+    }
+
+    /**
+     * @param MediaImage $object
+     */
+    public function postUpdate($object)
+    {
+        if ($object->getFile()) {
+            $this->optimizer->resize($object);
+        }
+    }
+
+    /**
      * @param RouteCollection $collection
      */
     protected function configureRoutes(RouteCollection $collection)
     {
-//        $collection->add('preview', 'preview');
         $collection->remove('acl');
     }
 

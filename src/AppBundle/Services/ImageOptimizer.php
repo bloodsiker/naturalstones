@@ -13,7 +13,7 @@ class ImageOptimizer
 {
     use ContainerAwareTrait;
 
-    private const S_880 = 800;
+    private const S_800 = 800;
     private const S_750 = 750;
     private const S_500 = 550;
 
@@ -62,16 +62,16 @@ class ImageOptimizer
             if (array_key_exists($request->get('pcode'), $sizes)) {
                 $adminCodes = $sizes[$request->get('pcode')];
                 if (array_key_exists($request->get('field_name'), $adminCodes)) {
-                    [$iwidth, $iheight] = getimagesize($path);
-                    $ratio = $iwidth / $iheight;
+//                    [$iwidth, $iheight] = getimagesize($path);
+//                    $ratio = $iwidth / $iheight;
                     $width = $adminCodes[$request->get('field_name')]['width'];
                     $height = $adminCodes[$request->get('field_name')]['height'];
 
-                    if ($width / $height > $ratio) {
-                        $width = $height * $ratio;
-                    } else {
-                        $height = $width / $ratio;
-                    }
+//                    if ($width / $height > $ratio) {
+//                        $width = $height * $ratio;
+//                    } else {
+//                        $height = $width / $ratio;
+//                    }
 
 //                    $photo = $this->imagine->open($path);
 //                    $photo->resize(new Box($width, $height))->save($path, ['jpeg_quality' => 100]);
@@ -108,20 +108,20 @@ class ImageOptimizer
         return [
             'sonata.admin.product' => [
                 'image' => [
-                    'width' => self::S_880,
+                    'width' => self::S_800,
                     'height' => self::S_750,
                 ],
 
             ],
             'sonata.admin.product_has_image' => [
                 'image' => [
-                    'width' => self::S_880,
+                    'width' => self::S_800,
                     'height' => self::S_750,
                 ],
             ],
             'sonata.admin.product_has_option_colour' => [
                 'image' => [
-                    'width' => self::S_880,
+                    'width' => self::S_800,
                     'height' => self::S_750,
                 ],
             ]

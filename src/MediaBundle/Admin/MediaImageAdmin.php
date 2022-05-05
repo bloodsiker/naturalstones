@@ -137,9 +137,9 @@ class MediaImageAdmin extends Admin
      */
     public function postUpdate($object)
     {
-//        if ($object->getFile()) {
-//            $this->optimizer->resize($object);
-//        }
+        if ($object->getFile()) {
+            $this->optimizer->resize($object);
+        }
     }
 
     /**

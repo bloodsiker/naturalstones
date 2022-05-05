@@ -4,6 +4,7 @@ namespace AppBundle\Services;
 
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
+use Intervention\Image\ImageManager;
 use MediaBundle\Entity\MediaImage;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -12,8 +13,8 @@ class ImageOptimizer
 {
     use ContainerAwareTrait;
 
-    private const MAX_WIDTH = 500;
-    private const MAX_HEIGHT = 500;
+    private const S_750 = 750;
+    private const S_500 = 550;
 
     /**
      * @var Imagine
@@ -30,7 +31,8 @@ class ImageOptimizer
      */
     public function __construct()
     {
-        $this->imagine = new Imagine();
+//        $this->imagine = new Imagine();
+        $this->imagine = new ImageManager();
     }
 
     /**
@@ -70,8 +72,13 @@ class ImageOptimizer
                         $height = $width / $ratio;
                     }
 
-                    $photo = $this->imagine->open($path);
-                    $photo->resize(new Box($width, $height))->save($path, ['jpeg_quality' => 90]);
+//                    $photo = $this->imagine->open($path);
+//                    $photo->resize(new Box($width, $height))->save($path, ['jpeg_quality' => 100]);
+
+                    $this->imagine->make($path)->resize($width, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })->save($path);
 
                     $file = $object->getFile();
                     [$width, $height] = getimagesize($path);
@@ -100,21 +107,21 @@ class ImageOptimizer
         return [
             'sonata.admin.product' => [
                 'image' => [
-                    'width' => 500,
-                    'height' => 500,
+                    'width' => self::S_750,
+                    'height' => self::S_750,
                 ],
 
             ],
             'sonata.admin.product_has_image' => [
                 'image' => [
-                    'width' => 500,
-                    'height' => 500,
+                    'width' => self::S_750,
+                    'height' => self::S_750,
                 ],
             ],
             'sonata.admin.product_has_option_colour' => [
                 'image' => [
-                    'width' => 500,
-                    'height' => 500,
+                    'width' => self::S_750,
+                    'height' => self::S_750,
                 ],
             ]
         ];

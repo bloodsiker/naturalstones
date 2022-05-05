@@ -13,6 +13,7 @@ class ImageOptimizer
 {
     use ContainerAwareTrait;
 
+    private const S_880 = 800;
     private const S_750 = 750;
     private const S_500 = 550;
 
@@ -107,20 +108,20 @@ class ImageOptimizer
         return [
             'sonata.admin.product' => [
                 'image' => [
-                    'width' => self::S_750,
+                    'width' => self::S_880,
                     'height' => self::S_750,
                 ],
 
             ],
             'sonata.admin.product_has_image' => [
                 'image' => [
-                    'width' => self::S_750,
+                    'width' => self::S_880,
                     'height' => self::S_750,
                 ],
             ],
             'sonata.admin.product_has_option_colour' => [
                 'image' => [
-                    'width' => self::S_750,
+                    'width' => self::S_880,
                     'height' => self::S_750,
                 ],
             ]

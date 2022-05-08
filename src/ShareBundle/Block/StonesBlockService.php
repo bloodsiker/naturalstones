@@ -57,12 +57,14 @@ class StonesBlockService extends AbstractAdminBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'items_count' => 100,
-            'is_main' => false,
-            'zodiac' => null,
-            'view_all' => false,
-            'title' => null,
-            'template'  => 'ShareBundle:Block:stones.html.twig',
+            'items_count'  => 200,
+            'is_main'      => false,
+            'show_letters' => false,
+            'letter'       => null,
+            'zodiac'       => null,
+            'view_all'     => false,
+            'title'        => null,
+            'template'     => 'ShareBundle:Block:stones.html.twig',
         ]);
     }
 
@@ -94,12 +96,31 @@ class StonesBlockService extends AbstractAdminBlockService
             $repository->filterByZodiac($qb, $blockContext->getSetting('zodiac'));
         }
 
+        if ($blockContext->getSetting('letter')) {
+            $repository->filterByLetter($qb, $blockContext->getSetting('letter'));
+        }
+
         $stones = $qb->setFirstResult(0)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
 
+        if ($blockContext->getSetting('show_letters')) {
+            $letterStones = [];
+            foreach ($repository->uniqLetterByStone() as $value) {
+                $letterStones[$value[1]] = [];
+            }
+
+            foreach ($stones as $stone) {
+                $first = mb_substr($stone->getName(), 0, 1);
+                if (array_key_exists($first, $letterStones)) {
+                    $letterStones[$first][] = $stone;
+                }
+            }
+        }
+
         return $this->renderResponse($blockContext->getTemplate(), [
+            'letters'  => $letterStones ?? [],
             'stones'   => $stones,
             'block'    => $block,
             'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),

@@ -13,7 +13,9 @@
             sonata_block_render(
                 { 'type': 'share.block.stones' },
                 {
-                    'title': 'Все камни'
+                    'title': app.request.get('letter') ? 'Камни на букву «' ~ app.request.get('letter') ~ '»' : 'Все камни',
+                    'show_letters': true,
+                    'letter' : app.request.get('letter')
                 }
             )
         }}

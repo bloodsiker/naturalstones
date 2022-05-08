@@ -8,3 +8,10 @@ zodiac_stone_list:
     path: /zodiac/{slug}
     defaults:
         _controller: ShareBundle:Zodiac:list
+
+stone_list_letter:
+    path: /stones/letter/{letter}
+    defaults:
+        _controller: ShareBundle:Stone:listLetter
+    requirements:
+        letter: "([a-zA-Zа-яА-Я]+\\/?)+"

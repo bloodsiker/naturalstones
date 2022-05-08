@@ -158,6 +158,13 @@ class DefaultController extends Controller
             $urls[] = ['loc' => $router->generate('product_stone_list', ['slug' => $stone->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
         }
 
+        $letter = $em->getRepository(Stone::class)->uniqLetterByStone();
+        foreach ($letter as $let) {
+            if (isset($let[1])) {
+                $urls[] = ['loc' => $router->generate('stone_list_letter', ['letter' => $let[1]]), 'changefreq' => 'weekly', 'priority' => '0.3'];
+            }
+        }
+
         $zodiacs = $em->getRepository(Zodiac::class)->findBy(['isActive' => true]);
         foreach ($zodiacs as $zodiac) {
             $urls[] = ['loc' => $router->generate('zodiac_stone_list', ['slug' => $zodiac->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];

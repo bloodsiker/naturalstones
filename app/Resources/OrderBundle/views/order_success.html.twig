@@ -78,14 +78,6 @@
                                 {% endif %}
                             </div>
                             <div class="count">{{ oProduct.quantity }} шт.</div>
-                            {% if oProduct.product.discount %}
-                                <div class="price">
-                                    <span class="old-price">{{ oProduct.product.price }} грн</span>
-                                    <span>{{ oProduct.product.discount|number_format(2, ',') }} грн</span>
-                                </div>
-                            {% else %}
-                                <div class="price"><span>{{ oProduct.product.price|number_format(2, ',') }} грн</span></div>
-                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

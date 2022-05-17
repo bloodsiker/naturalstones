@@ -55,14 +55,14 @@ class Cart
     /**
      * Add product to cart
      *
-     * @param string $type
-     * @param string $id
-     * @param int    $count
-     * @param int|null $colour
+     * @param  string  $type
+     * @param  string  $id
+     * @param  int     $count
+     * @param  int|null  $colour
      *
      * @return mixed
      */
-    public function addProductToCart($type, string $id, int $count, $colour = null, $letter = null)
+    public function addProductToCart(string $type, string $id, int $count, $colour = null, $letter = null)
     {
         $productsInCart = $this->getProductInCart() ?: [];
 
@@ -124,15 +124,19 @@ class Cart
                 foreach ($productsInCart[self::TYPE_PRODUCT] as $key => $data) {
                     $infoProduct = $productRepository->find($data['id']);
                     if ($infoProduct) {
-                        $productsInfo[self::TYPE_PRODUCT][$key]['item'] = $infoProduct;
-                        $productsInfo[self::TYPE_PRODUCT][$key]['count'] = $data['count'];
-                        $productsInfo[self::TYPE_PRODUCT][$key]['totalPrice'] = $data['count'] * ($infoProduct->getDiscount() ?: $infoProduct->getPrice());
+                        $infoProduct->setFinalPrice();
                         if (isset($data['colour'])) {
                             $infoColour = $colourRepository->find($data['colour']);
                             if ($infoColour) {
                                 $productsInfo[self::TYPE_PRODUCT][$key]['colour'] = $infoColour;
+                                $infoProduct->setFinalPrice($infoColour);
                             }
                         }
+                        $productsInfo[self::TYPE_PRODUCT][$key]['item'] = $infoProduct;
+                        $productsInfo[self::TYPE_PRODUCT][$key]['count'] = $data['count'];
+                        $productsInfo[self::TYPE_PRODUCT][$key]['price'] = $infoProduct->getFinalPrice();
+                        $productsInfo[self::TYPE_PRODUCT][$key]['totalPrice'] = $data['count'] * $infoProduct->getFinalPrice();
+
                         if (isset($data['letter'])) {
                             $productsInfo[self::TYPE_PRODUCT][$key]['letter'] = $data['letter'];
                         }
@@ -217,6 +221,7 @@ class Cart
         $order->setType($orderType);
 
         if ($productObject) {
+            $productObject->setFinalPrice($colourObject);
             $products[0] = [
                 'item' => $productObject,
                 'totalPrice' => $productObject->getFinalPrice(),
@@ -239,7 +244,7 @@ class Cart
             $orderHasItem->setProduct($product);
             $orderHasItem->setColour($item['colour'] ?? null);
             $orderHasItem->setDiscount($product->getDiscount());
-            $orderHasItem->setPrice($product->getPrice());
+            $orderHasItem->setPrice($item['price']);
             $orderHasItem->setQuantity($item['count']);
             $orderHasItem->setOptions($option);
             $order->addOrderHasItem($orderHasItem);

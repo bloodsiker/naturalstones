@@ -150,6 +150,8 @@ class OrderController extends Controller
             throw $this->createNotFoundException(self::ORDER_404);
         }
 
+//        dump($order->getOrderHasItems()->getValues());die;
+
         return $this->render('OrderBundle::order_success.html.twig', ['order' => $order]);
     }
 }

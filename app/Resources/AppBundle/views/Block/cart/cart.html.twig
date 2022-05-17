@@ -12,18 +12,26 @@
                         <br>
                         <i style="font-size: 14px;">Цвет:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px; background: #{{ mProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ mProduct.colour.name }}</i>
                     {% endif %}
+
                     {% if mProduct.letter is defined %}
                         <br>
                         <i style="font-size: 14px;">Буква:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.letter }}</i>
                     {% endif %}
-                    {% if mProduct.item.discount %}
-                        <div class="price">
-                            <span class="old-price">{{ mProduct.item.price }} грн</span>
-                            <span>{{ mProduct.item.discount|number_format(2, ',') }} грн</span>
-                        </div>
+
+                    {% if mProduct.colour is defined %}
+                        <div class="price">{{ mProduct.price|number_format(2, ',') }} грн</div>
                     {% else %}
-                        <div class="price">{{ mProduct.item.price|number_format(2, ',') }} грн</div>
+                        {% if mProduct.item.discount %}
+                            <div class="price">
+                                <span class="old-price">{{ mProduct.item.price }} грн</span>
+                                <span>{{ mProduct.item.discount|number_format(2, ',') }} грн</span>
+                            </div>
+                        {% else %}
+                            <div class="price">{{ mProduct.item.price|number_format(2, ',') }} грн</div>
+                        {% endif %}
                     {% endif %}
+
+
                 </div>
                 <a href="" data-id="{{ key }}" data-url="{{ block_ajax_path }}" data-action="{{ constant('AppBundle\\Block\\CartBlockService::ACTION_REMOVE') }}" class="remove remove-product">
                     <img src="{{ asset('bundles/app/images/cross.svg') }}" alt="">

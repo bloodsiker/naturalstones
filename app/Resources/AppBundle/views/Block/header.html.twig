@@ -15,9 +15,9 @@
                 )
             }}
 
-            <button class="btn btn-search" type="button"><img src="{{ asset('bundles/app/images/search.png') }}" alt=""></button>
-
             {% if app.request.get('_route') != 'cart' %}
+                <button class="btn btn-search" type="button"><img src="{{ asset('bundles/app/images/search.png') }}" alt=""></button>
+
                 <div class="header-cart">
                     {{
                         sonata_block_render(

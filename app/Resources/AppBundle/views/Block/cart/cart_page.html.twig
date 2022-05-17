@@ -38,13 +38,17 @@
                             </div>
                         </td>
                         <td data-text="Цена">
-                            {% if mProduct.item.discount %}
-                                <div class="price">
-                                    <span class="old-price">{{ mProduct.item.price }} грн</span>
-                                    <span>{{ mProduct.item.discount|number_format(2, ',') }} грн</span>
-                                </div>
+                            {% if mProduct.colour is defined %}
+                                <div class="price"><span>{{ mProduct.price|number_format(2, ',') }} грн</span></div>
                             {% else %}
-                                <div class="price"><span>{{ mProduct.item.price|number_format(2, ',') }} грн</span></div>
+                                {% if mProduct.item.discount %}
+                                    <div class="price">
+                                        <span class="old-price">{{ mProduct.item.price }} грн</span>
+                                        <span>{{ mProduct.item.discount|number_format(2, ',') }} грн</span>
+                                    </div>
+                                {% else %}
+                                    <div class="price"><span>{{ mProduct.item.price|number_format(2, ',') }} грн</span></div>
+                                {% endif %}
                             {% endif %}
                         </td>
                         <td data-text="Количество">

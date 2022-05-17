@@ -168,16 +168,16 @@ class CartBlockService extends AbstractAdminBlockService
     /**
      * Add product to cart
      *
-     * @param string $type
-     * @param string $id
-     * @param int    $count
-     * @param int|null $colour
+     * @param  string  $type
+     * @param  string $id
+     * @param  int    $count
+     * @param  int|null  $colour
      *
      * @return mixed
      *
      * @throws \Exception
      */
-    private function addToCart($type, string $id, int $count, $colour = null, $letter = null)
+    private function addToCart(string $type, string $id, int $count, $colour = null, $letter = null)
     {
         switch ($type) {
             case Cart::TYPE_PRODUCT:

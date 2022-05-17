@@ -71,6 +71,7 @@
                                                         <label class="radiobox">
                                                             <input type="radio" name="colour_id" value="{{ productImageColour.colour.id }}">
                                                             <i class="switch-colour"
+                                                               data-price="{{ productImageColour.price > 0 ? productImageColour.price : (product.discount ?: product.price) }}"
                                                                data-option-colour="{{ productImageColour.id }}"
                                                                title="{{ productImageColour.colour.name }}"
                                                                style="background-color: #{{ productImageColour.colour.colour }}"></i>
@@ -165,7 +166,6 @@
                                 {% else %}
                                     <div class="price"><span>{{ product.price}} грн</span></div>
                                 {% endif %}
-{#                                {{ product.price }} грн#}
                             </div>
                             {{
                                 sonata_block_render(

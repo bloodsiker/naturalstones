@@ -23,6 +23,7 @@ parameters:
     imagine_cache_prefix: i
     static_version: 1
     order_email: maldini2@ukr.net
+    telegram_api_url: 'https://api.telegram.org/bot'
     telegram_token: 5060151880:AAFyMYdTq4h_bFxwwOrmGHM3GTYYJaye8Zg
     #telegram_token: 1775602675:AAGAdfvAPT9_RDIWB9KnQn-ICOkA96VMgXg
     telegram_chat_id: -783371929

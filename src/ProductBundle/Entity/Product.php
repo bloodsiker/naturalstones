@@ -285,6 +285,11 @@ class Product
     protected $updatedAt;
 
     /**
+     * @var float
+     */
+    protected $finalPrice;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -295,12 +300,13 @@ class Product
         $this->isMan         = false;
         $this->isWoman       = true;
         $this->isMainProduct = true;
-        $this->views     = 0;
-        $this->price     = 0;
-        $this->discount  = 0;
-        $this->percent   = 0;
-        $this->orderNum  = 1;
-        $this->createdAt = new \DateTime('now');
+        $this->views      = 0;
+        $this->price      = 0;
+        $this->discount   = 0;
+        $this->percent    = 0;
+        $this->finalPrice = 0;
+        $this->orderNum   = 1;
+        $this->createdAt  = new \DateTime('now');
 
         $this->colours           = new ArrayCollection();
         $this->metals            = new ArrayCollection();
@@ -1255,11 +1261,28 @@ class Product
         ];
     }
 
+    public function setFinalPrice($colour = null)
+    {
+        $this->finalPrice = $this->discount ?: $this->price;
+
+        if ($colour) {
+            foreach ($this->productHasOptionColour as $col) {
+                if ($colour->getId() === $col->getColour()->getId()) {
+                    if ($col->getPrice() > 0) {
+                        $this->finalPrice = $col->getPrice();
+                    }
+                }
+            }
+        }
+
+        return $this;
+    }
+
     /**
      * @return float|int
      */
     public function getFinalPrice()
     {
-        return $this->discount ?: $this->price;
+        return $this->finalPrice;
     }
 }

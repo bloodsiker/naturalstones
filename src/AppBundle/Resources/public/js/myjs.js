@@ -71,11 +71,16 @@ $(document).ready(function() {
 		// Переключаем слайд при клике на цвет товаров
 		$('.switch-colour').on('click', function () {
 			let colourId = $(this).data('option-colour');
+			let price = $(this).data('price');
 
 			let slide = $('.product-big-slider').find('.product-big-item[data-option-colour=' + colourId + ']');
 			if (slide[0]) {
 				let indexSlick = slide.data('slick-index');
 				slickSlider.slick('slickGoTo', parseInt(indexSlick));
+			}
+
+			if (price > 0) {
+				$('.price').html(`<span>${price} грн</span>`);
 			}
 		});
 	}

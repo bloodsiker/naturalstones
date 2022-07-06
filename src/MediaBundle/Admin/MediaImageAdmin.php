@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\CoreBundle\Form\Type\DateTimePickerType;
+use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -190,14 +191,20 @@ class MediaImageAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('id', null, [
+                'label' => 'media.fields.id',
+                'show_filter' => true,
+            ])
             ->add('description', null, [
                 'label' => 'media.fields.description',
             ])
             ->add('isActive', null, [
                 'label' => 'media.fields.is_active',
             ])
-            ->add('createdAt', null, [
+            ->add('createdAt', DateFilter::class, [
                 'label' => 'media.fields.created_at',
+                'field_type'    => DateTimePickerType::class,
+                'field_options' => array('format' => 'dd.MM.yyyy'),
             ]);
     }
 

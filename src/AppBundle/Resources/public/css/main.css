@@ -1659,6 +1659,16 @@ footer {
   text-decoration: underline;
 }
 
+.product_link_edit {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+.catalog-block:hover .product_link_edit{
+  display: block;
+}
+
 .catalog-block .price {
   display: -ms-flexbox;
   display: flex;

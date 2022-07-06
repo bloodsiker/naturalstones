@@ -23,6 +23,10 @@
                 <div class="price"><span>{{ product.price}} грн</span></div>
             {% endif %}
             <a href="{{ product_path(product) }}" class="button">Купить</a>
+
+            {% if app.user %}
+                <a href="{{ path('admin_product_product_edit', { 'id': product.id }) }}" class="product_link_edit" target="_blank">Edit</a>
+            {% endif %}
         </div>
     {% endfor %}
 {% endif %}

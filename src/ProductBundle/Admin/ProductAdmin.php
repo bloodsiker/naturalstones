@@ -7,6 +7,7 @@ use AdminBundle\Form\Type\TextCounterType;
 use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use Doctrine\ORM\EntityManager;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use ProductBundle\Entity\ProductHasProduct;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -66,6 +67,22 @@ class ProductAdmin extends Admin
     {
         $object->setProductGroup($object->getId());
         $this->entityManager->persist($object);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param $object
+     *
+     * @return void
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function preRemove($object)
+    {
+        $products = $this->entityManager->getRepository(ProductHasProduct::class)->findBy(['productSet' => $object->getId()]);
+        foreach ($products as $product) {
+            $this->entityManager->remove($product);
+        }
         $this->entityManager->flush();
     }
 

@@ -13,7 +13,7 @@
             sonata_block_render(
                 { 'type': 'share.block.stones' },
                 {
-                    'title': app.request.get('letter') ? 'Камни на букву «' ~ app.request.get('letter') ~ '»' : 'Все камни',
+                    'title': app.request.get('letter') ? 'frontend.stone_letter'|trans([], 'ShareBundle') ~ ' «' ~ app.request.get('letter') ~ '»' : 'frontend.all_stone'|trans([], 'ShareBundle'),
                     'show_letters': true,
                     'letter' : app.request.get('letter')
                 }

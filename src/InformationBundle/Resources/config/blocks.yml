@@ -1,0 +1,9 @@
+services:
+    information.block.info:
+        class: InformationBundle\Block\InformationBlockService
+        arguments:
+          - information.block.info
+          - '@templating'
+          - '@app.entity_manager'
+        tags:
+          - { name: sonata.block }

@@ -150,26 +150,26 @@
                     <div class="image"><img src="{{ asset('bundles/app/images/cart.svg') }}" alt=""></div>
                     <div class="inner">
                         <h5>
-                            <span class="desctop-text">Товар был добавлен в корзину</span>
-                            <span class="mobile-text">Добавлено в корзину</span>
+                            <span class="desctop-text">{{ 'frontend.modal.added_to_cart'|trans([], 'AppBundle') }}</span>
+                            <span class="mobile-text">{{ 'frontend.modal.added_to_cart_m'|trans([], 'AppBundle') }}</span>
                         </h5>
-                        <div class="desc"><span>Сейчас в вашей корзине: </span><span id="modalCountProduct"></span> на сумму <span id="modalTotalProduct"></span> грн</div>
+                        <div class="desc"><span>{{ 'frontend.modal.count_products'|trans([], 'AppBundle') }}: </span><span id="modalCountProduct"></span> {{ 'frontend.modal.products_total'|trans([], 'AppBundle') }} <span id="modalTotalProduct"></span> грн</div>
                     </div>
                 </div>
                 <div class="cart-links">
                     <a href="{{ path('cart') }}" class="button">
-                        <span class="desctop-text">Перейти к корзине</span>
-                        <span class="mobile-text">К корзине</span>
+                        <span class="desctop-text">{{ 'frontend.modal.to_cart'|trans([], 'AppBundle') }}</span>
+                        <span class="mobile-text">{{ 'frontend.modal.to_cart_m'|trans([], 'AppBundle') }}</span>
                     </a>
                     <a href="" class="button white-button close-popup">
-                        <span class="desctop-text">Продолжить покупки</span>
-                        <span class="mobile-text">Выбрать ещё</span>
+                        <span class="desctop-text">{{ 'frontend.modal.countinue'|trans([], 'AppBundle') }}</span>
+                        <span class="mobile-text">{{ 'frontend.modal.countinue_m'|trans([], 'AppBundle') }}</span>
                     </a>
                 </div>
             </div>
         </div>
         <div class="popup-top no-border">
-            <div class="modal-title"><span>С этим товаром покупают</span></div>
+            <div class="modal-title"><span>{{ 'frontend.modal.buy_with'|trans([], 'AppBundle') }}</span></div>
         </div>
 
         {{
@@ -186,3 +186,5 @@
         <button class="mfp-close" type="button"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt=""></button>
     </div>
 </div>
+
+{{ sonata_block_render({ 'type': 'information.block.info' }) }}

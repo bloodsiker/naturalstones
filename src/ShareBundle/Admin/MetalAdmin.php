@@ -2,7 +2,8 @@
 
 namespace ShareBundle\Admin;
 
-use AdminBundle\Form\Type\ColorPickerType;
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
+use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -17,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class MetalAdmin extends Admin
 {
+    use FixAdminFormTranslationDomainTrait;
+
     /**
      * @var array
      */
@@ -40,9 +43,16 @@ class MetalAdmin extends Admin
     {
         $formMapper
             ->with('share.form_group.basic', ['class' => 'col-md-8', 'label' => false])
-                ->add('name', TextType::class, [
-                    'label' => 'metal.fields.name',
-                    'required' => true,
+                ->add('translations', TranslationsType::class, [
+                    'translation_domain' => $this->translationDomain,
+                    'label' => false,
+                    'fields' => [
+                        'name' => [
+                            'label' => 'metal.fields.name',
+                            'field_type' => TextType::class,
+                            'required' => true,
+                        ],
+                    ],
                 ])
             ->end()
             ->with('share.form_group.additional', ['class' => 'col-md-4', 'label' => false])

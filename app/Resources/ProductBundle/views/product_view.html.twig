@@ -62,7 +62,7 @@
                         <div class="top-block">
                             {% if product.productHasOptionColour|length > 0 %}
                                 <div class="inner-block">
-                                    <h5>Выберите цвет</h5>
+                                    <h5>{{ 'frontend.product.change_colour'|trans([], 'ProductBundle') }}</h5>
                                     <ul class="product-colours-check">
                                         {% for productImageColour in product.productHasOptionColour %}
                                             {% if productImageColour.colour %}
@@ -87,7 +87,7 @@
 
                             {% if sizes|length > 0 %}
                                 <div class="inner-block">
-                                    <h5>Выберите размер</h5>
+                                    <h5>{{ 'frontend.product.change_size'|trans([], 'ProductBundle') }}</h5>
                                     <ul class="product-sizes-check">
                                         {% for productSize in sizes %}
                                             {% if productSize.size %}
@@ -102,7 +102,7 @@
                                         {% endfor %}
                                     </ul>
                                     <div class="select-block mobile-select">
-                                        <select class="custom-select change-size" data-placeholder="Размер">
+                                        <select class="custom-select change-size" data-placeholder="{{ 'frontend.product.size'|trans([], 'ProductBundle') }}">
                                             <option></option>
                                             {% for productSize in sizes %}
                                                 {% if productSize.size %}
@@ -117,9 +117,9 @@
                             {% if product.productHasOption|length > 0 %}
                                 <div class="inner-block">
                                     {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_LETTERS') %}
-                                        <h5>Выберите букву</h5>
+                                        <h5>{{ 'frontend.product.change_letter'|trans([], 'ProductBundle') }}</h5>
                                         <div class="select-block">
-                                            <select class="custom-select select-letters" data-placeholder="Буквы">
+                                            <select class="custom-select select-letters" data-placeholder="{{ 'frontend.product.letter'|trans([], 'ProductBundle') }}">
                                                 <option></option>
                                                 {% for productOption in product.productHasOption %}
                                                     {% if productOption.value %}
@@ -134,7 +134,7 @@
                             {% endif %}
 
                             <div class="inner-block">
-                                <h5>Выберите количество</h5>
+                                <h5>{{ 'frontend.product.change_count'|trans([], 'ProductBundle') }}</h5>
                                 <div class="cart-product-amount">
                                     <span class="qtyminus">−</span>
                                     <input type="text" id="quantity" value="1" class="qty" onkeypress="return event.charCode &gt;= 48 &amp;&amp; event.charCode &lt;= 57" placeholder="">
@@ -144,7 +144,7 @@
                         </div>
                         {% if product.productHasProduct|length %}
                             <div class="middle-block">
-                                <h5>{{ product.optionLabel ? product.optionLabel.name : 'Что входит в набор' }}</h5>
+                                <h5>{{ product.optionLabel ? product.optionLabel.name : 'frontend.product.included'|trans([], 'ProductBundle') }}</h5>
                                 <table class="table-product-set">
                                     {% for prodSet in product.productHasProduct %}
                                         <tr>
@@ -180,10 +180,10 @@
                     </form>
 
                     <div class="product-quick">
-                        <div class="product-quick-toggle button">Быстрый заказ <img src="{{ asset('bundles/app/images/arrow-right-purple.svg') }}" alt=""></div>
+                        <div class="product-quick-toggle button">{{ 'frontend.product.quick_order'|trans([], 'ProductBundle') }} <img src="{{ asset('bundles/app/images/arrow-right-purple.svg') }}" alt=""></div>
                         <div class="product-quick-block">
                             <div class="top">
-                                <h5>Нет времени оформлять?</h5>
+                                <h5>{{ 'frontend.quic_order.title'|trans([], 'AppBundle') }}</h5>
                                 <div class="messengers-input">
                                     <input class="telegram phone-input" name="phone" type="text" placeholder="+38 (___) ___-__-__" autocomplete="off">
                                     <input class="" name="instagram" type="text" placeholder="https://instagram.com" style="display: none" autocomplete="off">
@@ -192,7 +192,7 @@
                                 </div>
                             </div>
                             <div class="middle">
-                                <div class="note">Выберите в каком мессенджере вам ответить:</div>
+                                <div class="note">{{ 'frontend.quic_order.messenger'|trans([], 'AppBundle') }}:</div>
                                 <ul class="messengers-list">
                                     <li>
                                         <label class="messengers-radio telegram">
@@ -221,7 +221,7 @@
                                 </ul>
                             </div>
                             <div class="bottom">
-                                <a href="#" data-url="{{ path('product_quick_order') }}" class="button product-quick-cart">Быстрый заказ</a>
+                                <a href="#" data-url="{{ path('product_quick_order') }}" class="button product-quick-cart">{{ 'frontend.quic_order.btn_order'|trans([], 'AppBundle') }}</a>
                             </div>
                         </div>
                     </div>
@@ -230,13 +230,13 @@
                 <div class="product-description">
                     <ul class="product-description-list">
                         <li>
-                            <a href="#prod-desc-2" class="active-tab"><img src="{{ asset('bundles/app/images/info.svg') }}" alt="">Описание</a>
+                            <a href="#prod-desc-2" class="active-tab"><img src="{{ asset('bundles/app/images/info.svg') }}" alt="">{{ 'frontend.product.tab.description'|trans([], 'ProductBundle') }}</a>
                         </li>
                         <li>
-                            <a href="#prod-desc-3"><img src="{{ asset('bundles/app/images/list.svg') }}" alt="">Характеристики</a>
+                            <a href="#prod-desc-3"><img src="{{ asset('bundles/app/images/list.svg') }}" alt="">{{ 'frontend.product.tab.info'|trans([], 'ProductBundle') }}</a>
                         </li>
                         <li>
-                            <a href="#prod-desc-1"><img src="{{ asset('bundles/app/images/delivery.svg') }}" alt="">Доставка и оплата</a>
+                            <a href="#prod-desc-1"><img src="{{ asset('bundles/app/images/delivery.svg') }}" alt="">{{ 'frontend.product.tab.delivery'|trans([], 'ProductBundle') }}</a>
                         </li>
                     </ul>
                     <div class="product-description-inner">
@@ -245,7 +245,7 @@
                             <div class="product-description-trigger">
                                 <a href="">
                                     <span class="pic"><img src="{{ asset('bundles/app/images/info.svg') }}" alt=""></span>
-                                    Описание
+                                    {{ 'frontend.product.tab.description'|trans([], 'ProductBundle') }}
                                     <img src="{{ asset('bundles/app/images/select-arrow.svg') }}" class="arrow" alt="">
                                 </a>
                             </div>
@@ -260,7 +260,7 @@
                             <div class="product-description-trigger">
                                 <a href="">
                                     <span class="pic"><img src="{{ asset('bundles/app/images/list.svg') }}" alt=""></span>
-                                    Характеристики
+                                    {{ 'frontend.product.tab.info'|trans([], 'ProductBundle') }}
                                     <img src="{{ asset('bundles/app/images/select-arrow.svg') }}" class="arrow" alt="">
                                 </a>
                             </div>
@@ -269,7 +269,7 @@
                                     {% if product.metals|length %}
                                         <tr>
                                             <td>
-                                                <div class="name">Материал</div>
+                                                <div class="name">{{ 'frontend.product.material'|trans([], 'ProductBundle') }}</div>
                                             </td>
                                             <td>
                                                 {% for metal in product.metals %}
@@ -282,7 +282,7 @@
                                     {% if product.colours|length %}
                                         <tr>
                                             <td>
-                                                <div class="name">Цвет</div>
+                                                <div class="name">{{ 'frontend.product.colour'|trans([], 'ProductBundle') }}</div>
                                             </td>
                                             <td>
                                                 {% for colour in product.colours %}
@@ -296,22 +296,22 @@
                                     {% endif %}
                                     <tr>
                                         <td>
-                                            <div class="name">Кому</div>
+                                            <div class="name">{{ 'frontend.product.who'|trans([], 'ProductBundle') }}</div>
                                         </td>
                                         <td>
                                             {% if product.isMan %}
-                                                <a href="{{ path('product_who_list', {'who' : 'man'}) }}" class="link">Мужские</a>{% if product.isWoman %}, {% endif %}
+                                                <a href="{{ path('product_who_list', {'who' : 'man'}) }}" class="link">{{ 'frontend.product.man'|trans([], 'ProductBundle') }}</a>{% if product.isWoman %}, {% endif %}
                                             {% endif %}
 
                                             {% if product.isWoman %}
-                                                <a href="{{ path('product_who_list', {'who' : 'woman'}) }}" class="link">Женские</a>
+                                                <a href="{{ path('product_who_list', {'who' : 'woman'}) }}" class="link">{{ 'frontend.product.woman'|trans([], 'ProductBundle') }}</a>
                                             {% endif %}
                                         </td>
                                     </tr>
                                     {% if product.stones|length %}
                                         <tr>
                                             <td>
-                                                <div class="name">Камни</div>
+                                                <div class="name">{{ 'frontend.product.stone'|trans([], 'ProductBundle') }}</div>
                                             </td>
                                             <td>
                                                 {% for stone in product.stones %}
@@ -331,26 +331,26 @@
                             <div class="product-description-trigger">
                                 <a href="">
                                     <span class="pic"><img src="{{ asset('bundles/app/images/delivery.svg') }}" alt=""></span>
-                                    Доставка и оплата
+                                    {{ 'frontend.product.tab.delivery'|trans([], 'ProductBundle') }}
                                     <img src="{{ asset('bundles/app/images/select-arrow.svg') }}" class="arrow" alt="">
                                 </a>
                             </div>
                             <div class="product-description-tab">
                                 <div class="product-desc-text">
                                     <ul>
-                                        <li>Оплата принимается на карты <strong>Приват банка</strong> и <strong>Monobank</strong>;</li>
-                                        <li>Заказ будет отправлен в тот же день после оплаты;</li>
-                                        <li>Доставка в другие страны рассчитывается <strong>индивидуально</strong>.</li>
+                                        <li>{{ 'frontend.product.delivery_payment_1'|trans([], 'ProductBundle') }} <strong>{{ 'frontend.product.delivery_payment_2'|trans([], 'ProductBundle') }}</strong> {{ 'frontend.product.delivery_payment_3'|trans([], 'ProductBundle') }} <strong>Monobank</strong>;</li>
+                                        <li>{{ 'frontend.product.delivery_payment_4'|trans([], 'ProductBundle') }};</li>
+                                        <li>{{ 'frontend.product.delivery_payment_5'|trans([], 'ProductBundle') }} <strong>{{ 'frontend.product.delivery_payment_6'|trans([], 'ProductBundle') }}</strong>.</li>
                                     </ul>
                                 </div>
                                 <div class="product-pay-list">
                                     <div class="product-pay-block">
-                                        <div class="pay-title">Оплата производится с помощью банков</div>
+                                        <div class="pay-title">{{ 'frontend.product.delivery_payment_7'|trans([], 'ProductBundle') }}</div>
                                         <ul class="product-pay-country">
                                             <li>
                                                 <img src="{{ asset('bundles/app/images/pay-systems/pay-system-8.png') }}" alt="">
                                                 <img src="{{ asset('bundles/app/images/pay-systems/pay-system-9.png') }}" alt="">
-                                                <span>Украина</span>
+                                                <span>{{ 'frontend.product.delivery_payment_8'|trans([], 'ProductBundle') }}</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -361,7 +361,7 @@
 
                     {% if product.tags|length > 0 %}
                         <div class="product-tags">
-                            <span>Теги:</span>
+                            <span>{{ 'frontend.product.tags'|trans([], 'ProductBundle') }}:</span>
                             {% for tag in product.tags %}
                                 <a href="{{ path('product_tags_list', {'slug' : tag.slug}) }}" class="link">#{{ tag.name }}</a>
                             {% endfor %}
@@ -380,7 +380,7 @@
             sonata_block_render(
                 { 'type': 'product.block.list' },
                 {
-                    'title' : 'Похожие товары',
+                    'title' : 'frontend.related_products'|trans([], 'ProductBundle'),
                     'items_count' : 10,
                     'exclude_ids' : product.id,
                     'category_slug' : app.request.get('category'),

@@ -1,0 +1,22 @@
+Action: Действия
+Information List: Список информации
+Information Create: Добавить информацию
+
+form_group:
+    basic: Основные
+    additional: Дополнительные
+
+group:
+    information: Информация
+    information_editor: Информация
+
+information:
+    fields:
+        id: ID
+        title: Название
+        description: Описание
+        url: Url
+        is_active: Активный
+        started_at: Начало
+        finished_at: Окончание
+        created_at: Дата создания

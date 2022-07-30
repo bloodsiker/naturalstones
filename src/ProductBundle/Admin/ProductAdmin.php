@@ -2,6 +2,7 @@
 
 namespace ProductBundle\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AdminBundle\Admin\BaseAdmin as Admin;
 use AdminBundle\Form\Type\TextCounterType;
 use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
@@ -236,15 +237,21 @@ class ProductAdmin extends Admin
         $formMapper
             ->with('product.tab.product', ['tab' => true])
                 ->with('form_group.basic', ['class' => 'col-md-8', 'name' => null])
-                    ->add('name', TextCounterType::class, [
-                        'label' => 'product.fields.name',
-                    ])
-                    ->add('description', CKEditorType::class, [
-                        'label' => 'product.fields.description',
-                        'config_name' => 'advanced',
-                        'required' => true,
-                        'attr' => [
-                            'rows' => 5,
+                    ->add('translations', TranslationsType::class, [
+                        'translation_domain' => $this->translationDomain,
+                        'label' => false,
+                        'fields' => [
+                            'name' => [
+                                'label' => 'product.fields.name',
+                                'field_type' => TextCounterType::class,
+                                'required' => true,
+                            ],
+                            'description' => [
+                                'label' => 'product.fields.description',
+                                'field_type' => CKEditorType::class,
+                                'config_name' => 'advanced',
+                                'required' => false,
+                            ],
                         ],
                     ])
                     ->add('instagram_link', UrlType::class, [

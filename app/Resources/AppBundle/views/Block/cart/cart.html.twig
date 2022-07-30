@@ -1,6 +1,6 @@
 {% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
 
-<div class="top">В корзине <span class="countProductInCart" id="countProductInCart" data-count-cart="{{ countItems }}">{{ countItems }}</span> товара</div>
+<div class="top">{{ 'frontend.cart.in_cart'|trans([], 'AppBundle') }} <span class="countProductInCart" id="countProductInCart" data-count-cart="{{ countItems }}">{{ countItems }}</span> {{ 'frontend.cart.products'|trans([], 'AppBundle') }}</div>
 <div class="middle">
     {% if products.product is defined %}
         {% for key, mProduct in products.product %}
@@ -10,12 +10,12 @@
                     <a href="{{ product_path(mProduct.item) }}" class="name">{{ mProduct.item.name }} {% if mProduct.item.size %}({{ mProduct.item.size }}){% endif %} - {{ mProduct.count }} шт</a>
                     {% if mProduct.colour is defined %}
                         <br>
-                        <i style="font-size: 14px;">Цвет:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px; background: #{{ mProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ mProduct.colour.name }}</i>
+                        <i style="font-size: 14px;">{{ 'frontend.cart.colour'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px; background: #{{ mProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ mProduct.colour.name }}</i>
                     {% endif %}
 
                     {% if mProduct.letter is defined %}
                         <br>
-                        <i style="font-size: 14px;">Буква:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.letter }}</i>
+                        <i style="font-size: 14px;">{{ 'frontend.cart.letter'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.letter }}</i>
                     {% endif %}
 
                     {% if mProduct.colour is defined %}
@@ -42,8 +42,8 @@
 </div>
 <div class="bottom">
     <div class="total">
-        <p>Итого:</p>
+        <p>{{ 'frontend.cart.total'|trans([], 'AppBundle') }}:</p>
         <div class="total-price">{{ cart.getTotalPrice() }} грн</div>
     </div>
-    <a href="{{ path('cart') }}" class="button">Корзина</a>
+    <a href="{{ path('cart') }}" class="button">{{ 'frontend.cart.link_to_cart'|trans([], 'AppBundle') }}</a>
 </div>

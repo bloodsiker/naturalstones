@@ -15,12 +15,6 @@
             </div>
         {% endif %}
 
-        <div class="filter-outer">
-            <h1>Камень: {{ stone.name }}</h1>
-
-{#            {% include 'AppBundle:Block:filter.html.twig' %}#}
-        </div>
-
         {{
             sonata_block_render(
                 { 'type': 'product.block.list' },
@@ -28,6 +22,7 @@
                     'items_count' : 20,
                     'page': app.request.get('page') ? app.request.get('page') : 1,
                     'stone': stone,
+                    'title': 'frontend.stone'|trans([], 'AppBundle') ~ ': ' ~ stone.name,
                     'show_paginator': true
                 }
             )

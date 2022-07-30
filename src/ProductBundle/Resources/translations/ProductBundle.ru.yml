@@ -168,3 +168,38 @@ history_search:
         ip: IP
         search: Поисковый запрос
         created_at: Создана
+
+frontend:
+    viewed_products: Вы просматривали
+    related_products: Похожие товары
+    zodiac_stones: Камни по знаку зодиака
+
+    product:
+        change_colour: Выберите цвет
+        change_size: Выберите размер
+        change_letter: Выберите букву
+        change_count: Выберите количество
+        letter: Буквы
+        size: Размер
+        included: Что входит в набор
+        quick_order: Быстрый заказ
+        tab:
+            description: Описание
+            info: Характеристики
+            delivery: Доставка и оплата
+        material: Материал
+        colour: Цвет
+        who: Кому
+        man: Мужские
+        woman: Женские
+        stone: Камни
+        delivery_payment:  Доставка и оплата
+        delivery_payment_1:  Оплата принимается на карты
+        delivery_payment_2:  Приват банка
+        delivery_payment_3:  и
+        delivery_payment_4:  Заказ будет отправлен в тот же день после оплаты
+        delivery_payment_5:  Доставка в другие страны рассчитывается
+        delivery_payment_6:  индивидуально
+        delivery_payment_7:  Оплата производится с помощью банков
+        delivery_payment_8:  Украина
+        tags: Теги

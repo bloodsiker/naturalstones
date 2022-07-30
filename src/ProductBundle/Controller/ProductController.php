@@ -39,13 +39,12 @@ class ProductController extends Controller
         $breadcrumb = $this->get('app.breadcrumb');
         $breadcrumb->addBreadcrumb(['title' => $category->getName()]);
 
-        $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
-        $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
+        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
+        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => "Список изделий, {$category->getName()} | Naturalstones Jewerly - Изделия из натуральных камней".$page,
-            'description' => "{$pageDesc} Список изделий, {$category->getName()}",
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
+            'title' => $this->get('translator')->trans('frontend.meta.meta_title_products', ['%CATEGORY%' => $category->getName()], 'AppBundle').$page,
+            'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_products', ['%CATEGORY%' => $category->getName()], 'AppBundle'),
             'og' => [
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
@@ -64,17 +63,16 @@ class ProductController extends Controller
     public function listWhoAction(Request $request)
     {
         $who = $request->get('who');
-        $whoIs = Product::$whois[$who];
+        $whoIs = $this->get('translator')->trans(Product::$whois[$who], [], 'AppBundle');
         $breadcrumb = $this->get('app.breadcrumb');
         $breadcrumb->addBreadcrumb(['title' => $whoIs]);
 
-        $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
-        $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
+        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
+        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => " Naturalstones Jewerly - Изделия из натуральных камней для {$whoIs}" . $page,
-            'description' => "{$pageDesc} Большой выбор ювелирных изделий для мужчин и женщин",
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
+            'title' => $this->get('translator')->trans('frontend.meta.meta_title_who', ['%WHO%' => $whoIs], 'AppBundle') . $page,
+            'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_who', [], 'AppBundle'),
             'og' => [
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
@@ -96,17 +94,16 @@ class ProductController extends Controller
         $repo = $this->getDoctrine()->getManager()->getRepository(Tag::class);
         $tag = $repo->findOneBy(['slug' => $slug]);
         $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Тег: #' . $tag->getName()]);
+        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.tag', [], 'AppBundle') . $tag->getName()]);
 
-        $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
-        $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
+        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
+        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
 
-        $title = "Ювелирные изделия по тегу {$tag->getName()} | Naturalstones Jewerly - Изделия из натуральных камней".$page;
+        $title = $this->get('translator')->trans('frontend.meta.meta_title_tag', ['%TAG%' => $tag->getName()], 'AppBundle') . $page;
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $title,
-            'description' => "{$pageDesc} Большой выбор ювелирных изделий по тегу " . $tag->getName(),
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
+            'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_tag', ['%TAG%' => $tag->getName()], 'AppBundle'),
             'og' => [
                 'og:type' => 'website',
                 'og:title' => $title,
@@ -130,17 +127,16 @@ class ProductController extends Controller
         $repo = $this->getDoctrine()->getManager()->getRepository(Colour::class);
         $colour = $repo->findOneBy(['slug' => $slug]);
         $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Цвет: ' . $colour->getName()]);
+        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.colour', [], 'AppBundle') . $colour->getName()]);
 
-        $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
-        $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
+        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
+        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
 
-        $title = "Ювелирные изделия цвета {$colour->getName()} | Naturalstones Jewerly - Изделия из натуральных камней".$page;
+        $title = $this->get('translator')->trans('frontend.meta.meta_title_colour', ['%COLOUR%' => $colour->getName()], 'AppBundle') . $page;
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $title,
-            'description' => "{$pageDesc} Большой выбор ювелирных изделий цвета {$colour->getName()}",
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
+            'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_colour', ['%COLOUR%' => $colour->getName()], 'AppBundle'),
             'og' => [
                 'og:type' => 'website',
                 'og:title' => $title,
@@ -165,18 +161,17 @@ class ProductController extends Controller
         $stone = $repo->findOneBy(['slug' => $slug]);
         $router = $this->get('router');
         $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Все камни',  'href' => $router->generate('stone_list')]);
-        $breadcrumb->addBreadcrumb(['title' => 'Камень: ' . $stone->getName()]);
+        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.stones', [], 'AppBundle'),  'href' => $router->generate('stone_list')]);
+        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.stone', [], 'AppBundle') . $stone->getName()]);
 
-        $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
-        $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
+        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
+        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
 
-        $title = "Натуральный камень {$stone->getName()} | Naturalstones Jewerly - Изделия из натуральных камней".$page;
+        $title = $this->get('translator')->trans('frontend.meta.meta_title_stones', ['%STONE%' => $stone->getName()], 'AppBundle') . $page;
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $title,
-            'description' => "{$pageDesc} Изделия по камню " . $stone->getName(),
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
+            'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_stones', ['%STONE%' => $stone->getName()], 'AppBundle'),
             'og' => [
                 'og:type' => 'website',
                 'og:title' => $title,
@@ -216,14 +211,13 @@ class ProductController extends Controller
         }
         $breadcrumb->addBreadcrumb(['title' => $product->getName()]);
 
-        $title = $product->getName().' -  купить изделие из натуральных камней | Naturalstones Jewerly - Изделия из натуральных камней';
+        $title = $product->getName().' - '. $this->get('translator')->trans('frontend.meta.meta_title_single_product', [], 'AppBundle');
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $title,
             'description' => mb_substr($product->getDescription(), 0, 150),
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
             'og' => [
-                'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
+                'og:site_name' => $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
                 'og:type' => 'article',
                 'og:title' => $title,
                 'og:url' => $request->getSchemeAndHttpHost(),

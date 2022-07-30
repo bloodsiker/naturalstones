@@ -2,11 +2,11 @@
     <input type="hidden" name="url" value="{{ app.request.pathinfo }}">
     <div class="filter-content">
         <div class="filter-content-inner">
-            <div class="title">Фильтры</div>
+            <div class="title">{{ 'frontend.filter.title'|trans([], 'AppBundle') }}</div>
 
             {% if colours is defined %}
             <div class="filter-block">
-                <div class="filter-toggle"><span>Цвет</span><i></i></div>
+                <div class="filter-toggle"><span>{{ 'frontend.filter.colour'|trans([], 'AppBundle') }}</span><i></i></div>
                 <div class="filter-podmenu filter-colours">
                     <ul class="filter-podmenu-choose">
                         {% for colour in colours %}
@@ -22,7 +22,7 @@
                             </li>
                         {% endfor %}
                         <li>
-                            <a href="" class="btn-filter">Применить</a>
+                            <a href="" class="btn-filter">{{ 'frontend.filter.apply'|trans([], 'AppBundle') }}</a>
                         </li>
                     </ul>
                 </div>
@@ -31,7 +31,7 @@
 
             {% if stones is defined %}
                 <div class="filter-block">
-                    <div class="filter-toggle"><span>Камни</span><i></i></div>
+                    <div class="filter-toggle"><span>{{ 'frontend.filter.stones'|trans([], 'AppBundle') }}</span><i></i></div>
                     <div class="filter-podmenu filter-stones">
                         <ul class="filter-podmenu-choose">
                             {% for stone in stones %}
@@ -44,7 +44,7 @@
                                 </li>
                             {% endfor %}
                             <li>
-                                <a href="" class="btn-filter">Применить</a>
+                                <a href="" class="btn-filter">{{ 'frontend.filter.apply'|trans([], 'AppBundle') }}</a>
                             </li>
                         </ul>
                     </div>
@@ -52,7 +52,7 @@
             {% endif %}
 
             <div class="filter-block">
-                <div class="filter-toggle"><span>Цена</span><i></i></div>
+                <div class="filter-toggle"><span>{{ 'frontend.filter.price'|trans([], 'AppBundle') }}</span><i></i></div>
                 <div class="filter-podmenu with-diapazon">
                     <div class="range-slider-content">
                         <div class="extra-controls">
@@ -69,7 +69,7 @@
                             <input type="text" class="js-range-slider" value=""/>
                         </div>
                     </div>
-                    <a href="" class="btn-filter mt-40">Применить</a>
+                    <a href="" class="btn-filter mt-40">{{ 'frontend.filter.apply'|trans([], 'AppBundle') }}</a>
                 </div>
             </div>
 
@@ -80,14 +80,14 @@
         <div class="filter-overlay"></div>
     </div>
 
-    <div class="filter-open">Фильтры <i>+</i></div>
+    <div class="filter-open">{{ 'frontend.filter.title'|trans([], 'AppBundle') }} <i>+</i></div>
 
     <div class="filter-block select-block">
-        <select class="sort-select" name="sort" data-placeholder="Сортировка">
+        <select class="sort-select" name="sort" data-placeholder="{{ 'frontend.filter.sort'|trans([], 'AppBundle') }}">
             <option></option>
-            <option value="asc">По умолчанию</option>
-            <option value="asc" {{ app.request.get('sort') == 'asc' ? 'selected' : null }}>По возрастанию цены</option>
-            <option value="desc" {{ app.request.get('sort') == 'desc' ? 'selected' : null }}>По убыванию цены</option>
+            <option value="asc">{{ 'frontend.filter.sorts.default'|trans([], 'AppBundle') }}</option>
+            <option value="asc" {{ app.request.get('sort') == 'asc' ? 'selected' : null }}>{{ 'frontend.filter.sorts.price_hight'|trans([], 'AppBundle') }}</option>
+            <option value="desc" {{ app.request.get('sort') == 'desc' ? 'selected' : null }}>{{ 'frontend.filter.sorts.price_low'|trans([], 'AppBundle') }}</option>
         </select>
     </div>
 

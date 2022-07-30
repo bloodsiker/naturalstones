@@ -2,10 +2,12 @@
 
 namespace ShareBundle\Entity;
 
+use AppBundle\Traits\TranslatableProxyTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class Tag
@@ -18,6 +20,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Tag
 {
+    use ORMBehaviors\Translatable\Translatable;
+    use TranslatableProxyTrait;
+
     /**
      * @var int
      *
@@ -40,27 +45,6 @@ class Tag
      * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      */
     protected $slug;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="meta_title", type="string", length=255, nullable=true)
-     */
-    protected $metaTitle;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="meta_keywords", type="text", length=65535, nullable=true)
-     */
-    protected $metaKeywords;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="meta_description", type="text", length=65535, nullable=true)
-     */
-    protected $metaDescription;
 
     /**
      * @var bool
@@ -93,7 +77,7 @@ class Tag
      */
     public function __toString()
     {
-        return (string) $this->getName();
+        return (string) $this->translate()->getName();
     }
 
     /**
@@ -103,7 +87,7 @@ class Tag
     {
         if (is_null($this->slug)) {
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->getName());
+            $this->slug = $slugify->slugify($this->translate()->getName());
         }
     }
 
@@ -187,78 +171,6 @@ class Tag
     public function getSlug()
     {
         return $this->slug;
-    }
-
-    /**
-     * Set metaTitle
-     *
-     * @param string $metaTitle
-     *
-     * @return Tag
-     */
-    public function setMetaTitle($metaTitle)
-    {
-        $this->metaTitle = $metaTitle;
-
-        return $this;
-    }
-
-    /**
-     * Get metaTitle
-     *
-     * @return string
-     */
-    public function getMetaTitle()
-    {
-        return $this->metaTitle;
-    }
-
-    /**
-     * Set metaKeywords
-     *
-     * @param string $metaKeywords
-     *
-     * @return Tag
-     */
-    public function setMetaKeywords($metaKeywords)
-    {
-        $this->metaKeywords = $metaKeywords;
-
-        return $this;
-    }
-
-    /**
-     * Get metaKeywords
-     *
-     * @return string
-     */
-    public function getMetaKeywords()
-    {
-        return $this->metaKeywords;
-    }
-
-    /**
-     * Set metaDescription
-     *
-     * @param string $metaDescription
-     *
-     * @return Tag
-     */
-    public function setMetaDescription($metaDescription)
-    {
-        $this->metaDescription = $metaDescription;
-
-        return $this;
-    }
-
-    /**
-     * Get metaDescription
-     *
-     * @return string
-     */
-    public function getMetaDescription()
-    {
-        return $this->metaDescription;
     }
 
     /**

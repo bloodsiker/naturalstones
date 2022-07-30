@@ -1,0 +1,5 @@
+image:
+  btn:
+    upload: Завантажити
+  validation:
+    required: Поле обов'язкове для заповнення

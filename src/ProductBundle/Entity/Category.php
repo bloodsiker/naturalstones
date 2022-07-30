@@ -2,9 +2,11 @@
 
 namespace ProductBundle\Entity;
 
+use AppBundle\Traits\TranslatableProxyTrait;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class Category
@@ -15,6 +17,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
+    use ORMBehaviors\Translatable\Translatable;
+    use TranslatableProxyTrait;
+
     const TYPE_MAIN      = 1;
     const TYPE_SECONDARY = 2;
     const TYPE_INDIVIDUAL = 3;
@@ -107,7 +112,7 @@ class Category
      */
     public function __toString()
     {
-        return (string) $this->name;
+        return (string) $this->translate()->getName();
     }
 
     /**
@@ -117,7 +122,7 @@ class Category
     {
         if (is_null($this->slug)) {
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->getName());
+            $this->slug = $slugify->slugify($this->translate('ru')->getName());
         }
     }
 
@@ -163,6 +168,16 @@ class Category
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return $this->translate()->getName();
     }
 
     /**

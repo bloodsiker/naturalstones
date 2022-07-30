@@ -2,7 +2,9 @@
 
 namespace ShareBundle\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AdminBundle\Admin\BaseAdmin as Admin;
+use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -16,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class TextAdmin extends Admin
 {
+    use FixAdminFormTranslationDomainTrait;
+
     protected $datagridValues = [
         '_page'       => 1,
         '_per_page'   => 25,
@@ -109,15 +113,21 @@ class TextAdmin extends Admin
     {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
-                ->add('name', TextType::class, [
-                    'label' => 'text.fields.name',
-                ])
-                ->add('description', CKEditorType::class, [
-                    'label' => 'text.fields.description',
-                    'config_name' => 'default',
-                    'required' => false,
-                    'attr' => [
-                        'rows' => 5,
+                ->add('translations', TranslationsType::class, [
+                    'translation_domain' => $this->translationDomain,
+                    'label' => false,
+                    'fields' => [
+                        'name' => [
+                            'label' => 'text.fields.name',
+                            'field_type' => TextType::class,
+                            'required' => true,
+                        ],
+                        'description' => [
+                            'label' => 'text.fields.description',
+                            'field_type' => CKEditorType::class,
+                            'config_name' => 'advanced',
+                            'required' => false,
+                        ],
                     ],
                 ])
             ->end()

@@ -1,0 +1,187 @@
+Action: Действия
+
+app:
+    pager:
+        previous: Назад
+        next: Вперед
+        page: Сторінка
+
+    block:
+        service:
+            header: 'Блок "Header"'
+            footer: 'Блок "Footer"'
+
+    datetime:
+        today: Сегодня
+        yesterday: Вчера
+
+frontend:
+    buy: Купити
+    colour: Колір
+    stone: Камінь
+    tag: Тег
+    page: Сторінка
+
+    search:
+        title: Пошук по сайту
+        result: Результати пошуку за запитом
+        btn: Пошук
+        empty: На жаль, нічого не знайшлося.
+
+    menu_title: Меню
+    menu:
+        individual: Індивідуальні замовлення
+        gematit: Гематит
+        decorations: Прикраси
+        accessories: Фурнітура
+        gift_box: Подарункові упаковки
+        scrapers: Скребки Гуаша
+
+    cart:
+        title: Кошик
+        in_cart: В кошику
+        products: товару
+        colour: Колір
+        letter: Літера
+        total: Разом
+        link_to_cart: Кошик
+        clear: Очистити кошик
+        table:
+            products: Товари
+            price: Ціна
+            count: Кількість
+            total: Сума
+        continue: Продовжити покупки
+        checkout: Оформити замовлення
+        empty: Кошик порожній
+        add_to_cart: Додати до кошику
+        your_order: Ваше замовлення
+        edit_order: Редагувати
+        total_order: Сума замовлення
+        ordering: Оформлення замовлення
+        you_info: Ваші дані
+        check_info: Перевірка даних та замовлення
+        messenger: Виберіть у якому месенджері вам відповісти
+        form:
+            name: Ім'я*
+            email: E-mail (за бажанням)
+            email_2: E-mail
+            address: Адреса доставки (Відділення Нової пошти)
+            address_delivery: Адреса доставки
+            comment: Коментар
+            btn_cancel: Скасувати
+            btn_next: Далі
+            btn_send: Підтвердити
+            edit: Змінити
+            client_phone: Телефон покупця
+            client_instagram: Інстаграм покупця
+            client_name: Ім'я покупця
+            empty: Не вказано
+
+    quic_order:
+        title: Немає часу оформляти?
+        messenger: Виберіть у якому месенджері вам відповісти
+        btn_order: Швидкий заказ
+
+    homepage:
+        all_decorations: Усі прикраси
+        all_stones: Вибирайте каміння на будь-який смак
+        stones_for_zodiac: Камені по знаку зодіаку
+        popular_mounth: Найпопулярніші за місяць
+        feedback: Чи не знайшли те, що шукали?
+        feedback_form:
+            name: Ваше ім'я
+            email: Email
+            phone: Номер телефону
+            message: Повідомлення
+            btn_send: Надіслати повідомлення
+            msg_success: Дякуємо за звернення, якнайшвидше ми вирішимо ваше питання
+        about_title: Виготовлення та доставка прикрас по світу від Natural Stones Jewelry
+        description: 'Коли хочеться дарувати яскраві емоції та незабутні враження своїм рідним та близьким вибирайте чудові вироби від компанії Naturalstones Jewerly. У обумовлені терміни, з величезним трепетом та задоволенням ми зробимо та доставимо вам виріб у будь-яке місто та населений пункт світу. <br>Ми завжди йдемо назустріч кожному клієнту, тому:'
+        services_1: пропонуємо великий вибір виробів із каменів;
+        services_2: організували лояльну цінову політику - ви можете обрати гарну прикрасу на свій бюджет;
+        services_3: приймаємо оплату як переказом на карту так і післяплатою;
+        services_4: надаємо знижки постійним клієнтам та щотижневі акції;
+        services_5: завжди пропонуємо виключно якісну продукцію;
+        services_6: даємо вичерпні відповіді на всі ваші запитання щодо асортименту компанії.
+        bottom: Ви любите робити несподівані подарунки, а ми - їх створювати!
+
+    filter:
+        title: Фільтри
+        colour: Колір
+        stones: Каміння
+        price: Ціна
+        sort: Сортування
+        sorts:
+            default: За замовчуванням
+            price_hight: За зростанням ціни
+            price_low: За спаданням ціни
+        apply: Застосувати
+
+    modal:
+        added_to_cart: Товар було додано до кошика
+        added_to_cart_m: Додано до кошика
+        count_products: Зараз у вашому кошику
+        products_total: на суму
+        to_cart: Перейти до кошика
+        to_cart_m: До кошика
+        countinue: Продовжити покупки
+        countinue_m: Вибрати ще
+        buy_with: З цим товаром купують
+        btn_information: Подивитись
+
+    footer:
+        schedule: Працюємо без вихідних
+        schedule_start: з
+        copyright: Всі права захищені
+        payment_method: Платіжні системи та способи
+
+    breadcrumb:
+        main: Головна
+        search: Пошук
+        cart: Кошик
+        step: Оформлення замовлення
+        stones: Усі камені
+        stone: 'Камінь: '
+        colour: 'Колір: '
+        tag: 'Тег: #'
+        man: Для чоловіків
+        woman: Для жінок
+
+    meta:
+        description: Коли хочеться дарувати яскраві емоції та незабутні враження своїм рідним та близьким вибирайте чудові вироби від компанії «Naturalstones Jewerly»
+        keywords: Натуральне каміння, срібло, браслети, каблучки, чокери, підвіски, вставки, нитки-обереги, індивідуальні замовлення, шамбала
+
+        meta_title_index: Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_index: Коли хочеться дарувати яскраві емоції та незабутні враження своїм рідним та близьким вибирайте чудові вироби від компанії «Naturalstones Jewerly»
+
+        meta_title_search: Пошук за каталогом | Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_search: Пошук за каталогом | Naturalstones Jewerly - Прикраси з натурального каміння
+
+        meta_title_cart: Кошик | Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_cart: Кошик | Оформити замовлення
+
+        meta_title_cart_step: Кошик, крок %STEP% | Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_cart_step: Кошик, крок %STEP% | Оформити замовлення
+
+        meta_title_products: Список прикрас %CATEGORY% | Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_products: Список виробів %CATEGORY% | Naturalstones Jewerly - Прикраси з натурального каміння
+
+        meta_title_stones: Натуральний камінь %STONE% | Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_stones: Вироби з каменю %STONE%
+
+        meta_title_colour: Ювелірні прикраси кольору %COLOUR% | Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_colour: Великий вибір ювелірних прикраси кольору %COLOUR%
+
+        meta_title_tag: Ювелірні вироби за тегом %TAG% | Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_tag: Великий вибір ювелірних прикрас за тегом %TAG%
+
+        meta_title_who: Naturalstones Jewerly - Прикраси з натурального каміння для %WHO%
+        meta_description_who: Великий вибір ювелірних прикрас для чоловіків та жінок
+
+        meta_title_single_product: купити виріб з натурального каміння | Naturalstones Jewerly - Прикраси з натурального каміння
+
+error:
+    404:
+        page_not_found: Помилка 404 - сторінку не знайдено
+        on_main_page: Перейти на головну

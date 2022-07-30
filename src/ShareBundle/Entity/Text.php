@@ -2,10 +2,9 @@
 
 namespace ShareBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Cocur\Slugify\Slugify;
+use AppBundle\Traits\TranslatableProxyTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class Text
@@ -16,6 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Text
 {
+    use ORMBehaviors\Translatable\Translatable;
+    use TranslatableProxyTrait;
+
     /**
      * @var int
      *
@@ -61,7 +63,7 @@ class Text
      */
     public function __toString()
     {
-        return (string) $this->getName();
+        return (string) $this->translate()->getName();
     }
 
     /**

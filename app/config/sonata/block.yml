@@ -39,6 +39,9 @@ sonata_block:
         main.block.image:
             contexts: [ cms ]
 
+        information.block.info:
+            contexts: [ cms ]
+
         # BookBundle Block's
         book.block.list:
             contexts: [cms]

@@ -1,0 +1,22 @@
+Action: Дії
+Information List: Список інформації
+Information Create: Додати інформацію
+
+form_group:
+    basic: Основні
+    additional: Додаткові
+
+group:
+    information: Інформація
+    information_editor: Інформація
+
+information:
+    fields:
+        id: ID
+        title: Назва
+        description: Опис
+        url: Url
+        is_active: Активний
+        started_at: Початок
+        finished_at: Закінчення
+        created_at: Дата створення

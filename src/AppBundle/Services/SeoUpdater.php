@@ -192,13 +192,13 @@ class SeoUpdater
         if (isset($params['description'])) {
             $this->seoPage->addMeta('name', 'description', $params['description']);
         } else {
-            $this->seoPage->addMeta('name', 'description', $this->currentPage->getMetaDescription() ?: ($site->getMetaDescription() ?: $this->translator->trans('app.frontend.meta.description', [], 'AppBundle')));
+            $this->seoPage->addMeta('name', 'description', $this->currentPage->getMetaDescription() ?: ($site->getMetaDescription() ?: $this->translator->trans('frontend.meta.description', [], 'AppBundle')));
         }
 
         if (isset($params['keywords'])) {
             $this->seoPage->addMeta('name', 'keywords', $params['keywords']);
         } else {
-            $this->seoPage->addMeta('name', 'keywords', $this->currentPage->getMetaKeyword() ?: ($site->getMetaKeywords() ?: $this->translator->trans('app.frontend.meta.keywords', [], 'AppBundle')));
+            $this->seoPage->addMeta('name', 'keywords', $this->currentPage->getMetaKeyword() ?: ($site->getMetaKeywords() ?: $this->translator->trans('frontend.meta.keywords', [], 'AppBundle')));
         }
     }
 
@@ -216,7 +216,7 @@ class SeoUpdater
         // если Title задан из админки: выводим то что задано
         if ($title = $article->getMetaTitle()) {
             $title = $this->prepareShortcdeStr($title);
-            $title .= ' | '.$this->translator->trans('app.frontend.meta.sitename', [], 'AppBundle');
+            $title .= ' | '.$this->translator->trans('frontend.meta.sitename', [], 'AppBundle');
 
             $this->seoPage->setTitle($title);
         } elseif ($title = $article->getTitle()) {

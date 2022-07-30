@@ -1,6 +1,14 @@
 <div class="container">
     <div class="footer-content">
         <div class="footer-logo"><img src="{{ asset('bundles/app/images/logo.jpg') }}" alt="Naturalstones Jewerly"></div>
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.language_switcher' },
+                { 'type': constant('AppBundle\\Block\\LanguageSwitcherBlockService::TYPE_FOOTER') }
+            )
+        }}
+
         <div class="footer-block">
             <a href="https://www.facebook.com/naturalstones.jewerly.ua" target="_blank" class="footer-social-icon footer-facebook">
                 <img src="{{ asset('bundles/app/images/facebook.png') }}" alt="Naturalstones Jewerly">
@@ -9,12 +17,12 @@
                 <img src="{{ asset('bundles/app/images/instagram.svg') }}" alt="Naturalstones Jewerly">
             </a>
             <div class="inner">
-                <div class="title">Работаем без выходных <span>с 00:00 до 23:59</span></div>
-                <div class="copyright">&copy; {{ 'now'|date('Y') }} Все права защищены</div>
+                <div class="title">{{ 'frontend.footer.schedule'|trans([], 'AppBundle') }} <span>{{ 'frontend.footer.schedule_start'|trans([], 'AppBundle') }} 00:00 до 23:59</span></div>
+                <div class="copyright">&copy; {{ 'now'|date('Y') }} {{ 'frontend.footer.copyright'|trans([], 'AppBundle') }}</div>
             </div>
         </div>
         <div class="footer-pay">
-            <div class="title">Платежные системы и способы</div>
+            <div class="title">{{ 'frontend.footer.payment_method'|trans([], 'AppBundle') }}</div>
             <ul class="footer-pay-list">
                 <li><img src="{{ asset('bundles/app/images/pay-systems/pay-system-8.png') }}" alt=""></li>
                 <li><img src="{{ asset('bundles/app/images/pay-systems/pay-system-9.png') }}" alt=""></li>

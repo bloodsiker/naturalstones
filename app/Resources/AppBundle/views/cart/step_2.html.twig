@@ -7,35 +7,35 @@
 
         {% set infoCart = app.session.get('infoCart') %}
 
-        <h1>Оформление заказа</h1>
+        <h1>{{ 'frontend.cart.ordering'|trans([], 'AppBundle') }}</h1>
         <form action="#" method="post" class="order-form simple-form">
 
             <div class="order-form-content">
                 <div class="order-form-steps">
                     <a href="{{ path('step-1') }}">
                         <img src="{{ asset('bundles/app/images/datas.svg') }}" alt="">
-                        <span>Ваши данные</span>
+                        <span>{{ 'frontend.cart.you_info'|trans([], 'AppBundle') }}</span>
                     </a>
                     <a href="#" onclick="return false" class="active-step">
                         <img src="{{ asset('bundles/app/images/verification.svg') }}" alt="">
-                        <span>Проверка данных и заказ</span>
+                        <span>{{ 'frontend.cart.check_info'|trans([], 'AppBundle') }}</span>
                     </a>
                 </div>
 
                 <div class="order-check-block">
                     <ul class="order-check-list">
                         <li>
-                            <div class="name">Имя покупателя</div>
+                            <div class="name">{{ 'frontend.cart.form.client_name'|trans([], 'AppBundle') }}</div>
                             <div class="value">{{ infoCart.name ?: null }}</div>
                             <input type="hidden" name="name" value="{{ infoCart.name ?: null }}">
                         </li>
                         {% set messenger = infoCart.messenger ?: null %}
                         <li>
                             {% if messenger == 'viber' or messenger == 'telegram' %}
-                                <div class="name">Телефон покупателя</div>
+                                <div class="name">{{ 'frontend.cart.form.client_phone'|trans([], 'AppBundle') }}</div>
                                 <div class="value">{{ infoCart.phone ?: null  }}</div>
                             {% else %}
-                                <div class="name">Инстаграм покупателя</div>
+                                <div class="name">{{ 'frontend.cart.form.client_instagram'|trans([], 'AppBundle') }}</div>
                                 <div class="value">{{ infoCart.instagram ?: null  }}</div>
                             {% endif %}
                             <input type="hidden" name="phone" value="{{ infoCart.phone ?: null }}">
@@ -43,26 +43,26 @@
                             <input type="hidden" name="messenger" value="{{ infoCart.messenger ?: null }}">
                         </li>
                         <li>
-                            <div class="name">E-mail</div>
-                            <div class="value">{{ infoCart.email ?: 'Не указан' }}</div>
+                            <div class="name">{{ 'frontend.cart.form.email_2'|trans([], 'AppBundle') }}</div>
+                            <div class="value">{{ infoCart.email ?: 'frontend.cart.form.empty'|trans([], 'AppBundle') }}</div>
                             <input type="hidden" name="email" value="{{ infoCart.email ?: null }}">
                         </li>
                         <li>
-                            <div class="name">Адрес доставки</div>
-                            <div class="value">{{ infoCart.address ?: 'Не указан' }}</div>
+                            <div class="name">{{ 'frontend.cart.form.address_delivery'|trans([], 'AppBundle') }}</div>
+                            <div class="value">{{ infoCart.address ?: 'frontend.cart.form.empty'|trans([], 'AppBundle') }}</div>
                             <input type="hidden" name="address" value="{{ infoCart.address ?: null }}">
                         </li>
                         <li>
-                            <div class="name">Комментарий</div>
-                            <div class="value">{{ infoCart.comment ?: 'Не указан' }}</div>
+                            <div class="name">{{ 'frontend.cart.form.comment'|trans([], 'AppBundle') }}</div>
+                            <div class="value">{{ infoCart.comment ?: 'frontend.cart.form.empty'|trans([], 'AppBundle') }}</div>
                             <input type="hidden" name="comment" value="{{ infoCart.comment ?: null }}">
                         </li>
                     </ul>
-                    <a href="{{ path('step-1') }}" class="button white-button change-link">Изменить</a>
+                    <a href="{{ path('step-1') }}" class="button white-button change-link">{{ 'frontend.cart.form.edit'|trans([], 'AppBundle') }}</a>
                 </div>
                 <div class="order-form-links">
-                    <a class="button white-button" href="{{ path('cart') }}">Отменить</a>
-                    <button class="button" type="submit" data-url="{{ path('full_order') }}" id="sendFullCard">Подтвердить</button>
+                    <a class="button white-button" href="{{ path('cart') }}">{{ 'frontend.cart.form.btn_cancel'|trans([], 'AppBundle') }}</a>
+                    <button class="button" type="submit" data-url="{{ path('full_order') }}" id="sendFullCard">{{ 'frontend.cart.form.btn_send'|trans([], 'AppBundle') }}</button>
                 </div>
             </div>
 

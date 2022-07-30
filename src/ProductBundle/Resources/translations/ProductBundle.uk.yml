@@ -1,0 +1,205 @@
+Action: Дії
+Product List: Товари
+Product Create: Додати товар
+Category List: Категорії
+Category Create: Додати категорію
+Product Info View List: Список переглядів товарів
+Product Search History List: Пошукові запити
+Product Search History Create: Додати пошукові запити
+
+btn_search_related: Показать релевантные книги по тегам
+btn_search_tags: Показать релевантные теги по тексту
+not_found: Нічого не знайдено...
+no_tags_selected: Нет выбранных тегов в книге...
+
+btn_link_add: Додати
+btn_save: Зберегти
+btn_save_and_exit: Зберегти та вийти
+btn_save_and_create_new: Зберегти та створити нову
+
+text_or: або
+
+form_group:
+    basic: Основні
+    additional: Додаткові
+    product_group: Набір
+    product_option: Опції
+
+group:
+    product: Товари
+    product_editor: Товари
+    category_editor: Категорії
+    product_option_label_editor: Назва для наборів продуктів
+    product_info_view_editor: Перегляди товарів
+    product_has_image_editor: Додаткові зображення
+    product_search_history_editor: Пошукові запити
+
+product:
+    fields:
+        id: ID
+        name: Назва
+        description: Опис
+        instagram_link: Посилання на інстаграм пост
+        slug: Сегмент URL (slug)
+        is_available: В наявності
+        is_active: Активно
+        is_woman: Для жінок
+        is_man: Для чоловіків
+        is_main_product: Головний продукт
+        image: Зображення
+        category: Категорія
+        colours: Колір(и)
+        metals: Матеріал
+        stones: Камені
+        size: Розмір
+        price: Ціна
+        discount: Ціна зі знижкою
+        percent: Відсоток знижки
+        tags: Тег(і)
+        views: Перегляди
+        order_num: Сортування
+        option_type: Тип
+        option_label: Назва для набору
+        product_image: Додаткові зображення
+        product_set_products: Набір продуктів
+        product_group: Група продуктів
+        product_option: Додаткові опції
+        product_option_metal: Опції для вибору металу
+        product_option_colour: Опції для вибору кольору
+        updated_at: Змінено
+        created_at: Створено
+        types:
+            letters: Літери
+    buttons:
+        link_add: Додати новий
+    tab:
+        product: Товар
+        product_group: Набір товарів
+        product_option: Додаткові опції
+        product_option_colour: Опції кольору
+        product_option_metal: Опції металу
+    block:
+        service:
+            list: Список товарів
+        fields:
+            title: Заголовок
+            items_count: Кількість товарів
+            category: Категорія
+            tag: Тег
+            colour: Колір
+            stone: Камінь
+            discount: Товари зі знижкою
+            who: Для кого (жінок/чоловіків)
+
+product_has_image:
+    fields:
+        id: ID
+        product: Продукт
+        image: Зображення
+        order_num: ''
+
+product_has_option:
+    fields:
+        id: ID
+        product: Продукт
+        value: Назва
+        image: Зображення
+        price: Ціна
+        order_num: ''
+
+product_has_product:
+    fields:
+        id: ID
+        product: Продукт
+        product_set: Продукт, який входить у набір
+        quantity: Кількість
+        size: Розмір
+        price: Ціна
+        discount: Знижка
+        order_num: ''
+
+product_has_option_metal:
+    fields:
+        id: ID
+        product: Продукт
+        image: Зображення
+        metal: Метал
+        price: Ціна
+        order_num: ''
+
+
+product_has_option_colour:
+    fields:
+        id: ID
+        product: Продукт
+        image: Зображення
+        colour: Колір
+        price: Ціна
+        order_num: ''
+
+product_view:
+    fields:
+        id: ID
+        product: Продукт
+        view_at: Дата
+        views: Переглядів
+
+category:
+    fields:
+        id: ID
+        name: Назва
+        image: Зображення
+        description: Опис
+        slug: Сегмент URL (slug)
+        is_active: Активно
+        type: Тип
+        order_num: Сортування
+        types:
+            main: Прикраси
+            secondary: Фурнітура
+            individual: Індивідуальні замовлення
+            gift_box: Подарункові упаковки
+            scrapers: Скребки Гуаша
+            gematit: Гематит
+
+history_search:
+    fields:
+        id: ID
+        ip: IP
+        search: Пошуковий запит
+        created_at: Створено
+
+frontend:
+    viewed_products: Ви переглядали
+    related_products: Схожі товари
+    zodiac_stones: Камені по знаку зодіаку
+
+    product:
+        change_colour: Виберіть колір
+        change_size: Виберіть розмір
+        change_letter: Виберіть літеру
+        change_count: Виберіть кількість
+        letter: Літери
+        size: Розмір
+        included: Що входить до набору
+        quick_order: Швидкий заказ
+        tab:
+            description: Опис
+            info: Характеристики
+            delivery: Доставка і оплата
+        material: Матеріал
+        colour: Колір
+        who: Кому
+        man: Чоловічі
+        woman: Жіночі
+        stone: Камені
+        delivery_payment: Доставка і оплата
+        delivery_payment_1: Оплата приймається на карти
+        delivery_payment_2: Приват банку
+        delivery_payment_3: і
+        delivery_payment_4: Замовлення буде надіслано того ж дня після оплати
+        delivery_payment_5: Доставка в інші країни розраховується
+        delivery_payment_6: індивідуально
+        delivery_payment_7: Оплата провадиться за допомогою банків
+        delivery_payment_8: Україна
+        tags: Теги

@@ -1,0 +1,55 @@
+Action: Дії
+Order List: Список замовлень
+Order Create: Додати замовлення
+Order Status List: Статуси
+Order Status Create: Додати статус
+
+form_group:
+    basic: Основні
+    additional: Додаткові
+    order_has_product: Товари в замовленні
+
+group:
+    order: Замовлення
+    order_board_editor: Стіл замовлень
+    order_editor: Замовлення
+    order_status_editor: Статуси
+    order_has_item_editor: Товари в замовленні
+
+order:
+    fields:
+        fio: Ім'я клієнта
+        email: E-mail клієнта
+        phone: Телефон
+        status: Статус
+        type: Як оформлено замовлення
+        total_sum: Сума замовлення
+        discount_promo: Знижка за промокодом
+        order_sum: Підсумок
+        messenger: Месенджер
+        instagram: Instagram
+        comment: Коментар
+        address: Адреса
+        items: Товари в замовленні
+        quantity: Кількість
+        created_at: Дата створення
+        id: ID
+        statuses:
+            new: Нове замовлення
+            completed: Замовлення виконано
+            cancel: Відмова
+        types:
+            cart: Замовлення з кошика
+            quick: Швидкий заказ
+    tab:
+        order: Заказ
+        order_has_product: Товари в замовленні
+
+order_has_item:
+    fields:
+        product: Товар
+        quantity: Кількість
+        colour: Колір
+        price: Ціна
+        discount: Ціна зі знижкою
+        option: Параметри

@@ -5,17 +5,17 @@
         <table class="cart-table">
             <thead>
             <tr>
-                <th>Товары</th>
-                <th>Цена</th>
-                <th>Количество</th>
-                <th>Сумма</th>
+                <th>{{ 'frontend.cart.table.products'|trans([], 'AppBundle') }}</th>
+                <th>{{ 'frontend.cart.table.price'|trans([], 'AppBundle') }}</th>
+                <th>{{ 'frontend.cart.table.count'|trans([], 'AppBundle') }}</th>
+                <th>{{ 'frontend.cart.table.total'|trans([], 'AppBundle') }}</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
                 {% for key, mProduct in products.product %}
                     <tr>
-                        <td>
+                        <td data-text="{{ 'frontend.cart.table.products'|trans([], 'AppBundle') }}">
                             <div class="cart-item">
                                 <a href="{{ product_path(mProduct.item) }}" class="item-image"><img alt="{{ mProduct.item.name }}" class="lazyload" data-src="{{ asset(mProduct.item.image.getPath()) }}" src=""></a>
                                 <div class="item-name">
@@ -28,16 +28,16 @@
 {#                                    {% endif  %}#}
                                     {% if mProduct.colour is defined %}
                                         <br>
-                                        <i style="font-size: 14px;">Цвет:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px; background: #{{ mProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ mProduct.colour.name }}</i>
+                                        <i style="font-size: 14px;">{{ 'frontend.cart.colour'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px; background: #{{ mProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ mProduct.colour.name }}</i>
                                     {% endif %}
                                     {% if mProduct.letter is defined %}
                                         <br>
-                                        <i style="font-size: 14px;">Буква:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.letter }}</i>
+                                        <i style="font-size: 14px;">{{ 'frontend.cart.letter'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.letter }}</i>
                                     {% endif %}
                                 </div>
                             </div>
                         </td>
-                        <td data-text="Цена">
+                        <td data-text="{{ 'frontend.cart.table.price'|trans([], 'AppBundle') }}">
                             {% if mProduct.colour is defined %}
                                 <div class="price"><span>{{ mProduct.price|number_format(2, ',') }} грн</span></div>
                             {% else %}
@@ -51,7 +51,7 @@
                                 {% endif %}
                             {% endif %}
                         </td>
-                        <td data-text="Количество">
+                        <td data-text="{{ 'frontend.cart.table.count'|trans([], 'AppBundle') }}">
                             <div class="cart-product-amount">
                                 <span class="qtyminus" data-recalculate="1">−</span>
                                 <input type="text"
@@ -66,7 +66,7 @@
                                 <span class="qtyplus" data-recalculate="1" data-max="100">+</span>
                             </div>
                         </td>
-                        <td data-text="Сумма">
+                        <td data-text="{{ 'frontend.cart.table.total'|trans([], 'AppBundle') }}">
                             <div class="price">{{ mProduct.totalPrice|number_format(2, ',') }} грн</div>
                         </td>
                         <td>
@@ -84,23 +84,23 @@
             </tbody>
         </table>
         <div class="cart-table-total">
-            <a href="" class="button white-button">Продолжить покупки</a>
+            <a href="" class="button white-button">{{ 'frontend.cart.continue'|trans([], 'AppBundle') }}</a>
             <div class="total-price">
-                Итого: <span>{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>
+                {{ 'frontend.cart.total'|trans([], 'AppBundle') }}: <span>{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>
             </div>
-            <a href="{{ path('step-1') }}" type="submit" class="button">Оформить заказ</a>
+            <a href="{{ path('step-1') }}" type="submit" class="button">{{ 'frontend.cart.checkout'|trans([], 'AppBundle') }}</a>
         </div>
     </form>
 {% else %}
     <table class="cart-table">
         <tbody>
         <tr>
-            <td style="text-align: center"><img src="{{ asset('bundles/app/images/sad.png') }}" alt=""><h2>Корзина пустая</h2></td>
+            <td style="text-align: center"><img src="{{ asset('bundles/app/images/sad.png') }}" alt=""><h2>{{ 'frontend.cart.empty'|trans([], 'AppBundle') }}</h2></td>
         </tr>
         </tbody>
     </table>
 
     <div class="cart-table-total">
-        <a href="" class="button white-button">Продолжить покупки</a>
+        <a href="" class="button white-button">{{ 'frontend.cart.continue'|trans([], 'AppBundle') }}</a>
     </div>
 {% endif %}

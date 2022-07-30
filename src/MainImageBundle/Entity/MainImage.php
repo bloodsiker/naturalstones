@@ -2,7 +2,9 @@
 
 namespace MainImageBundle\Entity;
 
+use AppBundle\Traits\TranslatableProxyTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class MainImage
@@ -13,6 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MainImage
 {
+    use ORMBehaviors\Translatable\Translatable;
+    use TranslatableProxyTrait;
+
     /**
      * @var int
      *
@@ -82,7 +87,7 @@ class MainImage
      */
     public function __toString()
     {
-        return (string) $this->title;
+        return (string) $this->translate()->getTitle();
     }
 
     /**

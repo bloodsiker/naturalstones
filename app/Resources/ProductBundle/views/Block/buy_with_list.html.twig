@@ -21,7 +21,7 @@
                     {% endif %}
                     <a href="{{ product_path(product) }}" class="add-item">
                         <img src="{{ asset('bundles/app/images/check.svg') }}" alt="add">
-                        <span>Купить</span>
+                        <span>{{ 'frontend.buy'|trans([], 'AppBundle') }}</span>
                     </a>
                 </div>
             {% endfor %}

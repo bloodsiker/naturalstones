@@ -2,7 +2,9 @@
 
 namespace MainImageBundle\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AdminBundle\Admin\BaseAdmin as Admin;
+use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -17,6 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class MainImageAdmin extends Admin
 {
+    use FixAdminFormTranslationDomainTrait;
+
     /**
      * @var array
      */
@@ -90,15 +94,23 @@ class MainImageAdmin extends Admin
     {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
-                ->add('title', TextType::class, [
-                    'label' => 'main_image.fields.title',
-                    'required' => false,
-                ])
-                ->add('description', TextareaType::class, [
-                    'label' => 'main_image.fields.description',
-                    'required' => false,
-                    'attr' => [
-                        'rows' => 5,
+                ->add('translations', TranslationsType::class, [
+                    'translation_domain' => $this->translationDomain,
+                    'label' => false,
+                    'fields' => [
+                        'title' => [
+                            'label' => 'main_image.fields.title',
+                            'field_type' => TextType::class,
+                            'required' => true,
+                        ],
+                        'description' => [
+                            'label' => 'main_image.fields.description',
+                            'field_type' => TextareaType::class,
+                            'required' => false,
+                            'attr' => [
+                                'rows' => 5,
+                            ],
+                        ],
                     ],
                 ])
             ->end()

@@ -2,8 +2,9 @@
 
 namespace ShareBundle\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AdminBundle\Admin\BaseAdmin as Admin;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -17,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class ZodiacAdmin extends Admin
 {
+    use FixAdminFormTranslationDomainTrait;
+
     protected $datagridValues = [
         '_page'       => 1,
         '_per_page'   => 25,
@@ -98,8 +101,16 @@ class ZodiacAdmin extends Admin
     {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
-                ->add('name', TextType::class, [
-                    'label' => 'zodiac.fields.name',
+                ->add('translations', TranslationsType::class, [
+                    'translation_domain' => $this->translationDomain,
+                    'label' => false,
+                    'fields' => [
+                        'name' => [
+                            'label' => 'zodiac.fields.name',
+                            'field_type' => TextType::class,
+                            'required' => true,
+                        ],
+                    ],
                 ])
                 ->add('slug', TextType::class, [
                     'label' => 'zodiac.fields.slug',

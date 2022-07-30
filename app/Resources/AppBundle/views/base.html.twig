@@ -15,6 +15,10 @@
         {{ sonata_block_include_stylesheets('screen', app.request.basePath) }}
         {{ sonata_block_include_javascripts('screen', app.request.basePath) }}
 
+        {% for locale in locales_list %}
+            <link rel="alternate" href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': locale})) }}" hreflang="{{ locale == 'ua' ? 'uk' : locale }}" />
+        {% endfor %}
+
         {% block favicon %}
             <link rel="icon" href="{{ asset('bundles/app/images/favicons/favicon.ico') }}" type="image/x-icon" />
         {% endblock %}
@@ -107,7 +111,7 @@
                 <form method="get" name="search-overlay" action="{{ path('search') }}" itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
                     <div class="border-b">
                         <div class="flex">
-                            <input type="search" placeholder="Поиск по сайту"
+                            <input type="search" placeholder="{{ 'frontend.search.title'|trans([], 'AppBundle') }}"
                                    class="input input-transparent"
                                    name="search" value="" autocomplete="off">
                             <button title="Найти"
@@ -133,32 +137,21 @@
         {% endblock %}
 
         <script>
+            $(window).scroll(function() {
+                if ($(this).scrollTop()>=200) {
+                    // длительность анимации - 'slow'
+                    // тип анимации -  'linear'
+                    $('#btnInfo').css({'left':'-5px'});
+                }
+                else {
+                    // длительность анимации - 'fast'
+                    // тип анимации -  'swing'
+                    $('#btnInfo').css({'left':'-205px'});
+                }
+            });
+        </script>
 
-            // function openPopup(el) {
-            //     if (el !== undefined) {
-            //         $.magnificPopup.open({
-            //             items: {
-            //                 src: $(el).attr('href'),
-            //             },
-            //             removalDelay: 300,
-            //             fixedContentPos: true,
-            //             callbacks: {
-            //                 beforeOpen: function() {
-            //                     this.st.mainClass = $(el).attr('data-effect');
-            //                 }
-            //             },
-            //             midClick: true
-            //         });
-            //         $(".modal-slider").slick('setPosition');
-            //     }
-            // }
-            //
-            //
-            // $(function () {
-            //     $('.add-to-cart').click(function (e) {
-            //         openPopup(this);
-            //     });
-            // });
+        <script>
 
             // $('.type').on('click', function () {
             //     $('.submenu').removeClass('submenu-visible');

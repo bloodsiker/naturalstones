@@ -10,6 +10,7 @@ Disallow: /_page/
 Disallow: /order-board/vote
 Disallow: /comment/vote
 Disallow: /order/*/success
+Disallow: /cart/
 
 
 Sitemap: https://naturalstones-jewerly.com.ua/sitemap.xml

@@ -13,6 +13,11 @@ imports:
     - { resource: fos/user.yml }
     - { resource: fos/ckeditor.yml }
     - { resource: ../../vendor/knplabs/doctrine-behaviors/config/orm-services.yml }
+    - { resource: lexik/translation.yml }
+    - { resource: ibrows/sonata-translation.yml }
+    - { resource: a2lix/translation-form.yml }
+    - { resource: symfony-cmf/cmf-routing.yml }
+    - { resource: jms/i18n_routing.yml }
     - { resource: liip/imagine.yml }
     - { resource: knplabs/gaufrette.yml }
     - { resource: oneup/oneup-upload.yml }
@@ -23,14 +28,16 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: ru
-    locales: [ru, uk]
-    route_locales: ru|ua
+    locale: uk
+    locales: [uk, ru]
+    route_locales: ru|ua|uk
+    routes_for_admin: ru|uk|ua
     replacement_locales: [{ from: uk, to: ua }]
 
 framework:
     #esi: ~
     translator: { fallbacks: ['%locale%'] }
+#    translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
@@ -57,6 +64,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+        locales_list: "%locales%"
     form_themes:
         - 'AdminBundle:Form:fields.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'

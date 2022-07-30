@@ -1,4 +1,14 @@
 services:
+    app.block.service.language_switcher:
+        class: "AppBundle\\Block\\LanguageSwitcherBlockService"
+        arguments:
+            - app.block.service.language_switcher
+            - '@templating'
+            - '@request_stack'
+            - '%locales%'
+        tags:
+            - { name: sonata.block }
+
     app.block.service.footer:
         class: "AppBundle\\Block\\FooterBlockService"
         arguments:

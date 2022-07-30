@@ -2,10 +2,11 @@
 
 namespace ShareBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use AppBundle\Traits\TranslatableProxyTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class Colour
@@ -18,6 +19,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Metal
 {
+    use ORMBehaviors\Translatable\Translatable;
+    use TranslatableProxyTrait;
+
     /**
      * @var int
      *
@@ -63,7 +67,7 @@ class Metal
      */
     public function __toString()
     {
-        return (string) $this->getName();
+        return (string) $this->translate()->getName();
     }
 
     /**
@@ -73,7 +77,7 @@ class Metal
     {
         if (is_null($this->slug)) {
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->getName());
+            $this->slug = $slugify->slugify($this->translate('ru')->getName());
         }
     }
 

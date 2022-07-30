@@ -1,26 +1,63 @@
 # Application =================================================================
+index:
+    path: /
+    requirements:
+        _locale: '%route_locales%'
+    defaults:
+        _locale: '%locale%'
+        _controller: AppBundle:Default:index
+
 app:
     resource: '@AppBundle/Resources/config/routing.yml'
-    options: { i18n: true }
+    requirements:
+        _locale: '%route_locales%'
+    defaults:
+        _locale: '%locale%'
 #==============================================================================
 
 # Product =====================================================================
 product:
     resource: '@ProductBundle/Resources/config/routing.yml'
-    options: { i18n: true }
+    requirements:
+        _locale: '%route_locales%'
+    defaults:
+        _locale: '%locale%'
 #==============================================================================
 
 # Order ========================================================================
 order:
     resource: '@OrderBundle/Resources/config/routing.yml'
-    options: { i18n: true }
+    requirements:
+        _locale: '%route_locales%'
+    defaults:
+        _locale: '%locale%'
 #==============================================================================
 
 # Share ========================================================================
 share:
     resource: '@ShareBundle/Resources/config/routing.yml'
-    options: { i18n: true }
+    requirements:
+        _locale: '%route_locales%'
+    defaults:
+        _locale: '%locale%'
 #==============================================================================
+
+sitemap:
+    path: /sitemap.{_format}
+    defaults:
+        _controller: AppBundle:Default:sitemap
+    requirements:
+        _format: "xml"
+    options: { i18n: false }
+
+opensearch:
+    path: /opensearch.{_format}
+    defaults:
+        _format: "xml"
+        _controller: AppBundle:Default:openSearch
+    requirements:
+        _format: "xml"
+    options: { i18n: false }
 
 # Sonata Admin ================================================================
 sonata_user_admin_security:
@@ -67,3 +104,11 @@ fos_user:
 #_liip_imagine:
 #    resource: "@LiipImagineBundle/Resources/config/routing.yaml"
 # =============================================================================
+
+# Remove trailing slash =======================================================
+remove_trailing_slash:
+    path: /{url}
+    defaults: { _controller: AppBundle:Default:removeTrailingSlash }
+    requirements:
+        url: .*/$
+    methods: [GET]

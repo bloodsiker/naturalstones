@@ -21,6 +21,10 @@ class AppKernel extends Kernel
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
 
+            // Symfony CMF RoutingBundle
+            new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
+            new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
+
             // Doctrine Migrations bundle
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
 
@@ -50,8 +54,15 @@ class AppKernel extends Kernel
             // Sonata EasyExtendsBundle
             new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
 
+            // Store translations in database
+            new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
+            new Ibrows\SonataTranslationBundle\IbrowsSonataTranslationBundle(),
+
+            // A2lix multilingual forms
+            new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
+
 //            // Doctrine2 Behaviors
-//            new Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle(),
+            new Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle(),
 
             // Image manipulations
             new Liip\ImagineBundle\LiipImagineBundle(),
@@ -82,6 +93,7 @@ class AppKernel extends Kernel
             new OrderBundle\OrderBundle(),
 //            new QuizBundle\QuizBundle(),
             new MainImageBundle\MainImageBundle(),
+            new InformationBundle\InformationBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

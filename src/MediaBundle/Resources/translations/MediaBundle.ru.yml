@@ -1,6 +1,6 @@
 Action: Действия
-Comment List: Список файлов
-Comment Create: Добавить файл
+Media Image List: Список файлов
+Media Image Create: Добавить файл
 
 form_group:
     basic: Основные

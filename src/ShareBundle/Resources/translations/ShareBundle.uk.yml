@@ -1,0 +1,97 @@
+Action: Дії
+Tag List: Теги
+Stone List: Список каменів
+Stone Create: Додати камінь
+Colour List: Список кольорів
+Colour Create: Додати колір
+Size List: Список розмірів
+Size Create: Додати розмір
+Zodiac List: Список знаків зодіаку
+Zodiac Create: Додати знак зодіаку
+Metal List: Список металів
+Metal Create: Додати металів
+Text List: Список
+Text Create: Додати текст
+
+form_group:
+    basic: Основні
+    additional: Додаткові
+
+group:
+    share: Довідник
+    tag: Теги
+    social: Соціальні мережі
+    rtf_block: Текстові блоки
+    stone_editor: Камені
+    zodiac_editor: Знаки зодіаку
+    size_editor: Розміри
+    colour_editor: Колір
+    metal_editor: Метал
+    text_editor: Шаблон тексту
+
+stone:
+    fields:
+        id: ID
+        name: Назва
+        image: Зображення
+        description: Опис
+        slug: Сегмент URL (slug)
+        is_active: Активний
+        is_show_main: Відображати на головній
+        zodiacs: Знаки зодіаку
+        created_at: Дата створення
+
+text:
+    fields:
+        id: ID
+        description: Опис
+        name: Назва
+        is_active: Активний
+
+zodiac:
+    fields:
+        id: ID
+        name: Назва
+        image: Зображення
+        slug: Сегмент URL (slug)
+        is_active: Активний
+        is_show_main: Відображати на головній
+        created_at: Дата створення
+
+colour:
+    fields:
+        id: ID
+        name: Назва
+        colour: Цвет
+        slug: Сегмент URL (slug)
+        is_active: Активний
+        created_at: Дата створення
+
+metal:
+    fields:
+        id: ID
+        name: Назва
+        slug: Сегмент URL (slug)
+        is_active: Активний
+        created_at: Дата створення
+
+size:
+    fields:
+        id: ID
+        name: Назва
+        type: Міра довжини
+        slug: Сегмент URL (slug)
+        is_active: Активний
+        created_at: Дата створення
+
+tag:
+    fields:
+        id: ID
+        name: Назва
+        slug: Сегмент URL (slug)
+        is_active: Активен
+
+frontend:
+    stone_letter: Камені на літеру
+    stone_zodiac: Камені для знаку зодіаку
+    all_stone: Усі камені

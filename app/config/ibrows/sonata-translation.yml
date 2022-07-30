@@ -1,0 +1,26 @@
+ibrows_sonata_translation:
+    defaultDomain: AppBundle
+    defaultSelections:
+        nonTranslatedOnly: false
+    editable:
+        mode: inline         # Mode of editable, can be popup or inline
+        type: textarea       # Type of input. Can be text|textarea|select|date|checklist and more
+        emptytext: Empty     # text to display on empty translations
+        placement: right     # ingnored for inline mode
+
+services:
+    ibrows_sonata_translation.admin.orm:
+        class: "TranslationBundle\\Admin\\SonataTranslationAdmin"
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.translation", label: "group.translation"}
+        arguments:
+            - ~
+            - "Lexik\\Bundle\\TranslationBundle\\Entity\\TransUnit"
+            - IbrowsSonataTranslationBundle:TranslationCRUD
+        calls:
+            - [ "setTranslationDomain", ["IbrowsSonataTranslationBundle"] ]
+            - [ "setEditableOptions", ["%ibrows_sonata_translation.editable%"] ]
+            - [ "setManagedLocales", ["%lexik_translation.managed_locales%"] ]
+            - [ "setDefaultSelections", ["%ibrows_sonata_translation.defaultSelections%"] ]
+            - [ "setEmptyPrefixes", ["%ibrows_sonata_translation.emptyPrefixes%"] ]
+            - [ "setTransUnitManager", ["@lexik_translation.trans_unit.manager"] ]

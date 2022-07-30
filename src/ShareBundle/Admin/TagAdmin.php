@@ -2,6 +2,7 @@
 
 namespace ShareBundle\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -40,23 +41,16 @@ class TagAdmin extends Admin
     {
         $formMapper
             ->with('share.form_group.basic', ['class' => 'col-md-8', 'label' => false])
-                ->add('name', TextType::class, [
-                    'label' => 'tag.fields.name',
-                    'required' => true,
-                ])
-                ->add('metaTitle', TextType::class, [
-                    'label' => 'tag.fields.meta_title',
-                    'required' => false,
-                ])
-                ->add('metaDescription', TextareaType::class, [
-                    'label' => 'tag.fields.meta_description',
-                    'required' => false,
-                    'attr' => ['rows' => 5],
-                ])
-                ->add('metaKeywords', TextareaType::class, [
-                    'label' => 'tag.fields.meta_keywords',
-                    'required' => false,
-                    'attr' => ['rows' => 5],
+                ->add('translations', TranslationsType::class, [
+                    'translation_domain' => $this->translationDomain,
+                    'label' => false,
+                    'fields' => [
+                        'name' => [
+                            'label' => 'tag.fields.name',
+                            'field_type' => TextType::class,
+                            'required' => true,
+                        ],
+                    ],
                 ])
             ->end()
             ->with('share.form_group.additional', ['class' => 'col-md-4', 'label' => false])

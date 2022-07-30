@@ -1,0 +1,11 @@
+services:
+    information.admin.information:
+        class: InformationBundle\Admin\InformationAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "group.information", label: "group.information_editor" }
+        arguments:
+          - ~
+          - InformationBundle\Entity\Information
+          - AdminBundle:CRUD
+        calls:
+          - [ setTranslationDomain, [InformationBundle] ]

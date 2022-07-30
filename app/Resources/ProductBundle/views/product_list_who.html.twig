@@ -9,12 +9,6 @@
             )
         }}
 
-        <div class="filter-outer">
-            <h1>{{ whois }}</h1>
-
-{#            {% include 'AppBundle:Block:filter.html.twig' %}#}
-        </div>
-
         {{
             sonata_block_render(
                 { 'type': 'product.block.list' },
@@ -22,6 +16,7 @@
                     'items_count' : 20,
                     'page': app.request.get('page') ? app.request.get('page') : 1,
                     'who': app.request.get('who'),
+                    'title': whois,
                     'show_paginator': true
                 }
             )

@@ -2,9 +2,11 @@
 
 namespace ShareBundle\Entity;
 
+use AppBundle\Traits\TranslatableProxyTrait;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class Stone
@@ -15,6 +17,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Stone
 {
+    use ORMBehaviors\Translatable\Translatable;
+    use TranslatableProxyTrait;
+
     /**
      * @var int
      *
@@ -105,7 +110,7 @@ class Stone
      */
     public function __toString()
     {
-        return (string) $this->name;
+        return (string) $this->translate()->getName();
     }
 
     /**
@@ -115,7 +120,7 @@ class Stone
     {
         if (is_null($this->slug)) {
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->getName());
+            $this->slug = $slugify->slugify($this->translate('ru')->getName());
         }
     }
 

@@ -1,20 +1,20 @@
 {% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
 <div class="containerFeedback">
     <div class="form-content">
-        <h4>Не нашли то, что искали?</h4>
+        <h4> {{ 'frontend.homepage.feedback'|trans([], 'AppBundle') }}</h4>
     </div>
     <form class="form-area" id="formFeedback" action="{{ block_ajax_path }}" method="post">
         <div class="row">
             <div class="col-lg-6 form-group">
-                <input name="name" placeholder="Ваше имя" class="common-input mb-20 form-control" autocomplete="off" type="text">
+                <input name="name" placeholder="{{ 'frontend.homepage.feedback_form.name'|trans([], 'AppBundle') }}" class="common-input mb-20 form-control" autocomplete="off" type="text">
 
-                <input name="email" placeholder="Email" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" autocomplete="off" class="common-input mb-20 form-control" type="email">
+                <input name="email" placeholder="{{ 'frontend.homepage.feedback_form.email'|trans([], 'AppBundle') }}" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" autocomplete="off" class="common-input mb-20 form-control" type="email">
 
-                <input name="phone" placeholder="Номер телефона" class="common-input mb-20 form-control phone-input" autocomplete="off" type="text">
+                <input name="phone" placeholder="{{ 'frontend.homepage.feedback_form.phone'|trans([], 'AppBundle') }}" class="common-input mb-20 form-control phone-input" autocomplete="off" type="text">
             </div>
             <div class="col-lg-6 form-group">
-                <textarea class="common-textarea mt-10 form-control" name="message" placeholder="Сообщение" required=""></textarea>
-                <button class="mt-20 button" id="sendFeedback">Отправить сообщение</button>
+                <textarea class="common-textarea mt-10 form-control" name="message" placeholder="{{ 'frontend.homepage.feedback_form.message'|trans([], 'AppBundle') }}" required=""></textarea>
+                <button class="mt-20 button" id="sendFeedback">{{ 'frontend.homepage.feedback_form.btn_send'|trans([], 'AppBundle') }}</button>
                 <div class="alert-msg">
                 </div>
             </div>
@@ -23,5 +23,5 @@
 </div>
 <div class="successFeedback">
     <img src="{{ asset('bundles/app/images/smile.png') }}" alt="">
-    <h4>Спасибо за обращение, как можно скорее мы решим ваш вопрос</h4>
+    <h4>{{ 'frontend.homepage.feedback_form.msg_success'|trans([], 'AppBundle') }}</h4>
 </div>

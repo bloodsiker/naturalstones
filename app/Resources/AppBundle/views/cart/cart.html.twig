@@ -8,7 +8,7 @@
         }}
 
         <div class="cart-title">
-            <h1>Корзина</h1>
+            <h1>{{ 'frontend.cart.title'|trans([], 'AppBundle') }}</h1>
             {{
                 sonata_block_render(
                     { 'type': 'app.block.service.cart' },
@@ -122,7 +122,7 @@
         <div class="cart-quick">
             <div class="product-quick-block">
                 <div class="top">
-                    <h5>Нет времени оформлять?</h5>
+                    <h5>{{ 'frontend.quic_order.title'|trans([], 'AppBundle') }}</h5>
                     <div class="messengers-input">
                         <input class="telegram phone-input quick-phone" name="phone" type="text" placeholder="+38 (___) ___-__-__" autocomplete="off">
                         <input class="" name="instagram" type="text" placeholder="https://instagram.com" style="display: none" autocomplete="off">
@@ -130,7 +130,7 @@
                     </div>
                 </div>
                 <div class="middle">
-                    <div class="note">Выберите в каком мессенджере вам ответить:</div>
+                    <div class="note">{{ 'frontend.quic_order.messenger'|trans([], 'AppBundle') }}:</div>
                     <ul class="messengers-list">
                         <li>
                             <label class="messengers-radio telegram">
@@ -159,7 +159,7 @@
                     </ul>
                 </div>
                 <div class="bottom">
-                    <a href="#" data-url="{{ path('quick_order') }}" class="button quick-cart">Быстрый заказ</a>
+                    <a href="#" data-url="{{ path('quick_order') }}" class="button quick-cart">{{ 'frontend.quic_order.btn_order'|trans([], 'AppBundle') }}</a>
                 </div>
             </div>
         </div>

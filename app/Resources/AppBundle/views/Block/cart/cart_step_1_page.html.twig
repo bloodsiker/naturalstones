@@ -3,8 +3,8 @@
 {% if products.product is defined %}
     <div class="order-form-total">
         <div class="top-block">
-            <h4>Ваш заказ</h4>
-            <a href="{{ path('cart') }}" class="redact-link">Редактировать</a>
+            <h4>{{ 'frontend.cart.your_order'|trans([], 'AppBundle') }}</h4>
+            <a href="{{ path('cart') }}" class="redact-link">{{ 'frontend.cart.edit_order'|trans([], 'AppBundle') }}</a>
         </div>
         {% for mProduct in products.product %}
             <div class="order-form-items">
@@ -16,11 +16,11 @@
                         <a href="{{ product_path(mProduct.item) }}">{{ mProduct.item.name }} {% if mProduct.item.size %}({{ mProduct.item.size }}){% endif %}</a>
                         {% if mProduct.colour is defined %}
                             <br>
-                            <span style="font-size: 14px;">Цвет: </span><i style="display: inline-block; padding: 2px 8px; border: 1px solid #E6E6E6; background: #{{ mProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ mProduct.colour.name }}</i>
+                            <span style="font-size: 14px;">{{ 'frontend.cart.colour'|trans([], 'AppBundle') }}: </span><i style="display: inline-block; padding: 2px 8px; border: 1px solid #E6E6E6; background: #{{ mProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ mProduct.colour.name }}</i>
                         {% endif %}
                         {% if mProduct.letter is defined %}
                             <br>
-                            <i style="font-size: 14px;">Буква:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.letter }}</i>
+                            <i style="font-size: 14px;">{{ 'frontend.cart.letter'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.letter }}</i>
                         {% endif %}
                     </div>
                     <div class="count">{{ mProduct.count }} шт.</div>
@@ -48,7 +48,7 @@
 {#        </div>#}
         <ul class="order-form-calculate">
             <li>
-                <span>Сумма заказа: </span>
+                <span>{{ 'frontend.cart.total_order'|trans([], 'AppBundle') }}: </span>
                 <span>{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>
             </li>
 {#            <li>#}
@@ -56,7 +56,7 @@
 {#                <span>0 грн</span>#}
 {#            </li>#}
             <li>
-                <span>Итого:</span>
+                <span>{{ 'frontend.cart.total'|trans([], 'AppBundle') }}:</span>
                 <span class="total-price">{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>
             </li>
         </ul>
@@ -65,12 +65,12 @@
     <table class="cart-table">
         <tbody>
         <tr>
-            <td style="text-align: center"><img src="{{ asset('bundles/app/images/sad.png') }}" alt=""><h2>Корзина пустая</h2></td>
+            <td style="text-align: center"><img src="{{ asset('bundles/app/images/sad.png') }}" alt=""><h2>{{ 'frontend.cart.empty'|trans([], 'AppBundle') }}</h2></td>
         </tr>
         </tbody>
     </table>
 
     <div class="cart-table-total">
-        <a href="" class="button white-button">Продолжить покупки</a>
+        <a href="" class="button white-button">{{ 'frontend.cart.continue'|trans([], 'AppBundle') }}</a>
     </div>
 {% endif %}

@@ -7,18 +7,18 @@
 
         {% set infoCart = app.session.get('infoCart') %}
 
-        <h1>Оформление заказа</h1>
+        <h1>{{ 'frontend.cart.ordering'|trans([], 'AppBundle') }}</h1>
         <form action="{{ path('step-2') }}" method="get" class="order-form simple-form">
 
             <div class="order-form-content">
                 <div class="order-form-steps">
                     <a href="#" onclick="return false" class="active-step">
                         <img src="{{ asset('bundles/app/images/datas.svg') }}" alt="">
-                        <span>Ваши данные</span>
+                        <span>{{ 'frontend.cart.you_info'|trans([], 'AppBundle') }}</span>
                     </a>
                     <a href="#" onclick="return false;">
                         <img src="{{ asset('bundles/app/images/verification.svg') }}" alt="">
-                        <span>Проверка данных и заказ</span>
+                        <span>{{ 'frontend.cart.check_info'|trans([], 'AppBundle') }}</span>
                     </a>
                 </div>
 
@@ -29,7 +29,7 @@
                     <span class="phone-error-message text-red"></span>
                 </div>
                 <div class="order-messengers">
-                    <div class="note">Выберите в каком мессенджере вам ответить:</div>
+                    <div class="note">{{ 'frontend.cart.messenger'|trans([], 'AppBundle') }}:</div>
                     <ul class="messengers-list">
                         {% set checked = infoCart.messenger is not defined %}
                         <li>
@@ -59,21 +59,21 @@
                     </ul>
                 </div>
                 <div class="input-block">
-                    <input type="text" name="name" placeholder="Имя*" value="{{ infoCart.name is defined ? infoCart.name : null }}">
+                    <input type="text" name="name" placeholder="{{ 'frontend.cart.form.name'|trans([], 'AppBundle') }}" value="{{ infoCart.name is defined ? infoCart.name : null }}">
                     <span class="name-error-message text-red"></span>
                 </div>
                 <div class="input-block">
-                    <input type="text" name="email" placeholder="E-mail (по желанию)" value="{{ infoCart.email is defined ? infoCart.email : null }}">
+                    <input type="text" name="email" placeholder="{{ 'frontend.cart.form.email'|trans([], 'AppBundle') }}" value="{{ infoCart.email is defined ? infoCart.email : null }}">
                 </div>
                 <div class="input-block">
-                    <input type="text" name="address" placeholder="Адрес доставки (Отделение Новой почты)" value="{{ infoCart.address is defined ? infoCart.address : null }}">
+                    <input type="text" name="address" placeholder="{{ 'frontend.cart.form.address'|trans([], 'AppBundle') }}" value="{{ infoCart.address is defined ? infoCart.address : null }}">
                 </div>
                 <div class="input-block">
-                    <textarea name="comment" id="" cols="30" rows="3" placeholder="Комментарий">{{ infoCart.comment is defined ? infoCart.comment : null }}</textarea>
+                    <textarea name="comment" id="" cols="30" rows="3" placeholder="{{ 'frontend.cart.form.comment'|trans([], 'AppBundle') }}">{{ infoCart.comment is defined ? infoCart.comment : null }}</textarea>
                 </div>
                 <div class="order-form-links">
-                    <a class="button white-button" href="{{ path('cart') }}">Отменить</a>
-                    <button class="button" type="submit" id="nextStep">Дальше</button>
+                    <a class="button white-button" href="{{ path('cart') }}">{{ 'frontend.cart.form.btn_cancel'|trans([], 'AppBundle') }}</a>
+                    <button class="button" type="submit" id="nextStep">{{ 'frontend.cart.form.btn_next'|trans([], 'AppBundle') }}</button>
                 </div>
             </div>
 

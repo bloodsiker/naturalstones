@@ -1,6 +1,6 @@
 <div class="filter-outer">
     {% if app.request.get('search') %}
-        <h1>Результаты поиска по запросу <span class="highlight">{{ app.request.get('search')|raw }}</span></h1>
+        <h1>{{ 'frontend.search.result'|trans([], 'AppBundle') }} <span class="highlight">{{ app.request.get('search')|raw }}</span></h1>
     {% endif %}
 </div>
 
@@ -10,7 +10,7 @@
         <meta itemprop="target" content="{{ url('search') }}/search?search={search}"/>
         <div class="inputs">
             <input type="text" name="search" itemprop="query-input" placeholder="Искать...(название камня)" value="{{ app.request.get('search') }}">
-            <button>Искать</button>
+            <button>{{ 'frontend.search.btn'|trans([], 'AppBundle') }}</button>
         </div>
     </form>
 </div>
@@ -40,7 +40,7 @@
         <div class="no-result">
             <span>⚆ _ ⚆</span>
             <div>
-                Увы, ничего не нашлось.
+                {{ 'frontend.search.empty'|trans([], 'AppBundle') }}
             </div>
         </div>
 

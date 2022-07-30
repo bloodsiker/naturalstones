@@ -1,0 +1,26 @@
+link_actions: Дії
+search_placeholder: пошук
+object_clone_success: Продукт успішно скопійовано
+short_object_description_placeholder: не вибрано
+
+Dashboard: '<i class="fa fa-home"></i>'
+
+btn_edit: Редагувати
+btn_refresh: Оновити
+
+actions:
+    btn:
+        preview: Подивитись
+        on_site: На сайті
+        action_select: Вибрати
+        clone: Copy
+
+admin:
+    fields:
+        counter:
+            total:
+                character: Символів
+                word: Слів
+            remaining:
+                character: Залишилось символів
+            word: Залишилось слів

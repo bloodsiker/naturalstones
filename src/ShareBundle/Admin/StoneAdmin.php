@@ -2,7 +2,9 @@
 
 namespace ShareBundle\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AdminBundle\Admin\BaseAdmin as Admin;
+use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -18,6 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class StoneAdmin extends Admin
 {
+    use FixAdminFormTranslationDomainTrait;
+
     protected $datagridValues = [
         '_page'       => 1,
         '_per_page'   => 25,
@@ -98,21 +102,30 @@ class StoneAdmin extends Admin
     {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
-                ->add('name', TextType::class, [
-                    'label' => 'stone.fields.name',
+                ->add('translations', TranslationsType::class, [
+                    'translation_domain' => $this->translationDomain,
+                    'label' => false,
+                    'fields' => [
+                        'name' => [
+                            'label' => 'stone.fields.name',
+                            'field_type' => TextType::class,
+                            'required' => true,
+                        ],
+                        'description' => [
+                            'label' => 'stone.fields.description',
+                            'field_type' => CKEditorType::class,
+                            'config_name' => 'advanced',
+                            'required' => false,
+                            'attr' => [
+                                'rows' => 5,
+                            ],
+                        ],
+                    ],
                 ])
                 ->add('slug', TextType::class, [
                     'label' => 'stone.fields.slug',
                     'required' => false,
                     'attr' => ['readonly' => !$this->getSubject()->getId() ? false : true],
-                ])
-                ->add('description', CKEditorType::class, [
-                    'label' => 'stone.fields.description',
-                    'config_name' => 'advanced',
-                    'required' => false,
-                    'attr' => [
-                        'rows' => 5,
-                    ],
                 ])
             ->end()
             ->with('form_group.additional', ['class' => 'col-md-4', 'name' => false])

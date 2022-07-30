@@ -2,10 +2,12 @@
 
 namespace ProductBundle\Entity;
 
+use AppBundle\Traits\TranslatableProxyTrait;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class Product
@@ -18,6 +20,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 class Product
 {
+    use ORMBehaviors\Translatable\Translatable;
+    use TranslatableProxyTrait;
+
     const WHO_MAN = 'man';
     const WHO_WOMAN = 'woman';
 
@@ -326,7 +331,7 @@ class Product
      */
     public function __toString()
     {
-        return (string) $this->name;
+        return (string) $this->translate()->getName();
     }
 
     public function __clone()
@@ -349,7 +354,7 @@ class Product
     {
         if (is_null($this->slug)) {
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->getName());
+            $this->slug = $slugify->slugify($this->translate()->getName());
         }
     }
 
@@ -1250,8 +1255,8 @@ class Product
     }
 
     public static $whois = [
-        self::WHO_MAN => 'Для мужчин',
-        self::WHO_WOMAN => 'Для женщин',
+        self::WHO_MAN => 'frontend.breadcrumb.man',
+        self::WHO_WOMAN => 'frontend.breadcrumb.woman',
     ];
 
     public static function getTypes()

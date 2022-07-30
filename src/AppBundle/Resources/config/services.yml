@@ -9,6 +9,12 @@ parameters:
 #    security.acl.permission.map.class: "Sonata\\AdminBundle\\Security\\Acl\\Permission\\AdminPermissionMap"
 
 services:
+    app.kernel.locale.subscriber:
+        class: AppBundle\EventSubscriber\LocaleSubscriber
+        arguments: [ '@cmf_routing.router', '%kernel.default_locale%' ]
+        # redundant if you're using autoconfigure
+        tags: [ kernel.event_subscriber ]
+
     app.security.authentication_handler:
         class: AppBundle\Handler\AuthenticationHandler
         public: false
@@ -71,13 +77,13 @@ services:
 #            - [ 'setMediaCdn', ['%media_cdn_host%']]
 
     app.save.state.value:
-        class: "AppBundle\\Services\\SaveStateValue"
+        class: AppBundle\Services\SaveStateValue
 
     app.breadcrumb:
-        class: "AppBundle\\Services\\BreadcrumbService"
+        class: AppBundle\Services\BreadcrumbService
 
     app.send_telegram:
-        class: "AppBundle\\Services\\SendTelegramService"
+        class: AppBundle\Services\SendTelegramService
         arguments:
             - '@router'
             - '@product.router.helper'

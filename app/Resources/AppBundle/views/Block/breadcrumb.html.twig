@@ -18,7 +18,7 @@
 {% if breadcrumbs|length %}
     <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList">
         {% set i = 1 %}
-        {{ macro.macro('Главная', path('index'), i) }}
+        {{ macro.macro('frontend.breadcrumb.main'|trans([], 'AppBundle'), path('index'), i) }}
         {% for link in breadcrumbs %}
             {% set i = i + 1 %}
             {% if link['href'] is defined %}

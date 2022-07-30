@@ -13,7 +13,7 @@
         sonata_block_render(
             { 'type': 'share.block.zodiac' },
             {
-                'title' : 'Камни для знака зодиака ' ~ zodiac.name,
+                'title' : 'frontend.stone_zodiac'|trans([], 'ShareBundle') ~ ' ' ~ zodiac.name,
                 'mobile_select': true
             }
         )

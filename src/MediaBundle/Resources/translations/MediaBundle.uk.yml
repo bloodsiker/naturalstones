@@ -1,0 +1,28 @@
+Action: Дії
+Media Image List: Список файлів
+Media Image Create: Додати файл
+
+form_group:
+    basic: Основні
+    additional: Додаткові
+
+group:
+    media: Медіа
+    media_file_editor: Файли
+    media_image_editor: Зображення
+
+media:
+    fields:
+        extension: Розширення
+        resolution: Розміри
+        description: Опис
+        file: Файл
+        mime_type: Mime-type
+        size: Розмір
+        width: Ширина
+        height: Висота
+        is_active: Активна
+        created_at: Дата створення
+        updated_at: Дата редагування
+        created_by: Створено користувачем
+        id: ID

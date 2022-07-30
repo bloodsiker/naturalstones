@@ -68,12 +68,10 @@
 
         <div class="video-slide-down">
             <img src="{{ asset('bundles/app/images/slide-down.svg') }}" alt="">
-            Все украшения
+            {{ 'frontend.homepage.all_decorations'|trans([], 'AppBundle') }}
         </div>
 
-        <div class="video-options">
-
-        </div>
+        {{ sonata_block_render({ 'type': 'app.block.service.language_switcher' }) }}
 
     </section>
 {% endblock %}
@@ -103,7 +101,7 @@
                         'items_count' : 9,
                         'view_all' : true,
                         'is_main' : true,
-                        'title' : 'Выбирайте камни на любой вкус',
+                        'title' : 'frontend.homepage.all_stones'|trans([], 'AppBundle') ,
                     }
                 )
             }}
@@ -116,14 +114,14 @@
                 sonata_block_render(
                     { 'type': 'share.block.zodiac' },
                     {
-                        'title' : 'Камни по знаку зодиака',
+                        'title' : 'frontend.homepage.stones_for_zodiac'|trans([], 'AppBundle'),
                     }
                 )
             }}
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="feedback">
         <div class="container">
             {{
                 sonata_block_render(
@@ -140,7 +138,7 @@
                 sonata_block_render(
                     { 'type': 'product.block.popular' },
                     {
-                        'title' : 'Самые популярные за месяц',
+                        'title' : 'frontend.homepage.popular_mounth'|trans([], 'AppBundle'),
                         'by_month' : true,
                         'items_count': 10,
                     }
@@ -148,28 +146,25 @@
             }}
 
             <div class="seo-content">
-                {{
-                    sonata_block_render(
-                        { 'type': 'page.block.site_variable' },
-                        {
-                            'placement': 'homepage-bottom'
-                        }
-                    )
-                }}
-{#                <h4>Изготовление и доставка украшений по миру от Naturalstones Jewerly</h4>#}
-{#                <p>Когда хочется дарить яркие эмоции и незабываемые впечатления своим родным и близким выбирайте прекрасные изделия от компании «Naturalstones Jewerly». В оговоренные сроки, с огромным трепетом и удовольствием мы сделаем и доставим вам изделие в любой город и населенный пункт мира. <br>Мы всегда идем навстречу каждому клиенту, поэтому:</p>#}
-{#                <ul>#}
-{#                    <li>предлагаем большой выбор изделий с камней;</li>#}
-{#                    <li>организовали лояльную ценовую политику – вы можете выбрать красивое украшение на свой бюджет;</li>#}
-{#                    <li>принимаем оплату как переводом на карту так и наложенным платежом;</li>#}
-{#                    <li>предоставляем скидки постоянным клиентам и еженедельные акции;</li>#}
-{#                    <li>всегда предлагаем исключительно качественные продукцию;</li>#}
-{#                    <li>даем исчерпывающие ответы на все ваши вопросы по ассортименту компании.</li>#}
-{#                </ul>#}
-{#                <h4>Заказать изготовление изделия и нечто большее</h4>#}
-{#                <p>К Вашим услугам доступна доставка букетов с сюрпризом. Убедитесь, что получатель будет по назначенному адресу и в указанное время доставки на месте, сделайте заказ и ожидайте звонка от восхищенного получателя! К букету возможно приложить поздравительную открытку с теплыми словами.</p>#}
-{#                <p>В «<a href="">Bali Flowers</a>» можно заказать доставку цветов в комплекте со сладостями либо фруктами, или по Вашему желанию курьер приобретет мягкую игрушку, шарики. Так Ваш подарок станет более впечатляющим и запоминающимся. <br>Если нужно что-то необычное и стандартные букеты не подходят для Вашего случая, тогда обратите внимание на разделы: «Дизайнерские букеты», «Букеты 101+», «Корзины с цветами» и «Цветы в коробке». Из нашего ассортимента Вы обязательно найдете «именно тот самый» идеальный букет.</p>#}
-{#                <h5>Вы любите делать неожиданные подарки, а мы – их создавать!</h5>#}
+{#                {{#}
+{#                    sonata_block_render(#}
+{#                        { 'type': 'page.block.site_variable' },#}
+{#                        {#}
+{#                            'placement': 'homepage-bottom'#}
+{#                        }#}
+{#                    )#}
+{#                }}#}
+                <h4>{{ 'frontend.homepage.about_title'|trans([], 'AppBundle') }}</h4>
+                <p>{{ 'frontend.homepage.description'|trans([], 'AppBundle')|raw }}</p>
+                <ul>
+                    <li>{{ 'frontend.homepage.services_1'|trans([], 'AppBundle') }}</li>
+                    <li>{{ 'frontend.homepage.services_2'|trans([], 'AppBundle') }}</li>
+                    <li>{{ 'frontend.homepage.services_3'|trans([], 'AppBundle') }}</li>
+                    <li>{{ 'frontend.homepage.services_4'|trans([], 'AppBundle') }}</li>
+                    <li>{{ 'frontend.homepage.services_5'|trans([], 'AppBundle') }}</li>
+                    <li>{{ 'frontend.homepage.services_6'|trans([], 'AppBundle') }}</li>
+                </ul>
+                <h5>{{ 'frontend.homepage.bottom'|trans([], 'AppBundle') }}</h5>
             </div>
         </div>
     </section>

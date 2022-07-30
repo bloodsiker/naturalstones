@@ -1,5 +1,5 @@
 sonata_admin:
-    title: book library
+    title: NaturalStones
     title_logo: /bundles/admin/images/logo.jpg
     show_mosaic_button: false
     security:
@@ -14,6 +14,7 @@ sonata_admin:
 
     templates:
         short_object_description: 'MediaBundle:Helper:short-object-description.html.twig'
+        layout: 'AdminBundle::standard_layout.html.twig'
         list: 'AdminBundle:Core:list.html.twig'
     options:
         title_mode: single_image
@@ -83,6 +84,10 @@ sonata_admin:
                 label: group.share
                 label_catalogue: ShareBundle
                 icon: <i class="fa fa-text-width"></i>
+            group.information:
+                label: group.information
+                label_catalogue: InformationBundle
+                icon: <i class="fa fa-info-circle"></i>
             group.order:
                 label: group.order
                 label_catalogue: OrderBundle

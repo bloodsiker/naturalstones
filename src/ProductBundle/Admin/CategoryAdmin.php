@@ -2,6 +2,7 @@
 
 namespace ProductBundle\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AdminBundle\Admin\BaseAdmin as Admin;
 use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
@@ -94,15 +95,24 @@ class CategoryAdmin extends Admin
     {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
-                ->add('name', TextType::class, [
-                    'label' => 'category.fields.name',
-                ])
-                ->add('description', CKEditorType::class, [
-                    'label' => 'category.fields.description',
-                    'config_name' => 'default',
-                    'required' => true,
-                    'attr' => [
-                        'rows' => 3,
+                ->add('translations', TranslationsType::class, [
+                    'translation_domain' => $this->translationDomain,
+                    'label' => false,
+                    'fields' => [
+                        'name' => [
+                            'label' => 'category.fields.name',
+                            'field_type' => TextType::class,
+                            'required' => true,
+                        ],
+                        'description' => [
+                            'label' => 'category.fields.description',
+                            'field_type' => CKEditorType::class,
+                            'config_name' => 'advanced',
+                            'required' => true,
+                            'attr' => [
+                                'rows' => 5,
+                            ],
+                        ],
                     ],
                 ])
                 ->add('slug', TextType::class, [

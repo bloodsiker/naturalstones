@@ -28,19 +28,14 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-//        $metaTitle = $this->get('translator')->trans('app.frontend.meta.meta_title_index', ['%YEAR%' => date("Y")], 'AppBundle');
-//        $metaDescription = $this->get('translator')->trans('app.frontend.meta.meta_description_index', ['%YEAR%' => date("Y")], 'AppBundle');
-//        $metaKeywords = $this->get('translator')->trans('app.frontend.meta.meta_keywords_index', ['%YEAR%' => date("Y")], 'AppBundle');
-
-        $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
-        $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} | " : null;
+        $metaTitle = $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle');
+        $metaDescription = $this->get('translator')->trans('frontend.meta.meta_description_index', ['%YEAR%' => date("Y")], 'AppBundle');
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Naturalstones Jewerly - Изделия из натуральных камней'.$page,
-            'description' => $pageDesc.'Когда хочется дарить яркие эмоции и незабываемые впечатления своим родным и близким выбирайте прекрасные изделия от компании «Naturalstones Jewerly»',
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
+            'title' => $metaTitle,
+            'description' => $metaDescription,
             'og' => [
-                'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
+                'og:site_name' => $metaTitle,
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);
@@ -54,14 +49,13 @@ class DefaultController extends Controller
     public function cartAction(Request $request)
     {
         $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Корзина']);
+        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.cart', [], 'AppBundle')]);
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Корзина | Naturalstones Jewerly - Изделия из натуральных камней',
-            'description' => 'Корзина | Оформить заказ',
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
+            'title' => $this->get('translator')->trans('frontend.meta.meta_title_cart', [], 'AppBundle'),
+            'description' => $this->get('translator')->trans('frontend.meta.meta_description_cart', [], 'AppBundle'),
             'og' => [
-                'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
+                'og:site_name' => $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);
@@ -72,14 +66,13 @@ class DefaultController extends Controller
     public function cartStepOneAction(Request $request)
     {
         $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Оформление заказа']);
+        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.step', [], 'AppBundle')]);
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Корзина, шаг 1 | Naturalstones Jewerly - Изделия из натуральных камней',
-            'description' => 'Корзина, шаг 1 | Оформить заказ',
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
+            'title' => $this->get('translator')->trans('frontend.meta.meta_title_cart_step', ['%STEP%' => 1], 'AppBundle'),
+            'description' => $this->get('translator')->trans('frontend.meta.meta_description_cart_step', ['%STEP%' => 1], 'AppBundle'),
             'og' => [
-                'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
+                'og:site_name' => $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
                 'og:title' => 'Корзина, шаг 1',
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
@@ -93,14 +86,13 @@ class DefaultController extends Controller
         $session = $this->get('session');
         $session->set('infoCart', $request->query->all());
         $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Оформление заказа']);
+        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.step', [], 'AppBundle')]);
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Корзина, шаг 2 | Naturalstones Jewerly - Изделия из натуральных камней',
-            'description' => 'Корзина, шаг 2 | Оформить заказ',
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
+            'title' => $this->get('translator')->trans('frontend.meta.meta_title_cart_step', ['%STEP%' => 2], 'AppBundle'),
+            'description' => $this->get('translator')->trans('frontend.meta.meta_description_cart_step', ['%STEP%' => 2], 'AppBundle'),
             'og' => [
-                'og:site_name' => 'Naturalstones Jewerly - Изделия из натуральных камней',
+                'og:site_name' => $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
                 'og:title' => 'Корзина, шаг 2',
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
@@ -117,12 +109,11 @@ class DefaultController extends Controller
     public function searchAction(Request $request)
     {
         $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Поиск']);
+        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.search', [], 'AppBundle')]);
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Поиск по каталогу | Naturalstones Jewerly - Изделия из натуральных камней',
-            'description' => 'Поиск по каталогу | Naturalstones Jewerly - Изделия из натуральных камней',
-            'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески',
+            'title' => $this->get('translator')->trans('frontend.meta.meta_title_search', [], 'AppBundle'),
+            'description' => $this->get('translator')->trans('frontend.meta.meta_description_search', [], 'AppBundle'),
         ]);
 
         return $this->render('AppBundle:search:search.html.twig');
@@ -137,54 +128,142 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
+        $locales = $this->getParameter('locales');
+
         $urls = [];
         $hostname = $request->getSchemeAndHttpHost();
         $router = $this->get('router');
-        $urls[] = ['loc' => $router->generate('index'), 'changefreq' => 'weekly', 'priority' => '1.0'];
-        $urls[] = ['loc' => $router->generate('stone_list'), 'changefreq' => 'weekly', 'priority' => '0.75'];
+
+        $urls['main']['loc'] = $hostname . $router->generate('index');
+        foreach ($locales as $local) {
+            if ($local === 'uk') {
+                $urls['main'][$local] = $hostname . $router->generate('index');
+            } else {
+                $urls['main'][$local] = sprintf('%s/%s%s', $hostname, $local, $router->generate('index'));
+            }
+        }
+
+        $urls['stone_list']['loc'] = $hostname . $router->generate('stone_list');
+        foreach ($locales as $local) {
+            if ($local === 'uk') {
+                $urls['stone_list'][$local] = $hostname . $router->generate('stone_list');
+            } else {
+                $urls['stone_list'][$local] = sprintf('%s/%s%s', $hostname, $local, $router->generate('stone_list'));
+            }
+        }
 
         $categories = $em->getRepository(Category::class)->findBy(['isActive' => true]);
         foreach ($categories as $category) {
-            $urls[] = ['loc' => $router->generate('product_list', ['slug' => $category->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.75'];
+            $key = 'category_'.$category->getId();
+            $url = $router->generate('product_list', ['slug' => $category->getSlug()]);
+            $urls[$key]['loc'] = $hostname . $url;
+            foreach ($locales as $local) {
+                if ($local === 'uk') {
+                    $urls[$key][$local] = $hostname . $url;
+                } else {
+                    $urls[$key][$local] = sprintf('%s/%s%s', $hostname, $local, $url);
+                }
+            }
         }
 
         $products = $em->getRepository(Product::class)->findBy(['isActive' => true], ['id' => 'DESC']);
         foreach ($products as $product) {
-            $urls[] = ['loc' => $router->generate('product_view', ['category' => $product->getCategory()->getSlug(), 'id' => $product->getId(), 'slug' => $product->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.75'];
+            $key = 'product_'.$product->getId();
+            $url = $router->generate('product_view', ['category' => $product->getCategory()->getSlug(), 'id' => $product->getId(), 'slug' => $product->getSlug()]);
+            $urls[$key]['loc'] = $hostname . $url;
+            foreach ($locales as $local) {
+                if ($local === 'uk') {
+                    $urls[$key][$local] = $hostname . $url;
+                } else {
+                    $urls[$key][$local] = sprintf('%s/%s%s', $hostname, $local, $url);
+                }
+            }
         }
 
         $stones = $em->getRepository(Stone::class)->findBy(['isActive' => true]);
         foreach ($stones as $stone) {
-            $urls[] = ['loc' => $router->generate('product_stone_list', ['slug' => $stone->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
+            $key = 'stone_'.$stone->getId();
+            $url = $router->generate('product_stone_list', ['slug' => $stone->getSlug()]);
+            $urls[$key]['loc'] = $hostname . $url;
+            foreach ($locales as $local) {
+                if ($local === 'uk') {
+                    $urls[$key][$local] = $hostname . $url;
+                } else {
+                    $urls[$key][$local] = sprintf('%s/%s%s', $hostname, $local, $url);
+                }
+            }
         }
 
         $letter = $em->getRepository(Stone::class)->uniqLetterByStone();
-        foreach ($letter as $let) {
+        foreach ($letter as $key => $let) {
             if (isset($let[1])) {
-                $urls[] = ['loc' => $router->generate('stone_list_letter', ['letter' => $let[1]]), 'changefreq' => 'weekly', 'priority' => '0.3'];
+                $key = 'stone_letter_'.$key;
+                $url = $router->generate('stone_list_letter', ['letter' => $let[1]]);
+                $urls[$key]['loc'] = $hostname . $url;
+                foreach ($locales as $local) {
+                    if ($local === 'uk') {
+                        $urls[$key][$local] = $hostname . $url;
+                    } else {
+                        $urls[$key][$local] = sprintf('%s/%s%s', $hostname, $local, $url);
+                    }
+                }
             }
         }
 
         $zodiacs = $em->getRepository(Zodiac::class)->findBy(['isActive' => true]);
         foreach ($zodiacs as $zodiac) {
-            $urls[] = ['loc' => $router->generate('zodiac_stone_list', ['slug' => $zodiac->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
+            $key = 'zodiac_'.$zodiac->getId();
+            $url = $router->generate('zodiac_stone_list', ['slug' => $zodiac->getSlug()]);
+            $urls[$key]['loc'] = $hostname . $url;
+            foreach ($locales as $local) {
+                if ($local === 'uk') {
+                    $urls[$key][$local] = $hostname . $url;
+                } else {
+                    $urls[$key][$local] = sprintf('%s/%s%s', $hostname, $local, $url);
+                }
+            }
         }
 
         $colours = $em->getRepository(Colour::class)->findBy(['isActive' => true]);
         foreach ($colours as $colour) {
-            $urls[] = ['loc' => $router->generate('product_colour_list', ['slug' => $colour->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
+            $key = 'colour_'.$colour->getId();
+            $url = $router->generate('product_colour_list', ['slug' => $colour->getSlug()]);
+            $urls[$key]['loc'] = $hostname . $url;
+            foreach ($locales as $local) {
+                if ($local === 'uk') {
+                    $urls[$key][$local] = $hostname . $url;
+                } else {
+                    $urls[$key][$local] = sprintf('%s/%s%s', $hostname, $local, $url);
+                }
+            }
         }
 
         $tags = $em->getRepository(Tag::class)->findBy(['isActive' => true]);
         foreach ($tags as $tag) {
-            $urls[] = ['loc' => $router->generate('product_tags_list', ['slug' => $tag->getSlug()]), 'changefreq' => 'weekly', 'priority' => '0.5'];
+            $key = 'tag_'.$colour->getId();
+            $url = $router->generate('product_tags_list', ['slug' => $tag->getSlug()]);
+            $urls[$key]['loc'] = $hostname . $url;
+            foreach ($locales as $local) {
+                if ($local === 'uk') {
+                    $urls[$key][$local] = $hostname . $url;
+                } else {
+                    $urls[$key][$local] = sprintf('%s/%s%s', $hostname, $local, $url);
+                }
+            }
         }
 
         foreach (['man', 'woman'] as $who) {
-            $urls[] = ['loc' => $router->generate('product_who_list', ['who' => $who]), 'changefreq' => 'weekly', 'priority' => '0.5'];
+            $key = $who;
+            $url = $router->generate('product_who_list', ['who' => $who]);
+            $urls[$key]['loc'] = $hostname . $url;
+            foreach ($locales as $local) {
+                if ($local === 'uk') {
+                    $urls[$key][$local] = $hostname . $url;
+                } else {
+                    $urls[$key][$local] = sprintf('%s/%s%s', $hostname, $local, $url);
+                }
+            }
         }
-
-//        $urls[] = ['loc' => $router->generate('search'), 'changefreq' => 'weekly', 'priority' => '0.3'];
 
         $response = new Response($this->renderView('AppBundle:Block:sitemap.html.twig', ['urls' => $urls, 'hostname' => $hostname]));
         $response->headers->set('Content-Type', 'application/xml; charset=utf-8');
@@ -203,5 +282,20 @@ class DefaultController extends Controller
         $response->headers->set('Content-Type', 'application/xml; charset=utf-8');
 
         return $response;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function removeTrailingSlashAction(Request $request)
+    {
+        $pathInfo = $request->getPathInfo();
+        $requestUri = $request->getRequestUri();
+
+        $url = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
+
+        return $this->redirect($url, 301);
     }
 }

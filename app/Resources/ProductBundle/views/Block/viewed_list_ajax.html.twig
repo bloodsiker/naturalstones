@@ -1,5 +1,5 @@
 {% if products|length %}
-    <div class="viewed-title"><span>Вы просматривали</span></div>
+    <div class="viewed-title"><span>{{ 'frontend.viewed_products'|trans([], 'ProductBundle') }}</span></div>
     <div class="catalog-flex">
         {% for product in products %}
             <div class="catalog-block catalog-block-viewed">

@@ -1,0 +1,306 @@
+block: Блок
+help_page_name: Название (используется в теге title)
+hybrid: Hybrid
+cms: CMS
+btn_save_position: Сохранить расположение
+button_create_snapshot: Опубликовать
+create_page: Создать страницу
+create_snapshot: Опубликовать
+error.404: Error 404
+manage_exception: Страница %code%
+message_create_snapshot: Опубликовать страницу
+or_list: или
+yes: Да
+cancel: Отмена
+loading: Загрузка
+notice: notice
+blocks: Блоки
+shared_block: Общие блоки
+title_select_shared_block_type: Выберите тип блока
+snapshot: Публикации
+sonata_page: Структура сайта
+sonata_page.site_variables_editor: Переменные сайтов
+sonata_page.site_variables_placement_editor: Площадки переменных
+sonata_page.page_redirect_editor: Редиректы
+title_create_snapshot: Опубликовать
+title_list_exceptions: "Error pages to manage:"
+title_page_not_found: Страница не существует
+toggle_enabled: Изменить статус "активно"
+view_page: Просмотр на сайте
+link_create_snapshots: Создать публикации
+title_create_snapshots: Создать публикации
+message_create_snapshots: "Нажмите кнопку Создать, для создания новых публикаций для сайта : %site%"
+button_create_snapshots: Создать
+button_clear_cache: Очистить кэш редиректов
+message_clear_cache: Кэш редиректов успешно очищен
+site: Сайты
+title_page_redirected: Internal page redirection
+message_page_redirected: 'This page is configured to redirect the end user to another page. In order to configure it, the redirect has been blocked for editor only. <br /><br />Please click here to follow the redirection: <a href="%url%">%url%</a>.'
+title_select_block_type: Выберите тип блока
+flash_snapshots_created_success: Публикации успешно созданы.
+title_message_create_page: Укажите, пожалуйста, сайт
+message_create_page: Перед созданием новой страницы, необходимо выбрать сайт, на котором будет размещена эта страница.
+no_type_available: Нет доступных блоков
+Player type: Вид
+Site Variable List: Переменные сайта
+Site Variable Placement List: Площадки переменных
+Page Redirect List: Редиректы
+Page Redirect Create: Создать
+
+page.block.site_variable: Блок "Переменные сайта"
+
+breadcrumb:
+    link_block_batch: Batch
+    link_block_create: Создать
+    link_block_delete: Удалить
+    link_block_edit: Изменить
+    link_block_list: Блоки
+    link_block_update: Обновить
+    link_dashboard: Dashboard
+    link_page_batch: Batch
+    link_page_create: Создать
+    link_page_delete: Удалить
+    link_page_edit: Изменить
+    link_page_list: Страницы
+    link_page_update: Обновить
+    link_page_show: Страница
+    link_page_tree: Дерево
+    link_snapshot_batch: Batch
+    link_snapshot_create: Создать
+    link_snapshot_delete: Удалить
+    link_snapshot_edit: Изменить
+    link_snapshot_list: Публикации
+    link_snapshot_update: Обновить
+    link_site_list: Сайты
+    link_site_show: Показать
+    link_site_create: Создать
+    link_site_edit: Изменить
+    link_site_history: История
+    link_shared_block_batch: Batch
+    link_shared_block_create: Создать
+    link_shared_block_delete: Удалить
+    link_shared_block_edit: Изменить
+    link_shared_block_list: Общие блоки
+    link_shared_block_update: Обновить
+
+filter:
+    label_active: Активно
+    label_enabled: Активна
+    label_category: Категория
+    label_hybrid: Тип страницы
+    label_name: Название
+    label_page: Страница
+    label_route_name: Название маршрута
+    label_type: Тип
+    label_site: Сайт
+    label_edited: Изменена
+    label_page_alias: Алиас
+    label_parent: Родительская
+    label_placement: Расположение
+
+form:
+    group_advanced_label: Доп. параметры
+    group_main_label: Основные параметры
+    group_seo_label: SEO
+    label_alias: Алиас
+    label_active: Активно
+    label_category: Категория
+    label_children: Children
+    label_custom_url: Альтернативный Url
+    label_decorate: Кастомизация
+    label_enabled: Активно
+    label_javascript: Javascript
+    label_meta_description: Meta Description
+    label_meta_keyword: Meta Keyword
+    label_name: Название
+    label_parent: Родительская страница
+    label_position: Позиция
+    label_publication_date_end: Опубликована до
+    label_publication_date_start: Дата публикации
+    label_raw_headers: Raw Headers
+    label_settings: Параметры
+    label_slug: Slug
+    label_stylesheet: Stylesheet
+    label_target: Target
+    label_template_code: Шаблон
+    label_type: Тип
+    label_url: Url
+    label_is_default: По умолчанию
+    label_host: Имя хоста
+    label_relative_path: Относительный путь
+    label_enabled_to: Доступно до
+    label_enabled_from: Доступно с
+    label_site: Сайт
+    label_locale: Локаль
+    label_title: Заголовок
+    label_meta_keywords: Meta Keywords
+    label_page_alias: Алиас
+    label_current: Текущая
+    label_page: Страница
+    label_class: Класс
+    label_player: Вид
+    label_placement: Расположение
+    label_value: Значение
+    label_created_by: Создано пользователем
+    label_created_at: Создано
+    label_modified_at: Изменено
+    field_group_general: Основные параметры
+    field_group_options: Options
+    label_redirect_from: Редирект с URL
+    label_redirect_to: Редирект на URL
+    label_redirect_to_page: Редирект на страницу
+    label_help: Описание редиректа
+    label_page_host: Host
+
+    types:
+        full: Полное совпадение
+        segment: Сегмент
+        regex: Регулярное выражение
+        starts_with: Начинается с
+
+    validation:
+        regexp: 'Разрешенные символы: %rule%'
+
+form_valid:
+    unique: Эта ссылка уже перенаправляется где-то!
+    start_path: Неверный путь! Путь должен начинается с '/'
+
+form_page:
+    group_advanced_label: Доп. параметры
+    group_main_label: Основные параметры
+    group_seo_label: SEO
+    tab:
+        seo: SEO
+        main: Основные параметры
+        html: HTML статической страницы
+
+header:
+    create_snapshot: Создать публикацию
+    edit_page: Редактировать страницу
+    page_is_disabled: Отключена
+    show_zone: Show Zone
+    view_all_exceptions: See all errors
+    view_all_pages: View All Page
+    switch_user_exit: Exit impersonating mode
+    switch_user: Impersonate User
+    sonata_admin_dashboard: Dashboard
+    compose_page: Compose
+
+list:
+    label_id: ID
+    label_alias: Алиас
+    label_active: Активно
+    label_category: Категория
+    label_decorate: Кастомизация
+    label_enabled: Активно
+    label_hybrid: Тип страницы
+    label_name: Название
+    label_position: Позиция
+    label_publication_date_end: Опубликована до
+    label_publication_date_start: Дата публикации
+    label_type: Тип
+    label_updated_at: Дата модификации
+    label_url: Url
+    label_is_default: По умолчанию
+    label_host: Имя хоста
+    label_relative_path: Относительный путь
+    label_enabled_to: Доступно до
+    label_enabled_from: Доступно с
+    label_create_snapshots: Публикации
+    label_placement: Расположение
+    label_site: Сайт
+    label_locale: Локаль
+    label_edited: Изменена
+    label_page_alias: Алиас
+
+sidemenu:
+    link_edit_page: Редактировать
+    link_list_pages: Страницы
+    link_list_blocks: Блоки
+    link_list_snapshots: Публикации
+    link_list_shared_blocks: Общие блоки
+    link_compose_page: Структура (beta)
+    link_pages_tree: Дерево
+
+form_site:
+    label_seo: SEO
+    label_general: Настройки домена
+    label_counters: Счетчики
+    label_player: Настройки плеера
+    tab:
+        basic: Основные параметры
+        additional: Доп. параметры
+
+show:
+    label_type: Тип
+    label_title: Заголовок
+    label_meta_description: Meta Description
+    label_meta_keywords: Meta Keywords
+    label_custom_url: Альтернативный Url
+    label_decorate: Кастомизация
+    label_enabled: Активно
+    label_name: Название
+    label_route_name: Имя маршрута
+    label_slug: Slug
+    label_is_default: По умолчанию
+    label_host: Имя хоста
+    label_relative_path: Относительный путь
+    label_enabled_from: Доступно с
+    label_enabled_to: Доступно до
+    label_locale: Локаль
+    label_site: Сайт
+    label_edited: Изменена
+    label_page_alias: Алиас
+
+pages:
+    tree_site_label: Страницы сайта
+    tree_mode: Дерево
+    list_mode: Список
+    compose_label: сложить
+    edited_label: редактировать
+    show_page: На сайте
+
+page: Страницы
+page.compose_page: Структура страницы
+page.orphan_containers: Orphan containers (сиротливые контейнеры? O_o)
+
+page.compose_template_label: шаблон
+page.composer_preview_error: Произошла ошибка при загрузке превью блока.
+page.composer_update_saving: Сохранение позиции блока…
+page.composer_update_saved: Позиция блока сохранена
+page.composer_update_error: 'Произошла ошибка во время перемещения блока.'
+page.composer_status_error: 'Произошла ошибка во время сохранения статуса блока.'
+page.compose_blocks_label: '{1} блок|{2,3,4} блока|[0,Inf] блоков'
+
+page.fields:
+    html: HTML
+    meta_title: Мета название
+    meta_keyword: Мета ключевые слова
+    meta_description: Мета описание
+
+composer:
+    remove: Удалить
+    remove.confirm: "точно удалить ?"
+    enable: Включить
+    disable: Отключить
+    block:
+        add:
+            type: добавить блок
+    shared_block:
+        add:
+            type: добавить блок
+
+sonata:
+    page:
+        template:
+            wide: Широкий
+            football: Футбол
+            default: C правой колонкой
+            section: Секция (Лента)
+            homepage: Главная страница
+            htmlpage: HTML-контент
+            lifestyle: Lifestyle
+            view: Страница контента
+            amp: AMP
+            tv: TV
+            error: Страница 404

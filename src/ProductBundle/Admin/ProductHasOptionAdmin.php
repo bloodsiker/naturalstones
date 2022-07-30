@@ -65,11 +65,11 @@ class ProductHasOptionAdmin extends Admin
         }
 
         $formMapper
-//            ->add('image', ModelListType::class, [
-//                'label' => 'product_has_option.fields.image',
-//                'required'      => false,
-//                'btn_delete'    => false,
-//            ], ['link_parameters' => $linkParameters])
+            ->add('image', ModelListType::class, [
+                'label' => 'product_has_option.fields.image',
+                'required'      => false,
+                'btn_delete'    => false,
+            ], ['link_parameters' => $linkParameters])
             ->add('value', TextType::class, [
                 'label' => 'product_has_option.fields.value',
                 'required' => false,

@@ -21,6 +21,8 @@ class MetalAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
+        '_page'       => 1,
+        '_per_page'   => 25,
         '_sort_by'      => 'id',
         '_sort_order'   => 'DESC',
     ];
@@ -101,8 +103,8 @@ class MetalAdmin extends Admin
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-//                    'preview' => ['template' => 'ShareBundle:CRUD:list__action_preview.html.twig'],
                     'edit' => [],
+                    'delete' => [],
                 ],
             ]);
     }

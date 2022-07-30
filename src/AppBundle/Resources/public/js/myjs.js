@@ -821,12 +821,6 @@ $(document).ready(function() {
 		openInformationPopup();
 	})
 
-	let id = $('#informationModal').data('id');
-
-	if (!Cookie.get('information_' + id)) {
-		setTimeout(openInformationPopup, 5000);
-	}
-
 	const Cookie = {
 
 		set: function (name, value, days) {
@@ -861,6 +855,12 @@ $(document).ready(function() {
 		}
 
 	};
+
+	let id = $('#informationModal').data('id');
+
+	if (!Cookie.get('information_' + id)) {
+		setTimeout(openInformationPopup, 5000);
+	}
 
 	// if ($('.popup-open').length) {
 	// 	$('.popup-open').magnificPopup({

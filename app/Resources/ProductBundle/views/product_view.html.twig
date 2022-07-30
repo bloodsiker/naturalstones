@@ -43,6 +43,17 @@
                         {% endif %}
                     {% endfor %}
 
+                    {% for productOption in product.productHasOption %}
+                        {% if productOption.image %}
+                            <div class="product-big-item" data-option="{{ productOption.id }}">
+                                {% if product.instagramLink %}
+                                    <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
+                                {% endif %}
+                                <img src="{{ asset(productOption.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
                     {% for productImageMetal in product.productHasOptionMetal %}
                         {% if productImageMetal.image %}
                             <div class="product-big-item">

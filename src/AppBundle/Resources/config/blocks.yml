@@ -79,6 +79,5 @@ services:
             - '@templating'
             - '@app.cart'
             - '@request_stack'
-            - '@app.entity_manager'
         tags:
             - { name: sonata.block }

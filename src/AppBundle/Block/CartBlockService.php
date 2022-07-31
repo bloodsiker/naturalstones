@@ -45,26 +45,19 @@ class CartBlockService extends AbstractAdminBlockService
     private $cart;
 
     /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
-    /**
      * CartBlockService constructor.
      *
      * @param string          $name
      * @param EngineInterface $templating
      * @param Cart            $cart
      * @param RequestStack    $request
-     * @param EntityManager   $entityManager
      */
-    public function __construct($name, EngineInterface $templating, Cart $cart, RequestStack $request, EntityManager $entityManager)
+    public function __construct($name, EngineInterface $templating, Cart $cart, RequestStack $request)
     {
         parent::__construct($name, $templating);
 
         $this->cart = $cart;
         $this->request  = $request;
-        $this->entityManager = $entityManager;
     }
 
     /**

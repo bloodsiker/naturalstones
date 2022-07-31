@@ -134,7 +134,7 @@
                                                 <option></option>
                                                 {% for productOption in product.productHasOption %}
                                                     {% if productOption.value %}
-                                                        <option value="{{ productOption.value }}">{{ productOption.value }}</option>
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
                                                     {% endif %}
                                                 {% endfor %}
                                             </select>

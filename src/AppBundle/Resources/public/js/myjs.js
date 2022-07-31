@@ -83,6 +83,17 @@ $(document).ready(function() {
 				$('.price').html(`<span>${price} грн</span>`);
 			}
 		});
+
+		// Переключаем слайд при выборе опци
+		$('.select-letters').on('select2:select', function (e) {
+			let id = $(e.params.data.element).data('id');
+
+			let slideOption = $('.product-big-slider').find('.product-big-item[data-option=' + id + ']');
+			if (slideOption[0]) {
+				let indexSlickOption = slideOption.data('slick-index');
+				slickSlider.slick('slickGoTo', parseInt(indexSlickOption));
+			}
+		});
 	}
 
 	// Слайдер похожих товаров

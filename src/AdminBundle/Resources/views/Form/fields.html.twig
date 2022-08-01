@@ -152,8 +152,9 @@
 
                     {% set preview_width = preview_width matches '/^[\\d\\.]+$/' ? preview_width~'px' : preview_width %}
                     <img id="{{ id }}_preview"
+                         onclick="$('#{{ form.file.vars.id }}').click()"
                          src="{{ image_path|default(v) }}?{{ random() }}"
-                         style="width:{{ image_path ? preview_width|default('100%') : '150px' }};">
+                         style="width:{{ image_path ? preview_width|default('100%') : '150px' }}; cursor: pointer">
 
                     {% if image_path is not empty %}
                         <div style="font-weight: bolder; font-size: 12px; color: #3A4A51;">

@@ -62,7 +62,7 @@ class Cart
      *
      * @return mixed
      */
-    public function addProductToCart(string $type, string $id, int $count, $colour = null, $letter = null)
+    public function addProductToCart(string $type, string $id, int $count, $colour = null, $options = [])
     {
         $productsInCart = $this->getProductInCart() ?: [];
 
@@ -72,8 +72,9 @@ class Cart
         if ($colour) {
             $key .= sprintf(':colour:%s', $colour);
         }
-        if ($letter) {
-            $key .= sprintf(':letter:%s', $letter);
+
+        if ($options) {
+            $key .= sprintf(':%s:%s', $options['option'], $options['value']);
         }
 
         if (array_key_exists($type, $productsInCart)) {
@@ -87,8 +88,8 @@ class Cart
             if ($colour) {
                 $productsInCart[$type][$key]['colour'] = $colour;
             }
-            if ($letter) {
-                $productsInCart[$type][$key]['letter'] = $letter;
+            if ($options) {
+                $productsInCart[$type][$key][$options['option']] = $options['value'];
             }
         } else {
             $productsInCart[$type][$key]['id'] = $id;
@@ -96,8 +97,8 @@ class Cart
             if ($colour) {
                 $productsInCart[$type][$key]['colour'] = $colour;
             }
-            if ($letter) {
-                $productsInCart[$type][$key]['letter'] = $letter;
+            if ($options) {
+                $productsInCart[$type][$key][$options['option']] = $options['value'];
             }
         }
 
@@ -140,10 +141,15 @@ class Cart
                         if (isset($data['letter'])) {
                             $productsInfo[self::TYPE_PRODUCT][$key]['letter'] = $data['letter'];
                         }
+                        if (isset($data['insert'])) {
+                            $productsInfo[self::TYPE_PRODUCT][$key]['insert'] = $data['insert'];
+                        }
                     }
                 }
             }
         }
+
+//        dump($productsInfo);die;
 
         return $productsInfo;
     }
@@ -195,7 +201,8 @@ class Cart
         $comment = $request->get('comment');
         $messenger = $request->get('messenger');
         $colour = $request->get('colour_id');
-        $letter = $request->get('letter');
+        $option = $request->get('option');
+        $optionValue = $request->get('option_value');
 
         $productObject = null;
         if ($request->get('product')) {
@@ -227,7 +234,7 @@ class Cart
                 'totalPrice' => $productObject->getFinalPrice(),
                 'count' => 1,
                 'colour' => $colourObject,
-                'letter' => $letter,
+                $option => $optionValue,
             ];
         } else {
             $products = $this->getProductsInfo()['product'];
@@ -238,13 +245,16 @@ class Cart
             if (isset($item['letter']) && $item['letter']) {
                 $option .= 'Буква: ' . $item['letter'] . PHP_EOL;
             }
+            if (isset($item['insert']) && $item['insert']) {
+                $option .= 'Вставка: ' . $item['insert'] . PHP_EOL;
+            }
             $totalPrice += $item['totalPrice'];
             $product = $item['item'];
             $orderHasItem = new OrderHasItem();
             $orderHasItem->setProduct($product);
             $orderHasItem->setColour($item['colour'] ?? null);
             $orderHasItem->setDiscount($product->getDiscount());
-            $orderHasItem->setPrice($item['price']);
+            $orderHasItem->setPrice($item['totalPrice']);
             $orderHasItem->setQuantity($item['count']);
             $orderHasItem->setOptions($option);
             $order->addOrderHasItem($orderHasItem);

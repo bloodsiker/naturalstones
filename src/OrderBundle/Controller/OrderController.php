@@ -122,7 +122,6 @@ class OrderController extends Controller
         $cartService = $this->get('app.cart');
         $telegramService = $this->get('app.send_telegram');
         $cart = $cartService->getProductsInfo();
-
         if (!isset($cart['product']) || !count($cart['product'])) {
             return new JsonResponse([
                 'type' => 'error',

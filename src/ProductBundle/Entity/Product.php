@@ -22,6 +22,7 @@ class Product
     const WHO_WOMAN = 'woman';
 
     const TYPE_LETTERS = 1;
+    const TYPE_INSERTS = 2;
 
     /**
      * @var int
@@ -1258,6 +1259,7 @@ class Product
     {
         return [
             self::TYPE_LETTERS => 'letters',
+            self::TYPE_INSERTS => 'inserts',
         ];
     }
 

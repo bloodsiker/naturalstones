@@ -34,6 +34,10 @@
                                         <br>
                                         <i style="font-size: 14px;">Буква:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.letter }}</i>
                                     {% endif %}
+                                    {% if mProduct.insert is defined %}
+                                        <br>
+                                        <i style="font-size: 14px;">Вставка:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.insert }}</i>
+                                    {% endif %}
                                 </div>
                             </div>
                         </td>

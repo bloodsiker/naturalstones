@@ -70,6 +70,7 @@ product:
         created_at: Создана
         types:
             letters: Буквы
+            inserts: Вставки
     buttons:
         link_add: Добавить новый
     tab:

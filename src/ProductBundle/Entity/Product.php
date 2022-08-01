@@ -23,6 +23,7 @@ class Product
 
     const TYPE_LETTERS = 1;
     const TYPE_INSERTS = 2;
+    const TYPE_PENDANTS = 3;
 
     /**
      * @var int
@@ -1260,6 +1261,7 @@ class Product
         return [
             self::TYPE_LETTERS => 'letters',
             self::TYPE_INSERTS => 'inserts',
+            self::TYPE_PENDANTS => 'pendants',
         ];
     }
 

@@ -144,6 +144,9 @@ class Cart
                         if (isset($data['insert'])) {
                             $productsInfo[self::TYPE_PRODUCT][$key]['insert'] = $data['insert'];
                         }
+                        if (isset($data['pendant'])) {
+                            $productsInfo[self::TYPE_PRODUCT][$key]['pendant'] = $data['pendant'];
+                        }
                     }
                 }
             }
@@ -247,6 +250,9 @@ class Cart
             }
             if (isset($item['insert']) && $item['insert']) {
                 $option .= 'Вставка: ' . $item['insert'] . PHP_EOL;
+            }
+            if (isset($item['pendant']) && $item['pendant']) {
+                $option .= 'Подвеска: ' . $item['pendant'] . PHP_EOL;
             }
             $totalPrice += $item['totalPrice'];
             $product = $item['item'];

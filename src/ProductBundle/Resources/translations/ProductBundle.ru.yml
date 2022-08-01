@@ -71,6 +71,7 @@ product:
         types:
             letters: Буквы
             inserts: Вставки
+            pendants: Подвески
     buttons:
         link_add: Добавить новый
     tab:

@@ -155,6 +155,20 @@
                                         </div>
                                         <span class="text-red optionError"></span>
                                     {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_PENDANTS') %}
+                                        <h5>Выберите подвеску</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="pendant" data-text-error="Вы не выбрали подвеску" data-placeholder="Подвески">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
                                 </div>
                             {% endif %}
 

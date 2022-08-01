@@ -24,6 +24,7 @@ class Product
     const TYPE_LETTERS = 1;
     const TYPE_INSERTS = 2;
     const TYPE_PENDANTS = 3;
+    const TYPE_BRACELET = 4;
 
     /**
      * @var int
@@ -1262,6 +1263,7 @@ class Product
             self::TYPE_LETTERS => 'letters',
             self::TYPE_INSERTS => 'inserts',
             self::TYPE_PENDANTS => 'pendants',
+            self::TYPE_BRACELET => 'bracelets',
         ];
     }
 

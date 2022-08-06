@@ -57,6 +57,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+        company_name: '%company_name%'
     form_themes:
         - 'AdminBundle:Form:fields.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'

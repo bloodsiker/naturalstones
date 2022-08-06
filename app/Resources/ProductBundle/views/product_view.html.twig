@@ -14,7 +14,8 @@
             <h1>{{ product.name }} {{ product.size }}</h1>
         {% endif %}
 
-        <div class="product-section-detail">
+        <div class="product-section-detail" itemtype="https://schema.org/Product" itemscope>
+            <meta itemprop="name" content="{{ product.name }}" />
             <div class="product-gallery">
                 <div class="product-big-slider js-slick">
                     <div class="product-big-item" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
@@ -65,6 +66,10 @@
                         {% endif %}
                     {% endfor %}
                 </div>
+            </div>
+
+            <div itemprop="brand" itemtype="https://schema.org/Brand" itemscope>
+                <meta itemprop="name" content="{{ company_name }}" />
             </div>
 
             <div class="product-information">
@@ -210,14 +215,21 @@
                             </div>
                         {% endif %}
                         <div class="bottom-block">
-                            <div class="total-price">
+                            <div class="total-price" itemprop="offers" itemtype="https://schema.org/Offer" itemscope>
+                                <link itemprop="url" href="{{ app.request.schemeAndHttpHost }}" />
                                 {% if product.discount %}
                                     <div class="price">
                                         <span class="old-price">{{ product.price}} грн</span><br>
                                         <span>{{ product.discount}} грн</span>
+                                        <meta itemprop="availability" content="https://schema.org/InStock" />
+                                        <meta itemprop="priceCurrency" content="UAH" />
+                                        <meta itemprop="price" content="{{ product.price}}" />
                                     </div>
                                 {% else %}
                                     <div class="price"><span>{{ product.price}} грн</span></div>
+                                    <meta itemprop="availability" content="https://schema.org/InStock" />
+                                    <meta itemprop="priceCurrency" content="UAH" />
+                                    <meta itemprop="price" content="{{ product.price}}" />
                                 {% endif %}
                             </div>
                             {{

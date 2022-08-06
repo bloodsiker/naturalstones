@@ -75,9 +75,27 @@ class InformationBlockService extends AbstractAdminBlockService
             return new Response();
         }
 
+        $now = (new \DateTime('now'))->getTimestamp();
+
         $repository = $this->em->getRepository(Information::class);
 
         $information = $repository->findOneBy(['isActive' => true], ['id' => 'ASC']);
+
+        if ($information && $information->getStartedAt() && $information->getFinishedAt()) {
+            if ($information->getStartedAt()->getTimestamp() < $now && $information->getFinishedAt()->getTimestamp() > $now) {
+
+            } else {
+                $information = null;
+            }
+        } elseif ($information && $information->getStartedAt()) {
+            if ($information->getStartedAt()->getTimestamp() > $now) {
+                $information = null;
+            }
+        } elseif ($information && $information->getFinishedAt()) {
+            if ($information->getFinishedAt()->getTimestamp() < $now) {
+                $information = null;
+            }
+        }
 
         return $this->renderResponse($blockContext->getTemplate(), [
             'information' => $information,

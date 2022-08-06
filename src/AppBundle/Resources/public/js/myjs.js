@@ -85,7 +85,7 @@ $(document).ready(function() {
 		});
 
 		// Переключаем слайд при выборе опци
-		$('.select-letters').on('select2:select', function (e) {
+		$('.select-option').on('select2:select', function (e) {
 			let id = $(e.params.data.element).data('id');
 
 			let slideOption = $('.product-big-slider').find('.product-big-item[data-option=' + id + ']');
@@ -508,7 +508,8 @@ $(document).ready(function() {
 		let product = $("input[name='product']").val();
 		let messenger = $("input[name='messenger']:checked").val();
 		let colourId = null;
-		let letter = null;
+		let option = null;
+		let	option_value = null;
 
 		if ($('.product-colours-check').length) {
 			const isChecked = !!$('input[type="radio"][name=colour_id]:checked').length;
@@ -521,12 +522,14 @@ $(document).ready(function() {
 			}
 		}
 
-		if ($('.select-letters').length) {
-			letter = $('.select-letters option:selected').val();
+		if ($('.select-option').length) {
+			option = $('.select-option').data('option');
+			option_value = $('.select-option option:selected').val();
 
-			$('#letterError').text('').hide();
-			if (!letter) {
-				$('#letterError').text('Вы не выбрали букву').show();
+			$('.optionError').text('').hide();
+			if (!option_value) {
+				let textError = $('.select-option').data('text-error');
+				$('.optionError').text(textError).show();
 				return false;
 			}
 		}
@@ -553,7 +556,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: { phone: phone, messenger: messenger, product: product, instagram: instagram, colour_id: colourId, letter: letter },
+			data: { phone: phone, messenger: messenger, product: product, instagram: instagram, colour_id: colourId, option: option, option_value: option_value },
 			success: function (response) {
 				if (response.type === 'error') {
 					alert(response.message);
@@ -628,7 +631,8 @@ $(document).ready(function() {
 			action = _this.data('action'),
 			quantity = $('#quantity').val(),
 			colourId = null,
-			letter = null;
+			option = null,
+			option_value = null;
 
 		if ($('.product-colours-check').length) {
 			const isChecked = !!$('input[type="radio"][name=colour_id]:checked').length;
@@ -641,12 +645,14 @@ $(document).ready(function() {
 			}
 		}
 
-		if ($('.select-letters').length) {
-			letter = $('.select-letters option:selected').val();
+		if ($('.select-option').length) {
+			option = $('.select-option').data('option');
+			option_value = $('.select-option option:selected').val();
 
-			$('#letterError').text('').hide();
-			if (!letter) {
-				$('#letterError').text('Вы не выбрали букву').show();
+			$('.optionError').text('').hide();
+			if (!option_value) {
+				let textError = $('.select-option').data('text-error');
+				$('.optionError').text(textError).show();
 				return false;
 			}
 		}
@@ -654,7 +660,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: { action: action, item_id: item_id, quantity: quantity, colour_id: colourId, letter: letter },
+			data: { action: action, item_id: item_id, quantity: quantity, colour_id: colourId, option: option, option_value: option_value },
 			success: function (response) {
 				if (200 === response.code) {
 					openPopup(_this);

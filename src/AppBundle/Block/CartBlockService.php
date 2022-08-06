@@ -110,6 +110,8 @@ class CartBlockService extends AbstractAdminBlockService
         $item = $request->get('item_id');
         $count = $request->get('quantity') ?: 1;
         $colour = $request->get('colour_id');
+        $option = $request->get('option');
+        $optionValue = $request->get('option_value');
         $letter = $request->get('letter');
         $template = $request->get('template');
 
@@ -121,11 +123,16 @@ class CartBlockService extends AbstractAdminBlockService
             $blockContext->setSetting('template', $template);
         }
 
+        $options = [
+            'option' => $option,
+            'value' => $optionValue,
+        ];
+
         if ($request->isXmlHttpRequest() && $action) {
 
             switch ($action) {
                 case self::ACTION_ADD:
-                    $countItems = $this->addToCart($type, $item, $count, $colour, $letter);
+                    $countItems = $this->addToCart($type, $item, $count, $colour, $options);
                     return new JsonResponse(['code' => 200, 'count' => $countItems, 'total' => $this->cart->getTotalPrice()]);
                     break;
                 case self::ACTION_REMOVE:
@@ -165,16 +172,17 @@ class CartBlockService extends AbstractAdminBlockService
      * @param  string $id
      * @param  int    $count
      * @param  int|null  $colour
+     * @param  array  $options
      *
      * @return mixed
      *
      * @throws \Exception
      */
-    private function addToCart(string $type, string $id, int $count, $colour = null, $letter = null)
+    private function addToCart(string $type, string $id, int $count, $colour = null, $options = [])
     {
         switch ($type) {
             case Cart::TYPE_PRODUCT:
-                $countItem = $this->cart->addProductToCart(Cart::TYPE_PRODUCT, $id, $count, $colour, $letter);
+                $countItem = $this->cart->addProductToCart(Cart::TYPE_PRODUCT, $id, $count, $colour, $options);
                 break;
             default:
                 throw new \Exception('Undefined type product');

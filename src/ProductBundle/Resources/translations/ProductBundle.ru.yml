@@ -70,6 +70,9 @@ product:
         created_at: Создана
         types:
             letters: Буквы
+            inserts: Вставки
+            pendants: Подвески
+            bracelets: Браслеты
     buttons:
         link_add: Добавить новый
     tab:
@@ -180,6 +183,14 @@ frontend:
         change_letter: Выберите букву
         change_count: Выберите количество
         letter: Буквы
+        insert: Вставки
+        pendant: Подвески
+        bracelet: Браслеты
+        validate:
+            letter: Вы не выбрали букву
+            insert: Вы не выбрали вставку
+            pendant: Вы не выбрали подвеску
+            bracelet: Вы не выбрали браслет
         size: Размер
         included: Что входит в набор
         quick_order: Быстрый заказ

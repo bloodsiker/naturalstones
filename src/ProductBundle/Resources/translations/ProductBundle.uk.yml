@@ -180,6 +180,14 @@ frontend:
         change_letter: Виберіть літеру
         change_count: Виберіть кількість
         letter: Літери
+        insert: Вставки
+        pendant: Підвіски
+        bracelet: Браслети
+        validate:
+            letter: Ви не обрали букву
+            insert: Ви не обрали вставку
+            pendant: Ви не обрали підвіску
+            bracelet: Ви не обрали браслет
         size: Розмір
         included: Що входить до набору
         quick_order: Швидкий заказ

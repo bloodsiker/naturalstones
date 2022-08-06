@@ -27,6 +27,9 @@ class Product
     const WHO_WOMAN = 'woman';
 
     const TYPE_LETTERS = 1;
+    const TYPE_INSERTS = 2;
+    const TYPE_PENDANTS = 3;
+    const TYPE_BRACELET = 4;
 
     /**
      * @var int
@@ -1263,6 +1266,9 @@ class Product
     {
         return [
             self::TYPE_LETTERS => 'letters',
+            self::TYPE_INSERTS => 'inserts',
+            self::TYPE_PENDANTS => 'pendants',
+            self::TYPE_BRACELET => 'bracelets',
         ];
     }
 

@@ -14,57 +14,62 @@
             <h1>{{ product.name }} {{ product.size }}</h1>
         {% endif %}
 
-        <div class="product-section-detail">
+        <div class="product-section-detail" itemtype="https://schema.org/Product" itemscope>
+            <meta itemprop="name" content="{{ product.name }}" />
             <div class="product-gallery">
                 <div class="product-big-slider js-slick">
-                    <div class="product-big-item">
+                    <div class="product-big-item" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                         {% if product.instagramLink %}
                             <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
                         {% endif %}
-                        <img src="{{ asset(product.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
+                        <img src="{{ asset(product.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
                     </div>
                     {% for productImage in product.productHasImage %}
-                        <div class="product-big-item">
+                        <div class="product-big-item" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                             {% if product.instagramLink %}
                                 <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
                             {% endif %}
-                            <img src="{{ asset(productImage.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
+                            <img src="{{ asset(productImage.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
                         </div>
                     {% endfor %}
 
                     {% for productImageColour in product.productHasOptionColour %}
                         {% if productImageColour.image %}
-                            <div class="product-big-item" data-option-colour="{{ productImageColour.id }}">
+                            <div class="product-big-item" data-option-colour="{{ productImageColour.id }}" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                                 {% if product.instagramLink %}
                                     <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
                                 {% endif %}
-                                <img src="{{ asset(productImageColour.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
+                                <img src="{{ asset(productImageColour.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
                             </div>
                         {% endif %}
                     {% endfor %}
 
                     {% for productOption in product.productHasOption %}
                         {% if productOption.image %}
-                            <div class="product-big-item" data-option="{{ productOption.id }}">
+                            <div class="product-big-item" data-option="{{ productOption.id }}" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                                 {% if product.instagramLink %}
                                     <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
                                 {% endif %}
-                                <img src="{{ asset(productOption.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
+                                <img src="{{ asset(productOption.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
                             </div>
                         {% endif %}
                     {% endfor %}
 
                     {% for productImageMetal in product.productHasOptionMetal %}
                         {% if productImageMetal.image %}
-                            <div class="product-big-item">
+                            <div class="product-big-item" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                                 {% if product.instagramLink %}
                                     <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
                                 {% endif %}
-                                <img src="{{ asset(productImageMetal.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
+                                <img src="{{ asset(productImageMetal.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
                             </div>
                         {% endif %}
                     {% endfor %}
                 </div>
+            </div>
+
+            <div itemprop="brand" itemtype="https://schema.org/Brand" itemscope>
+                <meta itemprop="name" content="{{ company_name }}" />
             </div>
 
             <div class="product-information">
@@ -130,7 +135,7 @@
                                     {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_LETTERS') %}
                                         <h5>{{ 'frontend.product.change_letter'|trans([], 'ProductBundle') }}</h5>
                                         <div class="select-block">
-                                            <select class="custom-select select-letters" data-placeholder="{{ 'frontend.product.letter'|trans([], 'ProductBundle') }}">
+                                            <select class="custom-select select-letters" data-text-error="{{ 'frontend.product.validate.letter'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.letter'|trans([], 'ProductBundle') }}">
                                                 <option></option>
                                                 {% for productOption in product.productHasOption %}
                                                     {% if productOption.value %}
@@ -139,7 +144,49 @@
                                                 {% endfor %}
                                             </select>
                                         </div>
-                                        <span id="letterError" class="text-red"></span>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_INSERTS') %}
+                                        <h5>Выберите вставку</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="insert" data-text-error="{{ 'frontend.product.validate.insert'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.insert'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_PENDANTS') %}
+                                        <h5>Выберите подвеску</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="pendant" data-text-error="{{ 'frontend.product.validate.pendant'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.pendant'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_BRACELET') %}
+                                        <h5>Выберите браслет</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="bracelet" data-text-error="{{ 'frontend.product.validate.bracelet'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.bracelet'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
                                     {% endif %}
                                 </div>
                             {% endif %}
@@ -168,14 +215,21 @@
                             </div>
                         {% endif %}
                         <div class="bottom-block">
-                            <div class="total-price">
+                            <div class="total-price" itemprop="offers" itemtype="https://schema.org/Offer" itemscope>
+                                <link itemprop="url" href="{{ product_path(product, true) }}" />
                                 {% if product.discount %}
                                     <div class="price">
                                         <span class="old-price">{{ product.price}} грн</span><br>
                                         <span>{{ product.discount}} грн</span>
+                                        <meta itemprop="availability" content="https://schema.org/InStock" />
+                                        <meta itemprop="priceCurrency" content="UAH" />
+                                        <meta itemprop="price" content="{{ product.price}}" />
                                     </div>
                                 {% else %}
                                     <div class="price"><span>{{ product.price}} грн</span></div>
+                                    <meta itemprop="availability" content="https://schema.org/InStock" />
+                                    <meta itemprop="priceCurrency" content="UAH" />
+                                    <meta itemprop="price" content="{{ product.price}}" />
                                 {% endif %}
                             </div>
                             {{

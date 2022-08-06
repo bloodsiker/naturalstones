@@ -224,12 +224,6 @@ class MediaImageAdmin extends Admin
                     'preview_width' => 250,
                     'required'  => false,
                 ])
-                ->add('createdBy', ModelListType::class, [
-                    'label'    => 'media.fields.created_by',
-                    'btn_edit' => false,
-                    'btn_add' => false,
-                    'required' => true,
-                ])
             ->end()
             ->with('form_group.basic2', ['class' => 'col-md-4', 'label' => false])
                 ->add('mimeType', TextType::class, [
@@ -257,6 +251,12 @@ class MediaImageAdmin extends Admin
                 ->add('isActive', null, [
                     'label'    => 'media.fields.is_active',
                     'required' => false,
+                ])
+                ->add('createdBy', ModelListType::class, [
+                    'label'    => 'media.fields.created_by',
+                    'btn_edit' => false,
+                    'btn_add' => false,
+                    'required' => true,
                 ])
                 ->add('updatedAt', DateTimePickerType::class, [
                     'label'  => 'media.fields.updated_at',

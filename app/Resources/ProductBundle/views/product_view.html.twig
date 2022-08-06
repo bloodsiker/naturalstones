@@ -216,7 +216,7 @@
                         {% endif %}
                         <div class="bottom-block">
                             <div class="total-price" itemprop="offers" itemtype="https://schema.org/Offer" itemscope>
-                                <link itemprop="url" href="{{ app.request.schemeAndHttpHost }}" />
+                                <link itemprop="url" href="{{ product_path(product, true) }}" />
                                 {% if product.discount %}
                                     <div class="price">
                                         <span class="old-price">{{ product.price}} грн</span><br>

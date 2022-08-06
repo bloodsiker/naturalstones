@@ -17,50 +17,50 @@
         <div class="product-section-detail">
             <div class="product-gallery">
                 <div class="product-big-slider js-slick">
-                    <div class="product-big-item">
+                    <div class="product-big-item" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                         {% if product.instagramLink %}
                             <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
                         {% endif %}
-                        <img src="{{ asset(product.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
+                        <img src="{{ asset(product.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
                     </div>
                     {% for productImage in product.productHasImage %}
-                        <div class="product-big-item">
+                        <div class="product-big-item" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                             {% if product.instagramLink %}
                                 <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
                             {% endif %}
-                            <img src="{{ asset(productImage.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
+                            <img src="{{ asset(productImage.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
                         </div>
                     {% endfor %}
 
                     {% for productImageColour in product.productHasOptionColour %}
                         {% if productImageColour.image %}
-                            <div class="product-big-item" data-option-colour="{{ productImageColour.id }}">
+                            <div class="product-big-item" data-option-colour="{{ productImageColour.id }}" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                                 {% if product.instagramLink %}
                                     <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
                                 {% endif %}
-                                <img src="{{ asset(productImageColour.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
+                                <img src="{{ asset(productImageColour.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
                             </div>
                         {% endif %}
                     {% endfor %}
 
                     {% for productOption in product.productHasOption %}
                         {% if productOption.image %}
-                            <div class="product-big-item" data-option="{{ productOption.id }}">
+                            <div class="product-big-item" data-option="{{ productOption.id }}" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                                 {% if product.instagramLink %}
                                     <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
                                 {% endif %}
-                                <img src="{{ asset(productOption.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
+                                <img src="{{ asset(productOption.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
                             </div>
                         {% endif %}
                     {% endfor %}
 
                     {% for productImageMetal in product.productHasOptionMetal %}
                         {% if productImageMetal.image %}
-                            <div class="product-big-item">
+                            <div class="product-big-item" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                                 {% if product.instagramLink %}
                                     <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
                                 {% endif %}
-                                <img src="{{ asset(productImageMetal.image.path) }}" class="big-slider-img" alt="{{ product.name }}">
+                                <img src="{{ asset(productImageMetal.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
                             </div>
                         {% endif %}
                     {% endfor %}

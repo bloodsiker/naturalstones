@@ -1,6 +1,8 @@
 Action: Действия
-Media Image List: Список файлов
-Media Image Create: Добавить файл
+Media Image List : Список изображений
+Media Image Create: Добавить изображение
+Media File List: Список файлов
+Media File Create: Добавить файл
 
 form_group:
     basic: Основные

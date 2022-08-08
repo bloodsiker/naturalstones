@@ -144,7 +144,7 @@ class StoneAdmin extends Admin
                 ->add('zodiacs', ModelAutocompleteType::class, [
                     'label' => 'stone.fields.zodiacs',
                     'required' => false,
-                    'property' => 'name',
+                    'property' => 'translations.name',
                     'multiple' => true,
                     'attr' => ['class' => 'form-control'],
                     'btn_catalogue' => $this->translationDomain,

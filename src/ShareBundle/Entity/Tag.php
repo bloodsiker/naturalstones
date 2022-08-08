@@ -35,13 +35,6 @@ class Tag
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
-    protected $name;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      */
     protected $slug;
@@ -102,27 +95,13 @@ class Tag
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Tag
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * Get name
      *
      * @return string
      */
-    public function getName()
+    public function name()
     {
-        return $this->name;
+        return (string) $this->translate()->getName();
     }
 
     /**

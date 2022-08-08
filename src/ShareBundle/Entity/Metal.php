@@ -34,13 +34,6 @@ class Metal
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
-    protected $name;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      */
     protected $slug;
@@ -77,7 +70,7 @@ class Metal
     {
         if (is_null($this->slug)) {
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->translate('ru')->getName());
+            $this->slug = $slugify->slugify($this->translate()->getName());
         }
     }
 
@@ -110,9 +103,9 @@ class Metal
      *
      * @return string
      */
-    public function getName()
+    public function name()
     {
-        return $this->name;
+        return (string) $this->translate()->getName();
     }
 
     /**

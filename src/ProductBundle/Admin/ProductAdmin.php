@@ -187,7 +187,7 @@ class ProductAdmin extends Admin
             ->add('id', null, [
                 'label' => 'product.fields.id',
             ])
-            ->add('name', null, [
+            ->add('translations.name', null, [
                 'label' => 'product.fields.name',
             ])
             ->add('category', null, [

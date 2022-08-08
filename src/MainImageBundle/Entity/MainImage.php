@@ -28,20 +28,6 @@ class MainImage
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $title;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $description;
-
-    /**
      * @var \MediaBundle\Entity\MediaImage
      *
      * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaImage")
@@ -178,23 +164,9 @@ class MainImage
      *
      * @return string
      */
-    public function getTitle()
+    public function title()
     {
-        return $this->title;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     *
-     * @return string
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $title;
+        return (string) $this->translate()->getTitle();
     }
 
     /**
@@ -202,23 +174,9 @@ class MainImage
      *
      * @return string
      */
-    public function getDescription()
+    public function description()
     {
-        return $this->description;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return $this
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
+        return (string) $this->translate()->getDescription();
     }
 
     /**

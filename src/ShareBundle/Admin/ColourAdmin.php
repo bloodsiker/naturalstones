@@ -85,7 +85,7 @@ class ColourAdmin extends Admin
             ->add('id', null, [
                 'label' => 'colour.fields.id',
             ])
-            ->add('name', null, [
+            ->add('translations.name', null, [
                 'label' => 'colour.fields.name',
             ])
             ->add('isActive', null, [

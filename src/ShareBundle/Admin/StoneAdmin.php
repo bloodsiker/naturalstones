@@ -81,7 +81,7 @@ class StoneAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, [
+            ->add('translations.name', null, [
                 'label' => 'stone.fields.name',
             ])
             ->add('isActive', null, [

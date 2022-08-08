@@ -37,13 +37,6 @@ class Colour
      *
      * @ORM\Column(type="string", length=255, nullable=false)
      */
-    protected $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
     protected $colour;
 
     /**
@@ -94,7 +87,7 @@ class Colour
     {
         if (is_null($this->slug)) {
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->translate('ru')->getName());
+            $this->slug = $slugify->slugify($this->translate()->getName());
         }
     }
 
@@ -109,27 +102,13 @@ class Colour
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Tag
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * Get name
      *
      * @return string
      */
-    public function getName()
+    public function name()
     {
-        return $this->name;
+        return (string) $this->translate()->getName();
     }
 
     /**
@@ -161,7 +140,7 @@ class Colour
      *
      * @param boolean $isActive
      *
-     * @return Tag
+     * @return $this
      */
     public function setIsActive($isActive)
     {
@@ -185,7 +164,7 @@ class Colour
      *
      * @param string $slug
      *
-     * @return Tag
+     * @return $this
      */
     public function setSlug($slug)
     {

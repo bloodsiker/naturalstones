@@ -40,23 +40,9 @@ class Stone
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
-    protected $name;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=100, nullable=false)
      */
     protected $slug;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $description;
 
     /**
      * @var bool
@@ -120,7 +106,7 @@ class Stone
     {
         if (is_null($this->slug)) {
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->translate('ru')->getName());
+            $this->slug = $slugify->slugify($this->translate()->getName());
         }
     }
 
@@ -167,27 +153,13 @@ class Stone
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Stone
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * Get name
      *
      * @return string
      */
-    public function getName()
+    public function name()
     {
-        return $this->name;
+        return (string) $this->translate()->getName();
     }
 
     /**
@@ -291,23 +263,9 @@ class Stone
      *
      * @return string
      */
-    public function getDescription()
+    public function description()
     {
-        return $this->description;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return $this
-     */
-    public function setDescription($description = null)
-    {
-        $this->description = $description;
-
-        return $this;
+        return (string) $this->translate()->getDescription();
     }
 
     /**

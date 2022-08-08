@@ -12,6 +12,19 @@ use ShareBundle\Entity\Tag;
 class ProductRepository extends EntityRepository
 {
     /**
+     * @var string
+     */
+    private $locale;
+
+    /**
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
      * @return QueryBuilder
      */
     public function baseProductQueryBuilder(): QueryBuilder
@@ -20,6 +33,8 @@ class ProductRepository extends EntityRepository
         $qb
             ->where('p.isActive = 1')
             ->andWhere('p.isMainProduct = 1')
+            ->leftJoin('p.translations', 'pt')
+            ->addSelect('pt')
             ->orderBy('p.orderNum', 'DESC')
             ->addOrderBy('p.id', 'DESC')
         ;
@@ -44,11 +59,22 @@ class ProductRepository extends EntityRepository
 
     /**
      * @param QueryBuilder $qb
+     */
+    public function filterByLocale(QueryBuilder $qb, $search): QueryBuilder
+    {
+        $qb->andWhere('pt.name LIKE :search OR pt.description LIKE :search')
+            ->setParameter('search', '%'.$search.'%');
+
+        return $qb;
+    }
+
+    /**
+     * @param QueryBuilder $qb
      * @param Category|int $category
      *
      * @return QueryBuilder
      */
-    public function filterByCategory(QueryBuilder $qb, $category) : QueryBuilder
+    public function filterByCategory(QueryBuilder $qb, $category): QueryBuilder
     {
         return $qb->andWhere('p.category = :category')->setParameter('category', $category);
     }

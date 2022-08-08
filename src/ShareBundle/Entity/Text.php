@@ -28,20 +28,6 @@ class Text
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
-    protected $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=false)
-     */
-    protected $description;
-
-    /**
      * @var bool
      *
      * @ORM\Column(type="boolean", nullable=false)
@@ -77,27 +63,13 @@ class Text
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * Get name
      *
      * @return string
      */
-    public function getName()
+    public function name()
     {
-        return $this->name;
+        return (string) $this->translate()->getName();
     }
 
     /**
@@ -129,22 +101,8 @@ class Text
      *
      * @return string
      */
-    public function getDescription()
+    public function description()
     {
-        return $this->description;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return $this
-     */
-    public function setDescription($description = null)
-    {
-        $this->description = $description;
-
-        return $this;
+        return (string) $this->translate()->getDescription();
     }
 }

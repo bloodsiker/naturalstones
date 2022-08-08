@@ -102,10 +102,8 @@ class SearchBlockService extends AbstractAdminBlockService
             $repository = $this->em->getRepository(Product::class);
 
             $qb = $repository->baseProductQueryBuilder();
-            $qb
-                ->andWhere('p.name LIKE :search OR p.description LIKE :search')
-                ->setParameter('search', '%'.$search.'%')
-                ->orderBy('p.views', 'DESC');
+            $qb = $repository->filterByLocale($qb, $search);
+            $qb->orderBy('p.views', 'DESC');
 
             $results = new Pagerfanta(new QueryAdapter($qb, true, false));
             $results->setMaxPerPage($limit);

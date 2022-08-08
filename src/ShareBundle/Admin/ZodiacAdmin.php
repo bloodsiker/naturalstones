@@ -79,7 +79,7 @@ class ZodiacAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, [
+            ->add('translations.name', null, [
                 'label' => 'zodiac.fields.name',
             ])
             ->add('isActive', null, [

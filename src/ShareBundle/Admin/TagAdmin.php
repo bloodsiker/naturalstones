@@ -78,7 +78,7 @@ class TagAdmin extends Admin
             ->add('id', null, [
                 'label' => 'tag.fields.id',
             ])
-            ->add('name', null, [
+            ->add('translations.name', null, [
                 'label' => 'tag.fields.name',
             ])
             ->add('isActive', null, [

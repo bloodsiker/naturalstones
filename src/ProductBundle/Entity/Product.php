@@ -41,13 +41,6 @@ class Product
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
-    protected $name;
-
-    /**
      * @var \MediaBundle\Entity\MediaImage
      *
      * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaImage")
@@ -92,13 +85,6 @@ class Product
      * @ORM\Column(type="string", length=100, nullable=false)
      */
     protected $instagram_link;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=false)
-     */
-    protected $description;
 
     /**
      * @var float
@@ -409,27 +395,13 @@ class Product
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Product
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * Get name
      *
      * @return string
      */
-    public function getName()
+    public function name()
     {
-        return $this->name;
+        return $this->translate()->getName();
     }
 
     /**
@@ -577,27 +549,13 @@ class Product
     }
 
     /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Product
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
      * Get description
      *
      * @return string
      */
-    public function getDescription()
+    public function description()
     {
-        return $this->description;
+        return $this->translate()->getDescription();
     }
 
     /**

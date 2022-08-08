@@ -82,7 +82,7 @@ class MetalAdmin extends Admin
             ->add('id', null, [
                 'label' => 'metal.fields.id',
             ])
-            ->add('name', null, [
+            ->add('translations.name', null, [
                 'label' => 'metal.fields.name',
             ])
             ->add('isActive', null, [

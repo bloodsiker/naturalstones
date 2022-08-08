@@ -98,7 +98,7 @@ class TextAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, [
+            ->add('translations.name', null, [
                 'label' => 'text.fields.name',
             ])
             ->add('isActive', null, [

@@ -8,3 +8,21 @@ services:
         class: ProductBundle\Helper\ProductRouterHelper
         arguments:
             - '@router'
+
+    product.entity_manager:
+        class: "Doctrine\\ORM\\EntityManager"
+        factory: [ '@doctrine', getManager ]
+        public: false
+
+    product.repository.abstract:
+        factory: [ '@product.entity_manager', 'getRepository' ]
+        abstract: true
+
+    product.repository.product:
+        class: "\\ProductBundle\\Entity\\ProductRepository"
+        parent: product.repository.abstract
+        arguments:
+            - 'ArticleBundle:Article'
+        calls:
+            -   method: setLocale
+                arguments: [ "@=service('request_stack').getCurrentRequest() ? service('request_stack').getCurrentRequest().getLocale() : null" ]

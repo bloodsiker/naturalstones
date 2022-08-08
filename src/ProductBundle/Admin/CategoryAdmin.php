@@ -69,7 +69,7 @@ class CategoryAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, [
+            ->add('translations.name', null, [
                 'label' => 'category.fields.name',
             ])
             ->add('slug', null, [

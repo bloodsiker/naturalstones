@@ -52,7 +52,10 @@ class StoneRepository extends EntityRepository
     {
         $qb = $this->baseStoneQueryBuilder();
 
-        $qb->select($qb->expr()->substring('s.name', 1, 1))->distinct()->orderBy('s.name');
+        $qb ->leftJoin('s.translations', 'st')
+            ->addSelect('st');
+
+        $qb->select($qb->expr()->substring('st.name', 1, 1))->distinct()->orderBy('st.name');
 
         return $qb->getQuery()->getResult();
     }

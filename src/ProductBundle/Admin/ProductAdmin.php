@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\DatagridBundle\Filter\FilterInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
 use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateTimePickerType;
@@ -325,20 +326,27 @@ class ProductAdmin extends Admin
                     ->add('metals', ModelAutocompleteType::class, [
                         'label' => 'product.fields.metals',
                         'required' => false,
-                        'property' => 'name',
+                        'property' => 'translations.name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
                         'callback' => function($admin, $property, $value) {
-                            if (!$value) {
-                                return;
-                            }
-
                             $datagrid = $admin->getDatagrid();
-                            $queryBuilder = $datagrid->getQuery();
-                            $queryBuilder->andWhere($queryBuilder->getRootAlias() . '.isActive = 1');
-                            $datagrid->setValue($property, null, $value);
+                            if (!$datagrid->hasFilter($property)) {
+                                throw new \RuntimeException(sprintf(
+                                    'To retrieve autocomplete items,'
+                                    .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
+                                    $property,
+                                    \get_class($admin)
+                                ));
+                            }
+                            $filter = $datagrid->getFilter($property);
+                            $filter->setCondition(FilterInterface::CONDITION_AND);
 
-                            return true;
+                            $datagrid->setValue($filter->getFormName(), null, $value);
+                            $filterActive = $datagrid->getFilter('isActive');
+                            $filterActive->setCondition(FilterInterface::CONDITION_AND);
+                            $datagrid->setValue($filterActive->getFormName(), null, true);
+                            $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
                         },
                         'btn_catalogue' => $this->translationDomain,
                         'minimum_input_length' => 2,
@@ -346,20 +354,27 @@ class ProductAdmin extends Admin
                     ->add('colours', ModelAutocompleteType::class, [
                         'label' => 'product.fields.colours',
                         'required' => false,
-                        'property' => 'name',
+                        'property' => 'translations.name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
                         'callback' => function($admin, $property, $value) {
-                            if (!$value) {
-                                return;
-                            }
-
                             $datagrid = $admin->getDatagrid();
-                            $queryBuilder = $datagrid->getQuery();
-                            $queryBuilder->andWhere($queryBuilder->getRootAlias() . '.isActive = 1');
-                            $datagrid->setValue($property, null, $value);
+                            if (!$datagrid->hasFilter($property)) {
+                                throw new \RuntimeException(sprintf(
+                                    'To retrieve autocomplete items,'
+                                    .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
+                                    $property,
+                                    \get_class($admin)
+                                ));
+                            }
+                            $filter = $datagrid->getFilter($property);
+                            $filter->setCondition(FilterInterface::CONDITION_AND);
 
-                            return true;
+                            $datagrid->setValue($filter->getFormName(), null, $value);
+                            $filterActive = $datagrid->getFilter('isActive');
+                            $filterActive->setCondition(FilterInterface::CONDITION_AND);
+                            $datagrid->setValue($filterActive->getFormName(), null, true);
+                            $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
                         },
                         'btn_catalogue' => $this->translationDomain,
                         'minimum_input_length' => 2,
@@ -367,20 +382,27 @@ class ProductAdmin extends Admin
                     ->add('stones', ModelAutocompleteType::class, [
                         'label' => 'product.fields.stones',
                         'required' => false,
-                        'property' => 'name',
+                        'property' => 'translations.name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
                         'callback' => function($admin, $property, $value) {
-                            if (!$value) {
-                                return;
-                            }
-
                             $datagrid = $admin->getDatagrid();
-                            $queryBuilder = $datagrid->getQuery();
-                            $queryBuilder->andWhere($queryBuilder->getRootAlias() . '.isActive = 1');
-                            $datagrid->setValue($property, null, $value);
+                            if (!$datagrid->hasFilter($property)) {
+                                throw new \RuntimeException(sprintf(
+                                    'To retrieve autocomplete items,'
+                                    .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
+                                    $property,
+                                    \get_class($admin)
+                                ));
+                            }
+                            $filter = $datagrid->getFilter($property);
+                            $filter->setCondition(FilterInterface::CONDITION_AND);
 
-                            return true;
+                            $datagrid->setValue($filter->getFormName(), null, $value);
+                            $filterActive = $datagrid->getFilter('isActive');
+                            $filterActive->setCondition(FilterInterface::CONDITION_AND);
+                            $datagrid->setValue($filterActive->getFormName(), null, true);
+                            $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
                         },
                         'btn_catalogue' => $this->translationDomain,
                         'minimum_input_length' => 2,
@@ -388,20 +410,27 @@ class ProductAdmin extends Admin
                     ->add('tags', ModelAutocompleteType::class, [
                         'label' => 'product.fields.tags',
                         'required' => false,
-                        'property' => 'name',
+                        'property' => 'translations.name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
                         'callback' => function($admin, $property, $value) {
-                            if (!$value) {
-                                return;
-                            }
-
                             $datagrid = $admin->getDatagrid();
-                            $queryBuilder = $datagrid->getQuery();
-                            $queryBuilder->andWhere($queryBuilder->getRootAlias() . '.isActive = 1');
-                            $datagrid->setValue($property, null, $value);
+                            if (!$datagrid->hasFilter($property)) {
+                                throw new \RuntimeException(sprintf(
+                                    'To retrieve autocomplete items,'
+                                    .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
+                                    $property,
+                                    \get_class($admin)
+                                ));
+                            }
+                            $filter = $datagrid->getFilter($property);
+                            $filter->setCondition(FilterInterface::CONDITION_AND);
 
-                            return true;
+                            $datagrid->setValue($filter->getFormName(), null, $value);
+                            $filterActive = $datagrid->getFilter('isActive');
+                            $filterActive->setCondition(FilterInterface::CONDITION_AND);
+                            $datagrid->setValue($filterActive->getFormName(), null, true);
+                            $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
                         },
                         'btn_catalogue' => $this->translationDomain,
                         'minimum_input_length' => 2,

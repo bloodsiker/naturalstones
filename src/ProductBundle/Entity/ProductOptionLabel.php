@@ -2,7 +2,9 @@
 
 namespace ProductBundle\Entity;
 
+use AppBundle\Traits\TranslatableProxyTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class ProductOptionLabel
@@ -13,6 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProductOptionLabel
 {
+    use ORMBehaviors\Translatable\Translatable;
+    use TranslatableProxyTrait;
+
     /**
      * @var int
      *
@@ -21,13 +26,6 @@ class ProductOptionLabel
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
-    protected $name;
 
     /**
      * @var bool
@@ -51,7 +49,7 @@ class ProductOptionLabel
      */
     public function __toString()
     {
-        return (string) $this->name;
+        return (string) $this->translate()->getName();
     }
 
     /**
@@ -62,30 +60,6 @@ class ProductOptionLabel
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
@@ -110,5 +84,13 @@ class ProductOptionLabel
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * @return string
+     */
+    public function name()
+    {
+        return (string) $this->translate()->getName();
     }
 }

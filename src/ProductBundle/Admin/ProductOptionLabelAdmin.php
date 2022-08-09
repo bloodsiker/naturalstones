@@ -2,6 +2,7 @@
 
 namespace ProductBundle\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AdminBundle\Admin\BaseAdmin as Admin;
 use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
@@ -56,7 +57,7 @@ class ProductOptionLabelAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, [
+            ->add('translations.name', null, [
                 'label' => 'category.fields.name',
             ])
             ->add('isActive', null, [
@@ -71,8 +72,16 @@ class ProductOptionLabelAdmin extends Admin
     {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
-                ->add('name', TextType::class, [
-                    'label' => 'category.fields.name',
+                ->add('translations', TranslationsType::class, [
+                    'translation_domain' => $this->translationDomain,
+                    'label' => false,
+                    'fields' => [
+                        'name' => [
+                            'label' => 'category.fields.name',
+                            'field_type' => TextType::class,
+                            'required' => true,
+                        ],
+                    ],
                 ])
             ->end()
             ->with('form_group.additional', ['class' => 'col-md-4', 'name' => false])

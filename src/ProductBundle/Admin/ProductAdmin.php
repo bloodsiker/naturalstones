@@ -515,6 +515,7 @@ class ProductAdmin extends Admin
                 ->with('form_group.product_group', ['class' => 'col-md-12', 'name' => null])
                     ->add('optionLabel', ModelListType::class, [
                         'label' => 'product.fields.option_label',
+                        'btn_edit' => 'link_edit',
                         'required' => false,
                     ])
                     ->add('productHasProduct', CollectionType::class, [

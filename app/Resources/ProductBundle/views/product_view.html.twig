@@ -203,15 +203,31 @@
                         {% if product.productHasProduct|length %}
                             <div class="middle-block">
                                 <h5>{{ product.optionLabel ? product.optionLabel.name : 'frontend.product.included'|trans([], 'ProductBundle') }}</h5>
-                                <table class="table-product-set">
-                                    {% for prodSet in product.productHasProduct %}
-                                        <tr>
-                                            <td><a href="{{ product_path(prodSet.productSet) }}" class="link">{{ prodSet.productSet.name }}</a></td>
-                                            <td>{{ prodSet.productSet.size }}</td>
-                                            <td>{{ prodSet.quantity }} шт.</td>
-                                        </tr>
-                                    {% endfor %}
-                                </table>
+{#                                <table class="table-product-set">#}
+{#                                    {% for prodSet in product.productHasProduct %}#}
+{#                                        <tr>#}
+{#                                            <td><a href="{{ product_path(prodSet.productSet) }}" class="link">{{ prodSet.productSet.name }}</a></td>#}
+{#                                            <td>{{ prodSet.productSet.size }}</td>#}
+{#                                            <td>{{ prodSet.quantity }} шт.</td>#}
+{#                                        </tr>#}
+{#                                    {% endfor %}#}
+{#                                </table>#}
+
+                                {% for prodSet in product.productHasProduct %}
+                                    <div class="relations_products">
+                                        <div class="relations_products_img">
+                                            <a href="{{ product_path(prodSet.productSet) }}">
+                                                <img class="lazyload" data-src="{{ asset(prodSet.productSet.image.path) }}" src="" alt="{{ prodSet.productSet.name }}">
+                                            </a>
+                                        </div>
+                                        <div class="relations_products_desc">
+                                            <a href="{{ product_path(prodSet.productSet) }}" class="link">{{ prodSet.productSet.name }}</a> - <span>{{ prodSet.quantity }} шт.</span>
+                                            {% if prodSet.productSet.size %}
+                                                <br><span>{{ prodSet.productSet.size }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         {% endif %}
                         <div class="bottom-block">

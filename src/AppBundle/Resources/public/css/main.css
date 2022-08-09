@@ -2750,6 +2750,29 @@ footer {
   color: #000;
 }
 
+.relations_products {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 3px 0;
+  padding: 7px;
+  background: #f8f8f8;
+  border-radius: 5px;
+}
+.relations_products_img {
+  width: 35px;
+  height: 35px;
+  overflow: hidden;
+  margin-right: 10px;
+}
+.relations_products_img img {
+  width: 100%;
+  border-radius: 4px;
+}
+.relations_products_desc {
+
+}
+
 .table-product-set {
   font-size: 16px;
   width: 100%;

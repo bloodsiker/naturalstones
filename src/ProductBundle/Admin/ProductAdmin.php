@@ -106,9 +106,6 @@ class ProductAdmin extends Admin
     public function validate(ErrorElement $errorElement, $object)
     {
         $errorElement
-            ->with('description')
-                ->addConstraint(new NotNull())
-            ->end()
             ->with('category')
                 ->addConstraint(new NotNull())
             ->end()

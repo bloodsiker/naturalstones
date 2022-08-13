@@ -25,7 +25,7 @@
         {% elseif field_description.name == 'image' %}
             {% set v = asset('bundles/admin/images/preview_placeholder.png') %}
             {% set image_preview_path = value ? value.path : null %}
-            <img src="{{ image_preview_path|default(v) }}?{{ random() }}" style="max-height: 100px;"/>
+            <img data-src="{{ image_preview_path|default(v) }}?{{ random() }}" src="" class="lazyload" style="max-height: 100px;"/>
         {% endif %}
     {% elseif object is instanceof('\\ProductBundle\\Entity\\ProductInfoView') %}
 

@@ -30,6 +30,7 @@ sonata_admin:
             - bundles/admin/js/codemirror/xml.js
             - bundles/admin/js/codemirror/javascript.js
             - bundles/admin/js/codemirror/htmlmixed.js
+            - bundles/admin/js/lazysizes.min.js
         extra_stylesheets:
             - bundles/sonatapage/sonata-page.back.min.css
             - bundles/admin/css/colorpicker.css

@@ -106,7 +106,7 @@ class Stone
     {
         if (is_null($this->slug)) {
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->translate()->getName());
+            $this->slug = $slugify->slugify($this->translate('ru')->getName());
         }
     }
 

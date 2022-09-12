@@ -15,7 +15,9 @@ class StoneRepository extends EntityRepository
      */
     public function baseStoneQueryBuilder()
     {
-        $qb = $this->createQueryBuilder('s');
+        $qb = $this->createQueryBuilder('s')
+            ->leftJoin('s.translations', 'st')
+            ->addSelect('st');
         $qb
             ->where('s.isActive = 1')
             ->orderBy('s.id', 'DESC');
@@ -42,7 +44,7 @@ class StoneRepository extends EntityRepository
      */
     public function filterByLetter(QueryBuilder $qb, string $letter): QueryBuilder
     {
-        return $qb->andWhere("s.name LIKE :letter")->setParameter('letter', $letter.'%');
+        return $qb->andWhere("st.name LIKE :letter")->setParameter('letter', $letter.'%');
     }
 
     /**
@@ -52,8 +54,7 @@ class StoneRepository extends EntityRepository
     {
         $qb = $this->baseStoneQueryBuilder();
 
-        $qb ->leftJoin('s.translations', 'st')
-            ->addSelect('st');
+
 
         $qb->select($qb->expr()->substring('st.name', 1, 1))->distinct()->orderBy('st.name');
 

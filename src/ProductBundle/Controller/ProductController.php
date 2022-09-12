@@ -34,6 +34,7 @@ class ProductController extends Controller
     public function listAction(Request $request)
     {
         $slug = $request->get('slug');
+        $router = $this->get('router');
         $repo = $this->getDoctrine()->getManager()->getRepository(Category::class);
         $category = $repo->findOneBy(['slug' => $slug]);
         $breadcrumb = $this->get('app.breadcrumb');
@@ -48,6 +49,7 @@ class ProductController extends Controller
             'og' => [
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
+            'canonicalUrl' => $router->generate('product_list', ['slug' => $slug, 'page' => $request->get('page')], 0),
         ]);
 
         return $this->render('ProductBundle::product_list.html.twig', ['category' => $category]);

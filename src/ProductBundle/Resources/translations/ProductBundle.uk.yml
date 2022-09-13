@@ -70,6 +70,9 @@ product:
         created_at: Створено
         types:
             letters: Літери
+            inserts: Вставки
+            pendants: Підвіски
+            bracelets: Браслети
     buttons:
         link_add: Додати новий
     tab:

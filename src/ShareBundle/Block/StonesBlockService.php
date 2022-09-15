@@ -105,6 +105,8 @@ class StonesBlockService extends AbstractAdminBlockService
             ->getQuery()
             ->getResult();
 
+//        dump($stones);die;
+
         if ($blockContext->getSetting('show_letters')) {
             $letterStones = [];
             foreach ($repository->uniqLetterByStone() as $value) {

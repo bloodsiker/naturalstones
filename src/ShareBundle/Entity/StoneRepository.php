@@ -17,8 +17,7 @@ class StoneRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('s')
             ->leftJoin('s.translations', 'st')
-            ->addSelect('st');
-        $qb
+            ->addSelect('st')
             ->where('s.isActive = 1')
             ->orderBy('s.id', 'DESC');
 
@@ -53,8 +52,6 @@ class StoneRepository extends EntityRepository
     public function uniqLetterByStone()
     {
         $qb = $this->baseStoneQueryBuilder();
-
-
 
         $qb->select($qb->expr()->substring('st.name', 1, 1))->distinct()->orderBy('st.name');
 

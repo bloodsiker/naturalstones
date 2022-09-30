@@ -15,26 +15,27 @@
                 )
             }}
 
+            <button class="btn btn-search" type="button"><img src="{{ asset('bundles/app/images/search.png') }}" alt=""></button>
+
             {% if app.request.get('_route') != 'cart' %}
-                <button class="btn btn-search" type="button"><img src="{{ asset('bundles/app/images/search.png') }}" alt=""></button>
 
-{#                <div class="header-cart">#}
-{#                    {{#}
-{#                        sonata_block_render(#}
-{#                            { 'type': 'app.block.service.cart' },#}
-{#                            { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART_QUANTITY') }#}
-{#                        )#}
-{#                    }}#}
+                <div class="header-cart">
+                    {{
+                        sonata_block_render(
+                            { 'type': 'app.block.service.cart' },
+                            { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART_QUANTITY') }
+                        )
+                    }}
 
-{#                    <div class="header-cart-info">#}
-{#                        {{#}
-{#                            sonata_block_render(#}
-{#                                { 'type': 'app.block.service.cart' },#}
-{#                                { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART') }#}
-{#                            )#}
-{#                        }}#}
-{#                    </div>#}
-{#                </div>#}
+                    <div class="header-cart-info">
+                        {{
+                            sonata_block_render(
+                                { 'type': 'app.block.service.cart' },
+                                { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART') }
+                            )
+                        }}
+                    </div>
+                </div>
             {% endif %}
         </div>
     </div>

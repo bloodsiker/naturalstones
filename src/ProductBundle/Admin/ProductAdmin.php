@@ -133,8 +133,8 @@ class ProductAdmin extends Admin
                 'label' => 'product.fields.id',
             ])
             ->add('image', null, [
-                'label'     => 'product.fields.image',
-                'template'  => 'ProductBundle:Admin:list_fields.html.twig',
+                'label'    => 'product.fields.image',
+                'template' => 'ProductBundle:Admin:list_fields.html.twig',
             ])
             ->addIdentifier('name', null, [
                 'label' => 'product.fields.name',
@@ -145,32 +145,33 @@ class ProductAdmin extends Admin
             ])
             ->add('colours', null, [
                 'label' => 'product.fields.colours',
-                'template'  => 'ProductBundle:Admin:list_fields.html.twig',
+                'template' => 'ProductBundle:Admin:list_fields.html.twig',
             ])
             ->add('size', null, [
                 'label' => 'product.fields.size',
-                'template'  => 'ProductBundle:Admin:list_fields.html.twig',
+                'template' => 'ProductBundle:Admin:list_fields.html.twig',
             ])
             ->add('price', null, [
                 'label' => 'product.fields.price',
-                'template'  => 'ProductBundle:Admin:list_fields.html.twig',
+                'template' => 'ProductBundle:Admin:list_fields.html.twig',
             ])
             ->add('isActive', null, [
                 'label' => 'product.fields.is_active',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('isMainProduct', null, [
                 'label' => 'product.fields.is_main_product',
+                'editable' => true,
             ])
             ->add('orderNum', null, [
                 'label' => 'product.fields.order_num',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('_action', 'actions', [
                 'actions' => [
                     'preview' => ['template' => 'ProductBundle:CRUD:list__action_preview.html.twig'],
                     'edit' => [],
-                    'clone'   => ['template' => 'ProductBundle:CRUD:list__action_clone.html.twig'],
+                    'clone' => ['template' => 'ProductBundle:CRUD:list__action_clone.html.twig'],
                 ],
             ])
         ;

@@ -444,7 +444,6 @@ class ProductAdmin extends Admin
                     ->add('productGroup', IntegerType::class, [
                         'label' => 'product.fields.product_group',
                         'required' => false,
-                        'attr' => ['readonly' => true],
                     ])
                     ->add('updatedAt', DateTimePickerType::class, [
                         'label'     => 'product.fields.updated_at',

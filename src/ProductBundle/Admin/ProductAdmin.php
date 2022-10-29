@@ -188,6 +188,7 @@ class ProductAdmin extends Admin
             ])
             ->add('translations.name', null, [
                 'label' => 'product.fields.name',
+                'show_filter' => true,
             ])
             ->add('category', null, [
                 'label' => 'product.fields.category',

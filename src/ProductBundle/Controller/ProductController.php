@@ -195,8 +195,12 @@ class ProductController extends Controller
     {
         $repo = $this->getDoctrine()->getManager()->getRepository(Product::class);
         $product = $repo->find($request->get('id'));
-        if (!$product || !$product->getIsActive()) {
+        if (!$product) {
             throw $this->createNotFoundException(self::PRODUCT_404);
+        }
+
+        if (!$product->getIsActive()) {
+           return $this->redirectToRoute('product_list', ['slug' => $product->getCategory()->getSlug()]);
         }
 
         $sizes = $repo->productGroupQueryBuilder($product->getProductGroup())

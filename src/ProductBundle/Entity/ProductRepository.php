@@ -101,6 +101,11 @@ class ProductRepository extends EntityRepository
         return $qb->andWhere('p.discount != :discount')->setParameter('discount', 0);
     }
 
+    public function filterByRand(QueryBuilder $qb) : QueryBuilder
+    {
+        return $qb->addSelect('RAND() as HIDDEN rand')->orderBy('RAND()');
+    }
+
     public function filterByColour(QueryBuilder $qb, $colour) : QueryBuilder
     {
         return $qb->innerJoin('p.colours', 'colour', 'WITH', 'colour.id = :colour')

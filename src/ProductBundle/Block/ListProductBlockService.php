@@ -91,6 +91,7 @@ class ListProductBlockService extends AbstractAdminBlockService
             'stone'            => null,
             'who'              => null,
             'discount'         => false,
+            'random'           => false,
             'exclude_ids'      => null,
             'show_paginator'   => false,
             'ajax_paginator'   => false,
@@ -134,6 +135,10 @@ class ListProductBlockService extends AbstractAdminBlockService
                 ], ],
                 ['discount', CheckboxType::class, [
                     'label'     => 'product.block.fields.discount',
+                    'required'  => false,
+                ], ],
+                ['random', CheckboxType::class, [
+                    'label'     => 'product.block.fields.random',
                     'required'  => false,
                 ], ],
             ],
@@ -200,6 +205,10 @@ class ListProductBlockService extends AbstractAdminBlockService
 
         if ($blockContext->getSetting('discount')) {
             $repository->filterByDiscount($qb);
+        }
+
+        if ($blockContext->getSetting('random')) {
+            $repository->filterByRand($qb);
         }
 
         $maxPriceQb = $minPriceQb = clone $qb;

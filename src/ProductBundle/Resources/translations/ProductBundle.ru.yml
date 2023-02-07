@@ -93,6 +93,7 @@ product:
             stone: Камень
             discount: Товары со скидкой
             who: Для кого (женщин/мужчин)
+            random: Рандомные продаукты
 
 product_has_image:
     fields:

@@ -831,7 +831,12 @@ $(document).ready(function() {
 			midClick: true
 		});
 
-		Cookie.set('information_' + id, id, 30);
+		let informationIds = $('#informationModal').data('id').split(',');
+		$.each(informationIds, function( index, id ) {
+			Cookie.set('information_' + id, id, 30);
+		});
+
+
 	}
 
 	$('#btnInfo').on('click', function () {
@@ -873,11 +878,16 @@ $(document).ready(function() {
 
 	};
 
-	let id = $('#informationModal').data('id');
+	let informationId = $('#informationModal').data('id').split(',');
+	let countModalInformation = 0;
 
-	if (!Cookie.get('information_' + id)) {
-		setTimeout(openInformationPopup, 5000);
-	}
+	$.each(informationId, function( index, id ) {
+		if (!Cookie.get('information_' + id) && countModalInformation < 1) {
+			countModalInformation++;
+			setTimeout(openInformationPopup, 5000);
+		}
+	});
+
 
 	// if ($('.popup-open').length) {
 	// 	$('.popup-open').magnificPopup({

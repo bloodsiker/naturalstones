@@ -79,28 +79,34 @@ class InformationBlockService extends AbstractAdminBlockService
 
         $repository = $this->em->getRepository(Information::class);
 
-        $information = $repository->findOneBy(['isActive' => true], ['id' => 'ASC']);
+        $informations = $repository->findBy(['isActive' => true], ['id' => 'ASC']);
 
-        if ($information && $information->getStartedAt() && $information->getFinishedAt()) {
-            if ($information->getStartedAt()->getTimestamp() < $now && $information->getFinishedAt()->getTimestamp() > $now) {
-
-            } else {
-                $information = null;
-            }
-        } elseif ($information && $information->getStartedAt()) {
-            if ($information->getStartedAt()->getTimestamp() > $now) {
-                $information = null;
-            }
-        } elseif ($information && $information->getFinishedAt()) {
-            if ($information->getFinishedAt()->getTimestamp() < $now) {
-                $information = null;
+        $listInformations = [];
+        $ids = [];
+        foreach ($informations as $information) {
+            if ($information && $information->getStartedAt() && $information->getFinishedAt()) {
+                if ($information->getStartedAt()->getTimestamp() < $now && $information->getFinishedAt()->getTimestamp() > $now) {
+                    $listInformations[] = $information;
+                    $ids[] = $information->getId();
+                }
+            } elseif ($information && $information->getStartedAt()) {
+                if ($information->getStartedAt()->getTimestamp() < $now) {
+                    $listInformations[] = $information;
+                    $ids[] = $information->getId();
+                }
+            } elseif ($information && $information->getFinishedAt()) {
+                if ($information->getFinishedAt()->getTimestamp() > $now) {
+                    $listInformations[] = $information;
+                    $ids[] = $information->getId();
+                }
             }
         }
 
         return $this->renderResponse($blockContext->getTemplate(), [
-            'information' => $information,
-            'block'       => $block,
-            'settings'    => array_merge($blockContext->getSettings(), $block->getSettings()),
+            'informations' => $listInformations,
+            'ids'          => implode(',', $ids),
+            'block'        => $block,
+            'settings'     => array_merge($blockContext->getSettings(), $block->getSettings()),
         ], $response);
     }
 }

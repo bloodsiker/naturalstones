@@ -41,7 +41,7 @@ class CheckExpirationInformationCommand extends ContainerAwareCommand
 
         $informationList = $repository->createQueryBuilder('i')
             ->where('i.isActive = 1')
-            ->andWhere('i.finishedAt > :now')->setParameter('now', new \DateTime('now'))
+            ->andWhere('i.finishedAt < :now')->setParameter('now', new \DateTime('now'))
             ->getQuery()->getResult();
 
         foreach ($informationList as $information) {

@@ -367,10 +367,10 @@
                                             </td>
                                             <td>
                                                 {% for colour in product.colours %}
-                                                    <a href="{{ path('product_colour_list', { 'slug': colour.slug }) }}">
-                                                        <em style="color: {{ '#'~(colour.colour == 'ffffff' ? '000000' : colour.colour) }}">{{ colour.name }}</em>
+                                                    <a href="{{ path('product_colour_list', { 'slug': colour.slug }) }}" class="colours">
+                                                        <em style="background: {{ '#'~(colour.colour) }}"></em>
+                                                        {{ colour.name }}
                                                     </a>
-                                                    {{ loop.last ? '' : ' , ' }}
                                                 {% endfor %}
                                             </td>
                                         </tr>

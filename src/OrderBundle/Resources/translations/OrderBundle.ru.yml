@@ -32,6 +32,7 @@ order:
         address: Адрес
         items: Товары в заказе
         quantity: Количество
+        call_me: Перезвонить?
         created_at: Дата создания
         id: ID
         statuses:

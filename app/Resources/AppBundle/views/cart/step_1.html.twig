@@ -30,33 +30,44 @@
                 </div>
                 <div class="order-messengers">
                     <div class="note">{{ 'frontend.cart.messenger'|trans([], 'AppBundle') }}:</div>
-                    <ul class="messengers-list">
-                        {% set checked = infoCart.messenger is not defined %}
-                        <li>
-                            <label class="messengers-radio telegram">
-                                <input type="radio" name="messenger" value="telegram" {{ infoCart.messenger is defined and infoCart.messenger == 'telegram' or checked ? 'checked' : null }}>
-                                <span>
+
+                    <div style="display: flex; align-items: center;">
+                        <div class="call-me" style="margin-right: 15px; {% if messenger == 'instagram' %} display: none; {% endif %}">
+                            <label class="call-me-checkbox">
+                                <input type="checkbox" id="call-me" name="call_me" {{ infoCart.call_me is defined ? 'checked' : null }} value="1">
+                                <i></i>
+                                <span>{{ 'frontend.cart.call_me'|trans([], 'AppBundle') }}</span>
+                            </label>
+                        </div>
+
+                        <ul class="messengers-list">
+                            {% set checked = infoCart.messenger is not defined %}
+                            <li>
+                                <label class="messengers-radio telegram">
+                                    <input type="radio" name="messenger" value="telegram" {{ infoCart.messenger is defined and infoCart.messenger == 'telegram' or checked ? 'checked' : null }}>
+                                    <span>
                                     <img alt="" src="{{ asset('bundles/app/images/telegram.svg') }}">
                                 </span>
-                            </label>
-                        </li>
-                        <li>
-                            <label class="messengers-radio viber">
-                                <input type="radio" name="messenger" value="viber" {{ infoCart.messenger is defined and  infoCart.messenger == 'viber' ? 'checked' : null }}>
-                                <span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="messengers-radio viber">
+                                    <input type="radio" name="messenger" value="viber" {{ infoCart.messenger is defined and  infoCart.messenger == 'viber' ? 'checked' : null }}>
+                                    <span>
                                     <img alt="" src="{{ asset('bundles/app/images/viber.svg') }}">
                                 </span>
-                            </label>
-                        </li>
-                        <li>
-                            <label class="messengers-radio instagram">
-                                <input type="radio" name="messenger" value="instagram" {{ infoCart.messenger is defined and  infoCart.messenger == 'instagram' ? 'checked' : null }}>
-                                <span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="messengers-radio instagram">
+                                    <input type="radio" name="messenger" value="instagram" {{ infoCart.messenger is defined and  infoCart.messenger == 'instagram' ? 'checked' : null }}>
+                                    <span>
                                     <img src="{{ asset('bundles/app/images/inst.png') }}" width="39px" alt="instagram">
                                 </span>
-                            </label>
-                        </li>
-                    </ul>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="input-block">
                     <input type="text" name="name" placeholder="{{ 'frontend.cart.form.name'|trans([], 'AppBundle') }}" value="{{ infoCart.name is defined ? infoCart.name : null }}">

@@ -94,6 +94,13 @@ class Order
     protected $type;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    protected $callMe;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="text", nullable=true)
@@ -141,6 +148,7 @@ class Order
         $this->discountPromo = 0;
         $this->status = self::STATUS_NEW;
         $this->type = self::TYPE_ORDER_CART;
+        $this->callMe = false;
         $this->createdAt = new \DateTime('now');
 
         $this->orderHasItems = new ArrayCollection();
@@ -302,6 +310,30 @@ class Order
     public function setType(string $type = null)
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get callMe
+     *
+     * @return bool
+     */
+    public function getCallMe()
+    {
+        return $this->callMe;
+    }
+
+    /**
+     * Set callMe
+     *
+     * @param  bool  $callMe
+     *
+     * @return $this
+     */
+    public function setCallMe(bool $callMe)
+    {
+        $this->callMe = $callMe;
 
         return $this;
     }

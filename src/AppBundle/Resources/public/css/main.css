@@ -2527,6 +2527,55 @@ footer {
 .messengers-radio.viber span {
   background: #8A66AA;
 }
+.call-me-checkbox {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  cursor: pointer;
+  line-height: 1.2;
+  font-size: 16px;
+  text-align: left;
+  color: #000;
+}
+.call-me-checkbox i {
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  position: relative;
+  margin-right: 15px;
+  border-radius: 3px;
+  border: 1px solid #f5b9b9;
+  background: #fff;
+  display: block;
+  width: 21px;
+  height: 21px;
+  transition: all 0.3s ease-out;
+}
+.call-me-checkbox span {
+  padding-top: 1px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.call-me-checkbox input {
+  display: none !important;
+}
+.call-me-checkbox input:checked + i {
+  background: #fbc9c9;
+  border-color: #f5b9b9;
+}
+
+.call-me-checkbox input:checked + i:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 6px;
+  left: 4px;
+  width: 11px;
+  height: 8px;
+  background: url("../images/check.svg") center no-repeat;
+}
 
 .product-add-form {
   width: calc(100% - 326px);

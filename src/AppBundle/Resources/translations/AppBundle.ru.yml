@@ -62,6 +62,7 @@ frontend:
         you_info: Ваши данные
         check_info: Проверка данных и заказ
         messenger: Выберите в каком мессенджере вам ответить
+        call_me: Перезвонить?
         form:
             name: Имя*
             email: E-mail (по желанию)
@@ -77,6 +78,19 @@ frontend:
             client_instagram: Инстаграм покупателя
             client_name: Имя покупателя
             empty: Не указан
+
+    order:
+        thanks: Спасибо за заказ!
+        info: 'Информация о заказе:'
+        status: Статус заказа
+        client_name: Имя покупателя
+        client_phone: Телефон покупателя
+        client_delivery: Адрес доставки
+        comment: Комментарий
+        you_order: Ваш заказ
+        callback_text: В ближайшее время с Вами свяжутся наши менеджеры
+        order_sum: 'Сумма заказа:'
+        colour: 'Цвет:'
 
     quic_order:
         title: Нет времени оформлять?

@@ -432,6 +432,11 @@ $(document).ready(function() {
 		let instagram = $("input[name='instagram']").val();
 		let name = $("input[name='name']").val();
 		let messenger = $("input[name='messenger']:checked").val();
+		let callMe = false;
+
+		if ($("input[name='call_me']:checked").length) {
+			callMe = true;
+		}
 
 		$('.phone-error-message, .name-error-message').empty();
 		if (messenger === 'telegram' || messenger === 'viber') {
@@ -464,6 +469,11 @@ $(document).ready(function() {
 		let phone = $("input[name='phone']").val();
 		let instagram = $("input[name='instagram']").val();
 		let messenger = $("input[name='messenger']:checked").val();
+		let callMe = false;
+
+		if ($("input[name='call_me']:checked").length) {
+			callMe = true;
+		}
 
 		$('.error-message').empty();
 		if (messenger === 'telegram' || messenger === 'viber') {
@@ -487,7 +497,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: { phone: phone, messenger: messenger, instagram: instagram },
+			data: { phone: phone, messenger: messenger, instagram: instagram, call_me: callMe },
 			success: function (response) {
 				if (response.type === 'error') {
 					alert(response.message);
@@ -507,9 +517,14 @@ $(document).ready(function() {
 		let instagram = $("input[name='instagram']").val();
 		let product = $("input[name='product']").val();
 		let messenger = $("input[name='messenger']:checked").val();
+		let callMe = false;
 		let colourId = null;
 		let option = null;
 		let	option_value = null;
+
+		if ($("input[name='call_me']:checked").length) {
+			callMe = true;
+		}
 
 		if ($('.product-colours-check').length) {
 			const isChecked = !!$('input[type="radio"][name=colour_id]:checked').length;
@@ -553,10 +568,21 @@ $(document).ready(function() {
 			}
 		}
 
+		const dataRequest = {
+			phone: phone,
+			messenger: messenger,
+			product: product,
+			instagram: instagram,
+			colour_id: colourId,
+			option: option,
+			option_value: option_value,
+			call_me: callMe
+		}
+
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: { phone: phone, messenger: messenger, product: product, instagram: instagram, colour_id: colourId, option: option, option_value: option_value },
+			data: dataRequest,
 			success: function (response) {
 				if (response.type === 'error') {
 					alert(response.message);
@@ -579,11 +605,12 @@ $(document).ready(function() {
 		let address = $("input[name='address']").val();
 		let comment = $("input[name='comment']").val();
 		let messenger = $("input[name='messenger']").val();
+		let callMe = $("input[name='call_me']").val();
 
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: { name: name, email: email, phone: phone, address: address,  comment: comment, messenger: messenger, instagram: instagram },
+			data: { name: name, email: email, phone: phone, address: address,  comment: comment, messenger: messenger, instagram: instagram, call_me: callMe },
 			success: function (response) {
 				if (response.type === 'error') {
 					alert(response.message);
@@ -747,21 +774,26 @@ $(document).ready(function() {
 		$(".messengers-input input").removeClass().addClass('telegram');
 		$(".messengers-input input[name=phone]").show();
 		$(".messengers-input input[name=instagram]").val('').hide();
+		$('.call-me').show();
 	});
 	$(".messengers-radio.whatsapp").on('click', function () {
 		$(".messengers-input input").removeClass().addClass('whatsapp');
 		$(".messengers-input input[name=phone]").show();
 		$(".messengers-input input[name=instagram]").val('').hide();
+		$('.call-me').show();
 	});
 	$(".messengers-radio.viber").on('click', function () {
 		$(".messengers-input input").removeClass().addClass('viber');
 		$(".messengers-input input[name=phone]").show();
 		$(".messengers-input input[name=instagram]").val('').hide();
+		$('.call-me').show();
 	});
 	$(".messengers-radio.instagram").on('click', function () {
 		$(".messengers-input input").removeClass().addClass('instagram');
 		$(".messengers-input input[name=phone]").val('').hide();
 		$(".messengers-input input[name=instagram]").show();
+		$('.call-me').hide();
+		$('#call-me').attr('checked', false);
 	});
 
 	/*Табы характеристик*/

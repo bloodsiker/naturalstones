@@ -209,6 +209,7 @@ class Cart
         $colour = $request->get('colour_id');
         $option = $request->get('option');
         $optionValue = $request->get('option_value');
+        $callMe = $request->get('call_me') ?? false;
 
         $productObject = null;
         if ($request->get('product')) {
@@ -232,6 +233,7 @@ class Cart
         $order->setComment($comment);
         $order->setMessenger($messenger);
         $order->setType($orderType);
+        $order->setCallMe($callMe);
 
         if ($productObject) {
             $productObject->setFinalPrice($colourObject);

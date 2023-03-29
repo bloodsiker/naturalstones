@@ -173,6 +173,10 @@ class OrderAdmin extends Admin
                     ])
                 ->end()
                 ->with('form_group.additional', ['class' => 'col-md-4', 'label' => false])
+                    ->add('callMe', null, [
+                        'label' => 'order.fields.call_me',
+                        'required' => false,
+                    ])
                     ->add('status', ChoiceType::class, [
                         'label' => 'order.fields.status',
                         'choices' => $this->getStatuses(),

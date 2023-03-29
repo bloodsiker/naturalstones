@@ -38,6 +38,7 @@ final class Version20211289123851 extends AbstractMigration
         $order->addColumn('order_sum', 'decimal', ['precision' => 6, 'scale' => 2, 'notnull' => true, 'default' => 0.00]);
         $order->addColumn('status', 'smallint', ['unsigned' => true, 'notnull' => false, 'length' => 2]);
         $order->addColumn('type', 'smallint', ['unsigned' => true, 'notnull' => true, 'length' => 1]);
+        $order->addColumn('call_me', 'boolean', ['notnull' => true, 'default' => false]);
         $order->addColumn('created_at', 'datetime', ['notnull' => true]);
         $order->setPrimaryKey(['id']);
 

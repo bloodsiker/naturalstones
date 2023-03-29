@@ -1,29 +1,28 @@
 <section class="section" style="min-height: calc(var(--vh, 1vh) * 80);">
     <div class="container">
         <div class="form-content">
-            <h4>Спасибо за заказ!</h4>
+            <h4>{{ 'frontend.order.thanks'|trans([], 'AppBundle') }}</h4>
         </div>
         <div class="order-form">
             <div class="order-form-content">
                 <div class="order-check-block" >
+                    <h2><strong>{{ 'frontend.order.info'|trans([], 'AppBundle') }}</strong></h2>
+                    <br><br>
                     <ul class="order-check-list">
                         <li>
-                            <div class="name"><strong>Информация о заказе:</strong></div>
-                        </li>
-                        <li>
-                            <div class="name">Статус заказа</div>
-                            <div class="value">{{ order.getNameStatus(order.status)| trans({}, 'OrderBundle') }}</div>
+                            <div class="name">{{ 'frontend.order.status'|trans([], 'AppBundle') }}</div>
+                            <div class="value">{{ order.getNameStatus(order.status)|trans({}, 'OrderBundle') }}</div>
                         </li>
                         {% if order.fio %}
                             <li>
-                                <div class="name">Имя покупателя</div>
+                                <div class="name">{{ 'frontend.order.client_name'|trans([], 'AppBundle') }}</div>
                                 <div class="value">{{ order.fio }}</div>
                             </li>
                         {% endif %}
                         {% if order.phone %}
                             <li>
-                                <div class="name">Телефон покупателя</div>
-                                <div class="value">{{ order.phone  }}</div>
+                                <div class="name">{{ 'frontend.order.client_phone'|trans([], 'AppBundle') }}</div>
+                                <div class="value">{{ order.phone }}</div>
                             </li>
                         {% endif %}
                         {% if order.email %}
@@ -34,13 +33,13 @@
                         {% endif %}
                         {% if order.address %}
                             <li>
-                                <div class="name">Адрес доставки</div>
+                                <div class="name">{{ 'frontend.order.client_delivery'|trans([], 'AppBundle') }}</div>
                                 <div class="value">{{ order.address }}</div>
                             </li>
                         {% endif %}
                         {% if order.comment %}
                             <li>
-                                <div class="name">Комментарий</div>
+                                <div class="name">{{ 'frontend.order.comment'|trans([], 'AppBundle') }}</div>
                                 <div class="value">{{ order.comment }}</div>
                             </li>
                         {% endif %}
@@ -48,17 +47,17 @@
 
                     <br>
                     <br>
-                    <p>В ближайшее время с Вами свяжутся наши менеджеры</p>
+                    <p>{{ 'frontend.order.callback_text'|trans([], 'AppBundle') }}</p>
                 </div>
                 <div class="order-form-links">
-                    <a class="button white-button" href="{{ path('index') }}">Продолжить покупки</a>
+                    <a class="button white-button" href="{{ path('index') }}">{{ 'frontend.cart.continue'|trans([], 'AppBundle') }}</a>
                 </div>
             </div>
 
 
             <div class="order-form-total">
                 <div class="top-block">
-                    <h4>Ваш заказ</h4>
+                    <h4>{{ 'frontend.order.you_order'|trans([], 'AppBundle') }}</h4>
                 </div>
                 {% for oProduct in order.orderHasItems %}
                     <div class="order-form-items">
@@ -70,7 +69,7 @@
                                 <a href="{{ product_path(oProduct.product) }}">{{ oProduct.product.name }} {% if oProduct.product.size %}({{ oProduct.product.size }}){% endif %} </a>
                                 {% if oProduct.colour %}
                                     <br>
-                                    <span style="font-size: 14px;">Цвет: </span><i style="display: inline-block; padding: 2px 8px; border: 1px solid #E6E6E6; background: #{{ oProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ oProduct.colour.name }}</i>
+                                    <span style="font-size: 14px;">{{ 'frontend.order.colour'|trans([], 'AppBundle') }} </span><i style="display: inline-block; padding: 2px 8px; border: 1px solid #E6E6E6; background: #{{ oProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ oProduct.colour.name }}</i>
                                 {% endif %}
                                 {% if oProduct.options %}
                                     <br>
@@ -83,7 +82,7 @@
                 {% endfor %}
                 <ul class="order-form-calculate">
                     <li>
-                        <span>Сумма заказа:</span>
+                        <span>{{ 'frontend.order.order_sum'|trans([], 'AppBundle') }}</span>
                         <span class="total-price">{{ order.totalSum|number_format(2, ',') }} грн</span>
                     </li>
                 </ul>

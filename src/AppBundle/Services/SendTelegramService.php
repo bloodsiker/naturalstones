@@ -52,6 +52,11 @@ class SendTelegramService
         } else {
             $html .= "<b>Телефон:</b> " . $order->getPhone() . ' - ' . $order->getMessenger() . PHP_EOL;
         }
+
+        if ($order->getCallMe()) {
+            $html .= "<b>Перезвонить:</b> Да" . PHP_EOL;
+        }
+
         $html .= "<b>Сумма заказа:</b> " . number_format($order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
         foreach ($order->getOrderHasItems() as $orderItem) {
             $product = $orderItem->getProduct();
@@ -96,6 +101,9 @@ class SendTelegramService
             $html .= "<b>Ссылка на инстаграм:</b> " . $order->getInstagram() . PHP_EOL;
         } else {
             $html .= "<b>Телефон:</b> " . $order->getPhone() . ' - ' . $order->getMessenger() . PHP_EOL;
+        }
+        if ($order->getCallMe()) {
+            $html .= "<b>Перезвонить:</b> Да" . PHP_EOL;
         }
         if ($order->getEmail()) {
             $html .= "<b>Email:</b> " . $order->getEmail() . PHP_EOL;

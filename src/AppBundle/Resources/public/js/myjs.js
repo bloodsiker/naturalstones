@@ -863,8 +863,14 @@ $(document).ready(function() {
 			midClick: true
 		});
 
-		let informationIds = $('#informationModal').data('id').split(',');
-		$.each(informationIds, function( index, id ) {
+		let informationIds = $('#informationModal').data('id').toString();
+		let informatIds = [];
+		if (informationIds.includes(",")) {
+			informatIds = informationIds.split(',')
+		} else {
+			informatIds = [informationIds];
+		}
+		$.each(informatIds, function( index, id ) {
 			Cookie.set('information_' + id, id, 30);
 		});
 
@@ -910,10 +916,16 @@ $(document).ready(function() {
 
 	};
 
-	let informationId = $('#informationModal').data('id').split(',');
+	let informationId = $('#informationModal').data('id').toString();
+	let infoIds = [];
 	let countModalInformation = 0;
+	if (informationId.includes(",")) {
+		infoIds = informationId.split(',')
+	} else {
+		infoIds = [informationId];
+	}
 
-	$.each(informationId, function( index, id ) {
+	$.each(infoIds, function( index, id ) {
 		if (!Cookie.get('information_' + id) && countModalInformation < 1) {
 			countModalInformation++;
 			setTimeout(openInformationPopup, 5000);

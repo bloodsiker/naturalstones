@@ -16,6 +16,7 @@
 
         <div class="product-section-detail" itemtype="https://schema.org/Product" itemscope>
             <meta itemprop="name" content="{{ product.name }}" />
+            <meta itemprop="identifier" content="{{ product.id }}"/>
             <div class="product-gallery">
                 <div class="product-big-slider js-slick">
                     <div class="product-big-item" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
@@ -110,7 +111,7 @@
                                                 <li>
                                                     <div class="size-radiobox">
                                                         <a href="{{ product_path(productSize) }}">
-                                                            <i class="{% if productSize.id == product.id %}product-sizes-active{% endif %}">{{ productSize.size }}</i>
+                                                            <i class="{% if productSize.id == product.id %}product-sizes-active{% endif %}" itemprop="size">{{ productSize.size }}</i>
                                                         </a>
                                                     </div>
                                                 </li>
@@ -203,25 +204,16 @@
                         {% if product.productHasProduct|length %}
                             <div class="middle-block">
                                 <h5>{{ product.optionLabel ? product.optionLabel.name : 'frontend.product.included'|trans([], 'ProductBundle') }}</h5>
-{#                                <table class="table-product-set">#}
-{#                                    {% for prodSet in product.productHasProduct %}#}
-{#                                        <tr>#}
-{#                                            <td><a href="{{ product_path(prodSet.productSet) }}" class="link">{{ prodSet.productSet.name }}</a></td>#}
-{#                                            <td>{{ prodSet.productSet.size }}</td>#}
-{#                                            <td>{{ prodSet.quantity }} шт.</td>#}
-{#                                        </tr>#}
-{#                                    {% endfor %}#}
-{#                                </table>#}
 
                                 {% for prodSet in product.productHasProduct %}
-                                    <div class="relations_products">
-                                        <div class="relations_products_img">
+                                    <div class="relations_products" itemprop="isRelatedTo" itemtype="https://schema.org/Product" itemscope>
+                                        <div class="relations_products_img" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                                             <a href="{{ product_path(prodSet.productSet) }}">
-                                                <img class="lazyload" data-src="{{ asset(prodSet.productSet.image.path) }}" src="" alt="{{ prodSet.productSet.name }}">
+                                                <img class="lazyload" data-src="{{ asset(prodSet.productSet.image.path) }}" src="{{ prodSet.productSet.name }}" itemprop="contentUrl" alt="{{ prodSet.productSet.name }}">
                                             </a>
                                         </div>
                                         <div class="relations_products_desc">
-                                            <a href="{{ product_path(prodSet.productSet) }}" class="link">{{ prodSet.productSet.name }}</a> - <span>{{ prodSet.quantity }} шт.</span>
+                                            <a href="{{ product_path(prodSet.productSet) }}" class="link" itemprop="name">{{ prodSet.productSet.name }}</a> - <span>{{ prodSet.quantity }} шт.</span>
                                             {% if prodSet.productSet.size %}
                                                 <br><span>{{ prodSet.productSet.size }}</span>
                                             {% endif %}
@@ -338,7 +330,7 @@
                                 </a>
                             </div>
                             <div class="product-description-tab">
-                                <div class="product-desc-text">
+                                <div class="product-desc-text" itemprop="description">
                                     {{ product.description|shortcode|raw }}
                                 </div>
                             </div>
@@ -361,7 +353,7 @@
                                             </td>
                                             <td>
                                                 {% for metal in product.metals %}
-                                                    <em>{{ metal.name }}</em>
+                                                    <em itemprop="material">{{ metal.name }}</em>
                                                     {{ loop.last ? '' : ' , ' }}
                                                 {% endfor %}
                                             </td>
@@ -374,7 +366,7 @@
                                             </td>
                                             <td>
                                                 {% for colour in product.colours %}
-                                                    <a href="{{ path('product_colour_list', { 'slug': colour.slug }) }}" class="colours">
+                                                    <a href="{{ path('product_colour_list', { 'slug': colour.slug }) }}" class="colours" itemprop="color">
                                                         <em style="background: {{ '#'~(colour.colour) }}"></em>
                                                         {{ colour.name }}
                                                     </a>
@@ -403,7 +395,7 @@
                                             </td>
                                             <td>
                                                 {% for stone in product.stones %}
-                                                    <a href="{{ path('product_stone_list', { 'slug': stone.slug }) }}" class="link">
+                                                    <a href="{{ path('product_stone_list', { 'slug': stone.slug }) }}" class="link" itemprop="material">
                                                         <em>{{ stone.name }}</em>
                                                     </a>
                                                     {{ loop.last ? '' : ' , ' }}

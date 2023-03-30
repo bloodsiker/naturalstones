@@ -9,13 +9,19 @@
             )
         }}
 
-        <div class="footer-block">
+        <div class="footer-block-social">
+            <a href="https://www.youtube.com/channel/UCEwGrDpdrW8dArZmdBC-6rw" target="_blank" class="footer-social-icon footer-youtube">
+                <img src="{{ asset('bundles/app/images/youtube.svg') }}" alt="Naturalstones Jewerly">
+            </a>
             <a href="https://www.facebook.com/naturalstones.jewerly.ua" target="_blank" class="footer-social-icon footer-facebook">
                 <img src="{{ asset('bundles/app/images/facebook.png') }}" alt="Naturalstones Jewerly">
             </a>
             <a href="https://www.instagram.com/naturalstones.jewerly/" target="_blank" class="footer-social-icon footer-instagram">
                 <img src="{{ asset('bundles/app/images/instagram.svg') }}" alt="Naturalstones Jewerly">
             </a>
+        </div>
+
+        <div class="footer-block">
             <div class="inner">
                 <div class="title">{{ 'frontend.footer.schedule'|trans([], 'AppBundle') }} <span>{{ 'frontend.footer.schedule_start'|trans([], 'AppBundle') }} 00:00 до 23:59</span></div>
                 <div class="copyright">&copy; {{ 'now'|date('Y') }} {{ 'frontend.footer.copyright'|trans([], 'AppBundle') }}</div>

@@ -707,6 +707,15 @@ footer {
   -ms-flex-negative: 0;
   flex-shrink: 0;
 }
+.footer-block-social {
+  margin: 0 30px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
 
 .footer-block .title {
   font-size: 16px;
@@ -742,12 +751,24 @@ footer {
   flex-shrink: 0;
   transition: all 0.3s ease-out;
 }
+
+.footer-youtube {
+  background: #dc0808;
+  margin-right: 10px;
+}
+.footer-youtube img {
+  width: 36px;
+}
+.footer-youtube:hover {
+  background: #f34b4b;
+}
+
 .footer-facebook {
   background: #275296;
   margin-right: 10px;
 }
 .footer-facebook img {
-  width: 32px;
+  width: 36px;
 }
 .footer-facebook:hover {
   background: #4775bd;
@@ -756,6 +777,10 @@ footer {
 .footer-instagram {
   background: #f08383;
   margin-right: 63px;
+}
+
+.footer-instagram img {
+  width: 30px;
 }
 
 .footer-instagram:hover {
@@ -1774,6 +1799,15 @@ footer {
   bottom: 80px;
 }
 .video-facebook img {
+  width: 32px;
+}
+
+.video-youtube {
+  left: 20px;
+  bottom: 140px;
+}
+
+.video-youtube img {
   width: 32px;
 }
 
@@ -5180,6 +5214,11 @@ footer {
   .video-menu-toggle {
     left: 10px;
     top: 20px;
+  }
+
+  .video-youtube {
+    left: 10px;
+    bottom: 125px;
   }
 
   .video-facebook {

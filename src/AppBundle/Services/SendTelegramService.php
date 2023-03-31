@@ -289,7 +289,7 @@ class SendTelegramService
 
         $keyboard['inline_keyboard'] = [
             [
-                ['text'=> 'На сайті', 'url' => $link],
+                ['text'=> 'На сайті', 'url' => sprintf('%s%s', $link, '?source=telegram_channel')],
                 ['text'=> 'Instagram', 'url' => 'https://www.instagram.com/naturalstones.jewerly/']
             ]
         ];

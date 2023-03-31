@@ -186,7 +186,7 @@ class SendTelegramService
         }
         if ($product->getDiscount()) {
             $html .= "<b>Ціна:</b> " . "<s>" .$product->getPrice() . ' грн </s>'  . PHP_EOL;
-            $html .= "<b>Ціна зі скидкою:</b> " . $product->getDiscount() . ' грн'  . PHP_EOL;
+            $html .= "<b>Ціна зі знижкою:</b> " . $product->getDiscount() . ' грн'  . PHP_EOL;
         } else {
             $html .= "<b>Ціна:</b> " . $product->getPrice() . ' грн'  . PHP_EOL;
         }
@@ -217,7 +217,7 @@ class SendTelegramService
         }
         if ($product->getDiscount()) {
             $html .= "<b>Ціна:</b> " . "<s>" .$product->getPrice() . ' грн </s>'  . PHP_EOL;
-            $html .= "<b>Ціна зі скидкою:</b> " . $product->getDiscount() . ' грн'  . PHP_EOL;
+            $html .= "<b>Ціна зі знижкою:</b> " . $product->getDiscount() . ' грн'  . PHP_EOL;
         } else {
             $html .= "<b>Ціна:</b> " . $product->getPrice() . ' грн'  . PHP_EOL;
         }

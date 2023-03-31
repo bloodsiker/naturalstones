@@ -181,6 +181,9 @@ class SendTelegramService
     public function sendProductToChannel(Product $product)
     {
         $html = "<b>" . $product->translate('uk')->getName() . "</b>" . PHP_EOL;
+        if ($product->getSize()) {
+            $html .= "<b>Розмір:</b> " . $product->getSize()->getName() . PHP_EOL;
+        }
         if ($product->getDiscount()) {
             $html .= "<b>Ціна:</b> " . "<s>" .$product->getPrice() . ' грн </s>'  . PHP_EOL;
             $html .= "<b>Ціна зі скидкою:</b> " . $product->getDiscount() . ' грн'  . PHP_EOL;
@@ -208,6 +211,9 @@ class SendTelegramService
     public function editPhotoToChannel(Product $product)
     {
         $html = "<b>" . $product->translate('uk')->getName() . "</b>" . PHP_EOL;
+        if ($product->getSize()) {
+            $html .= "<b>Розмір:</b> " . $product->getSize()->getName() . PHP_EOL;
+        }
         if ($product->getDiscount()) {
             $html .= "<b>Ціна:</b> " . "<s>" .$product->getPrice() . ' грн </s>'  . PHP_EOL;
             $html .= "<b>Ціна зі скидкою:</b> " . $product->getDiscount() . ' грн'  . PHP_EOL;
@@ -312,7 +318,6 @@ class SendTelegramService
         if (isset($params['photo'])) {
             $photoObject = $params['photo'];
             $arrayQuery['photo'] = $domain . $photoObject->getPath();
-//            $arrayQuery['photo'] = curl_file_create($domain . $photoObject->getPath(), $photoObject->getMimeType(), basename($photoObject->getPath()));
         }
 
         if (isset($params['caption'])) {

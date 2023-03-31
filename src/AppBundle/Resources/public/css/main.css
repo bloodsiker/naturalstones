@@ -757,7 +757,7 @@ footer {
   margin-right: 10px;
 }
 .footer-telegram img {
-  width: 36px;
+  width: 30px;
 }
 .footer-telegram:hover {
   background: #55a0dc;
@@ -1828,13 +1828,17 @@ footer {
 }
 
 .video-telegram img {
-  width: 32px;
+  width: 26px;
 }
 
 .video-instagram {
   left: 20px;
   bottom: 20px;
 }
+.video-instagram img {
+  width: 26px;
+}
+
 .video-icon {
   background: rgba(0, 0, 0, 0.54);
   border-radius: 50%;
@@ -5243,7 +5247,7 @@ footer {
 
   .video-telegram {
     left: 10px;
-    bottom: 180px;
+    bottom: 200px;
   }
 
   .video-facebook {

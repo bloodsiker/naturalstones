@@ -285,7 +285,7 @@ class SendTelegramService
         /** @var Product $product */
         $product = $params['product'];
 
-        $link = $this->productRouterHelper->getProductPath($product, true);
+        $link = $this->productRouterHelper->getProductPath($product, true, $domain);
 
         $keyboard['inline_keyboard'] = [
             [

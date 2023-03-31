@@ -35,7 +35,7 @@ class ProductRouterHelper
      *
      * @return string|null
      */
-    public function getProductPath(Product $product, $needAbsolute = false)
+    public function getProductPath(Product $product, $needAbsolute = false, $domain = null)
     {
         $path = null;
         if ($product->getCategory()) {
@@ -53,7 +53,7 @@ class ProductRouterHelper
         return $path;
     }
 
-    public function getCategoryPath(Category $category, $needAbsolute = false)
+    public function getCategoryPath(Category $category, $needAbsolute = false, $domain = null)
     {
         $path = null;
         if ($category->getSlug()) {

@@ -82,7 +82,9 @@ class ProductAdmin extends Admin
         $this->entityManager->persist($object);
         $this->entityManager->flush();
 
-        return $this->sendTelegramService->sendProductToChannel($object);
+        if ($object->getIsActive() && $object->getIsMainProduct()) {
+            $this->sendTelegramService->sendProductToChannel($object);
+        }
     }
 
     /**
@@ -106,10 +108,12 @@ class ProductAdmin extends Admin
      */
     public function postUpdate($object)
     {
-        if ($object->getTelegramMessageId()) {
-            $this->sendTelegramService->editPhotoToChannel($object);
-        } else {
-            $this->sendTelegramService->sendProductToChannel($object);
+        if ($object->getIsActive() && $object->getIsMainProduct()) {
+            if ($object->getTelegramMessageId()) {
+                $this->sendTelegramService->editPhotoToChannel($object);
+            } else {
+                $this->sendTelegramService->sendProductToChannel($object);
+            }
         }
     }
 

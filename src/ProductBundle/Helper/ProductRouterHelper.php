@@ -46,7 +46,8 @@ class ProductRouterHelper
                     'id' => $product->getId(),
                     'slug' => $product->getSlug(),
                 ],
-                $needAbsolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
+                $needAbsolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH,
+                $domain
             );
         }
 
@@ -62,7 +63,8 @@ class ProductRouterHelper
                 [
                     'slug' => $category->getSlug(),
                 ],
-                $needAbsolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
+                $needAbsolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH,
+                $domain
             );
         }
 

@@ -39,6 +39,7 @@ framework:
     translator: { fallbacks: ['%locale%'] }
 #    translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
+    default_uri: '%full_domain%'
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
         strict_requirements: ~

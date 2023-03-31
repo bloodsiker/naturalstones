@@ -757,7 +757,7 @@ footer {
   margin-right: 10px;
 }
 .footer-telegram img {
-  width: 30px;
+  width: 28px;
 }
 .footer-telegram:hover {
   background: #55a0dc;
@@ -1824,7 +1824,7 @@ footer {
 
 .video-telegram {
   left: 20px;
-  bottom: 195px;
+  bottom: 200px;
 }
 
 .video-telegram img {
@@ -5247,7 +5247,7 @@ footer {
 
   .video-telegram {
     left: 10px;
-    bottom: 200px;
+    bottom: 180px;
   }
 
   .video-facebook {

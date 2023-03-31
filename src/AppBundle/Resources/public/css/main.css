@@ -708,7 +708,7 @@ footer {
   flex-shrink: 0;
 }
 .footer-block-social {
-  margin: 0 30px;
+  margin: 0 30px 20px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
@@ -750,6 +750,17 @@ footer {
   -ms-flex-negative: 0;
   flex-shrink: 0;
   transition: all 0.3s ease-out;
+}
+
+.footer-telegram {
+  background: #3da1f3;
+  margin-right: 10px;
+}
+.footer-telegram img {
+  width: 36px;
+}
+.footer-telegram:hover {
+  background: #55a0dc;
 }
 
 .footer-youtube {
@@ -1808,6 +1819,15 @@ footer {
 }
 
 .video-youtube img {
+  width: 32px;
+}
+
+.video-telegram {
+  left: 20px;
+  bottom: 195px;
+}
+
+.video-telegram img {
   width: 32px;
 }
 
@@ -5219,6 +5239,11 @@ footer {
   .video-youtube {
     left: 10px;
     bottom: 125px;
+  }
+
+  .video-telegram {
+    left: 10px;
+    bottom: 180px;
   }
 
   .video-facebook {

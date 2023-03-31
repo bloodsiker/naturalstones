@@ -42,7 +42,7 @@ framework:
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
         strict_requirements: ~
-        default_uri: '%full_domain%'
+#        default_uri: '%full_domain%'
     form: ~
     csrf_protection: ~
     validation: { enable_annotations: true }

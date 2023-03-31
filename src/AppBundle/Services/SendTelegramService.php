@@ -330,6 +330,8 @@ class SendTelegramService
             $arrayQuery['message_id'] = $params['message_id'];
         }
 
+        dump($arrayQuery);
+
         $ch = curl_init($telegramUrlApi);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $arrayQuery);

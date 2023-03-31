@@ -182,7 +182,7 @@ class SendTelegramService
     {
         $html = "<b>" . $product->translate('uk')->getName() . "</b>" . PHP_EOL;
         if ($product->getSize()) {
-            $html .= "<b>Розмір:</b> " . $product->getSize()->getName() . PHP_EOL;
+            $html .= "<b>Розмір:</b> " . $product->getSize() . PHP_EOL;
         }
         if ($product->getDiscount()) {
             $html .= "<b>Ціна:</b> " . "<s>" .$product->getPrice() . ' грн </s>'  . PHP_EOL;
@@ -212,7 +212,7 @@ class SendTelegramService
     {
         $html = "<b>" . $product->translate('uk')->getName() . "</b>" . PHP_EOL;
         if ($product->getSize()) {
-            $html .= "<b>Розмір:</b> " . $product->getSize()->getName() . PHP_EOL;
+            $html .= "<b>Розмір:</b> " . $product->getSize() . PHP_EOL;
         }
         if ($product->getDiscount()) {
             $html .= "<b>Ціна:</b> " . "<s>" .$product->getPrice() . ' грн </s>'  . PHP_EOL;

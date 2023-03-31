@@ -340,6 +340,8 @@ class SendTelegramService
 
         $result = json_decode($res, true);
 
+        dump($result);die;
+
         if (isset($result['ok']) && $result['ok'] == true) {
 
             $messageId = $result['result']['message_id'];

@@ -191,7 +191,8 @@ class SendTelegramService
             $html .= "<b>Ціна:</b> " . $product->getPrice() . ' грн'  . PHP_EOL;
         }
 
-        $link = $this->productRouterHelper->getCategoryPath($product->getCategory(), true);
+        $domain = $this->container->getParameter('full_domain');
+        $link = $domain . $this->productRouterHelper->getCategoryPath($product->getCategory());
         $category = sprintf("<a href='%s'>%s</a>", $link, $product->getCategory()->translate('uk')->getName());
         $html .= "<b>Категорія:</b> " . $category . PHP_EOL;
 
@@ -221,7 +222,8 @@ class SendTelegramService
             $html .= "<b>Ціна:</b> " . $product->getPrice() . ' грн'  . PHP_EOL;
         }
 
-        $link = $this->productRouterHelper->getCategoryPath($product->getCategory(), true);
+        $domain = $this->container->getParameter('full_domain');
+        $link = $domain . $this->productRouterHelper->getCategoryPath($product->getCategory());
         $category = sprintf("<a href='%s'>%s</a>", $link, $product->getCategory()->translate('uk')->getName());
         $html .= "<b>Категорія:</b> " . $category . PHP_EOL;
 
@@ -337,8 +339,6 @@ class SendTelegramService
         curl_close($ch);
 
         $result = json_decode($res, true);
-
-        dump($result);die;
 
         if (isset($result['ok']) && $result['ok'] == true) {
 

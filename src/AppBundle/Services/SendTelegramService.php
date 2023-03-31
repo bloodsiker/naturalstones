@@ -319,8 +319,8 @@ class SendTelegramService
 
         if (isset($params['photo'])) {
             $photoObject = $params['photo'];
-//            $arrayQuery['photo'] = $domain . $photoObject->getPath();
-            $arrayQuery['photo'] = fopen($domain . $photoObject->getPath(), 'r');
+            $arrayQuery['photo'] = $domain . $photoObject->getPath();
+//            $arrayQuery['photo'] = fopen($domain . $photoObject->getPath(), 'r');
         }
 
         if (isset($params['caption'])) {
@@ -331,7 +331,7 @@ class SendTelegramService
             $arrayQuery['message_id'] = $params['message_id'];
         }
 
-        dump($arrayQuery);
+//        dump($arrayQuery);
 
         $ch = curl_init($telegramUrlApi);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -343,7 +343,7 @@ class SendTelegramService
 
         $result = json_decode($res, true);
 
-        dump($result);die;
+//        dump($result);die;
 
         if (isset($result['ok']) && $result['ok'] == true) {
 

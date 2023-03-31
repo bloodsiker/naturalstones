@@ -319,7 +319,8 @@ class SendTelegramService
 
         if (isset($params['photo'])) {
             $photoObject = $params['photo'];
-            $arrayQuery['photo'] = $domain . $photoObject->getPath();
+//            $arrayQuery['photo'] = $domain . $photoObject->getPath();
+            $arrayQuery['photo'] = fopen($domain . $photoObject->getPath(), 'r');
         }
 
         if (isset($params['caption'])) {

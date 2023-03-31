@@ -11,6 +11,7 @@ services:
           - [ setTranslationDomain, [ProductBundle] ]
           - [ setTemplate, ['edit', 'ProductBundle:Admin:edit.html.twig'] ]
           - [ setEntityManager, ['@app.entity_manager'] ]
+          - [ setTelegramNotification, ['@app.send_telegram'] ]
 
     sonata.admin.product_has_image:
         class: ProductBundle\Admin\ProductHasImageAdmin

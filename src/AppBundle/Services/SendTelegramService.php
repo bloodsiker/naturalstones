@@ -8,7 +8,10 @@
 
 namespace AppBundle\Services;
 
+use Doctrine\ORM\EntityManager;
 use OrderBundle\Entity\Order;
+use ProductBundle\Entity\Product;
+use ProductBundle\Entity\ProductHasProduct;
 use ProductBundle\Helper\ProductRouterHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,13 +34,20 @@ class SendTelegramService
 
     private HttpClientInterface $client;
 
+    private EntityManager $entityManager;
+
     /**
      * SendTelegramService constructor.
      */
-    public function __construct(Router $router, ProductRouterHelper $productRouterHelper, HttpClientInterface $client)
-    {
+    public function __construct(
+        Router $router,
+        ProductRouterHelper $productRouterHelper,
+        EntityManager $entityManager,
+        HttpClientInterface $client
+    ) {
         $this->route = $router;
         $this->productRouterHelper = $productRouterHelper;
+        $this->entityManager = $entityManager;
         $this->client = $client;
     }
 
@@ -60,7 +70,7 @@ class SendTelegramService
         $html .= "<b>Сумма заказа:</b> " . number_format($order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
         foreach ($order->getOrderHasItems() as $orderItem) {
             $product = $orderItem->getProduct();
-            $link = $this->productRouterHelper->getGenrePath($product, true);
+            $link = $this->productRouterHelper->getProductPath($product, true);
             $html .= "--- " . sprintf("<a href='%s'>%s %s</a>", $link, $product->getName(), $product->getSize()  ) ." - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
             if ($orderItem->getColour()) {
                 $html .= " Цвет: " . $orderItem->getColour()->getName();
@@ -117,7 +127,7 @@ class SendTelegramService
         $html .= "<b>Сумма заказа:</b> " . number_format($order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
         foreach ($order->getOrderHasItems() as $orderItem) {
             $product = $orderItem->getProduct();
-            $link = $this->productRouterHelper->getGenrePath($product, true);
+            $link = $this->productRouterHelper->getProductPath($product, true);
             $html .= "---" . sprintf("<a href='%s'>%s %s</a>", $link, $product->getName(), $product->getSize()  ) ." - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
             if ($orderItem->getColour()) {
                 $html .= " Цвет: " . $orderItem->getColour()->getName();
@@ -168,6 +178,86 @@ class SendTelegramService
         return true;
     }
 
+    public function sendProductToChannel(Product $product)
+    {
+        $html = "<b>" . $product->translate('uk')->getName() . "</b>" . PHP_EOL;
+        if ($product->getDiscount()) {
+            $html .= "<b>Ціна:</b> " . "<s>" .$product->getPrice() . ' грн </s>'  . PHP_EOL;
+            $html .= "<b>Ціна зі скидкою:</b> " . $product->getDiscount() . ' грн'  . PHP_EOL;
+        } else {
+            $html .= "<b>Ціна:</b> " . $product->getPrice() . ' грн'  . PHP_EOL;
+        }
+
+        $link = $this->productRouterHelper->getCategoryPath($product->getCategory(), true);
+        $category = sprintf("<a href='%s'>%s</a>", $link, $product->getCategory()->translate('uk')->getName());
+        $html .= "<b>Категорія:</b> " . $category . PHP_EOL;
+
+        $this->sendTelegramPhoto("sendPhoto", [
+            'chat_id' => $this->container->getParameter('telegram_channel_chat_id'),
+            'product' => $product,
+            'caption' => urldecode($html),
+            'photo' => $product->getImage(),
+            'parse_mode' => 'html',
+            'has_spoiler' => true,
+            'disable_web_page_preview' => true,
+        ]);
+
+        return true;
+    }
+
+    public function editPhotoToChannel(Product $product)
+    {
+        $html = "<b>" . $product->translate('uk')->getName() . "</b>" . PHP_EOL;
+        if ($product->getDiscount()) {
+            $html .= "<b>Ціна:</b> " . "<s>" .$product->getPrice() . ' грн </s>'  . PHP_EOL;
+            $html .= "<b>Ціна зі скидкою:</b> " . $product->getDiscount() . ' грн'  . PHP_EOL;
+        } else {
+            $html .= "<b>Ціна:</b> " . $product->getPrice() . ' грн'  . PHP_EOL;
+        }
+
+        $link = $this->productRouterHelper->getCategoryPath($product->getCategory(), true);
+        $category = sprintf("<a href='%s'>%s</a>", $link, $product->getCategory()->translate('uk')->getName());
+        $html .= "<b>Категорія:</b> " . $category . PHP_EOL;
+
+        $this->sendTelegramPhoto("editMessageMedia", [
+            'chat_id' => $this->container->getParameter('telegram_channel_chat_id'),
+            'product' => $product,
+            'media' => $product->getImage(),
+            'edit_caption' => urldecode($html),
+            'message_id' => $product->getTelegramMessageId(),
+            'parse_mode' => 'html',
+            'has_spoiler' => true,
+            'disable_web_page_preview' => true,
+        ]);
+
+        return true;
+    }
+
+//    public function editCaptionPhotoToChannel(Product $product)
+//    {
+//        $html = "<b>" . $product->translate('uk')->getName() . "</b>" . PHP_EOL;
+//        if ($product->getDiscount()) {
+//            $html .= "<b>Ціна:</b> " . "<s>" .$product->getPrice() . ' грн </s>'  . PHP_EOL;
+//            $html .= "<b>Ціна зі скидкою:</b> " . $product->getDiscount() . ' грн'  . PHP_EOL;
+//        } else {
+//            $html .= "<b>Ціна:</b> " . $product->getPrice() . ' грн'  . PHP_EOL;
+//        }
+//        $link = $this->productRouterHelper->getCategoryPath($product->getCategory(), true);
+//        $category = sprintf("<a href='%s'>%s</a>", $link, $product->getCategory()->translate('uk')->getName());
+//        $html .= "<b>Категорія:</b> " . $category . PHP_EOL;
+//
+//        $this->sendTelegramPhoto("editMessageCaption", [
+//            'chat_id' => $this->container->getParameter('telegram_channel_chat_id'),
+//            'product' => $product,
+//            'caption' => urldecode($html),
+//            'message_id' => $product->getTelegramMessageId(),
+//            'parse_mode' => 'html',
+//            'disable_web_page_preview' => true,
+//        ]);
+//
+//        return true;
+//    }
+
 
     private function requestTelegram($method, $params = [])
     {
@@ -179,5 +269,78 @@ class SendTelegramService
         }
 
         return $this->client->request('GET', $url);
+    }
+
+    public function sendTelegramPhoto($method, $params = [])
+    {
+        $telegramUrlApi = $this->container->getParameter('telegram_api_url') . $this->container->getParameter('telegram_token') . '/' . $method;
+        $domain = $this->container->getParameter('full_domain');
+
+        /** @var Product $product */
+        $product = $params['product'];
+
+        $link = $this->productRouterHelper->getProductPath($product, true);
+
+        $keyboard['inline_keyboard'] = [
+            [
+                ['text'=> 'На сайті', 'url' => $link],
+                ['text'=> 'Instagram', 'url' => 'https://www.instagram.com/naturalstones.jewerly/']
+            ]
+        ];
+
+        $arrayQuery = [
+            'chat_id' => $params['chat_id'],
+            'reply_markup' => json_encode($keyboard),
+            'parse_mode' => 'html',
+            'disable_web_page_preview' => true,
+        ];
+
+        if (isset($params['media'])) {
+            $photoObject = $params['media'];
+
+            $photo = [
+                'type'=> 'photo',
+                'media' => $domain . $photoObject->getPath(),
+                'caption' => $params['edit_caption'],
+                'parse_mode' => 'html'
+            ];
+
+            $arrayQuery['media'] = json_encode($photo);
+
+        }
+
+        if (isset($params['photo'])) {
+            $photoObject = $params['photo'];
+            $arrayQuery['photo'] = $domain . $photoObject->getPath();
+//            $arrayQuery['photo'] = curl_file_create($domain . $photoObject->getPath(), $photoObject->getMimeType(), basename($photoObject->getPath()));
+        }
+
+        if (isset($params['caption'])) {
+            $arrayQuery['caption'] = $params['caption'];
+        }
+
+        if (isset($params['message_id'])) {
+            $arrayQuery['message_id'] = $params['message_id'];
+        }
+
+        $ch = curl_init($telegramUrlApi);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $arrayQuery);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        $res = curl_exec($ch);
+        curl_close($ch);
+
+        $result = json_decode($res, true);
+
+        if (isset($result['ok']) && $result['ok'] == true) {
+
+            $messageId = $result['result']['message_id'];
+
+            $product->setTelegramMessageId($messageId);
+
+            $this->entityManager->persist($product);
+            $this->entityManager->flush();
+        }
     }
 }

@@ -265,6 +265,13 @@ class Product
     protected $orderNum;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $telegramMessageId;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=false)
@@ -1028,6 +1035,26 @@ class Product
     public function getOrderNum()
     {
         return $this->orderNum;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTelegramMessageId()
+    {
+        return $this->telegramMessageId;
+    }
+
+    /**
+     * @param $telegramMessageId
+     *
+     * @return $this
+     */
+    public function setTelegramMessageId($telegramMessageId)
+    {
+        $this->telegramMessageId = $telegramMessageId;
+
+        return $this;
     }
 
     /**

@@ -96,6 +96,7 @@ final class Version20211003104307 extends AbstractMigration
         $product->addColumn('is_man', 'boolean', array('notnull' => true));
         $product->addColumn('is_woman', 'boolean', array('notnull' => true));
         $product->addColumn('is_main_product', 'boolean', array('notnull' => true));
+        $product->addColumn('telegram_id', 'integer', array('notnull' => true));
         $product->addColumn('created_at', 'datetime', array('notnull' => true));
         $product->addColumn('updated_at', 'datetime', array('notnull' => false));
         $product->setPrimaryKey(['id']);

@@ -2,6 +2,7 @@
 
 namespace ProductBundle\Helper;
 
+use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\Routing\RouterInterface;
 class ProductRouterHelper
 {
     const PRODUCT_ROUTE = 'product_view';
+    const CATEGORY_ROUTE = 'product_list';
 
     /**
      * @var RouterInterface
@@ -33,7 +35,7 @@ class ProductRouterHelper
      *
      * @return string|null
      */
-    public function getGenrePath(Product $product, $needAbsolute = false)
+    public function getProductPath(Product $product, $needAbsolute = false)
     {
         $path = null;
         if ($product->getCategory()) {
@@ -43,6 +45,22 @@ class ProductRouterHelper
                     'category' => $product->getCategory()->getSlug(),
                     'id' => $product->getId(),
                     'slug' => $product->getSlug(),
+                ],
+                $needAbsolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
+            );
+        }
+
+        return $path;
+    }
+
+    public function getCategoryPath(Category $category, $needAbsolute = false)
+    {
+        $path = null;
+        if ($category->getSlug()) {
+            $path = $this->router->generate(
+                self::CATEGORY_ROUTE,
+                [
+                    'slug' => $category->getSlug(),
                 ],
                 $needAbsolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
             );

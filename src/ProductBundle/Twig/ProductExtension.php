@@ -53,6 +53,6 @@ class ProductExtension extends \Twig_Extension
      */
     public function getProductPath(Product $product, $needAbsolute = false)
     {
-        return $this->productRouterHelper->getGenrePath($product, $needAbsolute);
+        return $this->productRouterHelper->getProductPath($product, $needAbsolute);
     }
 }

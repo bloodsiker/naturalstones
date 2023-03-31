@@ -28,5 +28,6 @@ parameters:
     #telegram_token: 1775602675:AAGAdfvAPT9_RDIWB9KnQn-ICOkA96VMgXg
     telegram_chat_id: -783371929
     #telegram_chat_id: 231715532
+    #telegram_channel_chat_id: '-1001563579706'
     domain: app.loc
     company_name: Naturalstones Jewerly

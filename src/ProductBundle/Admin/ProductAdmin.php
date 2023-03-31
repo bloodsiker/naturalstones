@@ -5,6 +5,7 @@ namespace ProductBundle\Admin;
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AdminBundle\Admin\BaseAdmin as Admin;
 use AdminBundle\Form\Type\TextCounterType;
+use AppBundle\Services\SendTelegramService;
 use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use Doctrine\ORM\EntityManager;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
@@ -40,6 +41,11 @@ class ProductAdmin extends Admin
     protected $entityManager;
 
     /**
+     * @var SendTelegramService $sendTelegramService
+     */
+    protected $sendTelegramService;
+
+    /**
      * @var array
      */
     protected $datagridValues = [
@@ -59,6 +65,11 @@ class ProductAdmin extends Admin
         return $this->entityManager = $entityManager;
     }
 
+    public function setTelegramNotification(SendTelegramService $sendTelegramService)
+    {
+        return $this->sendTelegramService = $sendTelegramService;
+    }
+
     /**
      * @param  object  $object
      *
@@ -70,6 +81,8 @@ class ProductAdmin extends Admin
         $object->setProductGroup($object->getId());
         $this->entityManager->persist($object);
         $this->entityManager->flush();
+
+        return $this->sendTelegramService->sendProductToChannel($object);
     }
 
     /**
@@ -86,6 +99,18 @@ class ProductAdmin extends Admin
             $this->entityManager->remove($product);
         }
         $this->entityManager->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postUpdate($object)
+    {
+        if ($object->getTelegramMessageId()) {
+            $this->sendTelegramService->editPhotoToChannel($object);
+        } else {
+            $this->sendTelegramService->sendProductToChannel($object);
+        }
     }
 
     /**

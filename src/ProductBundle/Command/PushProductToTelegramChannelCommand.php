@@ -47,7 +47,7 @@ class PushProductToTelegramChannelCommand extends ContainerAwareCommand
             ->andWhere('p.telegramMessageId IS NOT NULL')
             ->resetDQLPart('orderBy')
             ->orderBy('p.id', 'ASC')
-            ->setMaxResults(20)
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult();
 

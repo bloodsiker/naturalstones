@@ -43,14 +43,25 @@ class PushProductToTelegramChannelCommand extends ContainerAwareCommand
 
         $repository = $entityManager->getRepository(Product::class);
 
-        $products = $repository->baseProductQueryBuilder()
+        $qb = $this->createQueryBuilder('p');
+        $products = $qb
+            ->where('p.isActive = 1')
             ->andWhere('p.telegramMessageId IS NULL')
-            ->andWhere('p.isMainProduct = 0')
-            ->resetDQLPart('orderBy')
-            ->orderBy('p.id', 'ASC')
+            ->leftJoin('p.translations', 'pt')
+            ->addSelect('pt')
+            ->addOrderBy('p.id', 'ASC')
             ->setMaxResults(20)
             ->getQuery()
             ->getResult();
+
+//        $products = $repository->baseProductQueryBuilder()
+//            ->andWhere('p.telegramMessageId IS NULL')
+//            ->andWhere('p.isMainProduct = 0')
+//            ->resetDQLPart('orderBy')
+//            ->orderBy('p.id', 'ASC')
+//            ->setMaxResults(20)
+//            ->getQuery()
+//            ->getResult();
 
         foreach ($products as $product) {
             $telegramService->sendProductToChannel($product);

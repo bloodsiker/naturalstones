@@ -45,6 +45,7 @@ class PushProductToTelegramChannelCommand extends ContainerAwareCommand
 
         $products = $repository->baseProductQueryBuilder()
             ->andWhere('p.telegramMessageId IS NULL')
+            ->andWhere('p.isMainProduct = 0')
             ->resetDQLPart('orderBy')
             ->orderBy('p.id', 'ASC')
             ->setMaxResults(20)

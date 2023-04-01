@@ -213,7 +213,7 @@
                                             </a>
                                         </div>
                                         <div class="relations_products_desc">
-                                            <a href="{{ product_path(prodSet.productSet) }}" class="link" itemprop="name">{{ prodSet.productSet.name }}</a> - <span>{{ prodSet.quantity }} шт.</span>
+                                            <a href="{{ product_path(prodSet.productSet) }}" class="link" itemprop="name">{{ prodSet.productSet.name }} {{ prodSet.productSet.price }} грн</a> - <span>{{ prodSet.quantity }} шт.</span>
                                             {% if prodSet.productSet.size %}
                                                 <br><span>{{ prodSet.productSet.size }}</span>
                                             {% endif %}

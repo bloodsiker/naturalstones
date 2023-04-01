@@ -43,7 +43,7 @@ class PushProductToTelegramChannelCommand extends ContainerAwareCommand
 
         $repository = $entityManager->getRepository(Product::class);
 
-        $qb = $this->createQueryBuilder('p');
+        $qb = $repository->createQueryBuilder('p');
         $products = $qb
             ->where('p.isActive = 1')
             ->andWhere('p.telegramMessageId IS NULL')

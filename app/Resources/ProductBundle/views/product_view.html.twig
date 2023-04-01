@@ -213,7 +213,7 @@
                                             </a>
                                         </div>
                                         <div class="relations_products_desc">
-                                            <a href="{{ product_path(prodSet.productSet) }}" class="link" itemprop="name">{{ prodSet.productSet.name }}</a> {{ prodSet.productSet.price }} грн - <span>{{ prodSet.quantity }} шт.</span>
+                                            <a href="{{ product_path(prodSet.productSet) }}" class="link" itemprop="url"><span itemprop="name">{{ prodSet.productSet.name }}</span></a> {{ prodSet.productSet.price }} грн - <span>{{ prodSet.quantity }} шт.</span>
                                             {% if prodSet.productSet.size %}
                                                 <br><span>{{ prodSet.productSet.size }}</span>
                                             {% endif %}
@@ -366,9 +366,9 @@
                                             </td>
                                             <td>
                                                 {% for colour in product.colours %}
-                                                    <a href="{{ path('product_colour_list', { 'slug': colour.slug }) }}" class="colours" itemprop="color">
+                                                    <a href="{{ path('product_colour_list', { 'slug': colour.slug }) }}" class="colours">
                                                         <em style="background: {{ '#'~(colour.colour) }}"></em>
-                                                        {{ colour.name }}
+                                                        <span itemprop="color">{{ colour.name }}</span>
                                                     </a>
                                                 {% endfor %}
                                             </td>
@@ -395,8 +395,8 @@
                                             </td>
                                             <td>
                                                 {% for stone in product.stones %}
-                                                    <a href="{{ path('product_stone_list', { 'slug': stone.slug }) }}" class="link" itemprop="material">
-                                                        <em>{{ stone.name }}</em>
+                                                    <a href="{{ path('product_stone_list', { 'slug': stone.slug }) }}" class="link">
+                                                        <em itemprop="material">{{ stone.name }}</em>
                                                     </a>
                                                     {{ loop.last ? '' : ' , ' }}
                                                 {% endfor %}

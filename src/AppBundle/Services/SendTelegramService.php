@@ -11,7 +11,6 @@ namespace AppBundle\Services;
 use Doctrine\ORM\EntityManager;
 use OrderBundle\Entity\Order;
 use ProductBundle\Entity\Product;
-use ProductBundle\Entity\ProductHasProduct;
 use ProductBundle\Helper\ProductRouterHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,18 +26,12 @@ class SendTelegramService
 
     private $route;
 
-    /**
-     * @var ProductRouterHelper
-     */
-    private $productRouterHelper;
+    private ProductRouterHelper $productRouterHelper;
 
     private HttpClientInterface $client;
 
     private EntityManager $entityManager;
 
-    /**
-     * SendTelegramService constructor.
-     */
     public function __construct(
         Router $router,
         ProductRouterHelper $productRouterHelper,
@@ -331,8 +324,6 @@ class SendTelegramService
             $arrayQuery['message_id'] = $params['message_id'];
         }
 
-//        dump($arrayQuery);
-
         $ch = curl_init($telegramUrlApi);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $arrayQuery);
@@ -342,8 +333,6 @@ class SendTelegramService
         curl_close($ch);
 
         $result = json_decode($res, true);
-
-//        dump($result);die;
 
         if (isset($result['ok']) && $result['ok'] == true) {
 

@@ -1,0 +1,45 @@
+Action: Дії
+Wheel Spin List: Список діапазону цін
+Wheel Spin Create: Додати діапазон цін
+
+form_group:
+    basic: Основні
+    additional: Додаткові
+
+group:
+    wheel_spin: Колесо фортуни
+    wheel_spin_editor: Діапазон цін
+    wheel_spin_option_editor: Варіанти призів
+
+wheel_spin:
+    fields:
+        min_sum: Мінімальна сума
+        max_sum: Максимальна сума
+        is_active: Активно
+        prizes: Призи
+        id: ID
+
+wheel_spin_option:
+    fields:
+        title: Назва приза
+        product: Продукт
+        image: Зображення
+        is_active: Активно
+        id: ID
+
+wheel_spin_has_option:
+    fields:
+        order_num: ''
+        option: Приз
+        colour: Колір
+        degrees: Градуси сектора
+        label: Нумерація
+        valuation: Цінність
+        percent: Шанс виграшу %
+        id: ID
+
+frontend:
+    title_1: Коли замовлення буде оплачене, ви можете спробувати колесо фортуни
+    title_2: Ви уже спробували свою удачу і крутили колесо фортуни, ваш подарунок підсвічено в таблиці призів
+    title_3: Ваше замовлення оплачене, ви можете спробувати колесо фортуни
+    prizes: Можливі призи

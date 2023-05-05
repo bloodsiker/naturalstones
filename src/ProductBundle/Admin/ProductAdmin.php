@@ -35,6 +35,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 class ProductAdmin extends Admin
 {
     use FixAdminFormTranslationDomainTrait;
+
     /**
      * @var EntityManager $entityManager
      */
@@ -556,6 +557,22 @@ class ProductAdmin extends Admin
                         'sortable' => 'orderNum',
                         'link_parameters' => ['context' => $context],
                         'admin_code' => 'sonata.admin.product_has_product',
+                    ])
+                ->end()
+            ->end()
+            ->with('product.tab.product_video', ['tab' => true])
+                ->with('form_group.product_video', ['class' => 'col-md-12', 'label' => null])
+                    ->add('productHasVideo', CollectionType::class, [
+                        'label' => 'product.fields.product_video',
+                        'required' => false,
+                        'constraints' => new Valid(),
+                        'by_reference' => false,
+                    ], [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                        'sortable' => 'orderNum',
+                        'link_parameters' => ['context' => $context],
+                        'admin_code' => 'sonata.admin.product_has_video',
                     ])
                 ->end()
             ->end()

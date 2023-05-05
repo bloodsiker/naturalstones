@@ -22,6 +22,30 @@
             }
         </script>
     </span>
+{% elseif object is mediainstanceof('\\MediaBundle\\Entity\\MediaVideo') and object.thumb %}
+    {% set preview_container_id = 'video_preview_'~random() %}
+    <span class="inner-field-short-description" id="{{ preview_container_id }}">
+        {% if object and admin.hasRoute('edit') and admin.hasAccess('edit') %}
+            <a href="{{ admin.generateObjectUrl('edit', object, link_parameters) }}" target="_blank">{{ description }}</a>
+        {% else %}
+            {{ description }}
+        {% endif %}
+
+        {#{% set imagePreviewPath = object.path|imagine_filter('admin_preview_220x124') %}#}
+        {% set videoPreviewPath = object.thumb %}
+        <script>
+            let {{ preview_container_id }} = jQuery('#{{ preview_container_id }}').parent().parent().find('img:first');
+            if ({{ preview_container_id }}.length) {
+                {{ preview_container_id }}.attr('src', '{{ videoPreviewPath~'?r='~random() }}');
+            } else {
+                jQuery('#{{ preview_container_id }}').parent().before(
+                    '<div class="video-field-short-description">' +
+                    '<img src="{{ videoPreviewPath~'?r='~random() }}" width="150px">' +
+                    '</div>'
+                );
+            }
+        </script>
+    </span>
 {% elseif object is mediainstanceof('\\ShareBundle\\Entity\\Colour') %}
 
     {% set colour_container_id = 'colour_preview_'~random() %}

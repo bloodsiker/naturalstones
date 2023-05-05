@@ -4,6 +4,7 @@ namespace OrderBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use WheelSpinBundle\Entity\WheelSpinOption;
 
 /**
  * Class Order
@@ -122,11 +123,40 @@ class Order
     protected $status;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=100, nullable=false)
+     */
+    protected $secret;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    protected $isSpin;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=false)
      */
     protected $createdAt;
+
+    /**
+     * @var WheelSpinOption
+     *
+     * @ORM\ManyToOne(targetEntity="WheelSpinBundle\Entity\WheelSpinOption", fetch="EAGER")
+     * @ORM\JoinColumn(name="wheel_spin_option_id", referencedColumnName="id", nullable=true)
+     */
+    protected $wheelSpinOption;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $spinPrize;
 
     /**
      * @var ArrayCollection
@@ -143,6 +173,7 @@ class Order
      */
     public function __construct()
     {
+        $this->secret = sha1(time());
         $this->totalSum = 0;
         $this->orderSum = 0;
         $this->discountPromo = 0;
@@ -172,26 +203,6 @@ class Order
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get status
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Set status
-     *
-     * @return $this
-     */
-    public function setStatus($status = null)
-    {
-        $this->status = $status;
-
-        return $this;
     }
 
     /**
@@ -387,6 +398,66 @@ class Order
     }
 
     /**
+     * Get status
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set status
+     *
+     * @return $this
+     */
+    public function setStatus($status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecret()
+    {
+        return $this->secret;
+    }
+
+    /**
+     * @param  string  $secret
+     *
+     * @return $this
+     */
+    public function setSecret(string  $secret)
+    {
+        $this->secret = $secret;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsSpin(): bool
+    {
+        return $this->isSpin;
+    }
+
+    /**
+     * @param  bool  $isSpin
+     *
+     * @return $this
+     */
+    public function setIsSpin(bool $isSpin)
+    {
+        $this->isSpin = $isSpin;
+
+        return $this;
+    }
+
+    /**
      * Get messenger
      *
      * @return string
@@ -504,6 +575,30 @@ class Order
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    public function getWheelSpinOption()
+    {
+        return $this->wheelSpinOption;
+    }
+
+    public function setWheelSpinOption(WheelSpinOption $wheelSpinOption = null)
+    {
+        $this->wheelSpinOption = $wheelSpinOption;
+
+        return $this;
+    }
+
+    public function getSpinPrize()
+    {
+        return $this->spinPrize;
+    }
+
+    public function setSpinPrize(string $spinPrize = null)
+    {
+        $this->spinPrize = $spinPrize;
+
+        return $this;
     }
 
     /**

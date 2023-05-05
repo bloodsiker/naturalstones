@@ -22,7 +22,7 @@ services:
         class: "\\ProductBundle\\Entity\\ProductRepository"
         parent: product.repository.abstract
         arguments:
-            - 'ArticleBundle:Article'
+            - 'ProductBundle:Product'
         calls:
             -   method: setLocale
                 arguments: [ "@=service('request_stack').getCurrentRequest() ? service('request_stack').getCurrentRequest().getLocale() : null" ]

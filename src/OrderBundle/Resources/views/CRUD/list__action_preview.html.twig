@@ -1,0 +1,12 @@
+{% set url = null %}
+{% set app_router = admin.configurationPool.container.get('router') %}
+{% if object is instanceof('OrderBundle\\Entity\\Order') %}
+    {% set url = path('success_order', {'secret': object.secret}) %}
+{% endif %}
+
+{% if admin.isGranted('VIEW', object) and url %}
+    <a href="{{ url }}" class="btn btn-sm btn-default" title="{{ 'actions.btn.preview'|trans({}, 'SonataAdminBundle') }}" target="_blank">
+        <i class="glyphicon glyphicon-eye-open"></i>
+        {{ 'actions.btn.on_site'|trans({}, 'SonataAdminBundle') }}
+    </a>
+{% endif %}

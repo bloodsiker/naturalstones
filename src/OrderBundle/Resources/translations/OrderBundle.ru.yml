@@ -33,7 +33,10 @@ order:
         items: Товары в заказе
         quantity: Количество
         call_me: Перезвонить?
+        is_spin: Фортуна
         created_at: Дата создания
+        wheel_spin_option: Выиграш
+        spin_prize: Текстовое описание
         id: ID
         statuses:
             new: Новый заказ

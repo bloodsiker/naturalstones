@@ -7,9 +7,7 @@ use ProductBundle\Entity\Product;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * Class ProductRouterHelper
- */
+
 class ProductRouterHelper
 {
     const PRODUCT_ROUTE = 'product_view';
@@ -20,10 +18,6 @@ class ProductRouterHelper
      */
     private $router;
 
-    /**
-     * ArticleExtension constructor.
-     * @param RouterInterface $router
-     */
     public function __construct(RouterInterface $router)
     {
         $this->router = $router;
@@ -32,6 +26,7 @@ class ProductRouterHelper
     /**
      * @param  Product  $product
      * @param  false  $needAbsolute
+     * @param  null  $domain
      *
      * @return string|null
      */

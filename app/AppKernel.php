@@ -94,6 +94,7 @@ class AppKernel extends Kernel
 //            new QuizBundle\QuizBundle(),
             new MainImageBundle\MainImageBundle(),
             new InformationBundle\InformationBundle(),
+            new WheelSpinBundle\WheelSpinBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -3,6 +3,8 @@ Media Image List : Список изображений
 Media Image Create: Добавить изображение
 Media File List: Список файлов
 Media File Create: Добавить файл
+Media Video List: Список видео
+Media Video Create: Добавить видео
 
 form_group:
     basic: Основные
@@ -12,6 +14,7 @@ group:
     media: Медиа
     media_file_editor: Файлы
     media_image_editor: Изображения
+    media_video_editor: Видео
 
 media:
     fields:
@@ -19,6 +22,8 @@ media:
         resolution: Размеры
         description: Описание
         file: Файл
+        path: Ссылка на youtube
+        thumb: Миниатюра
         mime_type: Mime-type
         size: Размер
         width: Ширина

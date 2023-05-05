@@ -220,6 +220,16 @@ class Product
     /**
      * @var ArrayCollection
      *
+     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasVideo",
+     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"orderNum" = "ASC"})
+     */
+    protected $productHasVideo;
+
+    /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasProduct",
      *     mappedBy="product", cascade={"all"}, orphanRemoval=true
      * )
@@ -314,6 +324,7 @@ class Product
         $this->tags              = new ArrayCollection();
         $this->stones            = new ArrayCollection();
         $this->productHasImage   = new ArrayCollection();
+        $this->productHasVideo   = new ArrayCollection();
         $this->productHasProduct = new ArrayCollection();
         $this->productHasOption       = new ArrayCollection();
         $this->productHasOptionMetal  = new ArrayCollection();
@@ -1092,6 +1103,43 @@ class Product
     public function getProductHasImage()
     {
         return $this->productHasImage;
+    }
+
+    /**
+     * Add ProductHasVideo.
+     *
+     * @param \ProductBundle\Entity\ProductHasVideo $productHasVideo
+     *
+     * @return Product
+     */
+    public function addProductHasVideo(\ProductBundle\Entity\ProductHasVideo $productHasVideo)
+    {
+        $productHasVideo->setProduct($this);
+        $this->productHasVideo[] = $productHasVideo;
+
+        return $this;
+    }
+
+    /**
+     * Remove ProductHasVideo.
+     *
+     * @param \ProductBundle\Entity\ProductHasVideo $productHasVideo
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductHasVideo(\ProductBundle\Entity\ProductHasVideo $productHasVideo)
+    {
+        return $this->productHasVideo->removeElement($productHasVideo);
+    }
+
+    /**
+     * Get ProductHasVideo.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProductHasVideo()
+    {
+        return $this->productHasVideo;
     }
 
     /**

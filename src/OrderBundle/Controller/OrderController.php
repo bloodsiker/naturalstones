@@ -59,7 +59,7 @@ class OrderController extends Controller
 
         return new JsonResponse([
             'type' => 'success',
-            'url' => $router->generate('success_order', ['hash' => $encrypt->stringEncrypt($order->getId())], Router::ABSOLUTE_URL)
+            'url' => $router->generate('success_order', ['secret' => $order->getSecret()], Router::ABSOLUTE_URL)
         ]);
     }
 
@@ -96,7 +96,7 @@ class OrderController extends Controller
 
         return new JsonResponse([
             'type' => 'success',
-            'url' => $router->generate('success_order', ['hash' => $encrypt->stringEncrypt($order->getId())], Router::ABSOLUTE_URL)
+            'url' => $router->generate('success_order', ['secret' => $order->getSecret()], Router::ABSOLUTE_URL)
         ]);
     }
 
@@ -118,7 +118,7 @@ class OrderController extends Controller
         }
 
         $router = $this->get('router');
-        $encrypt = $this->get('app.helper.encrypt');
+//        $encrypt = $this->get('app.helper.encrypt');
         $cartService = $this->get('app.cart');
         $telegramService = $this->get('app.send_telegram');
         $cart = $cartService->getProductsInfo();
@@ -134,17 +134,17 @@ class OrderController extends Controller
 
         return new JsonResponse([
             'type' => 'success',
-            'url' => $router->generate('success_order', ['hash' => $encrypt->stringEncrypt($order->getId())], Router::ABSOLUTE_URL)
+            'url' => $router->generate('success_order', ['secret' => $order->getSecret()], Router::ABSOLUTE_URL)
         ]);
     }
 
     public function successAction(Request $request)
     {
-        $hash = $request->get('hash');
-        $idOrder = $this->get('app.helper.encrypt')->stringDecrypt($hash);
+        $secret = $request->get('secret');
+//        $idOrder = $this->get('app.helper.encrypt')->stringDecrypt($hash);
         $em = $this->get('doctrine.orm.entity_manager');
         $repo = $em->getRepository(Order::class);
-        $order = $repo->find((int) $idOrder);
+        $order = $repo->findOneBy(['secret' => $secret]);
         if (!$order) {
             throw $this->createNotFoundException(self::ORDER_404);
         }

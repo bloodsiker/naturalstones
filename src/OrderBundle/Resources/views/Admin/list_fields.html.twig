@@ -1,0 +1,15 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% if object is instanceof('\\OrderBundle\\Entity\\Order') %}
+        {% if field_description.name == 'fio' %}
+            <p style="white-space: nowrap">
+                <span class="text-muted info" style="font-size: 12px;">
+                     {{ 'order.fields.fio'|trans({}, 'OrderBundle') }}: <b>{{ object.fio }}</b><br/>
+                     {{ 'order.fields.phone'|trans({}, 'OrderBundle') }}: <b>{{ object.phone }}</b><br/>
+                     {{ 'order.fields.email'|trans({}, 'OrderBundle') }}: <b>{{ object.email }}</b><br/>
+                </span>
+            </p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

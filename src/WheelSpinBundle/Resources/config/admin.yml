@@ -1,0 +1,34 @@
+services:
+    wheel_spin.admin.wheel_spin:
+        class: WheelSpinBundle\Admin\WheelSpinAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "group.wheel_spin", label: "group.wheel_spin_editor" }
+        arguments:
+          - ~
+          - WheelSpinBundle\Entity\WheelSpin
+          - ~
+        calls:
+          - [ setTranslationDomain, [WheelSpinBundle] ]
+          - [ setEntityManager, ['@app.entity_manager'] ]
+
+    wheel_spin.admin.wheel_spin_option:
+        class: WheelSpinBundle\Admin\WheelSpinOptionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.wheel_spin", label: "group.wheel_spin_option_editor" }
+        arguments:
+            - ~
+            - WheelSpinBundle\Entity\WheelSpinOption
+            - ~
+        calls:
+            - [ setTranslationDomain, [ WheelSpinBundle ] ]
+
+    wheel_spin.admin.wheel_spin_has_option:
+        class: WheelSpinBundle\Admin\WheelSpinHasOptionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.wheel_spin", label: "group.wheel_spin_has_option_editor", show_in_dashboard: false }
+        arguments:
+            - ~
+            - WheelSpinBundle\Entity\WheelSpinHasOption
+            - ~
+        calls:
+            - [ setTranslationDomain, [ WheelSpinBundle ] ]

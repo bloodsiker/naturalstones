@@ -1,0 +1,45 @@
+Action: Действия
+Wheel Spin List: Список диапазона цен
+Wheel Spin Create: Добавить диапазон цен
+
+form_group:
+    basic: Основные
+    additional: Дополнительные
+
+group:
+    wheel_spin: Колесо фортуны
+    wheel_spin_editor: Диапазон цен
+    wheel_spin_option_editor: Варианты призов
+
+wheel_spin:
+    fields:
+        min_sum: Минимальная сумма
+        max_sum: Максимальная сумма
+        is_active: Активный
+        prizes: Призы
+        id: ID
+
+wheel_spin_option:
+    fields:
+        title: Название приза
+        product: Продукт
+        image: Изображение
+        is_active: Активный
+        id: ID
+
+wheel_spin_has_option:
+    fields:
+        order_num: ''
+        option: Приз
+        colour: Цвет
+        degrees: Градусы сектора
+        label: Нумерация
+        valuation: Ценность
+        percent: Шанс выигрыша %
+        id: ID
+
+frontend:
+    title_1: Когда заказ будет оплачен, вы можете попробовать колесо удачи
+    title_2: Вы уже попробовали свою удачу и крутили колесо удачи, ваш подарок подсвечен в таблице призов
+    title_3: Ваш заказ оплачен, вы можете попробовать колесо удачи
+    prizes: Возможные призы

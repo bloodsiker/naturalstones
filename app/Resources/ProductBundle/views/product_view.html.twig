@@ -315,6 +315,11 @@
                         <li>
                             <a href="#prod-desc-3"><img src="{{ asset('bundles/app/images/list.svg') }}" alt="">{{ 'frontend.product.tab.info'|trans([], 'ProductBundle') }}</a>
                         </li>
+                        {% if product.productHasVideo|length %}
+                            <li>
+                                <a href="#prod-desc-4"><img src="{{ asset('bundles/app/images/video.svg') }}" alt="">{{ 'frontend.product.tab.video'|trans([], 'ProductBundle') }}</a>
+                            </li>
+                        {% endif %}
                         <li>
                             <a href="#prod-desc-1"><img src="{{ asset('bundles/app/images/delivery.svg') }}" alt="">{{ 'frontend.product.tab.delivery'|trans([], 'ProductBundle') }}</a>
                         </li>
@@ -407,6 +412,32 @@
                             </div>
                         </div>
                         <!-- Таб-3 -->
+                        {% if product.productHasVideo|length %}
+                            <div id="prod-desc-4" class="product-description-content">
+                                <div class="product-description-trigger">
+                                    <a href="">
+                                        <span class="pic"><img src="{{ asset('bundles/app/images/video.svg') }}" alt=""></span>
+                                        {{ 'frontend.product.tab.video'|trans([], 'ProductBundle') }}
+                                        <img src="{{ asset('bundles/app/images/select-arrow.svg') }}" class="arrow" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-description-tab">
+                                    <div class="product-desc-text">
+                                        {% for video in product.productHasVideo %}
+                                            <div class="responsive-iframe">
+                                                <iframe src="{{ video.video.path|video_url }}"
+                                                        frameborder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                        allowfullscreen
+                                                        title="{{ video.video.description }}">
+                                                </iframe>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <!-- Таб-4 -->
                         <div id="prod-desc-1" class="product-description-content">
                             <div class="product-description-trigger">
                                 <a href="">

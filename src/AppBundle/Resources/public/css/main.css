@@ -295,6 +295,21 @@ button.button {
   line-height: 1;
 }
 
+.responsive-iframe {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  margin: 50px 0;
+  overflow: hidden;
+}
+.responsive-iframe iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .simple-section {
   padding: 30px 0 19px;
   min-height: calc(100vh - 170px);
@@ -960,6 +975,71 @@ footer {
 .no-result div {
   margin-top: 1.25rem;
 }
+
+/**** Wheel Spin  *****/
+.wheel_box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.wheel_container {
+  width: 750px!important;
+}
+.wheel_title {
+
+}
+#spinWheel {
+  max-height: inherit;
+  width: inherit;
+  transform: rotate(270deg);
+}
+#spin_btn {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  height: 26%;
+  width: 26%;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 0;
+  background: linear-gradient(to right, #fc4a1a, #f7b733);
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  letter-spacing: 0.1rem;
+  font-weight: 600;
+}
+#spinnerArrow {
+  position: absolute;
+  top: -8%;
+  left: 43.1%;
+  font-size: 4rem;
+  color: rgb(45, 252, 26);
+  transform: rotate(-90deg);
+}
+#text {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 1.5rem;
+  color: rgb(255, 215, 0);
+  font-weight: 500;
+}
+.wheel_prize_container {
+  padding: 30px;
+}
+.wheel_prize {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+.wheel_prize.active {
+  background: #ffff01;
+  border-color: #e4e408;
+}
+/**** End Wheel Spin  *****/
 
 /* catalog-section ============================================*/
 
@@ -6115,6 +6195,18 @@ footer {
   .callback-bt {
     right: 10px;
     bottom: 10px;
+  }
+  .wheel_title {
+    font-size: 18px;
+  }
+  .wheel_container {
+    max-width: 372px;
+  }
+  .wheel_prize_container {
+    padding: 15px;
+  }
+  .wheel_prize {
+    font-size: 15px!important;
   }
 }
 

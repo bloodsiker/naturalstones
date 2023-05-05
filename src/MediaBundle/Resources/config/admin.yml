@@ -21,3 +21,14 @@ services:
         calls:
             - [ setTranslationDomain, [MediaBundle] ]
             - [ setOptimizer, ['@app.image.optimizer'] ]
+
+    sonata.admin.media_video:
+        class: MediaBundle\Admin\MediaVideoAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.media", label: "group.media_video_editor" }
+        arguments:
+            - ~
+            - MediaBundle\Entity\MediaVideo
+            - ~
+        calls:
+            - [ setTranslationDomain, [ MediaBundle ] ]

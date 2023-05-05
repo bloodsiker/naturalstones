@@ -2,20 +2,18 @@
 
 namespace ProductBundle\Twig;
 
-use GenreBundle\Entity\Genre;
-use GenreBundle\Helper\GenreRouterHelper;
 use ProductBundle\Entity\Product;
 use ProductBundle\Helper\ProductRouterHelper;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * Class ProductExtension
  */
-class ProductExtension extends \Twig_Extension
+class ProductExtension extends AbstractExtension
 {
-    /**
-     * @var ProductRouterHelper
-     */
-    private $productRouterHelper;
+    private ProductRouterHelper $productRouterHelper;
 
     /**
      * ArticleExtension constructor.
@@ -41,8 +39,18 @@ class ProductExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('product_path', [$this, 'getProductPath']),
+            new TwigFunction('product_path', [$this, 'getProductPath']),
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilters()
+    {
+        return array(
+            new TwigFilter('video_url', [$this, 'getVideoUrl']),
+        );
     }
 
     /**
@@ -54,5 +62,19 @@ class ProductExtension extends \Twig_Extension
     public function getProductPath(Product $product, $needAbsolute = false)
     {
         return $this->productRouterHelper->getProductPath($product, $needAbsolute);
+    }
+
+    /**
+     * @param $path
+     *
+     * @return string
+     */
+    public function getVideoUrl($path)
+    {
+        $queryString = parse_url($path, PHP_URL_QUERY);
+        parse_str($queryString, $queryParams);
+        $videoId = $queryParams['v'];
+
+        return sprintf('https://www.youtube.com/embed/%s?feature=oembed', $videoId);
     }
 }

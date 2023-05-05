@@ -14,7 +14,7 @@ full_order:
         _controller: OrderBundle:Order:order
 
 success_order:
-    path: /order/{hash}/success
+    path: /order/{secret}/success
     defaults:
         _controller: OrderBundle:Order:success
     requirements:

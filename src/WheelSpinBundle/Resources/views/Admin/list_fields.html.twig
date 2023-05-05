@@ -1,0 +1,13 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% if object is instanceof('\\WheelSpinBundle\\Entity\\WheelSpinOption') %}
+        {% if field_description.name == 'image' %}
+            {% set v = asset('bundles/admin/images/default_game.png') %}
+            {% set image_preview_path = value ? value.path : null %}
+            <img src="{{ image_preview_path|default(v) }}?{{ random() }}" style="max-height: 100px;"/>
+        {% elseif field_description.name == 'colour' %}
+            <span class="colorpicker__preview" style="background-color: {{ '#' ~ object.colour }}; margin: 0;"></span>
+        {% endif %}
+    {% endif %}
+{% endblock %}

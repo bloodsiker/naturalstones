@@ -88,5 +88,15 @@
                 </ul>
             </div>
         </div>
+
+        {{
+        sonata_block_render(
+            { 'type': 'wheel_spin.block.wheel_spinner' },
+            {
+                'order' : order,
+            }
+        )
+        }}
+
     </div>
 </section>

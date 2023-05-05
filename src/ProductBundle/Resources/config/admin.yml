@@ -24,6 +24,17 @@ services:
         calls:
             - [ setTranslationDomain, [ ProductBundle ] ]
 
+    sonata.admin.product_has_video:
+        class: ProductBundle\Admin\ProductHasVideoAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'group.product', label: "group.product_has_video_editor", show_in_dashboard: false }
+        arguments:
+            - ~
+            - ProductBundle\Entity\ProductHasVideo
+            - ~
+        calls:
+            - [ setTranslationDomain, [ ProductBundle ] ]
+
     sonata.admin.product_has_product:
         class: ProductBundle\Admin\ProductHasProductAdmin
         tags:

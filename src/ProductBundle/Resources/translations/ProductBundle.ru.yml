@@ -24,6 +24,7 @@ form_group:
     additional: Дополнительные
     product_group: Набор
     product_option: Опции
+    product_video: Видео
 
 group:
     product: Товары
@@ -32,6 +33,7 @@ group:
     product_option_label_editor: Название для наборов продуктов
     product_info_view_editor: Просмотры товаров
     product_has_image_editor: Дополнительные изображения
+    product_has_video_editor: Видео
     product_search_history_editor: Поисковые запросы
 
 product:
@@ -61,6 +63,7 @@ product:
         option_type: Тип
         option_label: Название для набора
         product_image: Дополнительные изображения
+        product_video: Видео
         product_set_products: Набор продуктов
         product_group: Группа продуктов
         product_option: Дополнительные опции
@@ -81,6 +84,7 @@ product:
         product_option: Дополнительные опции
         product_option_colour: Опции цвета
         product_option_metal: Опции метала
+        product_video: Видео
     block:
         service:
             list: Список товаров
@@ -100,6 +104,14 @@ product_has_image:
         id: ID
         product: Продукт
         image: Изображение
+        order_num: ''
+
+product_has_video:
+    fields:
+        id: ID
+        product: Продукт
+        video: Видео
+        path: Ссылка на youtube
         order_num: ''
 
 product_has_option:
@@ -198,6 +210,7 @@ frontend:
         tab:
             description: Описание
             info: Характеристики
+            video: Видео
             delivery: Доставка и оплата
         material: Материал
         colour: Цвет

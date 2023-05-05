@@ -7,6 +7,7 @@
 
     {% set isFile       = object is instanceof("\\MediaBundle\\Entity\\MediaFile") %}
     {% set isImage      = object is instanceof("\\MediaBundle\\Entity\\MediaImage") %}
+    {% set isVideo      = object is instanceof("\\MediaBundle\\Entity\\MediaVideo") %}
 
     {% if isFile %}
         {% set extension = object.path|file_extension %}
@@ -31,5 +32,13 @@
         {{ _media.image(object.path, 'max-height: 100px;') }}
         <br>
         <span>{{ object.description }}</span>
+    {% endif %}
+
+    {% if isVideo %}
+        {% if field_description.name == 'thumb' %}
+            {{ _media.image(object.thumb, 'max-height: 100px;') }}
+        {% elseif field_description.name == 'path' %}
+            <a href="{{ object.path }}" target="_blank">{{ object.path }}</a>
+        {% endif %}
     {% endif %}
 {% endblock %}

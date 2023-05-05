@@ -85,7 +85,9 @@ sonata_block:
         # OrderBundle Block's
         order.block.order_board_list:
             contexts: [cms]
-        order.block.add_order_board:
+
+        # WheelSpin Block's
+        wheel_spin.block.wheel_spinner:
             contexts: [cms]
 
         # CommentBundle Block's

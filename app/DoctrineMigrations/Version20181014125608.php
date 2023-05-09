@@ -15,7 +15,7 @@ final class Version20181014125608 extends AbstractMigration
      */
     public function getDescription() : string
     {
-        return "Books, BookHasFile, BookHasTags, BookHasRelated, BooksGenres, BookComments, BookVotesResult (BookBundle)";
+        return "Books, BookHasFile, BookHasTags, BookHasRelated, BookComments, BookVotesResult (BookBundle)";
     }
 
     /**
@@ -68,14 +68,6 @@ final class Version20181014125608 extends AbstractMigration
         $bookHasRelated->addIndex(['book_id', 'related_book_id']);
         $bookHasRelated->addForeignKeyConstraint($book, ['book_id'], ['id'], ['onDelete' => 'restrict']);
         $bookHasRelated->addForeignKeyConstraint($book, ['related_book_id'], ['id'], ['onDelete' => 'restrict']);
-
-        // bookGenres
-        $bookGenres = $schema->createTable('books_genres');
-        $bookGenres->addColumn('book_id', 'integer', array('unsigned' => true, 'notnull' => true));
-        $bookGenres->addColumn('genre_id', 'integer', array('unsigned' => true, 'notnull' => true));
-        $bookGenres->addIndex(['book_id', 'genre_id']);
-        $bookGenres->addForeignKeyConstraint($book, ['book_id'], ['id'], ['onDelete' => 'cascade']);
-        $bookGenres->addForeignKeyConstraint($schema->getTable('genres'), ['genre_id'], ['id'], ['onDelete' => 'cascade']);
 
         // bookTags
         $bookTags = $schema->createTable('books_tags');
@@ -133,7 +125,6 @@ final class Version20181014125608 extends AbstractMigration
         $schema->dropTable('books_has_related');
         $schema->dropTable('books_has_file');
         $schema->dropTable('books_tags');
-        $schema->dropTable('books_genres');
         $schema->dropTable('books_comments');
         $schema->dropTable('books');
     }

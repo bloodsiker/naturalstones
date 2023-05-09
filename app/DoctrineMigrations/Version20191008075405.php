@@ -15,7 +15,7 @@ final class Version20191008075405 extends AbstractMigration
      */
     public function getDescription() : string
     {
-        return "Add BookCollectionHasBook, BookCollectionGenres (BookBundle))";
+        return "Add BookCollectionHasBook (BookBundle))";
     }
 
     /**
@@ -35,14 +35,6 @@ final class Version20191008075405 extends AbstractMigration
         $bookCollectionHasBook->addIndex(['book_id', 'collection_id']);
         $bookCollectionHasBook->addForeignKeyConstraint($schema->getTable('books'), ['book_id'], ['id'], ['onDelete' => 'restrict']);
         $bookCollectionHasBook->addForeignKeyConstraint($schema->getTable('books_collection'), ['collection_id'], ['id'], ['onDelete' => 'restrict']);
-
-        // bookCollectionGenres
-        $bookCollectionGenres = $schema->createTable('books_collection_genres');
-        $bookCollectionGenres->addColumn('collection_id', 'integer', array('unsigned' => true, 'notnull' => true));
-        $bookCollectionGenres->addColumn('genre_id', 'integer', array('unsigned' => true, 'notnull' => true));
-        $bookCollectionGenres->addIndex(['collection_id', 'genre_id']);
-        $bookCollectionGenres->addForeignKeyConstraint($schema->getTable('books_collection'), ['collection_id'], ['id'], ['onDelete' => 'cascade']);
-        $bookCollectionGenres->addForeignKeyConstraint($schema->getTable('genres'), ['genre_id'], ['id'], ['onDelete' => 'cascade']);
     }
 
     /**
@@ -51,6 +43,5 @@ final class Version20191008075405 extends AbstractMigration
     public function down(Schema $schema) : void
     {
         $schema->dropTable('books_collection_has_book');
-        $schema->dropTable('books_collection_genres');
     }
 }

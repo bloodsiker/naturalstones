@@ -132,7 +132,7 @@ class SeoUpdater
         if (isset($metaData['name']) && isset($metaData['name']['keywords'])) {
             foreach ($metaData['name']['keywords'] as $keywords) {
                 if ($keywords) {
-                    $this->seoPage->addMeta('name', 'books_keywords', $keywords);
+                    $this->seoPage->addMeta('name', 'product_keywords', $keywords);
                 }
             }
         }

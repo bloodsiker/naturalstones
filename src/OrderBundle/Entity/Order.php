@@ -180,6 +180,7 @@ class Order
         $this->status = self::STATUS_NEW;
         $this->type = self::TYPE_ORDER_CART;
         $this->callMe = false;
+        $this->isSpin = false;
         $this->createdAt = new \DateTime('now');
 
         $this->orderHasItems = new ArrayCollection();

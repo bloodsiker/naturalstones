@@ -3579,6 +3579,11 @@ footer {
   margin-right: 12px;
 }
 
+.modal-cart-block .image img {
+  height: 46px;
+  width: 46px;
+}
+
 .modal-cart-block .cart-links {
   display: -ms-flexbox;
   display: flex;

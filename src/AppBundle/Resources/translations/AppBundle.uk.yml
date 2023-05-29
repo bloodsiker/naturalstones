@@ -12,8 +12,8 @@ app:
             footer: 'Блок "Footer"'
 
     datetime:
-        today: Сегодня
-        yesterday: Вчера
+        today: Сьогодні
+        yesterday: Вчора
 
 frontend:
     buy: Купити

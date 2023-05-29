@@ -9,19 +9,8 @@
             )
         }}
 
-        <div class="footer-block-social">
-            <a href="https://t.me/naturalstones_jewerly" target="_blank" class="footer-social-icon footer-telegram">
-                <img src="{{ asset('bundles/app/images/telegram.svg') }}" alt="Naturalstones Jewerly">
-            </a>
-            <a href="https://www.youtube.com/channel/UCEwGrDpdrW8dArZmdBC-6rw" target="_blank" class="footer-social-icon footer-youtube">
-                <img src="{{ asset('bundles/app/images/youtube.svg') }}" alt="Naturalstones Jewerly">
-            </a>
-            <a href="https://www.facebook.com/naturalstones.jewerly.ua" target="_blank" class="footer-social-icon footer-facebook">
-                <img src="{{ asset('bundles/app/images/facebook.png') }}" alt="Naturalstones Jewerly">
-            </a>
-            <a href="https://www.instagram.com/naturalstones.jewerly/" target="_blank" class="footer-social-icon footer-instagram">
-                <img src="{{ asset('bundles/app/images/instagram.svg') }}" alt="Naturalstones Jewerly">
-            </a>
+        <div class="footer-block-links">
+            <a href="{{ path('article_list') }}">{{ 'frontend.footer.links.articles'|trans([], 'AppBundle') }}</a>
         </div>
 
         <div class="footer-block">
@@ -31,6 +20,22 @@
             </div>
         </div>
         <div class="footer-pay">
+            <div class="title">{{ 'frontend.footer.we_in_socila'|trans([], 'AppBundle') }}</div>
+            <div class="footer-block-social">
+                <a href="https://t.me/naturalstones_jewerly" target="_blank" class="footer-social-icon footer-telegram">
+                    <img src="{{ asset('bundles/app/images/telegram.svg') }}" alt="Naturalstones Jewerly">
+                </a>
+                <a href="https://www.youtube.com/channel/UCEwGrDpdrW8dArZmdBC-6rw" target="_blank" class="footer-social-icon footer-youtube">
+                    <img src="{{ asset('bundles/app/images/youtube.svg') }}" alt="Naturalstones Jewerly">
+                </a>
+                <a href="https://www.facebook.com/naturalstones.jewerly.ua" target="_blank" class="footer-social-icon footer-facebook">
+                    <img src="{{ asset('bundles/app/images/facebook.png') }}" alt="Naturalstones Jewerly">
+                </a>
+                <a href="https://www.instagram.com/naturalstones.jewerly/" target="_blank" class="footer-social-icon footer-instagram">
+                    <img src="{{ asset('bundles/app/images/instagram.svg') }}" alt="Naturalstones Jewerly">
+                </a>
+            </div>
+
             <div class="title">{{ 'frontend.footer.payment_method'|trans([], 'AppBundle') }}</div>
             <ul class="footer-pay-list">
                 <li><img src="{{ asset('bundles/app/images/pay-systems/pay-system-8.png') }}" alt=""></li>

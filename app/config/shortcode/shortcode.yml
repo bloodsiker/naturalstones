@@ -4,13 +4,21 @@ shortcode:
     definitions:
         image:
             pattern:
-                - '/\[IMAGE id=(?P<id>\d+); title=(?P<title>.*?);(?P<blank>.*?)\]/'
+                - '/\[IMAGE id=(?P<id>\d+); title=(?P<title>.*?);\]/'
             template: 'AppBundle:shortcode:image.html.twig'
             wrap: false
             processor: media.shortcode.processor.image
+
         text:
             pattern:
                 - '/\[TEXT id=(?P<id>\d+);\]/'
             template: 'AppBundle:shortcode:text.html.twig'
             wrap: false
             processor: share.shortcode.processor.text
+
+        read:
+            pattern:
+                - '/\[READ id=(?P<id>.+?); title=(?P<title>.*?);\]/'
+            template: 'AppBundle:shortcode:read.html.twig'
+            wrap: true
+            processor: article.shortcode.processor.read

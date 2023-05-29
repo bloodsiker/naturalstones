@@ -47,6 +47,7 @@ sonata_admin:
                       - group.main_image
                       - group.media
                       - group.product
+                      - group.article
 #                      - group.book
                       - group.wheel_spin
 
@@ -73,6 +74,10 @@ sonata_admin:
                 label: group.product
                 label_catalogue: ProductBundle
                 icon: <i class="fa fa-paw"></i>
+            group.article:
+                label: group.article
+                label_catalogue: ArticleBundle
+                icon: <i class="fa fa-newspaper-o"></i>
 #            group.book:
 #                label: group.book
 #                label_catalogue: BookBundle

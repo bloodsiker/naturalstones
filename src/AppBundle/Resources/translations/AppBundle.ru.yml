@@ -149,6 +149,9 @@ frontend:
         schedule_start: c
         copyright: Все права защищены
         payment_method: Платежные системы и способы
+        we_in_socila: Мы в соцсетях
+        links:
+            articles: Статьи
 
     breadcrumb:
         main: Главная
@@ -161,6 +164,7 @@ frontend:
         tag: 'Тег: #'
         man: Для мужчин
         woman: Для женщин
+        articles: Статьи
 
     meta:
         description: Когда хочется дарить яркие эмоции и незабываемые впечатления своим родным и близким выбирайте прекрасные украшения от компании «Naturalstones Jewerly»
@@ -192,6 +196,15 @@ frontend:
 
         meta_title_who: Naturalstones Jewerly - Украшения из натуральных камней для %WHO%
         meta_description_who: Большой выбор ювелирных украшений для мужчин и женщин
+
+        meta_title_articles: Статьи о натуральных камнях | Naturalstones Jewerly - Украшения из натуральных камней
+        meta_description_articles: Статьи о натуральных камнях
+
+        meta_title_article_category: Статьи о натуральных камнях с категории %CATEGORY% | Naturalstones Jewerly - Украшения из натуральных камней
+        meta_description_article_category: Статьи о натуральных камнях с категории %CATEGORY%
+
+        meta_title_article_tag: Статьи о натуральных камнях по тегу %TAG% | Naturalstones Jewerly - Украшения из натуральных камней
+        meta_description_article_tag: Статьи о натуральных камнях по тегу %TAG%
 
         meta_title_single_product: купить украшение из натуральных камней | Naturalstones Jewerly - Украшения из натуральных камней
 

@@ -17,7 +17,7 @@ services:
         arguments:
             - ~
             - MediaBundle\Entity\MediaImage
-            - ~
+            - MediaBundle:MediaAdmin
         calls:
             - [ setTranslationDomain, [MediaBundle] ]
             - [ setOptimizer, ['@app.image.optimizer'] ]

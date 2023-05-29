@@ -86,6 +86,7 @@ class AppKernel extends Kernel
             new ShortcodeBundle\ShortcodeBundle(),
             new MediaBundle\MediaBundle(),
             new ProductBundle\ProductBundle(),
+            new ArticleBundle\ArticleBundle(),
 //            new BookBundle\BookBundle(),
 //            new CommentBundle\CommentBundle(),
             new ShareBundle\ShareBundle(),

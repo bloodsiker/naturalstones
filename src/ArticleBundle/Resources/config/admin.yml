@@ -1,0 +1,22 @@
+services:
+    article.admin.article_category:
+        class: ArticleBundle\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "group.article", label: "group.category_editor" }
+        arguments:
+            - ~
+            - ArticleBundle\Entity\Category
+            - AdminBundle:CRUD
+        calls:
+            - [ setTranslationDomain, [ ArticleBundle ] ]
+
+    article.admin.article:
+        class: ArticleBundle\Admin\ArticleAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "group.article", label: "group.article_editor" }
+        arguments:
+          - ~
+          - ArticleBundle\Entity\Article
+          - ArticleBundle:ArticleAdmin
+        calls:
+          - [ setTranslationDomain, [ArticleBundle] ]

@@ -17,6 +17,8 @@ class CategoryRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('c');
         $qb
+            ->leftJoin('c.translations', 'ct')
+            ->addSelect('ct')
             ->where('c.isActive = 1')
             ->orderBy('c.id', 'DESC');
 

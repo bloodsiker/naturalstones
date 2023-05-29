@@ -61,6 +61,10 @@ sonata_block:
         product.block.viewed:
             contexts: [ cms ]
 
+        # ArticleBundle Block's
+        article.block.list:
+            contexts: [ cms ]
+
         # GenreBundle Block's
         genre.block.genre_list:
             contexts: [cms]

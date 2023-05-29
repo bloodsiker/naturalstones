@@ -217,7 +217,9 @@ class AppExtension extends \Twig_Extension
         $date = $datetime->format('d.m.Y');
         if ($date === $now->format('d.m.Y')) {
             return $this->translator->trans('app.datetime.today', [], 'AppBundle');
-        } elseif ($date === $now->sub(new \DateInterval('PT24H'))->format('d.m.Y')) {
+        }
+
+        if ($date === $now->sub(new \DateInterval('PT24H'))->format('d.m.Y')) {
             return $this->translator->trans('app.datetime.yesterday', [], 'AppBundle');
         }
 

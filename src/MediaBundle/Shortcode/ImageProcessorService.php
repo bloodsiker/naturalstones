@@ -36,8 +36,6 @@ class ImageProcessorService implements ProcessorInterface
             return $data;
         }
 
-        $data['blank'] = trim($data['blank']) === 'blank';
-
         $image = $this->entityManager
             ->getRepository('MediaBundle:MediaImage')
             ->findOneBy(['id' => intval($data['id']), 'isActive' => true])

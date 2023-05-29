@@ -1,0 +1,41 @@
+<!-- article-section -->
+<section class="simple-section">
+    <div class="container">
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
+
+        <section class="article-view">
+            <h1>{{ article.title }}</h1>
+
+            {% if article.shortDescription %}
+                <div class="article-description">
+                    {{ article.shortDescription }}
+                </div>
+            {% endif %}
+
+            <main class="main-description">
+
+                <div class="main-description-img">
+                    <img src="{{ asset(article.image.path) }}" alt="{{ article.title }}">
+                </div>
+
+                {{ article.description|shortcode|raw }}
+
+                {% if article.tags|length > 0 %}
+                    <div class="article-tags">
+                        {% for tag in article.tags %}
+                            <a href="{{ path('article_tags_list', {'slug' : tag.slug}) }}" class="tag">#{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+            </main>
+
+        </section>
+
+    </div>
+</section>

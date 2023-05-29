@@ -1,0 +1,58 @@
+{% if articles.count %}
+
+    <div class="articles">
+        {% for article in articles %}
+            <div class="article-grid">
+                <article class="article">
+                    <div class="article-img">
+                        <a href="{{ path('article_view', {'category': article.category.slug, 'slug': article.slug, 'id': article.id}) }}">
+                            <figure class="img-relative">
+                                <img data-src="{{ asset(article.image.path) }}" src="" class="lazyload" alt="">
+                            </figure>
+                        </a>
+                    </div>
+                    <div class="article-desc">
+                        <div class="article-meta">
+                            <span>
+                                <a href="{{ path('article_category', {'category': article.category.slug}) }}" class="font-bold link-hover"> {{ article.category.name }}</a>
+                            </span>
+                            <span>
+                                <a href="{{ path('article_view', {'category': article.category.slug, 'slug': article.slug, 'id': article.id}) }}" class="link-hover">
+                                    <time title="06.04.2023 11:19:00 (Europe/Kiev)">{{ article.createdAt|date_humanize }}</time>
+                                </a>
+                            </span>
+                        </div>
+                        <a href="{{ path('article_view', {'category': article.category.slug, 'slug': article.slug, 'id': article.id}) }}" class="article-title link-hover">{{ article.title }}</a>
+                        <span class="article-text mt-2">
+                             {{ article.shortDescription }}
+                        </span>
+                    </div>
+                </article>
+            </div>
+        {% endfor %}
+    </div>
+
+{#    <!--Пагинация-->#}
+{#    <ul class="pagination">#}
+{#        <li><a href=""><i class="arrow prev"></i></a></li>#}
+{#        <li><a href="">1</a></li>#}
+{#        <li class="active"><a href="">2</a></li>#}
+{#        <li><a href="">3</a></li>#}
+{#        <li class="next"><a href=""><i class="arrow next"></i></a></li>#}
+{#    </ul>#}
+{#    <!--//Пагинация-->#}
+
+    {% if settings.ajax_paginator and articles.count > settings.items_count %}
+        {% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+        <div class="more-catalog">
+            <a href="#" class="more-catalog-link" id="get_more_products" data-page="2" data-url="{{ block_ajax_path }}"> <!-- loading - класс для вращения стрелки -->
+                <i><img src="{{ asset('bundles/app/images/rotate.svg') }}" alt="" /></i>
+                <span>Загрузить еще</span>
+            </a>
+        </div>
+    {% endif %}
+
+    {% if settings.show_paginator and articles.maxPerPage is defined and articles.count > articles.maxPerPage %}
+        {{ pagerfanta(articles, { 'omitFirstPage': true}) }}
+    {% endif %}
+{% endif %}

@@ -1,0 +1,10 @@
+services:
+    article.block.list:
+        class: ArticleBundle\Block\ArticleListBlockService
+        arguments:
+            - article.block.service.list
+            - '@templating'
+        calls:
+            - [ setDoctrine, [ '@?doctrine' ] ]
+        tags:
+            - { name: sonata.block }

@@ -24,6 +24,15 @@ product:
         _locale: '%locale%'
 #==============================================================================
 
+# Article =====================================================================
+article:
+    resource: '@ArticleBundle/Resources/config/routing.yml'
+    requirements:
+        _locale: '%route_locales%'
+    defaults:
+        _locale: '%locale%'
+#==============================================================================
+
 # Order ========================================================================
 order:
     resource: '@OrderBundle/Resources/config/routing.yml'

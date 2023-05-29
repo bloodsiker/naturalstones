@@ -352,9 +352,7 @@ class SeoUpdater
      */
     private function setCanonicalUrl(array $params, $customRouteParams = [])
     {
-        $showCanonicalUrl = !isset($params['showCanonicalUrl'])
-            ? true
-            : (isset($params['showCanonicalUrl']) && $params['showCanonicalUrl']) ? true : false;
+        $showCanonicalUrl = !isset($params['showCanonicalUrl']) ? true : ((isset($params['showCanonicalUrl']) && $params['showCanonicalUrl']) ? true : false);
 
         if (isset($params['canonicalUrl'])) {
             if ($showCanonicalUrl) {

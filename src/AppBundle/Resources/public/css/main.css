@@ -722,8 +722,17 @@ footer {
   -ms-flex-negative: 0;
   flex-shrink: 0;
 }
+.footer-block-links {
+
+}
+.footer-block-links a {
+  display: block;
+  margin: 7px 0;
+  font-size: 16px;
+}
+
 .footer-block-social {
-  margin: 0 30px 20px;
+  margin-bottom: 20px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
@@ -752,8 +761,8 @@ footer {
 }
 .footer-social-icon {
   border-radius: 50%;
-  width: 55px;
-  height: 55px;
+  width: 50px;
+  height: 50px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
@@ -772,7 +781,7 @@ footer {
   margin-right: 10px;
 }
 .footer-telegram img {
-  width: 28px;
+  width: 26px;
 }
 .footer-telegram:hover {
   background: #55a0dc;
@@ -783,7 +792,7 @@ footer {
   margin-right: 10px;
 }
 .footer-youtube img {
-  width: 36px;
+  width: 32px;
 }
 .footer-youtube:hover {
   background: #f34b4b;
@@ -794,7 +803,7 @@ footer {
   margin-right: 10px;
 }
 .footer-facebook img {
-  width: 36px;
+  width: 34px;
 }
 .footer-facebook:hover {
   background: #4775bd;
@@ -806,7 +815,7 @@ footer {
 }
 
 .footer-instagram img {
-  width: 30px;
+  width: 28px;
 }
 
 .footer-instagram:hover {
@@ -3290,6 +3299,258 @@ footer {
   width: 100%;
 }
 
+
+/*================= ARTICLE ======================*/
+.article-categories {
+  display: inline-flex;
+  white-space: nowrap;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  overflow-x: auto;
+  font-size: .9rem;
+  margin-bottom: 50px;
+}
+.category-block {
+  margin-right: 10px;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  display: block;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.25rem;
+  color: #525252;
+}
+.category-active {
+  background: #e0e0e0;
+  border: 1px solid #b2aeae;
+}
+.articles {
+  display: grid;
+}
+.article-grid {
+  margin-bottom: 50px;
+}
+article.article {
+  display: flex;
+  color: #525252;;
+}
+.article-img {
+  width: 40%;
+}
+.img-relative {
+  position: relative;
+  padding-bottom: 56.25%;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.img-relative img {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -o-object-fit: cover;
+  object-fit: cover;
+  height: 100%;
+  display: block;
+  transition-property: opacity;
+  transition-duration: .1s;
+}
+.article-desc {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-right: calc(1.5rem*0);
+  margin-left: calc(1.5rem*(1 - 0));
+}
+.article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 1rem;
+  color: #a8a8a8;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.article-meta span {
+  display: block;
+  margin-bottom: 0.25rem;
+  margin-right: 5px;
+}
+.article-title {
+  line-height: 1.375;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+.article-text {
+  color: #707070;
+  font-size: 1.14rem;
+  line-height: 1.5rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.link-hover:hover {
+  text-decoration: underline;
+}
+
+.article-view {
+  margin-bottom: 80px;
+}
+.article-description {
+  margin: 15px 0;
+  font-size: 1.5rem;
+  color: #707070;
+}
+.main-description {
+  margin-bottom: 30px;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #525252;
+}
+.main-description-img {
+  text-align: center;
+}
+.main-description img {
+  text-align: center;
+  margin: 15px 0;
+  border-radius: 0.5rem;
+  width: 600px;
+}
+
+.main-description p {
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+.main-description a {
+  transition-property: background,border,color,fill,stroke,filter;
+  transition-duration: .25s;
+  border-bottom: 1px solid #f08383;
+}
+.main-description h1 {
+  font-weight: 600;
+  margin-top: 4rem;
+  margin-bottom: 1rem;
+  font-size: 2.75rem;
+  color: #262626;
+  line-height: 1.25;
+}
+.main-description h2, .main-description h3 {
+  font-weight: 500;
+  margin-top: 4rem;
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  color: #262626;
+  line-height: 1.25;
+}
+.article-read {
+  transition-duration: .25s;
+  transition-property: background,border,color,fill,stroke,filte;
+  margin-bottom: 2.5rem;
+  margin-top: 2.5rem;
+  position: relative;
+  display: flex;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.5rem;
+  width: 600px;
+}
+.article-read a {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  color: inherit;
+  text-decoration: inherit;
+  background-color: transparent;
+  border: none;
+}
+.article-read-text {
+  padding: 1.5rem;
+  width: 66.666667%;
+  align-items: center;
+  display: flex;
+}
+.article-read-text-marker {
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: #a8a8a8;
+  margin-bottom: 0.25rem;
+  font-size: .9rem;
+}
+.article-read-text-title {
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+.article-read-img {
+  width: 33.333333%;
+}
+.article-read-img div {
+  position: relative;
+  height: 100%;
+}
+.article-read-img figure {
+  width: 100%;
+  position: relative;
+  height: 100%;
+  background-color: #f5f5f5;
+  overflow: hidden;
+}
+.article-read-img figure img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  margin: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition-property: opacity;
+  transition-duration: .1s;
+  border-radius: 3px;
+}
+.article-tags {
+  margin-top: 35px;
+}
+.article-tags .tag {
+  display: inline-block;
+  background: #f08383;
+  color: #fff;
+  padding: 1px 12px;
+  border-radius: 5px;
+  border-bottom: none;
+}
+
+@media (max-width: 767px) {
+  .article-title {
+    line-height: 1.375;
+    font-size: 1.25rem;
+  }
+  .article-meta {
+    font-size: .9rem;
+  }
+  .article-description {
+    font-size: 1.3rem;
+  }
+  .main-description img {
+    width: 100%;
+  }
+  .article-read-img figure img {
+    border-radius: 3px;
+  }
+}
+
 /*================= МОДАЛКИ ======================*/
 
 .popup-modal {
@@ -5569,9 +5830,19 @@ footer {
     flex-direction: column;
   }
 
+  .footer-block-links {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  ..footer-block-social {
+    justify-content: center;
+  }
+
   .footer-block {
     margin-right: 0;
     margin-bottom: 30px;
+    text-align: center;
   }
 
   .footer-lang {

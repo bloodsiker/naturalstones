@@ -1,0 +1,42 @@
+Action: Дії
+Category List: Список категорій
+Category Create: Додати категорію
+Article List: Список статей
+Article Create: Додати статтю
+
+form_group:
+    basic: Основні
+    additional: Додаткові
+
+group:
+    article: Статті
+    article_editor: Статті
+    category_editor: Категорії
+
+category:
+    fields:
+        id: ID
+        name: Назва
+        slug: Сегмент URL (slug)
+        is_active: Активно
+
+article:
+    fields:
+        id: ID
+        title: Назва
+        short_description: Короткий опис
+        description: Опис
+        category: Категорія
+        image: Зображення
+        slug: Сегмент URL (slug)
+        is_active: Активно
+        tags: Тегі
+        views: Перегляди
+        updated_at: Змінено
+        created_at: Створено
+
+frontend:
+    articles_by_tag: 'Статті за тегом #'
+    articles_by_category: Статті за категорією
+    articles: Статті
+    read: Читайте також

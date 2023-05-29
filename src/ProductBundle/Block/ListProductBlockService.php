@@ -211,28 +211,31 @@ class ListProductBlockService extends AbstractAdminBlockService
             $repository->filterByRand($qb);
         }
 
-        $maxPriceQb = $minPriceQb = clone $qb;
-        $maxPrice = $maxPriceQb->resetDQLPart('select')->select('MAX(p.price) as max')->getQuery()->getSingleResult();
-        $minPrice = $minPriceQb->resetDQLPart('select')->select('MIN(p.price) as min')->getQuery()->getSingleResult();
+        if ($blockContext->getSetting('filter')) {
+            $maxPriceQb = $minPriceQb = clone $qb;
+            $maxPrice = $maxPriceQb->resetDQLPart('select')->select('MAX(p.price) as max')->getQuery()->getSingleResult();
+            $minPrice = $minPriceQb->resetDQLPart('select')->select('MIN(p.price) as min')->getQuery()->getSingleResult();
 
-        $stonesQb = clone $qb;
-        $productStones = $stonesQb->getQuery()->getResult();
-        $stoneArray = [];
-        $colourArray = [];
-        foreach ($productStones as $productStone) {
-            $stones = $productStone->getStones()->getValues();
-            $colours = $productStone->getColours()->getValues();
-            foreach ($stones as $stone) {
-                if (!array_key_exists($stone->getId(), $stoneArray)) {
-                    $stoneArray[$stone->getId()] = $stone;
+            $stonesQb = clone $qb;
+            $productStones = $stonesQb->getQuery()->getResult();
+            $stoneArray = [];
+            $colourArray = [];
+            foreach ($productStones as $productStone) {
+                $stones = $productStone->getStones()->getValues();
+                $colours = $productStone->getColours()->getValues();
+                foreach ($stones as $stone) {
+                    if (!array_key_exists($stone->getId(), $stoneArray)) {
+                        $stoneArray[$stone->getId()] = $stone;
+                    }
                 }
-            }
-            foreach ($colours as $colour) {
-                if (!array_key_exists($colour->getId(), $colourArray)) {
-                    $colourArray[$colour->getId()] = $colour;
+                foreach ($colours as $colour) {
+                    if (!array_key_exists($colour->getId(), $colourArray)) {
+                        $colourArray[$colour->getId()] = $colour;
+                    }
                 }
             }
         }
+
 
         if ($request->get('min_price')) {
             $qb->andWhere('p.price >= :minPrice')->setParameter('minPrice', $request->get('min_price'));
@@ -264,10 +267,10 @@ class ListProductBlockService extends AbstractAdminBlockService
 
         return $this->renderResponse($request->isXmlHttpRequest() ? self::TEMPLATE_AJAX : $template, [
             'products'  => $paginator,
-            'maxPrice'  => $maxPrice['max'],
-            'minPrice'  => $minPrice['min'],
-            'stones'    => $stoneArray,
-            'colours'   => $colourArray,
+            'maxPrice'  => $maxPrice['max'] ?? 0,
+            'minPrice'  => $minPrice['min'] ?? 0,
+            'stones'    => $stoneArray ?? [],
+            'colours'   => $colourArray ?? [],
             'block'     => $block,
             'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
         ], $response);

@@ -1,0 +1,26 @@
+{% if shortcode_data.article is defined and shortcode_data.article is instanceof("\\ArticleBundle\\Entity\\Article") %}
+	{% if shortcode_data.title|trim %}
+		{% set title = shortcode_data.title %}
+	{% else %}
+		{% set title = shortcode_data.article.getTitle() %}
+	{% endif %}
+
+	<div style="display: flex;justify-content: center;">
+		<aside class="article-read">
+			<a href="{{ path('article_view', {'category': shortcode_data.article.category.slug, 'slug': shortcode_data.article.slug, 'id': shortcode_data.article.id}) }}"></a>
+			<div class="article-read-text">
+				<div>
+					<div class="article-read-text-marker"> {{ 'frontend.read'|trans([], 'ArticleBundle') }}</div>
+					<div class="article-read-text-title"> {{ title }}</div>
+				</div>
+			</div>
+			<div class="article-read-img">
+				<div >
+					<figure class="">
+						<img src="{{ shortcode_data.article.image.path }}" title="{{ title }}">
+					</figure>
+				</div>
+			</div>
+		</aside>
+	</div>
+{% endif %}

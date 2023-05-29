@@ -66,17 +66,6 @@
                                     }
                                 }
                             ]
-                        },
-                        {
-                            id: 'blank',
-                            type: 'checkbox',
-                            label: editor.lang.shortcode.image.blank,
-                            setup: function (widget) {
-                                this.setValue(widget.data.blank === ' blank' ? true : false);
-                            },
-                            commit: function (widget) {
-                                widget.setData('blank', this.getValue() ? ' blank' : ' ');
-                            }
                         }
                     ]
                 }

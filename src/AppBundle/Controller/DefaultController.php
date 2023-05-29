@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use ArticleBundle\Entity\Article;
 use BookBundle\Entity\Book;
 use BookBundle\Entity\BookCollection;
+use Doctrine\ORM\Query\ResultSetMapping;
 use GenreBundle\Entity\Genre;
 use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
@@ -255,6 +257,57 @@ class DefaultController extends Controller
         foreach (['man', 'woman'] as $who) {
             $key = $who;
             $url = $router->generate('product_who_list', ['who' => $who]);
+            $urls[$key]['loc'] = $hostname . $url;
+            foreach ($locales as $local) {
+                if ($local === 'uk') {
+                    $urls[$key][$local] = $hostname . $url;
+                } else {
+                    $urls[$key][$local] = sprintf('%s/%s%s', $hostname, $local, $url);
+                }
+            }
+        }
+
+        $urls['article_list']['loc'] = $hostname . $router->generate('article_list');
+        foreach ($locales as $local) {
+            if ($local === 'uk') {
+                $urls['article_list'][$local] = $hostname . $router->generate('article_list');
+            } else {
+                $urls['article_list'][$local] = sprintf('%s/%s%s', $hostname, $local, $router->generate('article_list'));
+            }
+        }
+
+        $articles = $em->getRepository(Article::class)->findBy(['isActive' => true]);
+        foreach ($articles as $article) {
+            $key = 'article_'.$article->getId();
+            $url = $router->generate('article_view', ['category' => $article->getSlug(), 'id' => $article->getId(), 'slug' => $article->getSlug()]);
+            $urls[$key]['loc'] = $hostname . $url;
+            foreach ($locales as $local) {
+                if ($local === 'uk') {
+                    $urls[$key][$local] = $hostname . $url;
+                } else {
+                    $urls[$key][$local] = sprintf('%s/%s%s', $hostname, $local, $url);
+                }
+            }
+        }
+
+        $articleCategories = $em->getRepository(\ArticleBundle\Entity\Category::class)->findBy(['isActive' => true]);
+        foreach ($articleCategories as $articleCategory) {
+            $key = 'article_category_'.$articleCategory->getId();
+            $url = $router->generate('article_category', ['category' => $articleCategory->getSlug()]);
+            $urls[$key]['loc'] = $hostname . $url;
+            foreach ($locales as $local) {
+                if ($local === 'uk') {
+                    $urls[$key][$local] = $hostname . $url;
+                } else {
+                    $urls[$key][$local] = sprintf('%s/%s%s', $hostname, $local, $url);
+                }
+            }
+        }
+
+        $articleTags = $em->getRepository(Tag::class)->getTagsByArticles();
+        foreach ($articleTags as $articleTag) {
+            $key = 'article_tag_'.$articleTag->getId();
+            $url = $router->generate('article_tags_list', ['slug' => $articleTag->getSlug()]);
             $urls[$key]['loc'] = $hostname . $url;
             foreach ($locales as $local) {
                 if ($local === 'uk') {

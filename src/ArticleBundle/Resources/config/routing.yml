@@ -1,0 +1,28 @@
+# articles ========================================================
+article_list:
+    path: /articles
+    defaults:
+        _controller: ArticleBundle:Article:list
+
+article_tags_list:
+    path: /articles/tag-{slug}
+    defaults:
+        _controller: ArticleBundle:Article:listTag
+    requirements:
+        slug: "([a-zA-Z\\-0-9\\_]+)?"
+
+article_category:
+    path: /articles/{category}
+    defaults:
+        _controller: ArticleBundle:Article:listCategory
+    requirements:
+        category: "([a-zA-Z\\-0-9\\_]+)?"
+
+article_view:
+    path: /article/{category}/{id}-{slug}
+    defaults:
+        _controller: ArticleBundle:Article:view
+    requirements:
+        category: "([a-zA-Z\\-0-9\\_]+)?"
+        slug: "([a-zA-Z\\-0-9\\_]+)?"
+        id: "\\d+"

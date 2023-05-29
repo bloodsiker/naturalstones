@@ -54,6 +54,13 @@ class Tag
     protected $products;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="ArticleBundle\Entity\Article", mappedBy="tags")
+     */
+    protected $articles;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -184,5 +191,39 @@ class Tag
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * Add article
+     *
+     * @param \ArticleBundle\Entity\Article $article
+     *
+     * @return $this
+     */
+    public function addArticle(\ArticleBundle\Entity\Article $article)
+    {
+        $this->articles[] = $article;
+
+        return $this;
+    }
+
+    /**
+     * Remove article
+     *
+     * @param \ArticleBundle\Entity\Article $article
+     */
+    public function removeArticle(\ArticleBundle\Entity\Article $article)
+    {
+        $this->articles->removeElement($article);
+    }
+
+    /**
+     * Get articles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArticles()
+    {
+        return $this->articles;
     }
 }

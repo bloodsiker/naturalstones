@@ -2,6 +2,7 @@
 
 namespace ProductBundle\Controller;
 
+use AppBundle\Helper\AppHelper;
 use BookBundle\Entity\Book;
 use BookBundle\Entity\BookCollection;
 use BookBundle\Entity\BookInfoDownload;
@@ -232,8 +233,10 @@ class ProductController extends Controller
             ],
         ]);
 
-        $repo->incViewCounter($product->getId());
-        $this->container->get('product.helper.views')->doView($product);
+        if (!AppHelper::isBot($request->headers->get('User-Agent'))) {
+            $repo->incViewCounter($product->getId());
+            $this->container->get('product.helper.views')->doView($product);
+        }
 
         return $this->render('ProductBundle::product_view.html.twig', ['product' => $product, 'sizes' => $sizes]);
     }

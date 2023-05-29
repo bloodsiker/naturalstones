@@ -1,0 +1,35 @@
+
+<!-- catalog-section -->
+<section class="simple-section">
+    <div class="container">
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
+
+        <div class="filter-outer">
+            <h1>{{ 'frontend.articles'|trans([], 'ArticleBundle') }}</h1>
+        </div>
+
+        <section class="article-categories">
+            {% for category in categories %}
+                <a class="category-block" href="{{ path('article_category', {'category': category.slug}) }}">{{ category.name }}</a>
+            {% endfor %}
+        </section>
+
+        {{
+            sonata_block_render(
+                { 'type': 'article.block.list' },
+                {
+                    'items_count' : 15,
+                    'page': app.request.get('page') ? app.request.get('page') : 1,
+                    'show_paginator': true
+                }
+            )
+        }}
+
+
+    </div>
+</section>

@@ -19,7 +19,7 @@
 
                 <div>
                     {% if isImage %}
-                        {{ _media.image(entity, 'max-height: 270px;') }}
+                        {{ _media.image(entity.path, 'max-height: 270px;') }}
                     {% elseif isGallery %}
                         {{ _media.image(entity.getCover(), 'max-height: 270px;') }}
                     {% elseif isVideo or isAudio %}
@@ -36,7 +36,7 @@
                 {% elseif isGallery %}
                     {{ 'media.fields.count_images'|trans({}, 'MediaBundle') }}: {{ entity.countImages }}.<br>{{ entity.description|default(entity.title) }}
                 {% else %}
-                    {{ entity.title }}
+                    {{ entity.description }}
                 {% endif %}
                 </div>
             {% endif %}

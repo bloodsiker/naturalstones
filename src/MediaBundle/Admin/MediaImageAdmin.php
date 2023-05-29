@@ -149,6 +149,8 @@ class MediaImageAdmin extends Admin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('acl');
+
+        $collection->add('preview', 'preview');
     }
 
     /**

@@ -5,8 +5,11 @@ fos_ck_editor:
     js_path: "/bundles/admin/js/ckeditor/ckeditor.js"
     filebrowsers:
         - ImageList
+        - ArticleList
         - TextList
+        - ImagePreview
         - TextPreview
+        - ArticlePreview
     configs:
         simple:
             title: false
@@ -49,6 +52,8 @@ fos_ck_editor:
             language: "%locale%"
 
             filebrowserTextPreviewRoute: admin_share_text_preview
+            filebrowserArticlePreviewRoute: admin_article_article_preview
+            filebrowserImagePreviewRoute: admin_media_mediaimage_preview
 
             filebrowserImageListRoute: admin_media_mediaimage_list
             filebrowserImageListRouteParameters:
@@ -56,6 +61,10 @@ fos_ck_editor:
 
             filebrowserTextListRoute: admin_share_text_list
             filebrowserTextListRouteParameters:
+                CKEditor: true
+
+            filebrowserArticleListRoute: admin_article_article_list
+            filebrowserArticleListRouteParameters:
                 CKEditor: true
 
 #            filebrowserGalleryBrowseRoute: admin_newmedia_media_gallery_list
@@ -133,7 +142,7 @@ fos_ck_editor:
                 - [ "Link", "Unlink", "Anchor" ]
                 #              "Image",
                 - [ "Table", "-", "Iframe", "Flash" ]
-                - [ "TextSC" ]
+                - [ "ImageSC", "ReadSC", "TextSC" ]
                 - [ "h2", "HorizontalRule", "PasteCode" ]
                 - [ "Symbol" ]
                 - [ "ShowBlocks" ]

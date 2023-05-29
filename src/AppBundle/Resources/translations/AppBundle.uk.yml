@@ -149,6 +149,9 @@ frontend:
         schedule_start: з
         copyright: Всі права захищені
         payment_method: Платіжні системи та способи
+        we_in_socila: Ми в соцмережах
+        links:
+            articles: Статті
 
     breadcrumb:
         main: Головна
@@ -161,6 +164,7 @@ frontend:
         tag: 'Тег: #'
         man: Для чоловіків
         woman: Для жінок
+        articles: Статті
 
     meta:
         description: Коли хочеться дарувати яскраві емоції та незабутні враження своїм рідним та близьким вибирайте чудові вироби від компанії «Naturalstones Jewerly»
@@ -192,6 +196,15 @@ frontend:
 
         meta_title_who: Naturalstones Jewerly - Прикраси з натурального каміння для %WHO%
         meta_description_who: Великий вибір ювелірних прикрас для чоловіків та жінок
+
+        meta_title_articles: Статті про натуральні каміння | Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_articles: Статті про натуральні каміння
+
+        meta_title_article_category: Статті про натуральні каміння з категорії %CATEGORY% | Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_article_category: Статті про натуральні каміння з категорії %CATEGORY%
+
+        meta_title_article_tag: Статті про натуральні каміння по тегу %TAG% | Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_article_tag: Статті про натуральні каміння по тегу %TAG%
 
         meta_title_single_product: купити виріб з натурального каміння | Naturalstones Jewerly - Прикраси з натурального каміння
 

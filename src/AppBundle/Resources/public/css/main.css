@@ -3536,6 +3536,7 @@ article.article {
   padding: 1px 12px;
   border-radius: 5px;
   border-bottom: none;
+  margin-bottom: 5px;
 }
 
 @media (max-width: 767px) {
@@ -3547,7 +3548,7 @@ article.article {
     font-size: .9rem;
   }
   .article-description {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
   .main-description img {
     width: 100%;

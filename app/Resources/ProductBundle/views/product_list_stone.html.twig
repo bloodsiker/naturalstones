@@ -11,7 +11,7 @@
 
         {% if stone.description %}
             <div class="product-description-container slice-this">
-                {{ stone.description|raw }}
+                {{ stone.description|shortcode|raw }}
             </div>
         {% endif %}
 

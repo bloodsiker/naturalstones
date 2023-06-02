@@ -1,7 +1,7 @@
 {% extends admin.getTemplate('base_list_field') %}
 
 {% block field %}
-    {% if object is instanceof('\\MainImageBundle\\Entity\\MainImage') %}
+    {% if object is instanceof('\\ArticleBundle\\Entity\\Article') %}
         {% if field_description.name == 'image' %}
             {% set v = asset('bundles/admin/images/default_game.png') %}
             {% set image_preview_path = value ? value.path : null %}

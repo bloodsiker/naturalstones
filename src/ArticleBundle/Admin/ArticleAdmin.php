@@ -33,7 +33,7 @@ class ArticleAdmin extends Admin
         '_page'       => 1,
         '_per_page'   => 25,
         '_sort_by'    => 'id',
-        '_sort_order' => 'ASC',
+        '_sort_order' => 'DESC',
     ];
 
     /**
@@ -86,11 +86,18 @@ class ArticleAdmin extends Admin
             ->add('id', null, [
                 'label' => 'article.fields.id',
             ])
+            ->add('image', null, [
+                'label'    => 'article.fields.image',
+                'template' => 'ArticleBundle:Admin:list_fields.html.twig',
+            ])
             ->addIdentifier('title', null, [
                 'label' => 'article.fields.title',
             ])
             ->add('category', null, [
                 'label' => 'article.fields.category',
+            ])
+            ->add('views', null, [
+                'label' => 'article.fields.views',
             ])
             ->add('createdAt', null, [
                 'label' => 'article.fields.created_at',

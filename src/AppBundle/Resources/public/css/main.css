@@ -3419,6 +3419,12 @@ article.article {
 .main-description-img {
   text-align: center;
 }
+.main-description-img img {
+  text-align: center;
+  margin: 15px 0;
+  border-radius: 0.5rem;
+  width: 600px;
+}
 .main-description img {
   text-align: center;
   margin: 15px 0;
@@ -3544,6 +3550,9 @@ article.article {
     font-size: 1.3rem;
   }
   .main-description img {
+    width: 100%;
+  }
+  .main-description-img img {
     width: 100%;
   }
   .article-read-img figure img {

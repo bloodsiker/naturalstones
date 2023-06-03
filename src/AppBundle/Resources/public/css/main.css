@@ -3580,6 +3580,21 @@ article.article {
   .article-read-img figure img {
     border-radius: 3px;
   }
+  .article-grid {
+    margin-bottom: 25px;
+  }
+  article.article {
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+  }
+  .article-desc {
+    margin: 10px 0 0 0;
+    padding: 10px;
+  }
+  .article-img {
+    width: 100%;
+  }
 }
 
 /*================= МОДАЛКИ ======================*/

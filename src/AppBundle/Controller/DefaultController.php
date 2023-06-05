@@ -328,7 +328,7 @@ class DefaultController extends Controller
 
         $feedData = [
             ['id', 'title', 'description', 'availability', 'condition', 'price', 'sale_price', 'link', 'image_link', 'brand',
-                'google_product_category', 'fb_product_category', 'gender', 'age_group', 'material', 'rich_text_description']
+                'fb_product_category', 'gender', 'age_group', 'material', 'rich_text_description']
         ];
 
         $products = $em->getRepository(Product::class)->findBy(['isActive' => true], ['id' => 'DESC']);
@@ -351,6 +351,19 @@ class DefaultController extends Controller
 
             $materials = implode(', ', $material);
 
+            $category = 'Ювелирные украшения и часы > Ювелирные изделия';
+            if (in_array($product->getCategory()->getSlug(), ['braslety', 'nabory', 'niti', 'niti-oberegi', 'shambaly'])) {
+                $category = 'Ювелирные украшения и часы > Ювелирные изделия > Браслеты';
+            } elseif ($product->getCategory()->getSlug() === 'kolca') {
+                $category = 'Ювелирные украшения и часы > Ювелирные изделия > Кольца';
+            } elseif ($product->getCategory()->getSlug() === 'kole') {
+                $category = 'Ювелирные украшения и часы > Ювелирные изделия > Колье и ожерелья';
+            } elseif ($product->getCategory()->getSlug() === 'serezhki') {
+                $category = 'Ювелирные украшения и часы > Ювелирные изделия > Серьги';
+            } elseif (in_array($product->getCategory()->getSlug(), ['podveski', 'vstavki'])) {
+                $category = 'Ювелирные украшения и часы > Ювелирные изделия > Подвески и кулоны';
+            }
+
             array_push($feedData, [
                 $product->getId(),
                 $product->translate('uk')->getName(),
@@ -362,8 +375,7 @@ class DefaultController extends Controller
                 $hostname . $url,
                 $hostname . $product->getImage()->getPath(),
                 $this->getParameter('company_name'),
-                'Apparel & Accessories > Jewelry',
-                'Apparel & Accessories > Jewelry',
+                $category,
                 $gender,
                 'all ages',
                 $materials,
@@ -399,7 +411,11 @@ class DefaultController extends Controller
 
         $text = preg_replace(['/\[(.+?)\]/', '/[\n\r]/'], ['', ' '], $text);
 
-        $text = str_replace(['<h3', '</h3>'], ['<h2', '</h2>'], $text);
+        $text = preg_replace('/(<[^>]+) style=".*?"/i', '$1', $text);
+
+        $text = preg_replace('/ style="[^"]+"/sui', ' ', $text);
+
+        $text = preg_replace('/<style\b[^>]*>(.*?)<\/style>/si', '', $text);
 
         return $text;
     }

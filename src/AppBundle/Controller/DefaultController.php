@@ -327,12 +327,25 @@ class DefaultController extends Controller
         $router = $this->get('router');
 
         $feedData = [
-            ['id', 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'brand']
+            ['id', 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'brand',
+                'google_product_category', 'fb_product_category', 'gender', 'age_group', 'material', 'rich_text_description']
         ];
 
         $products = $em->getRepository(Product::class)->findBy(['isActive' => true], ['id' => 'DESC']);
         foreach ($products as $product) {
             $url = $router->generate('product_view', ['category' => $product->getCategory()->getSlug(), 'id' => $product->getId(), 'slug' => $product->getSlug()]);
+            $gender = 'female';
+            if ($product->getIsMan() && $product->getIsWoman()) {
+                $gender = 'unisex';
+            } elseif ($product->getIsMan()) {
+                $gender = 'male';
+            }
+
+            $material = [];
+            foreach ($product->getStones() as $stone) {
+                $material[] = $stone->translate('uk')->getName();
+            }
+            $materials = implode(', ', $material);
 
             array_push($feedData, [
                 $product->getId(),
@@ -343,7 +356,13 @@ class DefaultController extends Controller
                 $product->getPrice() . ' UAH',
                 $hostname . $url,
                 $hostname . $product->getImage()->getPath(),
-                $this->getParameter('company_name')
+                $this->getParameter('company_name'),
+                'Apparel & Accessories > Jewelry',
+                'Apparel & Accessories > Jewelry',
+                $gender,
+                'all ages',
+                $materials,
+                preg_replace(['/\[(.+?)\]/', '/[\n\r]/'], ['', ' '], $product->translate('uk')->getDescription())
             ]);
         }
 

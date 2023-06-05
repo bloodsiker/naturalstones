@@ -345,6 +345,10 @@ class DefaultController extends Controller
             foreach ($product->getStones() as $stone) {
                 $material[] = $stone->translate('uk')->getName();
             }
+            foreach ($product->getMetals() as $metal) {
+                $material[] = $metal->translate('uk')->getName();
+            }
+
             $materials = implode(', ', $material);
 
             array_push($feedData, [

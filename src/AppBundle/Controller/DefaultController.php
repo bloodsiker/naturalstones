@@ -327,7 +327,7 @@ class DefaultController extends Controller
         $router = $this->get('router');
 
         $feedData = [
-            ['id', 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'brand',
+            ['id', 'title', 'description', 'availability', 'condition', 'price', 'sale_price', 'link', 'image_link', 'brand',
                 'google_product_category', 'fb_product_category', 'gender', 'age_group', 'material', 'rich_text_description']
         ];
 
@@ -358,6 +358,7 @@ class DefaultController extends Controller
                 'in stock',
                 'new',
                 $product->getPrice() . ' UAH',
+                $product->getDiscount() ? $product->getDiscount() . ' UAH' : '',
                 $hostname . $url,
                 $hostname . $product->getImage()->getPath(),
                 $this->getParameter('company_name'),

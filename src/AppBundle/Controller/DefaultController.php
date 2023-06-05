@@ -3,10 +3,6 @@
 namespace AppBundle\Controller;
 
 use ArticleBundle\Entity\Article;
-use BookBundle\Entity\Book;
-use BookBundle\Entity\BookCollection;
-use Doctrine\ORM\Query\ResultSetMapping;
-use GenreBundle\Entity\Genre;
 use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
 use ShareBundle\Entity\Colour;
@@ -322,6 +318,66 @@ class DefaultController extends Controller
         $response->headers->set('Content-Type', 'application/xml; charset=utf-8');
 
         return $response;
+    }
+
+    public function generateFeedAction(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $hostname = $request->getSchemeAndHttpHost();
+        $router = $this->get('router');
+
+        $feedData = [
+            ['id', 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'brand']
+        ];
+
+        $products = $em->getRepository(Product::class)->findBy(['isActive' => true], ['id' => 'DESC']);
+        foreach ($products as $product) {
+            $url = $router->generate('product_view', ['category' => $product->getCategory()->getSlug(), 'id' => $product->getId(), 'slug' => $product->getSlug()]);
+
+            array_push($feedData, [
+                $product->getId(),
+                $product->translate('uk')->getName(),
+                $this->facebookText($product->translate('uk')->getDescription()),
+                'in stock',
+                'new',
+                $product->getPrice() . ' UAH',
+                $hostname . $url,
+                $hostname . $product->getImage()->getPath(),
+                $this->getParameter('company_name')
+            ]);
+        }
+
+        $filePath = $this->getParameter('kernel.project_dir').'/web/feeds/facebook_feed.csv';
+        $this->saveFeedToFile($filePath, $feedData);
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'inline; filename="facebook_feed.csv"');
+        $response->setContent(file_get_contents($filePath));
+
+        return $response;
+    }
+
+    private function saveFeedToFile(string $filePath, array $feedData): void
+    {
+        $handle = fopen($filePath, 'w');
+
+        foreach ($feedData as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+    }
+
+    public function facebookText($text)
+    {
+        $text = strip_tags($text);
+
+        $text = preg_replace(['/\[(.+?)\]/', '/[\n\r]/'], ['', ' '], $text);
+
+        $text = str_replace(['<h3', '</h3>'], ['<h2', '</h2>'], $text);
+
+        return $text;
     }
 
     /**

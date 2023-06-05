@@ -59,6 +59,14 @@ sitemap:
         _format: "xml"
     options: { i18n: false }
 
+facebook_feed:
+    path: /facebookfeed.{_format}
+    defaults:
+        _controller: AppBundle:Default:generateFeed
+    requirements:
+        _format: "csv"
+    options: { i18n: false }
+
 opensearch:
     path: /opensearch.{_format}
     defaults:

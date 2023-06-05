@@ -32,8 +32,7 @@ sonata_page:
         - block__ajax
         - order_board_vote
         - comment_vote
-        - inc_book_download
-        - book_download
+        - facebook_feed
 
     ignore_uri_patterns:
         - "^/admin\\/"   # ignore admin route, ie route containing 'admin'

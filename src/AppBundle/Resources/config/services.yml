@@ -89,6 +89,7 @@ services:
             - '@product.router.helper'
             - '@app.entity_manager'
             - '@monolog.http_client'
+            - '@app.order_message.builder'
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
@@ -106,3 +107,8 @@ services:
         calls:
             - [ setRequest, [ '@request_stack' ] ]
             - [ setContainer, ['@service_container']]
+
+    app.order_message.builder:
+        class: AppBundle\Builder\OrderMessageBuilder
+        arguments:
+            - '@product.router.helper'

@@ -8,6 +8,8 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Builder\BuilderMessage;
+use AppBundle\Builder\OrderMessageBuilder;
 use Doctrine\ORM\EntityManager;
 use OrderBundle\Entity\Order;
 use ProductBundle\Entity\Product;
@@ -32,51 +34,59 @@ class SendTelegramService
 
     private EntityManager $entityManager;
 
+    private OrderMessageBuilder $orderMessageBuilder;
+
     public function __construct(
         Router $router,
         ProductRouterHelper $productRouterHelper,
         EntityManager $entityManager,
-        HttpClientInterface $client
+        HttpClientInterface $client,
+        BuilderMessage $orderMessageBuilder
     ) {
         $this->route = $router;
         $this->productRouterHelper = $productRouterHelper;
         $this->entityManager = $entityManager;
         $this->client = $client;
+        $this->orderMessageBuilder = $orderMessageBuilder;
     }
 
     public function sendMessageFromQuickForm(Order $order)
     {
         $adminOrderLink = $this->route->generate('admin_order_order_edit', ['id' => $order->getId()], Router::ABSOLUTE_URL);
 
-        $html = "<b>Заказ #" . $order->getId() . "</b>" . PHP_EOL;
-        $html .= "Форма быстрого заказа" . PHP_EOL;
-        if ($order->getMessenger() === 'instagram') {
-            $html .= "<b>Ссылка на инстаграм:</b> " . $order->getInstagram() . PHP_EOL;
-        } else {
-            $html .= "<b>Телефон:</b> " . $order->getPhone() . ' - ' . $order->getMessenger() . PHP_EOL;
-        }
+        $html = $this->orderMessageBuilder
+            ->setOrder($order)
+            ->getMessageFromQuickForm();
 
-        if ($order->getCallMe()) {
-            $html .= "<b>Перезвонить:</b> Да" . PHP_EOL;
-        }
-
-        $html .= "<b>Сумма заказа:</b> " . number_format($order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
-        foreach ($order->getOrderHasItems() as $orderItem) {
-            $product = $orderItem->getProduct();
-            $link = $this->productRouterHelper->getProductPath($product, true);
-            $html .= "--- " . sprintf("<a href='%s'>%s %s</a>", $link, $product->getName(), $product->getSize()  ) ." - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
-            if ($orderItem->getColour()) {
-                $html .= " Цвет: " . $orderItem->getColour()->getName();
-            }
-            if ($orderItem->getOptions()) {
-                $html .= " Параметры : " . $orderItem->getOptions();
-            }
-            if ($orderItem->getDiscount()) {
-                $html .= ' (Скидка ' . $orderItem->getDiscount() . ' грн)' . PHP_EOL;
-            } else {
-                $html .= PHP_EOL;
-            }
-        }
+//        $html = "<b>Заказ #" . $order->getId() . "</b>" . PHP_EOL;
+//        $html .= "Форма быстрого заказа" . PHP_EOL;
+//        if ($order->getMessenger() === 'instagram') {
+//            $html .= "<b>Ссылка на инстаграм:</b> " . $order->getInstagram() . PHP_EOL;
+//        } else {
+//            $html .= "<b>Телефон:</b> " . $order->getPhone() . ' - ' . $order->getMessenger() . PHP_EOL;
+//        }
+//
+//        if ($order->getCallMe()) {
+//            $html .= "<b>Перезвонить:</b> Да" . PHP_EOL;
+//        }
+//
+//        $html .= "<b>Сумма заказа:</b> " . number_format($order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
+//        foreach ($order->getOrderHasItems() as $orderItem) {
+//            $product = $orderItem->getProduct();
+//            $link = $this->productRouterHelper->getProductPath($product, true);
+//            $html .= "--- " . sprintf("<a href='%s'>%s %s</a>", $link, $product->getName(), $product->getSize()  ) ." - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
+//            if ($orderItem->getColour()) {
+//                $html .= " Цвет: " . $orderItem->getColour()->getName();
+//            }
+//            if ($orderItem->getOptions()) {
+//                $html .= " Параметры : " . $orderItem->getOptions();
+//            }
+//            if ($orderItem->getDiscount()) {
+//                $html .= ' (Скидка ' . $orderItem->getDiscount() . ' грн)' . PHP_EOL;
+//            } else {
+//                $html .= PHP_EOL;
+//            }
+//        }
 
         $keyboard['inline_keyboard'] = [
             [
@@ -97,43 +107,47 @@ class SendTelegramService
     {
         $adminOrderLink = $this->route->generate('admin_order_order_edit', ['id' => $order->getId()], Router::ABSOLUTE_URL);
 
-        $html = "<b>Заказ #" . $order->getId() . "</b>" . PHP_EOL;
-        $html .= "Заказ с корзины" . PHP_EOL;
-        $html .= "<b>Имя:</b> " . $order->getFio() . PHP_EOL;
-        if ($order->getMessenger() === 'instagram') {
-            $html .= "<b>Ссылка на инстаграм:</b> " . $order->getInstagram() . PHP_EOL;
-        } else {
-            $html .= "<b>Телефон:</b> " . $order->getPhone() . ' - ' . $order->getMessenger() . PHP_EOL;
-        }
-        if ($order->getCallMe()) {
-            $html .= "<b>Перезвонить:</b> Да" . PHP_EOL;
-        }
-        if ($order->getEmail()) {
-            $html .= "<b>Email:</b> " . $order->getEmail() . PHP_EOL;
-        }
-        if ($order->getAddress()) {
-            $html .= "<b>Адрес:</b> " . $order->getAddress() . PHP_EOL;
-        }
-        if ($order->getComment()) {
-            $html .= "<b>Комментарий:</b> " . $order->getComment() . PHP_EOL;
-        }
-        $html .= "<b>Сумма заказа:</b> " . number_format($order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
-        foreach ($order->getOrderHasItems() as $orderItem) {
-            $product = $orderItem->getProduct();
-            $link = $this->productRouterHelper->getProductPath($product, true);
-            $html .= "---" . sprintf("<a href='%s'>%s %s</a>", $link, $product->getName(), $product->getSize()  ) ." - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
-            if ($orderItem->getColour()) {
-                $html .= " Цвет: " . $orderItem->getColour()->getName();
-            }
-            if ($orderItem->getOptions()) {
-                $html .= " Параметры : " . $orderItem->getOptions();
-            }
-            if ($orderItem->getDiscount()) {
-                $html .= ' (Скидка ' . $orderItem->getDiscount() . ' грн)' . PHP_EOL;
-            } else {
-                $html .= PHP_EOL;
-            }
-        }
+        $html = $this->orderMessageBuilder
+            ->setOrder($order)
+            ->getMessageFromCart();
+
+//        $html = "<b>Заказ #" . $order->getId() . "</b>" . PHP_EOL;
+//        $html .= "Заказ с корзины" . PHP_EOL;
+//        $html .= "<b>Имя:</b> " . $order->getFio() . PHP_EOL;
+//        if ($order->getMessenger() === 'instagram') {
+//            $html .= "<b>Ссылка на инстаграм:</b> " . $order->getInstagram() . PHP_EOL;
+//        } else {
+//            $html .= "<b>Телефон:</b> " . $order->getPhone() . ' - ' . $order->getMessenger() . PHP_EOL;
+//        }
+//        if ($order->getCallMe()) {
+//            $html .= "<b>Перезвонить:</b> Да" . PHP_EOL;
+//        }
+//        if ($order->getEmail()) {
+//            $html .= "<b>Email:</b> " . $order->getEmail() . PHP_EOL;
+//        }
+//        if ($order->getAddress()) {
+//            $html .= "<b>Адрес:</b> " . $order->getAddress() . PHP_EOL;
+//        }
+//        if ($order->getComment()) {
+//            $html .= "<b>Комментарий:</b> " . $order->getComment() . PHP_EOL;
+//        }
+//        $html .= "<b>Сумма заказа:</b> " . number_format($order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
+//        foreach ($order->getOrderHasItems() as $orderItem) {
+//            $product = $orderItem->getProduct();
+//            $link = $this->productRouterHelper->getProductPath($product, true);
+//            $html .= "---" . sprintf("<a href='%s'>%s %s</a>", $link, $product->getName(), $product->getSize()  ) ." - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
+//            if ($orderItem->getColour()) {
+//                $html .= " Цвет: " . $orderItem->getColour()->getName();
+//            }
+//            if ($orderItem->getOptions()) {
+//                $html .= " Параметры : " . $orderItem->getOptions();
+//            }
+//            if ($orderItem->getDiscount()) {
+//                $html .= ' (Скидка ' . $orderItem->getDiscount() . ' грн)' . PHP_EOL;
+//            } else {
+//                $html .= PHP_EOL;
+//            }
+//        }
 
         $keyboard['inline_keyboard'] = [
             [
@@ -155,11 +169,12 @@ class SendTelegramService
      */
     public function sendFeedback(Request $request)
     {
-        $html = "Не нашли то, что искали?" . PHP_EOL;
-        $html .= "<b>Имя:</b> " . $request->get('name') . PHP_EOL;
-        $html .= "<b>Телефон:</b> " . $request->get('phone') . PHP_EOL;
-        $html .= "<b>Email:</b> " . $request->get('email') . PHP_EOL;
-        $html .= "<b>Сообщение:</b> " . $request->get('message') . PHP_EOL;
+        $html = $this->orderMessageBuilder->getMessageFeedback($request);
+//        $html = "Не нашли то, что искали?" . PHP_EOL;
+//        $html .= "<b>Имя:</b> " . $request->get('name') . PHP_EOL;
+//        $html .= "<b>Телефон:</b> " . $request->get('phone') . PHP_EOL;
+//        $html .= "<b>Email:</b> " . $request->get('email') . PHP_EOL;
+//        $html .= "<b>Сообщение:</b> " . $request->get('message') . PHP_EOL;
 
         $this->requestTelegram("sendMessage", [
             'chat_id' => $this->container->getParameter('telegram_chat_id'),

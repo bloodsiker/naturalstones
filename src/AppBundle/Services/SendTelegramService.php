@@ -349,6 +349,9 @@ class SendTelegramService
 
         $result = json_decode($res, true);
 
+        $logger = $this->container->get('logger');
+        $logger->info('Response telegram bot: ', $result);
+
         if (isset($result['ok']) && $result['ok'] == true) {
 
             $messageId = $result['result']['message_id'];

@@ -30,5 +30,5 @@ parameters:
     #telegram_chat_id: 231715532
     telegram_channel_chat_id: '-1001563579706'
     domain: app.loc
-    full_domain: http://ns.loc
+    full_domain: 'http://localhost:81'
     company_name: Naturalstones Jewerly

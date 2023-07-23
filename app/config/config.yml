@@ -125,5 +125,7 @@ swiftmailer:
     spool: { type: memory }
 
 sensio_framework_extra:
-   router:
+    psr_message:
+        enabled: false
+    router:
         annotations: false

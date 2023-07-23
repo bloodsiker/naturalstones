@@ -32,3 +32,4 @@ parameters:
     domain: app.loc
     full_domain: 'http://localhost:81'
     company_name: Naturalstones Jewerly
+    sentry_dsn: 'https://83d5f99e52ea4f308bbd2faac8f2d4b7@o4505555230654464.ingest.sentry.io/4505555234390016'

@@ -44,7 +44,7 @@
 
         {% if settings.view_all %}
             <a href="{{ path('stone_list') }}" class="stone-item">
-                <div class="head-stone">Посмотреть все</div>
+                <div class="head-stone">{{ 'frontend.homepage.btn_all_stones'|trans([], 'AppBundle') }}</div>
                 <img src="" style="width: 150px;" class="lazyload" data-src="{{ asset('bundles/app/images/arrow_rght.png') }}" alt="Посмотреть все">
             </a>
         {% endif %}

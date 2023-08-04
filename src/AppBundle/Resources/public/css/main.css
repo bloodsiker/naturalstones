@@ -787,6 +787,28 @@ footer {
   background: #55a0dc;
 }
 
+.footer-pinterest {
+  background: #bd091c;
+  margin-right: 10px;
+}
+.footer-pinterest img {
+  width: 32px;
+}
+.footer-pinterest:hover {
+  background: #bd091c;
+}
+
+.footer-tiktok {
+  background: #3f3f3f;
+  margin-right: 10px;
+}
+.footer-tiktok img {
+  width: 32px;
+}
+.footer-tiktok:hover {
+  background: #454545;
+}
+
 .footer-youtube {
   background: #dc0808;
   margin-right: 10px;
@@ -810,8 +832,7 @@ footer {
 }
 
 .footer-instagram {
-  background: #f08383;
-  margin-right: 63px;
+  background: #e25cb0;
 }
 
 .footer-instagram img {
@@ -819,7 +840,7 @@ footer {
 }
 
 .footer-instagram:hover {
-  background: #edb9b9;
+  background: #cc4b9c;
 }
 
 .footer-pay .title {
@@ -1918,6 +1939,24 @@ footer {
 
 .video-telegram img {
   width: 26px;
+}
+
+.video-tiktok {
+  left: 20px;
+  bottom: 260px;
+}
+
+.video-tiktok img {
+  width: 33px;
+}
+
+.video-pinterest {
+  left: 20px;
+  bottom: 320px;
+}
+
+.video-pinterest img {
+  width: 32px;
 }
 
 .video-instagram {
@@ -5642,6 +5681,16 @@ article.article {
     bottom: 180px;
   }
 
+  .video-tiktok {
+    left: 10px;
+    bottom: 235px;
+  }
+
+  .video-pinterest {
+    left: 10px;
+    bottom: 290px;
+  }
+
   .video-facebook {
     left: 10px;
     bottom: 70px;
@@ -5881,8 +5930,9 @@ article.article {
     text-align: center;
   }
 
-  ..footer-block-social {
+  .footer-block-social {
     justify-content: center;
+    padding-left: 20px;
   }
 
   .footer-block {

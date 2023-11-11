@@ -43,17 +43,23 @@ class StoneRepository extends EntityRepository
      */
     public function filterByLetter(QueryBuilder $qb, string $letter): QueryBuilder
     {
-        return $qb->andWhere("st.name LIKE :letter")->setParameter('letter', $letter.'%');
+        return $qb
+            ->andWhere("st.name LIKE :letter")
+            ->setParameter('letter', $letter.'%');
     }
 
     /**
      * @return mixed
      */
-    public function uniqLetterByStone()
+    public function uniqLetterByStone($locale)
     {
         $qb = $this->baseStoneQueryBuilder();
 
-        $qb->select($qb->expr()->substring('st.name', 1, 1))->distinct()->orderBy('st.name');
+        $qb->select($qb->expr()->substring('st.name', 1, 1))
+            ->andWhere('st.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->distinct()
+            ->orderBy('st.name');
 
         return $qb->getQuery()->getResult();
     }

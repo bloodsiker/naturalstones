@@ -24,6 +24,7 @@ imports:
     - { resource: shortcode/shortcode.yml }
     - { resource: vich/vich_uploader.yml }
     - { resource: whiteoctober/pagerfanta.yml }
+    - { resource: sentry/sentry.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration

@@ -15,9 +15,11 @@
         {{ sonata_block_include_stylesheets('screen', app.request.basePath) }}
         {{ sonata_block_include_javascripts('screen', app.request.basePath) }}
 
-        {% for locale in locales_list %}
-            <link rel="alternate" href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': locale})) }}" hreflang="{{ locale == 'ua' ? 'uk' : locale }}" />
-        {% endfor %}
+        {% if app.request.attributes.get('_route') %}
+            {% for locale in locales_list %}
+                <link rel="alternate" href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': locale})) }}" hreflang="{{ locale == 'ua' ? 'uk' : locale }}" />
+            {% endfor %}
+        {% endif %}
 
         {% block favicon %}
             <link rel="icon" href="{{ asset('bundles/app/images/favicons/favicon.ico') }}" type="image/x-icon" />

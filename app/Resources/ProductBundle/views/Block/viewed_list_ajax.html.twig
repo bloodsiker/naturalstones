@@ -11,7 +11,7 @@
                     <img class="lazyload" data-src="{{ asset(product.image.path) }}" src="" alt="{{ product.name }}" itemprop="contentUrl">
                 </a>
                 <div class="product-category"><a href="{{ path('product_list', {'slug': product.category.slug}) }}">{{ product.category.name }}</a></div>
-                <div class="name"><a href="{{ product_path(product) }}">{{ product.getName }}</a></div>
+                <div class="name"><a href="{{ product_path(product) }}">{{ product.name }}</a></div>
             </div>
         {% endfor %}
     </div>

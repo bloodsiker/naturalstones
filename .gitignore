@@ -19,4 +19,5 @@
 /web/files/
 /web/images/
 /web/public/
+/web/feeds/*
 phpunit.xml.dist

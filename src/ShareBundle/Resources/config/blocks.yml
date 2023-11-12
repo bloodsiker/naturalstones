@@ -23,6 +23,7 @@ services:
             - share.block.stones
             - '@templating'
             - '@?doctrine'
+            - '@request_stack'
         tags:
             - { name: sonata.block }
 

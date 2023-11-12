@@ -8,6 +8,7 @@ use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,17 +23,23 @@ class StonesBlockService extends AbstractAdminBlockService
     protected $doctrine;
 
     /**
+     * @var RequestStack
+     */
+    private $request;
+
+    /**
      * ListGenreBlockService constructor.
      *
      * @param string          $name
      * @param EngineInterface $templating
      * @param Registry        $doctrine
      */
-    public function __construct($name, EngineInterface $templating, Registry $doctrine)
+    public function __construct($name, EngineInterface $templating, Registry $doctrine, RequestStack $request)
     {
         parent::__construct($name, $templating);
 
         $this->doctrine = $doctrine;
+        $this->request = $request;
     }
 
     /**
@@ -82,6 +89,8 @@ class StonesBlockService extends AbstractAdminBlockService
             return new Response();
         }
 
+        $request = $this->request->getCurrentRequest();
+
         $repository = $this->doctrine->getRepository(Stone::class);
 
         $limit = $blockContext->getSetting('items_count');
@@ -105,11 +114,9 @@ class StonesBlockService extends AbstractAdminBlockService
             ->getQuery()
             ->getResult();
 
-//        dump($stones);die;
-
         if ($blockContext->getSetting('show_letters')) {
             $letterStones = [];
-            foreach ($repository->uniqLetterByStone() as $value) {
+            foreach ($repository->uniqLetterByStone($request->getLocale()) as $value) {
                 $letterStones[$value[1]] = [];
             }
 

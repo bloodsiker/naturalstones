@@ -1078,10 +1078,12 @@ $(document).ready(function() {
 	$('.btn-filter').on('click', filterUpdate);
 	$(document).on('change', '.filter-form .sort-select', filterUpdate);
 
+	let lang = $('html').attr('lang');
+
 	$('.slice-this').wTextSlicer({
 		height: '350',
-		textExpand: 'Развернуть описание',
-		textHide: 'Свернуть описание'
+		textExpand: lang === 'ru' ? 'Развернуть описание' : 'Розгорнути опис',
+		textHide: lang === 'ru' ? 'Свернуть описание' : 'Згорнути опис'
 	});
 
 });

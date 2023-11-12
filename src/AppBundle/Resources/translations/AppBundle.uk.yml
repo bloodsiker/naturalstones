@@ -100,6 +100,7 @@ frontend:
     homepage:
         all_decorations: Усі прикраси
         all_stones: Вибирайте каміння на будь-який смак
+        btn_all_stones: Подивитися всі
         stones_for_zodiac: Камені по знаку зодіаку
         popular_mounth: Найпопулярніші за місяць
         feedback: Чи не знайшли те, що шукали?

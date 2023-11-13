@@ -1,2 +1,3 @@
 sentry:
   dsn: "%sentry_dsn%"
+  environment: 'prod'

@@ -19,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,6 +35,7 @@ class ListProductBlockService extends AbstractAdminBlockService
     const SIMILAR_LIST = 'ProductBundle:Block:similar_list.html.twig';
     const BUY_WITH_LIST = 'ProductBundle:Block:buy_with_list.html.twig';
     const TEMPLATE_AJAX  = 'ProductBundle:Block:large_list_ajax.html.twig';
+    const TEMPLATE_PAGINATION  = 'ProductBundle:Block:_pagination.html.twig';
 
     const CATEGORY_NABORI = 5;
 
@@ -163,9 +165,14 @@ class ListProductBlockService extends AbstractAdminBlockService
 
         $request = $this->requestStack->getCurrentRequest();
         $isAjax = $request->isXmlHttpRequest();
+        $loadMore = $request->get('load_more', false);
 
         $limit = (int) $blockContext->getSetting('items_count');
         $page = $isAjax ? $request->get('page') : $blockContext->getSetting('page');
+
+        if ($request->get('show_paginator')) {
+            $blockContext->setSetting('show_paginator', true);
+        }
 
         $repository = $this->doctrine->getRepository(Product::class);
         $repositoryCategory = $this->doctrine->getRepository(Category::class);
@@ -211,7 +218,7 @@ class ListProductBlockService extends AbstractAdminBlockService
             $repository->filterByRand($qb);
         }
 
-        if ($blockContext->getSetting('filter')) {
+        if ($blockContext->getSetting('filter') && !$loadMore) {
             $maxPriceQb = $minPriceQb = clone $qb;
             $maxPrice = $maxPriceQb->resetDQLPart('select')->select('MAX(p.price) as max')->getQuery()->getSingleResult();
             $minPrice = $minPriceQb->resetDQLPart('select')->select('MIN(p.price) as min')->getQuery()->getSingleResult();
@@ -257,6 +264,13 @@ class ListProductBlockService extends AbstractAdminBlockService
             $repository->filterByColours($qb, explode(',', $request->get('colour')));
         }
 
+        if ($request->get('category_slug')) {
+            $category = $repositoryCategory->findOneBy(['slug' => $request->get('category_slug')]);
+            if ($category) {
+                $repository->filterByCategory($qb, $category);
+            }
+        }
+
         $paginator = new Pagerfanta(new QueryAdapter($qb, true, false));
         $paginator->setAllowOutOfRangePages(true);
         $paginator->setMaxPerPage((int) $limit);
@@ -265,7 +279,29 @@ class ListProductBlockService extends AbstractAdminBlockService
         $template = !is_null($blockContext->getSetting('list_type'))
             ? $blockContext->getSetting('list_type') : $blockContext->getTemplate();
 
-        return $this->renderResponse($request->isXmlHttpRequest() ? self::TEMPLATE_AJAX : $template, [
+        if ($loadMore) {
+            $responseProducts = $this->renderResponse(self::TEMPLATE_AJAX, [
+                'products'  => $paginator,
+                'block'     => $block,
+                'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
+            ], new Response());
+
+            $responsePagination = $this->renderResponse(self::TEMPLATE_PAGINATION, [
+                '_route_params'  => $request->get('route_params'),
+                '_route'    => $request->get('route'),
+                'products'  => $paginator,
+                'block'     => $block,
+                'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
+            ], new Response());
+
+            return new JsonResponse([
+                'view' => $responseProducts->getContent(),
+                'pagination' => $responsePagination->getContent(),
+                'next_page' => $paginator->hasNextPage()
+            ]);
+        }
+
+        return $this->renderResponse($isAjax ? self::TEMPLATE_AJAX : $template, [
             'products'  => $paginator,
             'maxPrice'  => $maxPrice['max'] ?? 0,
             'minPrice'  => $minPrice['min'] ?? 0,

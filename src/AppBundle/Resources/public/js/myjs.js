@@ -709,21 +709,68 @@ $(document).ready(function() {
 	$('#get_more_products').on('click', function (e) {
 		e.preventDefault();
 
-		let _this = $(this),
-			page = _this.data('page'),
-			url = _this.data('url');
+		let paramsObj = {};
+		let routeParams = {};
+
+		let url = window.location.href;
+		let paramsString = url.split('?')[1];
+		if (paramsString) {
+			let paramsArray = paramsString.split('&');
+
+			paramsArray.forEach(item => {
+				let [key, value] = item.split('=');
+				paramsObj[key] = value;
+			});
+
+			paramsArray.forEach(item => {
+				let [key, value] = item.split('=');
+				routeParams[key] = value;
+			});
+		}
+
+		let _this = $(this)
+		let	ajaxUrl = _this.data('url');
+		let page = _this.data('next-page');
+
+		routeParams['slug'] = _this.data('category');
+
+		paramsObj['page'] = page;
+		paramsObj['load_more'] = true;
+		paramsObj['show_paginator'] = true;
+		paramsObj['category_slug'] = _this.data('category');
+		paramsObj['route_params'] = routeParams;
+		paramsObj['route'] = _this.data('route');
 
 		_this.addClass('loading');
 
 		$.ajax({
 			type: 'POST',
-			url: url,
-			data: { page: page },
+			url: ajaxUrl,
+			data: paramsObj,
 			success: function (response) {
-				$('.catalog-flex').find('.catalog-block:last').after(response);
+				$('.main-catalog').find('.catalog-block:last').after(response.view);
+				$('.pagination-container').html(response.pagination);
 				_this.removeClass('loading');
+				console.log(page);
+
+				let url = new URL(window.location.href);
+				let params = new URLSearchParams(url.search);
+				let pageNumber = params.get('page');
+				if(!pageNumber) {
+					params.append('page', page);
+				} else {
+					params.set('page', page);
+				}
+
+				url.search = params.toString();
+				window.history.pushState({}, '', url.toString());
+
 				page += 1
-				_this.data('page', page);
+				_this.data('next-page', page);
+
+				if (!response.next_page) {
+					_this.hide();
+				}
 			}
 		});
 	})

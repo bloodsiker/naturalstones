@@ -11,21 +11,25 @@
         {% endif %}
     </div>
 
-    <div class="catalog-flex">
+    <div class="catalog-flex main-catalog">
         {% include 'ProductBundle:Block:large_list_ajax.html.twig' %}
     </div>
 
-    {% if settings.ajax_paginator and products.count > settings.items_count %}
+    {% if settings.ajax_paginator and products.hasNextPage %}
         {% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
         <div class="more-catalog">
-            <a href="#" class="more-catalog-link" id="get_more_products" data-page="2" data-url="{{ block_ajax_path }}"> <!-- loading - класс для вращения стрелки -->
+            <a href="#" class="more-catalog-link" id="get_more_products"
+               data-route="{{ app.request.attributes.get('_route') }}"
+               data-category="{{ settings.category.slug }}"
+               data-next-page="{{  products.hasNextPage ? products.getNextPage : null }}"
+               data-url="{{ block_ajax_path }}">
                 <i><img src="{{ asset('bundles/app/images/rotate.svg') }}" alt="" /></i>
                 <span>Загрузить еще</span>
             </a>
         </div>
     {% endif %}
 
-    {% if settings.show_paginator and products.maxPerPage is defined and products.count > products.maxPerPage %}
-        {{ pagerfanta(products, { 'omitFirstPage': true}) }}
-    {% endif %}
+    <div class="pagination-container">
+        {% include 'ProductBundle:Block:_pagination.html.twig' %}
+    </div>
 {% endif %}

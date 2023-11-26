@@ -38,6 +38,11 @@ class ProductController extends Controller
         $router = $this->get('router');
         $repo = $this->getDoctrine()->getManager()->getRepository(Category::class);
         $category = $repo->findOneBy(['slug' => $slug]);
+
+        if (!$category instanceof Category) {
+            return $this->redirectToRoute('homepage');
+        }
+
         $breadcrumb = $this->get('app.breadcrumb');
         $breadcrumb->addBreadcrumb(['title' => $category->getName()]);
 

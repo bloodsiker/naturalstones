@@ -202,7 +202,8 @@ class ProductController extends Controller
         $repo = $this->getDoctrine()->getManager()->getRepository(Product::class);
         $product = $repo->find($request->get('id'));
         if (!$product) {
-            throw $this->createNotFoundException(self::PRODUCT_404);
+            return $this->redirectToRoute('product_list', ['slug' => $product->getCategory()->getSlug()]);
+//            throw $this->createNotFoundException(self::PRODUCT_404);
         }
 
         if (!$product->getIsActive()) {

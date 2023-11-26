@@ -192,7 +192,7 @@ class DefaultController extends Controller
             }
         }
 
-        $letter = $em->getRepository(Stone::class)->uniqLetterByStone();
+        $letter = $em->getRepository(Stone::class)->uniqLetterByStone('ru');
         foreach ($letter as $key => $let) {
             if (isset($let[1])) {
                 $key = 'stone_letter_'.$key;

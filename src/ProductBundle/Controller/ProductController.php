@@ -40,7 +40,7 @@ class ProductController extends Controller
         $category = $repo->findOneBy(['slug' => $slug]);
 
         if (!$category instanceof Category) {
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('index');
         }
 
         $breadcrumb = $this->get('app.breadcrumb');

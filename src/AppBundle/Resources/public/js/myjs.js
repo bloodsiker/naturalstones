@@ -732,7 +732,14 @@ $(document).ready(function() {
 		let	ajaxUrl = _this.data('url');
 		let page = _this.data('next-page');
 
-		routeParams['slug'] = _this.data('category');
+		if (_this.data('category')) {
+			routeParams['slug'] = _this.data('category');
+		}
+
+		if (_this.data('search')) {
+			paramsObj['search'] = _this.data('search');
+			routeParams['search'] = _this.data('search');
+		}
 
 		paramsObj['page'] = page;
 		paramsObj['load_more'] = true;

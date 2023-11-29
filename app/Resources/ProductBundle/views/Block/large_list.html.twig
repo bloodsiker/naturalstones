@@ -24,7 +24,7 @@
                data-next-page="{{  products.hasNextPage ? products.getNextPage : null }}"
                data-url="{{ block_ajax_path }}">
                 <i><img src="{{ asset('bundles/app/images/rotate.svg') }}" alt="" /></i>
-                <span>Загрузить еще</span>
+                <span>{{ 'frontend.load_more'|trans([], 'AppBundle') }}</span>
             </a>
         </div>
     {% endif %}

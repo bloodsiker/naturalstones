@@ -15,30 +15,9 @@
     </form>
 </div>
 
-<div class="catalog-flex">
+<div class="catalog-flex main-catalog">
     {% if products|length %}
-        {% for product in products %}
-            <div class="catalog-block">
-                {% if product.discount %}
-                    {% set diff = product.price - product.discount %}
-                    <div class="ribbon discount"><div>{{ (diff * 100 / product.price)|round }}%</div></div>
-                {% endif %}
-                <a href="{{ product_path(product) }}" class="image"><img class="lazyload" data-src="{{ asset(product.image.path) }}" src="" alt="{{ product.name }}"></a>
-                <div class="name"><a href="">{{ product.name }}</a></div>
-                {% if product.discount %}
-                    <div class="price">
-                        <span class="old-price">{{ product.price}} грн</span>
-                        <span>{{ product.discount}} грн</span>
-                    </div>
-                {% else %}
-                    <div class="price"><span>{{ product.price}} грн</span></div>
-                {% endif %}
-                <a href="{{ product_path(product) }}" class="button">Купить</a>
-                {% if app.user %}
-                    <a href="{{ path('admin_product_product_edit', { 'id': product.id }) }}" class="product_link_edit" target="_blank">Edit</a>
-                {% endif %}
-            </div>
-        {% endfor %}
+        {% include 'AppBundle:search:Block/large_list_ajax.html.twig' %}
     {% else %}
         <div class="no-result">
             <span>⚆ _ ⚆</span>
@@ -50,6 +29,21 @@
     {% endif %}
 </div>
 
-{% if products.maxPerPage is defined and products.count > products.maxPerPage %}
-    {{ pagerfanta(products, { 'omitFirstPage': true}) }}
+{% if settings.ajax_paginator and products.hasNextPage %}
+    {% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+    <div class="more-catalog">
+        <a href="#" class="more-catalog-link" id="get_more_products"
+           data-route="{{ app.request.attributes.get('_route') }}"
+           data-category=""
+           data-search="{{ app.request.get('search') }}"
+           data-next-page="{{  products.hasNextPage ? products.getNextPage : null }}"
+           data-url="{{ block_ajax_path }}">
+            <i><img src="{{ asset('bundles/app/images/rotate.svg') }}" alt="" /></i>
+            <span>{{ 'frontend.load_more'|trans([], 'AppBundle') }}</span>
+        </a>
+    </div>
 {% endif %}
+
+<div class="pagination-container">
+    {% include 'ProductBundle:Block:_pagination.html.twig' %}
+</div>

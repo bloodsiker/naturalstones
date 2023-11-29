@@ -11,6 +11,7 @@ use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,6 +23,8 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 class SearchBlockService extends AbstractAdminBlockService
 {
     const DEFAULT_TEMPLATE = 'AppBundle:search/Block:large_list.html.twig';
+    const TEMPLATE_AJAX  = 'AppBundle:search/Block:large_list_ajax.html.twig';
+    const TEMPLATE_PAGINATION  = 'ProductBundle:Block:_pagination.html.twig';
 
     /**
      * @var EntityManager
@@ -71,11 +74,13 @@ class SearchBlockService extends AbstractAdminBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'list_type'   => null,
-            'search'      => null,
-            'items_count' => 20,
-            'page'        => 1,
-            'template'    => self::DEFAULT_TEMPLATE,
+            'list_type'      => null,
+            'search'         => null,
+            'items_count'    => 40,
+            'page'           => 1,
+            'show_paginator' => false,
+            'ajax_paginator' => false,
+            'template'       => self::DEFAULT_TEMPLATE,
         ]);
     }
 
@@ -94,7 +99,14 @@ class SearchBlockService extends AbstractAdminBlockService
 
         $request = $this->request->getCurrentRequest();
         $limit = (int) $blockContext->getSetting('items_count');
-        $page = (int) $blockContext->getSetting('page');
+        $isAjax = $request->isXmlHttpRequest();
+        $loadMore = $request->get('load_more', false);
+        $page = $isAjax ? $request->get('page') : $blockContext->getSetting('page');
+
+        if ($request->get('show_paginator')) {
+            $blockContext->setSetting('show_paginator', true);
+        }
+
         $search = $blockContext->getSetting('search')
             ? $blockContext->getSetting('search') : $request->get('search');
 
@@ -106,6 +118,7 @@ class SearchBlockService extends AbstractAdminBlockService
             $qb->orderBy('p.views', 'DESC');
 
             $results = new Pagerfanta(new QueryAdapter($qb, true, false));
+            $results->setAllowOutOfRangePages(true);
             $results->setMaxPerPage($limit);
             $results->setCurrentPage($page);
 
@@ -120,6 +133,28 @@ class SearchBlockService extends AbstractAdminBlockService
 
         $template = !is_null($blockContext->getSetting('list_type'))
             ? $blockContext->getSetting('list_type') : $blockContext->getTemplate();
+
+        if ($loadMore) {
+            $responseProducts = $this->renderResponse(self::TEMPLATE_AJAX, [
+                'products'  => $results ?? [],
+                'block'     => $block,
+                'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
+            ], new Response());
+
+            $responsePagination = $this->renderResponse(self::TEMPLATE_PAGINATION, [
+                '_route_params' => $request->get('route_params'),
+                '_route'    => $request->get('route'),
+                'products'  => $results ?? [],
+                'block'     => $block,
+                'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
+            ], new Response());
+
+            return new JsonResponse([
+                'view' => $responseProducts->getContent(),
+                'pagination' => $responsePagination->getContent(),
+                'next_page' => (isset($results) && $results) && $results->hasNextPage()
+            ]);
+        }
 
         return $this->renderResponse($template, [
             'products'    => $results ?? [],

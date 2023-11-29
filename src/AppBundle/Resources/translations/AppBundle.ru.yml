@@ -21,6 +21,7 @@ frontend:
     stone: Камень
     tag: Тег
     page: Страница
+    load_more: Загрузить еще
 
     search:
         title: Поиск по сайту

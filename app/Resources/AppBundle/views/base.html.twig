@@ -110,7 +110,7 @@
             </div>
             <div class="container-form-search">
                 <meta itemprop="url" content="{{ app.request.schemeAndHttpHost }}"/>
-                <form method="get" name="search-overlay" action="{{ path('search') }}" itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
+                <form method="get" name="search-overlay" action="{{ path('search_category') }}" itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
                     <div class="border-b">
                         <div class="flex">
                             <input type="search" placeholder="{{ 'frontend.search.title'|trans([], 'AppBundle') }}"

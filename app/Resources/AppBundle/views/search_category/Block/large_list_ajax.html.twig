@@ -1,0 +1,30 @@
+{% for product in item.products %}
+     <div class="catalog-block">
+         {% if product.discount %}
+             {% set diff = product.price - product.discount %}
+             <div class="ribbon discount"><div>{{ (diff * 100 / product.price)|round }}%</div></div>
+         {% endif %}
+         <a href="{{ product_path(product) }}" class="image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+             {% set hoverImg = null %}
+             {% if product.productHasImage|length > 0 %}
+                 {% set hoverImg = asset(product.productHasImage.first().getImage().path) %}
+             {% endif %}
+             <img class="lazyload" data-src="{{ asset(product.image.path) }}" src="" data-hover-img="{{ hoverImg }}" alt="{{ product.name }}" itemprop="contentUrl">
+         </a>
+         <div class="product-category"><a href="{{ path('product_list', {'slug': product.category.slug}) }}">{{ product.category.getName }}</a></div>
+         <div class="name"><a href="{{ product_path(product) }}">{{ product.name }}</a></div>
+         {% if product.discount %}
+             <div class="price">
+                 <span class="old-price">{{ product.price}} грн</span>
+                 <span>{{ product.discount}} грн</span>
+             </div>
+         {% else %}
+             <div class="price"><span>{{ product.price}} грн</span></div>
+         {% endif %}
+         <a href="{{ product_path(product) }}" class="button">Купить</a>
+
+         {% if app.user %}
+             <a href="{{ path('admin_product_product_edit', { 'id': product.id }) }}" class="product_link_edit" target="_blank">Edit</a>
+         {% endif %}
+     </div>
+ {% endfor %}

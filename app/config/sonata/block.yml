@@ -30,6 +30,8 @@ sonata_block:
             contexts: [ cms ]
         app.block.service.search:
             contexts: [cms]
+        app.block.service.search_category:
+            contexts: [ cms ]
         app.block.service.breadcrumb:
             contexts: [cms]
 #        app.block.service.get_state_value:

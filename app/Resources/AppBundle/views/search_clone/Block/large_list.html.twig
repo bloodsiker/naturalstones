@@ -1,0 +1,49 @@
+<div class="filter-outer">
+    {% if app.request.get('search') %}
+        <h1>{{ 'frontend.search.result'|trans([], 'AppBundle') }} <span class="highlight">{{ app.request.get('search')|raw }}</span></h1>
+    {% endif %}
+</div>
+
+<div class="container-form">
+    <meta itemprop="url" content="{{ app.request.schemeAndHttpHost }}"/>
+    <form action="{{ path('search') }}" class="form" itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
+        <meta itemprop="target" content="{{ url('search') }}/search?search={search}"/>
+        <div class="inputs">
+            <input type="text" name="search" itemprop="query-input" placeholder="Искать...(название камня)" value="{{ app.request.get('search') }}">
+            <button>{{ 'frontend.search.btn'|trans([], 'AppBundle') }}</button>
+        </div>
+    </form>
+</div>
+
+<div class="catalog-flex main-catalog">
+    {% if products|length %}
+        {% include 'AppBundle:search:Block/large_list_ajax.html.twig' %}
+    {% else %}
+        <div class="no-result">
+            <span>⚆ _ ⚆</span>
+            <div>
+                {{ 'frontend.search.empty'|trans([], 'AppBundle') }}
+            </div>
+        </div>
+
+    {% endif %}
+</div>
+
+{% if settings.ajax_paginator and products.hasNextPage %}
+    {% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+    <div class="more-catalog">
+        <a href="#" class="more-catalog-link" id="get_more_products"
+           data-route="{{ app.request.attributes.get('_route') }}"
+           data-category=""
+           data-search="{{ app.request.get('search') }}"
+           data-next-page="{{  products.hasNextPage ? products.getNextPage : null }}"
+           data-url="{{ block_ajax_path }}">
+            <i><img src="{{ asset('bundles/app/images/rotate.svg') }}" alt="" /></i>
+            <span>{{ 'frontend.load_more'|trans([], 'AppBundle') }}</span>
+        </a>
+    </div>
+{% endif %}
+
+<div class="pagination-container">
+    {% include 'ProductBundle:Block:_pagination.html.twig' %}
+</div>

@@ -53,6 +53,7 @@ frontend:
             bracelet: Браслет
             ring: Каблучка
             necklace: Кольє
+            earring: Сережки
         table:
             products: Товари
             price: Ціна
@@ -164,6 +165,7 @@ frontend:
     breadcrumb:
         main: Головна
         search: Пошук
+        search_category: Пошук по категорії
         cart: Кошик
         step: Оформлення замовлення
         stones: Усі камені

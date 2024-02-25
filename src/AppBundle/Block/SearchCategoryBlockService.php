@@ -5,6 +5,7 @@ namespace AppBundle\Block;
 use Doctrine\ORM\EntityManager;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
+use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
 use ProductBundle\Entity\ProductSearchHistory;
 use Sonata\BlockBundle\Meta\Metadata;
@@ -18,13 +19,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 /**
- * Class SearchBlockService
+ * Class SearchCategoryBlockService
  */
-class SearchBlockService extends AbstractAdminBlockService
+class SearchCategoryBlockService extends AbstractAdminBlockService
 {
-    const DEFAULT_TEMPLATE = 'AppBundle:search/Block:large_list.html.twig';
-    const TEMPLATE_AJAX  = 'AppBundle:search/Block:large_list_ajax.html.twig';
-    const TEMPLATE_PAGINATION  = 'ProductBundle:Block:_pagination.html.twig';
+    const DEFAULT_TEMPLATE = 'AppBundle:search_category/Block:large_list.html.twig';
 
     /**
      * @var EntityManager
@@ -77,9 +76,6 @@ class SearchBlockService extends AbstractAdminBlockService
             'list_type'      => null,
             'search'         => null,
             'items_count'    => 40,
-            'page'           => 1,
-            'show_paginator' => false,
-            'ajax_paginator' => false,
             'template'       => self::DEFAULT_TEMPLATE,
         ]);
     }
@@ -98,35 +94,44 @@ class SearchBlockService extends AbstractAdminBlockService
         }
 
         $request = $this->request->getCurrentRequest();
-        $limit = (int) $blockContext->getSetting('items_count');
-        $isAjax = $request->isXmlHttpRequest();
-        $loadMore = $request->get('load_more', false);
-        $page = $isAjax ? $request->get('page') : $blockContext->getSetting('page');
-        $category = $request->get('category');
-
-        if ($request->get('show_paginator')) {
-            $blockContext->setSetting('show_paginator', true);
-        }
 
         $search = $blockContext->getSetting('search')
             ? $blockContext->getSetting('search') : $request->get('search');
 
+        $resultByCategory = [];
+
         if ($search) {
             $repository = $this->em->getRepository(Product::class);
+            $repositoryCategory = $this->em->getRepository(Category::class);
 
             $qb = $repository->baseProductQueryBuilder();
             $qb = $repository->filterByLocale($qb, $search);
-
-            if ($category) {
-                $qb = $repository->filterByCategory($qb, $category);
-            }
-
             $qb->orderBy('p.views', 'DESC');
 
-            $results = new Pagerfanta(new QueryAdapter($qb, true, false));
-            $results->setAllowOutOfRangePages(true);
-            $results->setMaxPerPage($limit);
-            $results->setCurrentPage($page);
+            $result = $qb->getQuery()->getResult();
+
+            /** @var Product $item */
+            foreach ($result as $item) {
+                if (array_key_exists($item->getCategory()->getId(), $resultByCategory)) {
+                    if (count($resultByCategory[$item->getCategory()->getId()]) < 4) {
+                        $resultByCategory[$item->getCategory()->getId()][] = $item;
+                    }
+                } else {
+                    $resultByCategory[$item->getCategory()->getId()][] = $item;
+                }
+            }
+
+            $resultDetails = [];
+            foreach ($resultByCategory as $categoryId => $itemByCategory) {
+                $category = $repositoryCategory->find($categoryId);
+                $resultDetails[$categoryId]['sort'] = $category->getOrderNum();
+                $resultDetails[$categoryId]['category'] = $category;
+                $resultDetails[$categoryId]['products'] = $itemByCategory;
+            }
+
+            usort($resultDetails, function ($a, $b) {
+                return -1 * ($a['sort'] <=> $b['sort']);
+            });
 
             $ip = $request->server->get('REMOTE_ADDR');
             $history = new ProductSearchHistory();
@@ -140,30 +145,8 @@ class SearchBlockService extends AbstractAdminBlockService
         $template = !is_null($blockContext->getSetting('list_type'))
             ? $blockContext->getSetting('list_type') : $blockContext->getTemplate();
 
-        if ($loadMore) {
-            $responseProducts = $this->renderResponse(self::TEMPLATE_AJAX, [
-                'products'  => $results ?? [],
-                'block'     => $block,
-                'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
-            ], new Response());
-
-            $responsePagination = $this->renderResponse(self::TEMPLATE_PAGINATION, [
-                '_route_params' => $request->get('route_params'),
-                '_route'    => $request->get('route'),
-                'products'  => $results ?? [],
-                'block'     => $block,
-                'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
-            ], new Response());
-
-            return new JsonResponse([
-                'view' => $responseProducts->getContent(),
-                'pagination' => $responsePagination->getContent(),
-                'next_page' => (isset($results) && $results) && $results->hasNextPage()
-            ]);
-        }
-
         return $this->renderResponse($template, [
-            'products'    => $results ?? [],
+            'result'      => $resultDetails ?? [],
             'search'      => $search,
             'block'       => $block,
             'settings'    => array_merge($blockContext->getSettings(), $block->getSettings()),

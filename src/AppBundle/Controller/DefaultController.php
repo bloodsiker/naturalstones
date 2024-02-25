@@ -106,6 +106,24 @@ class DefaultController extends Controller
      */
     public function searchAction(Request $request)
     {
+        $router = $this->get('router');
+        $breadcrumb = $this->get('app.breadcrumb');
+        $breadcrumb->addBreadcrumb([
+            'title' => $this->get('translator')->trans('frontend.breadcrumb.search', [], 'AppBundle'),
+            'href' => $router->generate('search_category', ['search' => $request->get('search')])
+        ]);
+        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.search_category', [], 'AppBundle')]);
+
+        $this->get('app.seo.updater')->doMagic(null, [
+            'title' => $this->get('translator')->trans('frontend.meta.meta_title_search', [], 'AppBundle'),
+            'description' => $this->get('translator')->trans('frontend.meta.meta_description_search', [], 'AppBundle'),
+        ]);
+
+        return $this->render('AppBundle:search:search.html.twig');
+    }
+
+    public function searchCategoryAction(Request $request)
+    {
         $breadcrumb = $this->get('app.breadcrumb');
         $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.search', [], 'AppBundle')]);
 
@@ -114,7 +132,7 @@ class DefaultController extends Controller
             'description' => $this->get('translator')->trans('frontend.meta.meta_description_search', [], 'AppBundle'),
         ]);
 
-        return $this->render('AppBundle:search:search.html.twig');
+        return $this->render('AppBundle:search_category:search.html.twig');
     }
 
     /**

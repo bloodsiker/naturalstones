@@ -153,6 +153,9 @@ class Cart
                         if (isset($data['necklace'])) {
                             $productsInfo[self::TYPE_PRODUCT][$key]['necklace'] = $data['necklace'];
                         }
+                        if (isset($data['earring'])) {
+                            $productsInfo[self::TYPE_PRODUCT][$key]['earring'] = $data['earring'];
+                        }
                     }
                 }
             }
@@ -268,6 +271,9 @@ class Cart
             }
             if (isset($item['necklace']) && $item['necklace']) {
                 $option .= 'Колье: ' . $item['necklace'] . PHP_EOL;
+            }
+            if (isset($item['earring']) && $item['earring']) {
+                $option .= 'Серьги: ' . $item['earring'] . PHP_EOL;
             }
             $totalPrice += $item['totalPrice'];
             $product = $item['item'];

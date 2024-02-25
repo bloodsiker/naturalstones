@@ -5322,6 +5322,26 @@ article.article {
   border: 1px solid #5a5858;
   border-radius: 20px;
 }
+.search-category-container {
+  margin-bottom: 35px;
+}
+.search-title {
+  margin-bottom: 20px;
+  background: #fafafa;
+  border: 1px solid #e2dcdc;
+  padding: 11px;
+  border-radius: 5px;
+  justify-content: space-between;
+  align-items: center;
+}
+.search-category-link {
+  font-size: 16px;
+  color: #525252;
+}
+.search-category-title {
+  font-size: 20px;
+  color: #525252;
+}
 
 /* ========================== MEDIA ===========================*/
 
@@ -6579,6 +6599,17 @@ article.article {
   }
   .wheel_prize {
     font-size: 15px!important;
+  }
+  .search-title {
+    padding: 8px;
+  }
+  .search-category-link {
+    font-size: 12px;
+    color: #525252;
+  }
+  .search-category-title {
+    font-size: 14px;
+    color: #525252;
   }
 }
 

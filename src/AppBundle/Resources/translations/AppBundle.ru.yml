@@ -53,6 +53,7 @@ frontend:
             bracelet: Браслет
             ring: Кольцо
             necklace: Колье
+            earring: Серьги
         table:
             products: Товары
             price: Цена
@@ -164,6 +165,7 @@ frontend:
     breadcrumb:
         main: Главная
         search: Поиск
+        search_category: Поиск по категории
         cart: Корзина
         step: Оформление заказа
         stones: Все камни

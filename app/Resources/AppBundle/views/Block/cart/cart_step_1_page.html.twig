@@ -42,6 +42,10 @@
                             <br>
                             <i style="font-size: 14px;">{{ 'frontend.cart.product_option.necklace'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.necklace }}</i>
                         {% endif %}
+                        {% if mProduct.earring is defined %}
+                            <br>
+                            <i style="font-size: 14px;">{{ 'frontend.cart.product_option.earring'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.earring }}</i>
+                        {% endif %}
                     </div>
                     <div class="count">{{ mProduct.count }} шт.</div>
 

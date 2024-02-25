@@ -1,0 +1,23 @@
+<section class="simple-section">
+    <div class="container">
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.search' },
+                {
+                    'items_count' : 40,
+                    'page': app.request.get('page') ? app.request.get('page') : 1,
+                    'search' : app.request.get('search', null),
+                    'show_paginator': true,
+                    'ajax_paginator': true,
+                }
+            )
+        }}
+    </div>
+</section>

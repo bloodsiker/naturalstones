@@ -202,12 +202,14 @@ frontend:
         change_bracelet: Выберите браслет
         change_ring: Выберите кольцо
         change_necklaces: Выберите колье
+        change_earring: Выберите серьги
         letter: Буквы
         insert: Вставки
         pendant: Подвески
         bracelet: Браслеты
         ring: Кольца
         necklace: Колье
+        earrings: Серьги
         validate:
             letter: Вы не выбрали букву
             insert: Вы не выбрали вставку
@@ -215,6 +217,7 @@ frontend:
             bracelet: Вы не выбрали браслет
             ring: Вы не выбрали кольцо
             necklace: Вы не выбрали колье
+            earrings: Вы не выбрали серьги
         size: Размер
         included: Что входит в набор
         quick_order: Быстрый заказ

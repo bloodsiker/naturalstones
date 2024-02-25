@@ -24,6 +24,11 @@ search:
   defaults:
     _controller: AppBundle:Default:search
 
+search_category:
+  path: /search_category
+  defaults:
+    _controller: AppBundle:Default:searchCategory
+
 block__ajax:
   path: /_block/ajax/{blockType}/{blockId}
   defaults:

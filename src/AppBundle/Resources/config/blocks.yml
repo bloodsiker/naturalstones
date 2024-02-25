@@ -45,6 +45,16 @@ services:
         tags:
             - { name: sonata.block }
 
+    app.block.service.search_category:
+        class: "AppBundle\\Block\\SearchCategoryBlockService"
+        arguments:
+            - app.block.service.search_category
+            - '@templating'
+            - '@app.entity_manager'
+            - '@request_stack'
+        tags:
+            - { name: sonata.block }
+
     app.block.service.banner:
         class: "AppBundle\\Block\\BannerBlockService"
         arguments:

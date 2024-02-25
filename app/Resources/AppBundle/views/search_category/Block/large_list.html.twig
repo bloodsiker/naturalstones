@@ -1,0 +1,42 @@
+<div class="filter-outer">
+    {% if app.request.get('search') %}
+        <h1>{{ 'frontend.search.result'|trans([], 'AppBundle') }} <span class="highlight">{{ app.request.get('search')|raw }}</span></h1>
+    {% endif %}
+</div>
+
+<div class="container-form">
+    <meta itemprop="url" content="{{ app.request.schemeAndHttpHost }}"/>
+    <form action="{{ path('search_category') }}" class="form" itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
+        <meta itemprop="target" content="{{ url('search_category') }}?search={search}"/>
+        <div class="inputs">
+            <input type="text" name="search" itemprop="query-input" placeholder="Искать...(название камня)" value="{{ app.request.get('search') }}">
+            <button>{{ 'frontend.search.btn'|trans([], 'AppBundle') }}</button>
+        </div>
+    </form>
+</div>
+
+{% if result|length %}
+    {% for item in result %}
+        <div class="search-category-container">
+            <div class="flex flex-row search-title">
+                <h2 class="search-category-title"><a href="{{ path('search') }}?search={{ search }}&category={{ item.category.id }}">{{ item.category.name }}</a></h2>
+                <a href="{{ path('search') }}?search={{ search }}&category={{ item.category.id }}" class="search-category-link">Дивитись всі >>></a>
+            </div>
+
+
+            <div class="catalog-flex main-catalog">
+                {% include 'AppBundle:search_category:Block/large_list_ajax.html.twig' %}
+            </div>
+        </div>
+
+    {% endfor %}
+{% else %}
+    <div class="catalog-flex main-catalog">
+        <div class="no-result">
+            <span>⚆ _ ⚆</span>
+            <div>
+                {{ 'frontend.search.empty'|trans([], 'AppBundle') }}
+            </div>
+        </div>
+    </div>
+{% endif %}

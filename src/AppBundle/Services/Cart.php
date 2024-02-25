@@ -15,9 +15,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
  */
 class Cart
 {
-    /**
-     * Const
-     */
     const SESSION_CART  = 'user_cart';
     const TYPE_PRODUCT  = 'product';
 
@@ -66,7 +63,7 @@ class Cart
     {
         $productsInCart = $this->getProductInCart() ?: [];
 
-        $count = $count < 1 ? 1 : $count;
+        $count = max($count, 1);
 
         $key = $id;
         if ($colour) {
@@ -150,12 +147,16 @@ class Cart
                         if (isset($data['bracelet'])) {
                             $productsInfo[self::TYPE_PRODUCT][$key]['bracelet'] = $data['bracelet'];
                         }
+                        if (isset($data['ring'])) {
+                            $productsInfo[self::TYPE_PRODUCT][$key]['ring'] = $data['ring'];
+                        }
+                        if (isset($data['necklace'])) {
+                            $productsInfo[self::TYPE_PRODUCT][$key]['necklace'] = $data['necklace'];
+                        }
                     }
                 }
             }
         }
-
-//        dump($productsInfo);die;
 
         return $productsInfo;
     }
@@ -261,6 +262,12 @@ class Cart
             }
             if (isset($item['bracelet']) && $item['bracelet']) {
                 $option .= 'Браслет: ' . $item['bracelet'] . PHP_EOL;
+            }
+            if (isset($item['ring']) && $item['ring']) {
+                $option .= 'Кольцо: ' . $item['ring'] . PHP_EOL;
+            }
+            if (isset($item['necklace']) && $item['necklace']) {
+                $option .= 'Колье: ' . $item['necklace'] . PHP_EOL;
             }
             $totalPrice += $item['totalPrice'];
             $product = $item['item'];

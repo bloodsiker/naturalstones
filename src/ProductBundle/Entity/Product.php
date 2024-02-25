@@ -30,6 +30,8 @@ class Product
     const TYPE_INSERTS = 2;
     const TYPE_PENDANTS = 3;
     const TYPE_BRACELET = 4;
+    const TYPE_RINGS = 5;
+    const TYPE_NECKLACE = 6;
 
     /**
      * @var int
@@ -1302,6 +1304,8 @@ class Product
             self::TYPE_INSERTS => 'inserts',
             self::TYPE_PENDANTS => 'pendants',
             self::TYPE_BRACELET => 'bracelets',
+            self::TYPE_RINGS => 'rings',
+            self::TYPE_NECKLACE => 'necklaces',
         ];
     }
 

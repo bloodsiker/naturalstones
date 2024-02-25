@@ -47,6 +47,12 @@ frontend:
         total: Разом
         link_to_cart: Кошик
         clear: Очистити кошик
+        product_option:
+            insert: Вставка
+            pendant: Підвіска
+            bracelet: Браслет
+            ring: Каблучка
+            necklace: Кольє
         table:
             products: Товари
             price: Ціна

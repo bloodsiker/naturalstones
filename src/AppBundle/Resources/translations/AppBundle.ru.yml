@@ -47,6 +47,12 @@ frontend:
         total: Итого
         link_to_cart: Корзина
         clear: Очистить корзину
+        product_option:
+            insert: Вставка
+            pendant: Подвеска
+            bracelet: Браслет
+            ring: Кольцо
+            necklace: Колье
         table:
             products: Товары
             price: Цена

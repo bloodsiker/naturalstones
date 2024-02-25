@@ -24,15 +24,23 @@
                         {% endif %}
                         {% if mProduct.insert is defined %}
                             <br>
-                            <i style="font-size: 14px;">Вставка:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.insert }}</i>
+                            <i style="font-size: 14px;">{{ 'frontend.cart.product_option.insert'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.insert }}</i>
                         {% endif %}
                         {% if mProduct.pendant is defined %}
                             <br>
-                            <i style="font-size: 14px;">Подвеска:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.pendant }}</i>
+                            <i style="font-size: 14px;">{{ 'frontend.cart.product_option.pendant'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.pendant }}</i>
                         {% endif %}
                         {% if mProduct.bracelet is defined %}
                             <br>
-                            <i style="font-size: 14px;">Браслет:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.bracelet }}</i>
+                            <i style="font-size: 14px;">{{ 'frontend.cart.product_option.bracelet'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.bracelet }}</i>
+                        {% endif %}
+                        {% if mProduct.ring is defined %}
+                            <br>
+                            <i style="font-size: 14px;">{{ 'frontend.cart.product_option.ring'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.ring }}</i>
+                        {% endif %}
+                        {% if mProduct.necklace is defined %}
+                            <br>
+                            <i style="font-size: 14px;">{{ 'frontend.cart.product_option.necklace'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.necklace }}</i>
                         {% endif %}
                     </div>
                     <div class="count">{{ mProduct.count }} шт.</div>

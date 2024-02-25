@@ -76,6 +76,8 @@ product:
             inserts: Вставки
             pendants: Подвески
             bracelets: Браслеты
+            rings: Кольца
+            necklaces: Колье
     buttons:
         link_add: Добавить новый
     tab:
@@ -195,15 +197,24 @@ frontend:
         change_size: Выберите размер
         change_letter: Выберите букву
         change_count: Выберите количество
+        change_insert: Выберите вставку
+        change_pendant: Выберите подвеску
+        change_bracelet: Выберите браслет
+        change_ring: Выберите кольцо
+        change_necklaces: Выберите колье
         letter: Буквы
         insert: Вставки
         pendant: Подвески
         bracelet: Браслеты
+        ring: Кольца
+        necklace: Колье
         validate:
             letter: Вы не выбрали букву
             insert: Вы не выбрали вставку
             pendant: Вы не выбрали подвеску
             bracelet: Вы не выбрали браслет
+            ring: Вы не выбрали кольцо
+            necklace: Вы не выбрали колье
         size: Размер
         included: Что входит в набор
         quick_order: Быстрый заказ

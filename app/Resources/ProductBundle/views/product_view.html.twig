@@ -148,7 +148,7 @@
                                         <span class="text-red optionError"></span>
                                     {% endif %}
                                     {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_INSERTS') %}
-                                        <h5>Выберите вставку</h5>
+                                        <h5>{{ 'frontend.product.change_insert'|trans([], 'ProductBundle') }}</h5>
                                         <div class="select-block">
                                             <select class="custom-select select-option" data-option="insert" data-text-error="{{ 'frontend.product.validate.insert'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.insert'|trans([], 'ProductBundle') }}">
                                                 <option></option>
@@ -162,7 +162,7 @@
                                         <span class="text-red optionError"></span>
                                     {% endif %}
                                     {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_PENDANTS') %}
-                                        <h5>Выберите подвеску</h5>
+                                        <h5>{{ 'frontend.product.change_pendant'|trans([], 'ProductBundle') }}</h5>
                                         <div class="select-block">
                                             <select class="custom-select select-option" data-option="pendant" data-text-error="{{ 'frontend.product.validate.pendant'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.pendant'|trans([], 'ProductBundle') }}">
                                                 <option></option>
@@ -176,9 +176,37 @@
                                         <span class="text-red optionError"></span>
                                     {% endif %}
                                     {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_BRACELET') %}
-                                        <h5>Выберите браслет</h5>
+                                        <h5>{{ 'frontend.product.change_bracelet'|trans([], 'ProductBundle') }}</h5>
                                         <div class="select-block">
                                             <select class="custom-select select-option" data-option="bracelet" data-text-error="{{ 'frontend.product.validate.bracelet'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.bracelet'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_RINGS') %}
+                                        <h5>{{ 'frontend.product.change_ring'|trans([], 'ProductBundle') }}</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="ring" data-text-error="{{ 'frontend.product.validate.ring'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.ring'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_NECKLACE') %}
+                                        <h5>{{ 'frontend.product.change_necklaces'|trans([], 'ProductBundle') }}</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="necklace" data-text-error="{{ 'frontend.product.validate.necklace'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.necklace'|trans([], 'ProductBundle') }}">
                                                 <option></option>
                                                 {% for productOption in product.productHasOption %}
                                                     {% if productOption.value %}

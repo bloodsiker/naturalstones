@@ -5339,8 +5339,11 @@ article.article {
   color: #525252;
 }
 .search-category-title {
-  font-size: 20px;
+  font-size: 18px;
   color: #525252;
+}
+.search_count {
+  font-size: 14px;
 }
 
 /* ========================== MEDIA ===========================*/

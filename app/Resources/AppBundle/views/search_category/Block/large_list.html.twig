@@ -19,10 +19,11 @@
     {% for item in result %}
         <div class="search-category-container">
             <div class="flex flex-row search-title">
-                <h2 class="search-category-title"><a href="{{ path('search') }}?search={{ search }}&category={{ item.category.id }}">{{ item.category.name }}</a></h2>
-                <a href="{{ path('search') }}?search={{ search }}&category={{ item.category.id }}" class="search-category-link">Дивитись всі >>></a>
+                <h2 class="search-category-title"><a href="{{ path('search') }}?search={{ search }}&category={{ item.category.id }}">{{ item.category.name }} <span class="search_count">({{ item.count }})</span></a></h2>
+                {% if item.count > 4 %}
+                    <a href="{{ path('search') }}?search={{ search }}&category={{ item.category.id }}" class="search-category-link">Дивитись всі >>></a>
+                {% endif %}
             </div>
-
 
             <div class="catalog-flex main-catalog">
                 {% include 'AppBundle:search_category:Block/large_list_ajax.html.twig' %}

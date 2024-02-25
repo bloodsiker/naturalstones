@@ -112,21 +112,21 @@ class SearchCategoryBlockService extends AbstractAdminBlockService
 
             /** @var Product $item */
             foreach ($result as $item) {
-                if (array_key_exists($item->getCategory()->getId(), $resultByCategory)) {
-                    if (count($resultByCategory[$item->getCategory()->getId()]) < 4) {
-                        $resultByCategory[$item->getCategory()->getId()][] = $item;
-                    }
-                } else {
-                    $resultByCategory[$item->getCategory()->getId()][] = $item;
-                }
+                $resultByCategory[$item->getCategory()->getId()][] = $item;
             }
 
             $resultDetails = [];
             foreach ($resultByCategory as $categoryId => $itemByCategory) {
                 $category = $repositoryCategory->find($categoryId);
+                $count = count($itemByCategory);
                 $resultDetails[$categoryId]['sort'] = $category->getOrderNum();
                 $resultDetails[$categoryId]['category'] = $category;
-                $resultDetails[$categoryId]['products'] = $itemByCategory;
+                $resultDetails[$categoryId]['count'] = $count;
+                if ($count >= 4) {
+                    $resultDetails[$categoryId]['products'] = array_slice($itemByCategory, 0, 4);
+                } else {
+                    $resultDetails[$categoryId]['products'] = $itemByCategory;
+                }
             }
 
             usort($resultDetails, function ($a, $b) {

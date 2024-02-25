@@ -10,6 +10,7 @@ $(document).ready(function() {
 	$('.btn-search').on('click', function (e) {
 		e.preventDefault();
 		$('.container-search').show();
+		$('input[name=search]').focus();
 		$('.page').addClass('bluer');
 	});
 

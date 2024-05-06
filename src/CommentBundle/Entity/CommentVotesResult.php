@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class CommentVotesResult
  *
  * @ORM\Entity()
- * @ORM\Table(name="books_comments_votes_result")
+ * @ORM\Table(name="product_comment_vote_results")
  * @ORM\HasLifecycleCallbacks
  */
 class CommentVotesResult

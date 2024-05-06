@@ -8,8 +8,3 @@ comment_vote:
     path: /comment/vote
     defaults:
         _controller: CommentBundle:Comment:commentVote
-
-swap_book:
-    path: /swap-book
-    defaults:
-        _controller: CommentBundle:Comment:swapBook

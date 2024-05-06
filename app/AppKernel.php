@@ -61,7 +61,7 @@ class AppKernel extends Kernel
             // A2lix multilingual forms
             new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
 
-//            // Doctrine2 Behaviors
+            // Doctrine2 Behaviors
             new Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle(),
 
             // Image manipulations
@@ -90,7 +90,7 @@ class AppKernel extends Kernel
             new ProductBundle\ProductBundle(),
             new ArticleBundle\ArticleBundle(),
 //            new BookBundle\BookBundle(),
-//            new CommentBundle\CommentBundle(),
+            new CommentBundle\CommentBundle(),
             new ShareBundle\ShareBundle(),
             new OrderBundle\OrderBundle(),
 //            new QuizBundle\QuizBundle(),

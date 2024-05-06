@@ -320,7 +320,7 @@ button.button {
 }
 
 .section-grey {
-  background: #f8f8f8;
+  background: #f4f4f4;
 }
 
 h1 {
@@ -2306,19 +2306,21 @@ footer {
 .mt-20 {
   margin-top: 20px;
 }
+.containerFeedback {
+  margin: 45px 0 60px;
+}
 .form-area {
   margin-bottom: 40px;
 }
 .form-area input, .form-area textarea {
-  border-radius: 0;
-  font-size: 12px;
+  font-size: 14px;
 }
 .form-area input {
   padding: 15px;
 }
 .form-area textarea {
-  height: 180px;
-  margin-top: 0px;
+  height: 187px;
+  margin-top: 0;
 }
 .successFeedback {
   display: none;
@@ -5346,6 +5348,59 @@ article.article {
   font-size: 14px;
 }
 
+/* ========================== COMMENTS ===========================*/
+.title-comments h4 {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 1.2;
+  margin-bottom: 23px;
+  padding-top: 8px;
+  text-align: center;
+}
+.list-comments {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  justify-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+}
+.comment-item {
+  width: calc(33% - 30px);
+  border-radius: 20px;
+  padding: 35px 25px 35px 40px;
+  margin: 0 15px 30px;
+  flex-direction: column;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #fff;
+}
+.comment-item > .comment {
+  line-height: 1.8;
+}
+.comment-user {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.comment-product {
+  margin-bottom: 25px;
+  font-weight: bold;
+  color: #f08383;
+}
+.comment-rating {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.comment-rating > .stars i {
+  display: inline-block;
+  width: 13px;
+  height: 12px;
+  background: url(../images/star.svg) no-repeat;
+}
+.comment-rating > .stars i.active {
+  background: url(../images/star-active.svg) no-repeat;
+}
+
 /* ========================== MEDIA ===========================*/
 
 @media (min-width: 0) {
@@ -6631,6 +6686,12 @@ article.article {
   .stone-item {
     width: calc(50% - 10px);
     margin: 0 5px 15px;
+  }
+
+  .comment-item {
+    width: calc(100% - 10px);
+    margin: 0 5px 20px;
+    padding: 30px 25px 30px 35px;
   }
 
   .zodiac-item {

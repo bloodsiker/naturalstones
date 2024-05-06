@@ -3,12 +3,14 @@
 namespace CommentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ProductBundle\Entity\Product;
+use UserBundle\Entity\User;
 
 /**
  * Class Comment
  *
  * @ORM\Entity()
- * @ORM\Table(name="books_comments")
+ * @ORM\Table(name="product_comments")
  * @ORM\HasLifecycleCallbacks
  */
 class Comment
@@ -30,15 +32,15 @@ class Comment
     protected $comment;
 
     /**
-     * @var \BookBundle\Entity\Book
+     * @var Product
      *
-     * @ORM\ManyToOne(targetEntity="BookBundle\Entity\Book")
-     * @ORM\JoinColumn(name="book_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    protected $book;
+    protected $product;
 
     /**
-     * @var \UserBundle\Entity\User
+     * @var User
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
@@ -62,7 +64,7 @@ class Comment
     /**
      * @var int
      *
-     * @ORM\Column(type="smallint", length=2, nullable=false)
+     * @ORM\Column(type="smallint", length=1, nullable=false)
      */
     protected $rating;
 
@@ -86,7 +88,7 @@ class Comment
     public function __construct()
     {
         $this->isActive = true;
-        $this->rating = 0;
+        $this->rating = 5;
         $this->createdAt = new \DateTime('now');
     }
 
@@ -135,37 +137,37 @@ class Comment
     }
 
     /**
-     * Set book
+     * Set product
      *
-     * @param \BookBundle\Entity\Book $book
+     * @param Product $product
      *
      * @return Comment
      */
-    public function setBook(\BookBundle\Entity\Book $book)
+    public function setProduct(Product $product)
     {
-        $this->book = $book;
+        $this->product = $product;
 
         return $this;
     }
 
     /**
-     * Get book
+     * Get product
      *
-     * @return string
+     * @return Product
      */
-    public function getBook()
+    public function getProduct()
     {
-        return $this->book;
+        return $this->product;
     }
 
     /**
      * Set user
      *
-     * @param \UserBundle\Entity\User $user
+     * @param User|null $user
      *
      * @return Comment
      */
-    public function setUser(\UserBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -175,7 +177,7 @@ class Comment
     /**
      * Get user
      *
-     * @return \UserBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {

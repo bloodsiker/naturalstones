@@ -36,8 +36,8 @@ class CommentAdmin extends Admin
             ->add('id', null, [
                 'label' => 'comment.fields.id',
             ])
-            ->addIdentifier('book', null, [
-                'label' => 'comment.fields.book',
+            ->addIdentifier('product', null, [
+                'label' => 'comment.fields.product',
             ])
             ->add('user', null, [
                 'label' => 'comment.fields.created_by',
@@ -68,8 +68,8 @@ class CommentAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('book', null, [
-                'label' => 'comment.fields.book',
+            ->add('product', null, [
+                'label' => 'comment.fields.product',
             ])
             ->add('isActive', null, [
                 'label' => 'comment.fields.is_active',
@@ -115,9 +115,9 @@ class CommentAdmin extends Admin
                     'label' => 'comment.fields.created_by',
                     'required' => false,
                 ])
-                ->add('book', ModelListType::class, [
-                    'label' => 'comment.fields.book',
-                    'required' => false,
+                ->add('product', ModelListType::class, [
+                    'label' => 'comment.fields.product',
+                    'required' => true,
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
                     'label'     => 'comment.fields.created_at',

@@ -1,0 +1,23 @@
+Action: Дії
+Comment List: Список коментарів
+Comment Create: Створити коментар
+
+form_group:
+    basic: Основні
+    additional: Додаткові
+
+group:
+    comment: Коментарі
+    comment_editor: Коментарі
+
+comment:
+    fields:
+        comment: Коментар
+        is_active: Активная
+        name: "Ім'я"
+        email: Email
+        rating: Рейтинг коментаря
+        product: Продукт
+        created_by: Створив користувач
+        created_at: Дата створення
+        id: ID

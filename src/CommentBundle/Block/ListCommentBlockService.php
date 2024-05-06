@@ -59,7 +59,7 @@ class ListCommentBlockService extends AbstractAdminBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'book'           => null,
+            'product'        => null,
             'show_title'     => true,
             'items_count'    => 30,
             'page'           => 1,
@@ -84,7 +84,7 @@ class ListCommentBlockService extends AbstractAdminBlockService
 
         $limit = (int) $blockContext->getSetting('items_count');
         $page = (int) $blockContext->getSetting('page');
-        $book = $blockContext->getSetting('book');
+        $product = $blockContext->getSetting('product');
 
         $repository = $this->em->getRepository(Comment::class);
 
@@ -93,9 +93,9 @@ class ListCommentBlockService extends AbstractAdminBlockService
             ->where('c.isActive = 1')
             ->orderBy('c.createdAt', 'DESC');
 
-        if ($book) {
-            $qb->andWhere('c.book = :book')->setParameter('book', $book);
-            $results = $qb->getQuery()->useResultCache(true, 60)->getResult();
+        if ($product) {
+            $qb->andWhere('c.product = :product')->setParameter('product', $product);
+            $results = $qb->getQuery()->enableResultCache(true, 60)->getResult();
         } else {
             $results = new Pagerfanta(new DoctrineORMAdapter($qb, true, false));
             $results->setAllowOutOfRangePages(true);
@@ -105,7 +105,7 @@ class ListCommentBlockService extends AbstractAdminBlockService
 
         return $this->renderResponse($blockContext->getTemplate(), [
             'comments'  => $results,
-            'book'      => $book,
+            'product'   => $product,
             'block'     => $block,
             'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
         ], $response);

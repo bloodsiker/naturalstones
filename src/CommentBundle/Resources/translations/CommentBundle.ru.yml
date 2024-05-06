@@ -1,8 +1,6 @@
 Action: Действия
 Comment List: Список комментариев
 Comment Create: Создать комментарий
-Swap List: Список обменов
-Swap Create: Создать запись
 
 form_group:
     basic: Основные
@@ -11,7 +9,6 @@ form_group:
 group:
     comment: Комментарии
     comment_editor: Комментарии
-    swap_editor: Обмен книгами
 
 comment:
     fields:
@@ -20,17 +17,7 @@ comment:
         name: Имя
         email: Email
         rating: Рейтинг комментария
-        book: Книга
+        product: Продукт
         created_by: Создал пользователь
         created_at: Дата создания
         id: ID
-
-swap:
-    fields:
-        id: ID
-        is_active: Активна
-        name: Имя
-        email: Email
-        content: Содержимое
-        created_by: Создал пользователь
-        created_at: Дата создания

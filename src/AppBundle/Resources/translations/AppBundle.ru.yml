@@ -111,6 +111,7 @@ frontend:
         btn_all_stones: Посмотреть все
         stones_for_zodiac: Камни по знаку зодиака
         popular_mounth: Самые популярные за месяц
+        comments: Клиенты говорят о нас
         feedback: Не нашли то, что искали?
         feedback_form:
             name: Ваше имя

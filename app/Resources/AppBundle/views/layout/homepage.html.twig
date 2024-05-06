@@ -137,7 +137,35 @@
         </div>
     </section>
 
-    <section class="section" id="feedback">
+    <section class="section section-grey" id="comments">
+        <div class="container">
+            {{
+                sonata_block_render(
+                    { 'type': 'comment.block.list_comments' },
+                    {
+                        'items_count' : 3,
+                    }
+                )
+            }}
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            {{
+            sonata_block_render(
+                { 'type': 'product.block.popular' },
+                {
+                    'title' : 'frontend.homepage.popular_mounth'|trans([], 'AppBundle'),
+                    'by_month' : true,
+                    'items_count': 10,
+                }
+            )
+            }}
+        </div>
+    </section>
+
+    <section class="section-grey" id="feedback">
         <div class="container">
             {{
                 sonata_block_render(
@@ -149,17 +177,6 @@
 
     <section class="section">
         <div class="container">
-
-            {{
-                sonata_block_render(
-                    { 'type': 'product.block.popular' },
-                    {
-                        'title' : 'frontend.homepage.popular_mounth'|trans([], 'AppBundle'),
-                        'by_month' : true,
-                        'items_count': 10,
-                    }
-                )
-            }}
 
             <div class="seo-content">
 {#                {{#}

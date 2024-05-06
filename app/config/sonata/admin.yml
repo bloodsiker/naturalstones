@@ -56,7 +56,7 @@ sonata_admin:
               settings:
                   groups:
 #                      - group.quiz
-#                      - group.comment
+                      - group.comment
                       - group.share
                       - group.order
                       - sonata_page
@@ -73,6 +73,10 @@ sonata_admin:
             group.product:
                 label: group.product
                 label_catalogue: ProductBundle
+                icon: <i class="fa fa-paw"></i>
+            group.comment:
+                label: group.comment
+                label_catalogue: CommentBundle
                 icon: <i class="fa fa-paw"></i>
             group.article:
                 label: group.article

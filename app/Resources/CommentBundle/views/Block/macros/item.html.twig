@@ -20,3 +20,34 @@
         </div>
     {% endspaceless %}
 {% endmacro %}
+
+{% macro pageComment(comment, show_title = true) %}
+    {% spaceless %}
+        <div class="page-comment-item" itemprop="review" itemscope="" itemtype="http://schema.org/Review">
+            <div class="comment-block-product">
+                <a href="{{ product_path(comment.product) }}" class="comment-product-image">
+                    <img class="lazyload" data-src="{{ asset(comment.product.image.path) }}" src="" alt="{{ comment.product.name }}">
+                </a>
+            </div>
+            <div class="comment-content">
+                <div class="page-comment-product">
+                    <a href="{{ product_path(comment.product) }}" itemprop="name">{{ comment.product.name }}</a>
+                </div>
+                <div class="page-comment-rating"><p style="display: none" itemprop="datePublished" content="2024-05-06"></p>
+                    <div class="page-comment-user" itemprop="author">{{ comment.user ? comment.user.username : comment.userName }}</div>
+                    <div class="stars">
+                        <span style="display: none" itemprop="reviewRating">{{ comment.rating }}</span>
+                        <i class="active"></i>
+                        <i class="active"></i>
+                        <i class="active"></i>
+                        <i class="active"></i>
+                        <i class="active"></i>
+                    </div>
+                </div>
+                <div class="comment" itemprop="reviewBody">
+                    {{ comment.comment|raw }}
+                </div>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endmacro %}

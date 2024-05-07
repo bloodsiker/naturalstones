@@ -24,16 +24,16 @@ class CommentController extends Controller
      */
     public function listAction(Request $request)
     {
-        $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;
-        $pageDesc = $request->get('page') ? "Страница {$request->get('page', 1)} |" : null;
+        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
+        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
         $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Последние комментарии']);
+        $breadcrumb->addBreadcrumb(['title' => 'Відгуки']);
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => 'Комментарии | TopBook.com.ua - скачать книги бесплатно и без регистрации в fb2, epub, pdf, txt форматах'.$page,
-            'description' => "{$pageDesc} Последние комментарии по книгам | ТопБук - электронная библиотека. Здесь Вы можете скачать бесплатно книги без регистрации",
-            'keywords' => 'скачать книги, рецензии, отзывы на книги, цитаты из книг, краткое содержание, без регистрации, топбук',
+            'title' => $this->get('translator')->trans('frontend.meta.meta_title_reviews', [], 'AppBundle').$page,
+            'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_reviews', [], 'AppBundle'),
             'og' => [
+                'og:type' => 'website',
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);

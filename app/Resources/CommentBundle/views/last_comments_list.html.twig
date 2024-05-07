@@ -1,13 +1,23 @@
-<div class="col-cont">
+<section class="simple-section">
+    <div class="container">
 
-    {{
-    sonata_block_render(
-        { 'type': 'comment.block.list_comments' },
-        {
-            'items_count' : 30,
-            'page': app.request.get('page') ? app.request.get('page') : 1,
-        }
-    )
-    }}
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
 
-</div>
+        {{
+            sonata_block_render(
+                { 'type': 'comment.block.list_comments' },
+                {
+                    'items_count': 20,
+                    'page': app.request.get('page') ? app.request.get('page') : 1,
+                    'list_type': constant('CommentBundle\\Block\\ListCommentBlockService::PAGE_LIST'),
+                    'show_paginator': true
+                }
+            )
+        }}
+
+    </div>
+</section>

@@ -21,3 +21,6 @@ comment:
         created_by: Создал пользователь
         created_at: Дата создания
         id: ID
+
+frontend:
+    reviews: Відгуки

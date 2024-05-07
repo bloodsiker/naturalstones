@@ -51,6 +51,15 @@ share:
         _locale: '%locale%'
 #==============================================================================
 
+# Comments ========================================================================
+reviews:
+    resource: '@CommentBundle/Resources/config/routing.yml'
+    requirements:
+        _locale: '%route_locales%'
+    defaults:
+        _locale: '%locale%'
+#==============================================================================
+
 sitemap:
     path: /sitemap.{_format}
     defaults:

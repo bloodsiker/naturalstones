@@ -168,6 +168,15 @@ class DefaultController extends Controller
             }
         }
 
+        $urls['reviews_list']['loc'] = $hostname . $router->generate('review_list');
+        foreach ($locales as $local) {
+            if ($local === 'uk') {
+                $urls['reviews_list'][$local] = $hostname . $router->generate('review_list');
+            } else {
+                $urls['reviews_list'][$local] = sprintf('%s/%s%s', $hostname, $local, $router->generate('review_list'));
+            }
+        }
+
         $categories = $em->getRepository(Category::class)->findBy(['isActive' => true]);
         foreach ($categories as $category) {
             $key = 'category_'.$category->getId();

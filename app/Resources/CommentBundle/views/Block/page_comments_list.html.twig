@@ -1,0 +1,15 @@
+{% import "CommentBundle:Block/macros:item.html.twig" as item %}
+
+<div class="filter-outer">
+    <h1>{{ 'frontend.reviews'|trans([], 'CommentBundle') }}</h1>
+</div>
+
+<div class="page-list-comments">
+    {% for comment in comments %}
+        {{ item.pageComment(comment, settings.show_title) }}
+    {% endfor %}
+</div>
+
+{% if settings.show_paginator and comments.getNbPages() > 1 %}
+    {{ pagerfanta(comments, { 'omitFirstPage': true}) }}
+{% endif %}

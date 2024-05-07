@@ -5400,6 +5400,107 @@ article.article {
 .comment-rating > .stars i.active {
   background: url(../images/star-active.svg) no-repeat;
 }
+.more-comments {
+  margin-bottom: 25px;
+  text-align: center;
+}
+.more-comments > a.btn-more-comments {
+  display: inline-block;
+  cursor: pointer;
+  padding: 11px 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  background: #f08383;
+  border: 2px solid #f08383;
+  color: #fff;
+  border-radius: 20px;
+  transition: .2s;
+  line-height: 1.2;
+  padding-right: 32px;
+  position: relative;
+}
+.btn-more-comments:after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 8px;
+  height: 5px;
+  background: url(../images/ico-arrow-down.svg) no-repeat;
+  transform: rotate(-90deg);
+  top: 15px;
+  right: 15px;
+  transition: .2s;
+}
+
+.page-list-comments {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  justify-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+}
+.comment-block-product {
+  width: 140px;
+  float: left;
+}
+.comment-content {
+  float: right;
+  width: calc(100% - 140px);
+}
+
+.page-list-comments > .page-comment-item {
+  flex-wrap: wrap;
+  width: 100%;
+  border-radius: 20px;
+  padding: 35px 25px 35px 45px;
+  margin: 0 15px 30px;
+  background-color: #f3f3f3;
+}
+.page-comment-product {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #f08383;
+  font-size: 16px;
+}
+.page-comment-user {
+  margin-bottom: 25px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+.page-comment-rating {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.page-comment-rating > .stars i {
+  display: inline-block;
+  width: 13px;
+  height: 12px;
+  background: url(../images/star.svg) no-repeat;
+}
+.page-comment-rating > .stars i.active {
+  background: url(../images/star-active.svg) no-repeat;
+}
+.page-comment-item > .comment-content > .comment {
+  line-height: 1.8;
+}
+.comment-block-product .comment-product-image {
+  width: 100%;
+  margin: -1px -16px 0;
+  border-radius: 6px;
+  overflow: hidden;
+  display: block;
+  height: 180px;
+  transition: all .3s ease-out;
+}
+.comment-block-product .comment-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-transition-duration: .3s;
+  transition-duration: .3s;
+}
 
 /* ========================== MEDIA ===========================*/
 

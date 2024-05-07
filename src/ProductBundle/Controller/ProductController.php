@@ -53,6 +53,7 @@ class ProductController extends Controller
             'title' => $this->get('translator')->trans('frontend.meta.meta_title_products', ['%CATEGORY%' => $category->getName()], 'AppBundle').$page,
             'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_products', ['%CATEGORY%' => $category->getName()], 'AppBundle'),
             'og' => [
+                'og:type' => 'website',
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
             'canonicalUrl' => $router->generate('product_list', ['slug' => $slug, 'page' => $request->get('page')], 0),
@@ -82,6 +83,7 @@ class ProductController extends Controller
             'title' => $this->get('translator')->trans('frontend.meta.meta_title_who', ['%WHO%' => $whoIs], 'AppBundle') . $page,
             'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_who', [], 'AppBundle'),
             'og' => [
+                'og:type' => 'website',
                 'og:url' => $request->getSchemeAndHttpHost(),
             ],
         ]);

@@ -162,6 +162,7 @@ frontend:
         we_in_socila: Мы в соцсетях
         links:
             articles: Статьи
+            reviews: Отзывы
 
     breadcrumb:
         main: Главная
@@ -218,6 +219,9 @@ frontend:
         meta_description_article_tag: Статьи о натуральных камнях по тегу %TAG%
 
         meta_title_single_product: купить украшение из натуральных камней | Naturalstones Jewerly - Украшения из натуральных камней
+
+        meta_title_reviews: Отзывы клиентов  | Naturalstones Jewerly - Украшения из натуральных камней
+        meta_description_reviews: Отзывы от клиентов
 
 error:
     404:

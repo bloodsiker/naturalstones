@@ -1,10 +1,5 @@
 # comments ========================================================
-last_comments:
-    path: /last-comments
+review_list:
+    path: /reviews
     defaults:
         _controller: CommentBundle:Comment:list
-
-comment_vote:
-    path: /comment/vote
-    defaults:
-        _controller: CommentBundle:Comment:commentVote

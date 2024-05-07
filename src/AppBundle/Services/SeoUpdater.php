@@ -65,7 +65,7 @@ class SeoUpdater
     /**
      * @var string
      */
-    private $defaultOgImageSrc = '/bundles/app/img/logo_sc.gif';
+    private $defaultOgImageSrc = '/bundles/app/images/logo.jpg';
 
     /**
      * SeoUpdater constructor.

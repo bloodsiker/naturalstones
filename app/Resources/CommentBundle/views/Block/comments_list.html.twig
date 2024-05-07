@@ -9,6 +9,6 @@
     {% endfor %}
 </div>
 
-{% if settings.show_paginator and comments.getNbPages() > 1 %}
-    {{ pagerfanta(comments, { 'omitFirstPage': true}) }}
-{% endif %}
+<div class="more-comments">
+    <a href="{{ path('review_list') }}" class="btn-more-comments">Ще відгуки</a>
+</div>

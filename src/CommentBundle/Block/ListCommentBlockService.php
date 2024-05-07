@@ -18,6 +18,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ListCommentBlockService extends AbstractAdminBlockService
 {
+    const PAGE_LIST = 'CommentBundle:Block:page_comments_list.html.twig';
+
     /**
      * @var EntityManager
      */
@@ -59,6 +61,7 @@ class ListCommentBlockService extends AbstractAdminBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'list_type'      => null,
             'product'        => null,
             'show_title'     => true,
             'items_count'    => 30,
@@ -103,7 +106,10 @@ class ListCommentBlockService extends AbstractAdminBlockService
             $results->setCurrentPage($page);
         }
 
-        return $this->renderResponse($blockContext->getTemplate(), [
+        $template = !is_null($blockContext->getSetting('list_type'))
+            ? $blockContext->getSetting('list_type') : $blockContext->getTemplate();
+
+        return $this->renderResponse($template, [
             'comments'  => $results,
             'product'   => $product,
             'block'     => $block,

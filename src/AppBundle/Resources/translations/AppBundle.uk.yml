@@ -162,6 +162,7 @@ frontend:
         we_in_socila: Ми в соцмережах
         links:
             articles: Статті
+            reviews: Відгуки
 
     breadcrumb:
         main: Головна
@@ -218,6 +219,9 @@ frontend:
         meta_description_article_tag: Статті про натуральні каміння по тегу %TAG%
 
         meta_title_single_product: купити виріб з натурального каміння | Naturalstones Jewerly - Прикраси з натурального каміння
+
+        meta_title_reviews: Відгуки клієнтів | Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_reviews: Відгуки від клієнтів
 
 error:
     404:

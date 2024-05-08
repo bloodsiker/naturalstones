@@ -3,7 +3,9 @@
         <div class="comment-item" itemprop="review" itemscope itemtype="http://schema.org/Review">
             <div class="comment-rating">
                 <p style="display: none" itemprop="datePublished" content="{{ comment.createdAt|date('Y-m-d') }}"></p>
-                <div class="comment-user" itemprop="author">{{ comment.user ? comment.user.username : comment.userName }}</div>
+                <div class="comment-user" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                    <span itemprop="name">{{ comment.user ? comment.user.username : comment.userName }}</span>
+                </div>
                 <div class="stars">
                     <div style="display: none" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
                         <span itemprop="ratingValue">{{ comment.rating }}</span>
@@ -36,7 +38,9 @@
                     <a href="{{ product_path(comment.product) }}" itemprop="name">{{ comment.product.name }}</a>
                 </div>
                 <div class="page-comment-rating"><p style="display: none" itemprop="datePublished" content="2024-05-06"></p>
-                    <div class="page-comment-user" itemprop="author">{{ comment.user ? comment.user.username : comment.userName }}</div>
+                    <div class="page-comment-user" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                        <span itemprop="name">{{ comment.user ? comment.user.username : comment.userName }}</span>
+                    </div>
                     <div class="stars">
                         <div style="display: none" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
                             <span itemprop="ratingValue">{{ comment.rating }}</span>

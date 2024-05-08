@@ -5,7 +5,9 @@
                 <p style="display: none" itemprop="datePublished" content="{{ comment.createdAt|date('Y-m-d') }}"></p>
                 <div class="comment-user" itemprop="author">{{ comment.user ? comment.user.username : comment.userName }}</div>
                 <div class="stars">
-                    <span style="display: none" itemprop="reviewRating">{{ comment.rating }}</span>
+                    <div style="display: none" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                        <span itemprop="ratingValue">{{ comment.rating }}</span>
+                    </div>
                     <i class="active"></i>
                     <i class="active"></i>
                     <i class="active"></i>
@@ -36,7 +38,9 @@
                 <div class="page-comment-rating"><p style="display: none" itemprop="datePublished" content="2024-05-06"></p>
                     <div class="page-comment-user" itemprop="author">{{ comment.user ? comment.user.username : comment.userName }}</div>
                     <div class="stars">
-                        <span style="display: none" itemprop="reviewRating">{{ comment.rating }}</span>
+                        <div style="display: none" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                            <span itemprop="ratingValue">{{ comment.rating }}</span>
+                        </div>
                         <i class="active"></i>
                         <i class="active"></i>
                         <i class="active"></i>

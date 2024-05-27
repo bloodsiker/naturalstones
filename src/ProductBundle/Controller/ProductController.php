@@ -212,6 +212,10 @@ class ProductController extends Controller
            return $this->redirectToRoute('product_list', ['slug' => $product->getCategory()->getSlug()]);
         }
 
+        if ($request->get('slug') !== $product->getSlug()) {
+            throw $this->createNotFoundException(self::PRODUCT_404);
+        }
+
         $sizes = $repo->productGroupQueryBuilder($product->getProductGroup())
             ->getQuery()
             ->getResult();

@@ -33,6 +33,7 @@ class Product
     const TYPE_RINGS = 5;
     const TYPE_NECKLACE = 6;
     const TYPE_EARRING = 7;
+    const TYPE_MONEY = 8;
 
     /**
      * @var int
@@ -1308,6 +1309,7 @@ class Product
             self::TYPE_RINGS => 'rings',
             self::TYPE_NECKLACE => 'necklaces',
             self::TYPE_EARRING => 'earrings',
+            self::TYPE_MONEY => 'money',
         ];
     }
 

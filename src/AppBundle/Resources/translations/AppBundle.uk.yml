@@ -54,6 +54,7 @@ frontend:
             ring: Каблучка
             necklace: Кольє
             earring: Сережки
+            money: Сума
         table:
             products: Товари
             price: Ціна

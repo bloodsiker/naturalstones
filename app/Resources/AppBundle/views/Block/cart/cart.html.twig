@@ -48,6 +48,11 @@
                         <i style="font-size: 14px;">{{ 'frontend.cart.product_option.earring'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.earring }}</i>
                     {% endif %}
 
+                    {% if mProduct.money is defined %}
+                        <br>
+                        <i style="font-size: 14px;">{{ 'frontend.cart.product_option.money'|trans([], 'AppBundle') }}:</i> <i style="display: inline-block;border: 1px solid #E6E6E6; padding: 2px 8px;border-radius: 10px;font-size: 11px;">{{ mProduct.money }}</i>
+                    {% endif %}
+
                     {% if mProduct.colour is defined %}
                         <div class="price">{{ mProduct.price|number_format(2, ',') }} грн</div>
                     {% else %}

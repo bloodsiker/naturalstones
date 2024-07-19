@@ -78,6 +78,8 @@ product:
             bracelets: Браслети
             rings: Каблучки
             necklaces: Кольє
+            earrings: Сережки
+            money: Сума
     buttons:
         link_add: Додати новий
     tab:
@@ -203,6 +205,7 @@ frontend:
         change_ring: Виберіть каблучку
         change_necklaces: Виберіть кольє
         change_earring: Виберіть сережки
+        change_money: Виберіть суму
         letter: Літери
         insert: Вставки
         pendant: Підвіски
@@ -210,6 +213,7 @@ frontend:
         ring: Каблучки
         necklace: Кольє
         earrings: Сережки
+        money: Сума
         validate:
             letter: Ви не обрали букву
             insert: Ви не обрали вставку
@@ -218,6 +222,7 @@ frontend:
             ring: Ви не обрали каблучку
             necklace: Ви не обрали кольє
             earrings: Ви не обрали сережки
+            money: Ви не обрали суму
         size: Розмір
         included: Що входить до набору
         quick_order: Швидкий заказ

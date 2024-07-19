@@ -78,6 +78,8 @@ product:
             bracelets: Браслеты
             rings: Кольца
             necklaces: Колье
+            earrings: Сережки
+            money: Сумма
     buttons:
         link_add: Добавить новый
     tab:
@@ -203,6 +205,7 @@ frontend:
         change_ring: Выберите кольцо
         change_necklaces: Выберите колье
         change_earring: Выберите серьги
+        change_money: Выберите сумму
         letter: Буквы
         insert: Вставки
         pendant: Подвески
@@ -210,6 +213,7 @@ frontend:
         ring: Кольца
         necklace: Колье
         earrings: Серьги
+        money: Сума
         validate:
             letter: Вы не выбрали букву
             insert: Вы не выбрали вставку
@@ -218,6 +222,7 @@ frontend:
             ring: Вы не выбрали кольцо
             necklace: Вы не выбрали колье
             earrings: Вы не выбрали серьги
+            money: Вы не выбрали сумму
         size: Размер
         included: Что входит в набор
         quick_order: Быстрый заказ

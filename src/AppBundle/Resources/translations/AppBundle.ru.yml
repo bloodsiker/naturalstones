@@ -54,6 +54,7 @@ frontend:
             ring: Кольцо
             necklace: Колье
             earring: Серьги
+            money: Сумма
         table:
             products: Товары
             price: Цена

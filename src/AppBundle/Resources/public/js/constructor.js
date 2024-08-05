@@ -108,6 +108,7 @@ $(document).ready(function() {
 				lineStone.css('background-size', 'cover');
 				$(this).css('background-image', selectedStoneImage);
 				$(this).css('background-size', 'cover');
+				$(this).css('border', 'none');
 				$(this).data('id', selectedStoneId);
 				$(this).text('');
 				updateStoneSummary();

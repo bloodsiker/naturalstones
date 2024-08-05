@@ -99,6 +99,23 @@ class DefaultController extends Controller
         return $this->render('AppBundle:cart:step_2.html.twig');
     }
 
+    public function constructorAction(Request $request)
+    {
+        $breadcrumb = $this->get('app.breadcrumb');
+        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.constructor', [], 'AppBundle')]);
+
+        $this->get('app.seo.updater')->doMagic(null, [
+            'title' => $this->get('translator')->trans('frontend.meta.meta_title_constructor', [], 'AppBundle'),
+            'description' => $this->get('translator')->trans('frontend.meta.meta_description_constructor', [], 'AppBundle'),
+            'og' => [
+                'og:site_name' => $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
+                'og:url' => $request->getSchemeAndHttpHost(),
+            ],
+        ]);
+
+        return $this->render('AppBundle:constructor:index.html.twig');
+    }
+
     /**
      * @param Request $request
      *
@@ -174,6 +191,15 @@ class DefaultController extends Controller
                 $urls['reviews_list'][$local] = $hostname . $router->generate('review_list');
             } else {
                 $urls['reviews_list'][$local] = sprintf('%s/%s%s', $hostname, $local, $router->generate('review_list'));
+            }
+        }
+
+        $urls['constructor']['loc'] = $hostname . $router->generate('constructor');
+        foreach ($locales as $local) {
+            if ($local === 'uk') {
+                $urls['constructor'][$local] = $hostname . $router->generate('constructor');
+            } else {
+                $urls['constructor'][$local] = sprintf('%s/%s%s', $hostname, $local, $router->generate('constructor'));
             }
         }
 

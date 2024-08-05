@@ -14,6 +14,11 @@ step-2:
   defaults:
     _controller: AppBundle:Default:cartStepTwo
 
+constructor:
+  path: /constructor
+  defaults:
+    _controller: AppBundle:Default:constructor
+
 _sentry-test:
   path: /_sentry-test
   defaults:

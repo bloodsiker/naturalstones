@@ -1,0 +1,20 @@
+<section class="simple-section">
+    <div class="container">
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
+
+        <div class="filter-outer">
+            <h1>{{ 'frontend.constructor.title'|trans([], 'AppBundle') }}</h1>
+        </div>
+
+        {{
+        sonata_block_render(
+            { 'type': 'share.block.stone_constructor' }
+        )
+        }}
+    </div>
+</section>

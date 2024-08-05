@@ -13,7 +13,9 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\CoreBundle\Form\Type\DateTimePickerType;
+use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Valid;
 
 /**
  * Class StoneAdmin
@@ -61,11 +63,12 @@ class StoneAdmin extends Admin
                 'label' => 'stone.fields.is_show_main',
                 'editable'  => true,
             ])
+            ->add('isShowConstructor', null, [
+                'label' => 'stone.fields.is_show_constructor',
+                'editable'  => true,
+            ])
             ->add('slug', null, [
                 'label' => 'stone.fields.slug',
-            ])
-            ->add('createdAt', null, [
-                'label' => 'stone.fields.created_at',
             ])
             ->add('_action', 'actions', [
                 'actions' => [
@@ -90,6 +93,9 @@ class StoneAdmin extends Admin
             ->add('isShowMain', null, [
                 'label' => 'stone.fields.is_show_main',
             ])
+            ->add('isShowConstructor', null, [
+                'label' => 'stone.fields.is_show_constructor',
+            ])
             ->add('createdAt', null, [
                 'label' => 'stone.fields.created_at',
             ]);
@@ -100,62 +106,86 @@ class StoneAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $context = $this->getPersistentParameter('context');
+
         $formMapper
-            ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
-                ->add('translations', TranslationsType::class, [
-                    'translation_domain' => $this->translationDomain,
-                    'label' => false,
-                    'fields' => [
-                        'name' => [
-                            'label' => 'stone.fields.name',
-                            'field_type' => TextType::class,
-                            'required' => true,
-                        ],
-                        'description' => [
-                            'label' => 'stone.fields.description',
-                            'field_type' => CKEditorType::class,
-                            'config_name' => 'advanced',
-                            'required' => false,
-                            'attr' => [
-                                'rows' => 5,
+            ->with('stone.tab.stone', ['tab' => true])
+                ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
+                    ->add('translations', TranslationsType::class, [
+                        'translation_domain' => $this->translationDomain,
+                        'label' => false,
+                        'fields' => [
+                            'name' => [
+                                'label' => 'stone.fields.name',
+                                'field_type' => TextType::class,
+                                'required' => true,
+                            ],
+                            'description' => [
+                                'label' => 'stone.fields.description',
+                                'field_type' => CKEditorType::class,
+                                'config_name' => 'advanced',
+                                'required' => false,
+                                'attr' => [
+                                    'rows' => 5,
+                                ],
                             ],
                         ],
-                    ],
-                ])
-                ->add('slug', TextType::class, [
-                    'label' => 'stone.fields.slug',
-                    'required' => false,
-                    'attr' => ['readonly' => !$this->getSubject()->getId() ? false : true],
-                ])
+                    ])
+                    ->add('slug', TextType::class, [
+                        'label' => 'stone.fields.slug',
+                        'required' => false,
+                        'attr' => ['readonly' => !$this->getSubject()->getId() ? false : true],
+                    ])
+                ->end()
+                ->with('form_group.additional', ['class' => 'col-md-4', 'name' => false])
+                    ->add('isActive', null, [
+                        'label' => 'stone.fields.is_active',
+                        'required' => false,
+                    ])
+                    ->add('isShowMain', null, [
+                        'label' => 'stone.fields.is_show_main',
+                        'required' => false,
+                    ])
+                    ->add('isShowConstructor', null, [
+                        'label' => 'stone.fields.is_show_constructor',
+                        'required' => false,
+                    ])
+                    ->add('image', ModelListType::class, [
+                        'label' => 'stone.fields.image',
+                        'required' => true,
+                    ])
+                    ->add('zodiacs', ModelAutocompleteType::class, [
+                        'label' => 'stone.fields.zodiacs',
+                        'required' => false,
+                        'property' => 'translations.name',
+                        'multiple' => true,
+                        'attr' => ['class' => 'form-control'],
+                        'btn_catalogue' => $this->translationDomain,
+                        'minimum_input_length' => 2,
+                    ])
+                    ->add('createdAt', DateTimePickerType::class, [
+                        'label'     => 'stone.fields.created_at',
+                        'required' => true,
+                        'format' => 'YYYY-MM-dd HH:mm',
+                        'attr' => ['readonly' => true],
+                    ])
+                ->end()
             ->end()
-            ->with('form_group.additional', ['class' => 'col-md-4', 'name' => false])
-                ->add('isActive', null, [
-                    'label' => 'stone.fields.is_active',
-                    'required' => false,
-                ])
-                ->add('isShowMain', null, [
-                    'label' => 'stone.fields.is_show_main',
-                    'required' => false,
-                ])
-                ->add('image', ModelListType::class, [
-                    'label' => 'stone.fields.image',
-                    'required' => true,
-                ])
-                ->add('zodiacs', ModelAutocompleteType::class, [
-                    'label' => 'stone.fields.zodiacs',
-                    'required' => false,
-                    'property' => 'translations.name',
-                    'multiple' => true,
-                    'attr' => ['class' => 'form-control'],
-                    'btn_catalogue' => $this->translationDomain,
-                    'minimum_input_length' => 2,
-                ])
-                ->add('createdAt', DateTimePickerType::class, [
-                    'label'     => 'stone.fields.created_at',
-                    'required' => true,
-                    'format' => 'YYYY-MM-dd HH:mm',
-                    'attr' => ['readonly' => true],
-                ])
+            ->with('stone.tab.stone_constructor', ['tab' => true])
+                ->with('form_group.product_option', ['class' => 'col-md-12', 'label' => null])
+                    ->add('stoneHasConstructor', CollectionType::class, [
+                        'label' => 'stone.fields.stone_constructor',
+                        'required' => false,
+                        'constraints' => new Valid(),
+                        'by_reference' => false,
+                    ], [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                        'sortable' => 'orderNum',
+                        'link_parameters' => ['context' => $context],
+                        'admin_code' => 'share.admin.stone_has_constructor',
+                    ])
+                ->end()
             ->end();
     }
 }

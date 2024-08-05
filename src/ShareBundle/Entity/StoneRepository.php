@@ -29,6 +29,11 @@ class StoneRepository extends EntityRepository
         return $qb->andWhere('s.isShowMain = :isShowMain')->setParameter('isShowMain', true);
     }
 
+    public function filterByShowConstructor(QueryBuilder $qb) : QueryBuilder
+    {
+        return $qb->andWhere('s.isShowConstructor = :isShowConstructor')->setParameter('isShowConstructor', true);
+    }
+
     public function filterByZodiac(QueryBuilder $qb, $zodiac) : QueryBuilder
     {
         return $qb->innerJoin('s.zodiacs', 'zodiac', 'WITH', 'zodiac.id = :zodiac')

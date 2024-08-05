@@ -82,6 +82,8 @@ sonata_block:
             contexts: [cms]
         share.block.stones:
             contexts: [ cms ]
+        share.block.stone_constructor:
+            contexts: [ cms ]
         share.block.zodiac:
             contexts: [ cms ]
 

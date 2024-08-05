@@ -51,6 +51,13 @@ class Stone
      */
     protected $isActive;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    protected $isShowConstructor;
+
 
     /**
      * @var bool
@@ -78,6 +85,16 @@ class Stone
     protected $zodiacs;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ShareBundle\Entity\StoneHasConstructor",
+     *     mappedBy="stone", cascade={"all"}, orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"orderNum" = "ASC"})
+     */
+    protected $stoneHasConstructor;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -87,6 +104,7 @@ class Stone
         $this->createdAt = new \DateTime('now');
 
         $this->zodiacs = new ArrayCollection();
+        $this->stoneHasConstructor = new ArrayCollection();
     }
 
     /**
@@ -211,6 +229,30 @@ class Stone
     }
 
     /**
+     * Get isShowConstructor
+     *
+     * @return boolean
+     */
+    public function isShowConstructor()
+    {
+        return $this->isShowConstructor;
+    }
+
+    /**
+     * Set isShowConstructor
+     *
+     * @param boolean $isShowConstructor
+     *
+     * @return Stone
+     */
+    public function setIsShowConstructor(bool $isShowConstructor)
+    {
+        $this->isShowConstructor = $isShowConstructor;
+
+        return $this;
+    }
+
+    /**
      * Set isShowMain
      *
      * @param boolean $isShowMain
@@ -300,5 +342,42 @@ class Stone
     public function getZodiacs()
     {
         return $this->zodiacs;
+    }
+
+    /**
+     * Add stoneHasConstructor.
+     *
+     * @param StoneHasConstructor $stoneHasConstructor
+     *
+     * @return Stone
+     */
+    public function addStoneHasConstructor(StoneHasConstructor $stoneHasConstructor)
+    {
+        $stoneHasConstructor->setStone($this);
+        $this->stoneHasConstructor[] = $stoneHasConstructor;
+
+        return $this;
+    }
+
+    /**
+     * Remove stoneHasConstructor.
+     *
+     * @param StoneHasConstructor $stoneHasConstructor
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeStoneHasConstructor(StoneHasConstructor $stoneHasConstructor)
+    {
+        return $this->stoneHasConstructor->removeElement($stoneHasConstructor);
+    }
+
+    /**
+     * Get stoneHasConstructor.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStoneHasConstructor()
+    {
+        return $this->stoneHasConstructor;
     }
 }

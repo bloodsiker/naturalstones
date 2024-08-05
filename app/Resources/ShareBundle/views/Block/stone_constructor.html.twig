@@ -1,0 +1,48 @@
+{% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+
+<section class="constructor" data-url="{{ block_ajax_path }}">
+    <div class="constructor-settings">
+        <div class="size-buttons">
+            <div class="size-button" data-size="10">10 мм</div>
+            <div class="size-button" data-size="6">6 мм</div>
+        </div>
+        <div class="stone-count">
+            <label for="stone-count-select">{{ 'frontend.constructor.count_stone'|trans([], 'ShareBundle') }}</label>
+            <select class="custom_select" id="stone-count-select">
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18" selected>18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+
+        <div class="stone-select">
+            <label for="stone-select">{{ 'frontend.constructor.stone'|trans([], 'ShareBundle') }}</label>
+            <select class="custom_select" id="stone-select">
+                <option value=""></option>
+            </select>
+        </div>
+
+        <div class="stone-picker">
+            <div class="stone-option"></div>
+        </div>
+    </div>
+
+    <div class="constructor-view">
+        <div class="bracelet-container">
+            <div class="bracelet" id="bracelet"></div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="line-container" id="line-container"></div>
+</section>
+
+<section>
+    <div class="stone-summary">
+        <h3 class="title_stone_summary">{{ 'frontend.constructor.stone_summary'|trans([], 'ShareBundle') }}</h3>
+        <div id="stone-summary"></div>
+    </div>
+</section>

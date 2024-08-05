@@ -38,8 +38,21 @@ stone:
         slug: Сегмент URL (slug)
         is_active: Активний
         is_show_main: Відображати на головній
+        is_show_constructor: Відображати в конструкторі
         zodiacs: Знаки зодіаку
+        stone_constructor: Констркутор
         created_at: Дата створення
+    tab:
+        stone: Камінь
+        stone_constructor: Конструктор
+
+stone_has_constructor:
+    fields:
+        id: ID
+        stone: Камінь
+        size: Розмір
+        image: Зображення
+        order_num: ''
 
 text:
     fields:
@@ -95,3 +108,7 @@ frontend:
     stone_letter: Камені на літеру
     stone_zodiac: Камені для знаку зодіаку
     all_stone: Усі камені
+    constructor:
+        stone: "Камінь:"
+        count_stone: "Кількість намистин:"
+        stone_summary: "Заповнені камені:"

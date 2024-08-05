@@ -38,6 +38,9 @@ frontend:
         gift_box: Подарункові упаковки
         scrapers: Скребки Гуаша
 
+    constructor:
+        title: Конструктор браслетів
+
     cart:
         title: Кошик
         in_cart: В кошику
@@ -162,6 +165,7 @@ frontend:
         payment_method: Платіжні системи та способи
         we_in_socila: Ми в соцмережах
         links:
+            constructor: Конструктор браслетів
             articles: Статті
             reviews: Відгуки
 
@@ -178,6 +182,7 @@ frontend:
         man: Для чоловіків
         woman: Для жінок
         articles: Статті
+        constructor: Конструктор браслетів
 
     meta:
         description: Коли хочеться дарувати яскраві емоції та незабутні враження своїм рідним та близьким вибирайте чудові вироби від компанії «Naturalstones Jewerly»
@@ -194,6 +199,9 @@ frontend:
 
         meta_title_cart_step: Кошик, крок %STEP% | Naturalstones Jewerly - Прикраси з натурального каміння
         meta_description_cart_step: Кошик, крок %STEP% | Оформити замовлення
+
+        meta_title_constructor: Конструктор браслетів | Naturalstones Jewerly - Прикраси з натурального каміння
+        meta_description_constructor: Конструктор дозволяє вибрати каміння з якого ви бажаєте створити браслет, розмір та кількість намистин
 
         meta_title_products: Список прикрас %CATEGORY% | Naturalstones Jewerly - Прикраси з натурального каміння
         meta_description_products: Список виробів %CATEGORY% | Naturalstones Jewerly - Прикраси з натурального каміння

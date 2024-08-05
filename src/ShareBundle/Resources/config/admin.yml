@@ -21,6 +21,17 @@ services:
         calls:
             - [ setTranslationDomain, [ ShareBundle ] ]
 
+    share.admin.stone_has_constructor:
+        class: ShareBundle\Admin\StoneHasConstructorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'group.share', label: "group.stone_has_constructor_editor", show_in_dashboard: false }
+        arguments:
+            - ~
+            - ShareBundle\Entity\StoneHasConstructor
+            - ~
+        calls:
+            - [ setTranslationDomain, [ ShareBundle ] ]
+
     share.admin.metal:
         class: ShareBundle\Admin\MetalAdmin
         tags:

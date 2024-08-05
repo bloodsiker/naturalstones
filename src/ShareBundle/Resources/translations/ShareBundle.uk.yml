@@ -112,3 +112,4 @@ frontend:
         stone: "Камінь:"
         count_stone: "Кількість намистин:"
         stone_summary: "Заповнені камені:"
+        btn_screenshot: Зробити скріншот

@@ -112,3 +112,4 @@ frontend:
         stone: "Камень:"
         count_stone: "Количество бусин:"
         stone_summary: "Заполненные камни:"
+        btn_screenshot: Сделать скриншот

@@ -7418,6 +7418,9 @@ select.custom_select option {
     padding-bottom: 80px;
     padding-top: 30px;
   }
+  .bracelet {
+    left: 56%;
+  }
   .bracelet-container {
     position: relative;
     width: 300px;

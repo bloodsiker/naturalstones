@@ -212,4 +212,15 @@ $(document).ready(function() {
 		generateStoneOptions($('#stone-select').val());
 		updateStoneCountOptions(10); // Устанавливаем начальные опции для 10мм
 	});
+
+
+
+	$('#btn-screenshot').on('click', function() {
+		html2canvas(document.querySelector("#constructor-container")).then(canvas => {
+			let link = document.createElement('a');
+			link.href = canvas.toDataURL();
+			link.download = 'screenshot.png';
+			link.click();
+		});
+	});
 });

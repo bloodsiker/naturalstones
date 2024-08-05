@@ -5330,6 +5330,18 @@ article.article {
   margin-bottom: 10px;
   font-weight: 500;
 }
+.screenshot {
+  text-align: center;
+  padding: 20px 0;
+}
+#btn-screenshot {
+  padding: 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 0 5px;
+  color: black;
+}
 
 /* Основной стиль для <select> */
 select.custom_select {

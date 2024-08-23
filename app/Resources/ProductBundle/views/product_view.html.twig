@@ -67,6 +67,11 @@
                         {% endif %}
                     {% endfor %}
                 </div>
+
+                <div class="context-constructor" style="text-align: center; background: #F8F8F8; border-radius: 10px; padding: 25px; margin-bottom: 45px">
+                    <p style="font-size: 15px">{{ 'frontend.product.constructor_text'|trans([], 'ProductBundle') }}</p>
+                    <a href="{{ path('constructor') }}" style="margin-top: 20px" class="button">{{ 'frontend.product.constructor_btn'|trans([], 'ProductBundle') }}</a>
+                </div>
             </div>
 
             <div itemprop="brand" itemtype="https://schema.org/Brand" itemscope>

@@ -247,3 +247,5 @@ frontend:
         delivery_payment_7:  Оплата производится с помощью банков
         delivery_payment_8:  Украина
         tags: Теги
+        constructor_text: Собрать самостоятельно браслет из разных камней
+        constructor_btn: Конструктор браслетов

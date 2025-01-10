@@ -305,6 +305,11 @@ class Product
     protected $finalPrice;
 
     /**
+     * @var float
+     */
+    private $oldPrice;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -951,6 +956,10 @@ class Product
      */
     public function setPrice($price = 0)
     {
+        if ($this->price !== $price) {
+            $this->oldPrice = $this->price;
+        }
+
         $this->price = $price;
 
         return $this;
@@ -1336,5 +1345,15 @@ class Product
     public function getFinalPrice()
     {
         return $this->finalPrice;
+    }
+
+    public function getOldPrice(): float
+    {
+        return $this->oldPrice;
+    }
+
+    public function setOldPrice(float $oldPrice): void
+    {
+        $this->oldPrice = $oldPrice;
     }
 }

@@ -10,6 +10,7 @@ use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use Doctrine\ORM\EntityManager;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use ProductBundle\Entity\ProductHasProduct;
+use ProductBundle\Entity\ProductLog;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -115,6 +116,16 @@ class ProductAdmin extends Admin
             } else {
                 $this->sendTelegramService->sendProductToChannel($object);
             }
+        }
+
+        if ($object->getPrice() !== $object->getOldPrice()) {
+            $log = new ProductLog();
+            $log->setProduct($object);
+            $log->setNewPrice($object->getPrice());
+            $log->setOldPrice($object->getOldPrice());
+
+            $this->entityManager->persist($log);
+            $this->entityManager->flush();
         }
     }
 

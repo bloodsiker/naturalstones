@@ -79,7 +79,7 @@ class AppKernel extends Kernel
             // Pagerfanta Bundle
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
 
-            new Sentry\SentryBundle\SentryBundle(),
+//            new Sentry\SentryBundle\SentryBundle(),
 
             // Application bundles
             new AppBundle\AppBundle(),

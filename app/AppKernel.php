@@ -93,7 +93,6 @@ class AppKernel extends Kernel
             new CommentBundle\CommentBundle(),
             new ShareBundle\ShareBundle(),
             new OrderBundle\OrderBundle(),
-//            new QuizBundle\QuizBundle(),
             new MainImageBundle\MainImageBundle(),
             new InformationBundle\InformationBundle(),
             new WheelSpinBundle\WheelSpinBundle(),

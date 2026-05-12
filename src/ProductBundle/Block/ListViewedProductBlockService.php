@@ -93,27 +93,29 @@ class ListViewedProductBlockService extends AbstractAdminBlockService
         $request = $this->requestStack->getCurrentRequest();
         $limit = (int) $blockContext->getSetting('items_count');
 
-        if ($request->isXmlHttpRequest() ) {
-            $repository = $this->doctrine->getRepository(Product::class);
-            $ids = array_slice($request->get('ids'), 0, 8);
+        if ($request->isXmlHttpRequest()) {
+            $ids = array_slice((array) $request->get('ids', []), 0, 8);
 
-            $qb = $repository->baseProductQueryBuilder();
+            if (!empty($ids)) {
+                $repository = $this->doctrine->getRepository(Product::class);
+                $qb = $repository->baseProductQueryBuilder();
 
-            $qb->where('p.id IN (:ids)')
-                ->setParameter('ids', $ids)
-                ->resetDQLPart('orderBy')
-                ->groupBy('p.productGroup');
+                $qb->where('p.id IN (:ids)')
+                    ->setParameter('ids', $ids)
+                    ->resetDQLPart('orderBy')
+                    ->groupBy('p.productGroup');
 
-            $result = $qb->setFirstResult(0)
-                ->setMaxResults($limit)
-                ->getQuery()
-                ->getResult();
+                $result = $qb->setFirstResult(0)
+                    ->setMaxResults($limit)
+                    ->getQuery()
+                    ->getResult();
 
-            usort($result, function($a, $b) use ($ids) {
-                $sort = array_flip($ids);
+                usort($result, function($a, $b) use ($ids) {
+                    $sort = array_flip($ids);
 
-                return $sort[$a->getId()] > $sort[$b->getId()];
-            });
+                    return $sort[$a->getId()] > $sort[$b->getId()];
+                });
+            }
         }
 
         return $this->renderResponse($request->isXmlHttpRequest() ? self::TEMPLATE_AJAX : $blockContext->getTemplate(), [

@@ -274,7 +274,7 @@ class ListProductBlockService extends AbstractAdminBlockService
         $paginator = new Pagerfanta(new QueryAdapter($qb, true, false));
         $paginator->setAllowOutOfRangePages(true);
         $paginator->setMaxPerPage((int) $limit);
-        $paginator->setCurrentPage((int) $page);
+        $paginator->setCurrentPage(max(1, (int) $page));
 
         $template = !is_null($blockContext->getSetting('list_type'))
             ? $blockContext->getSetting('list_type') : $blockContext->getTemplate();

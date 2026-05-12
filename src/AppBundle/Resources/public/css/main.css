@@ -2312,8 +2312,17 @@ footer {
 .field-error {
   color: #e74c3c;
   font-size: 12px;
-  margin-bottom: 10px;
   min-height: 16px;
+}
+.field-error:empty {
+  margin-bottom: 10px;
+}
+.field-error:not(:empty) {
+  margin-bottom: 4px;
+}
+#formFeedback .common-input {
+  margin-top: 0;
+  margin-bottom: 6px;
 }
 .input-error {
   border-color: #e74c3c !important;

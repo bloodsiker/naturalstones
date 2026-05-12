@@ -37,12 +37,13 @@
         <!--[if IE]>
         <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script>
         <![endif]-->
+        <link rel="preload" href="{{ asset('bundles/app/images/video-logo.png') }}" as="image" fetchpriority="high">
         <link rel="stylesheet" href="{{ asset('bundles/app/css/fonts.css') }}" />
-        <link rel="stylesheet" href="{{ asset('bundles/app/css/slick.css') }}" />
-        <link rel="stylesheet" href="{{ asset('bundles/app/css/select2.min.css') }}" />
-        <link rel="stylesheet" href="{{ asset('bundles/app/css/magnific-popup.css') }}" />
-        <link rel="stylesheet" href="{{ asset('bundles/app/css/ion.rangeSlider.css') }}" />
         <link rel="stylesheet" href="{{ asset('bundles/app/css/main.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/slick.css') }}" media="print" onload="this.media='all'" />
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/select2.min.css') }}" media="print" onload="this.media='all'" />
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/magnific-popup.css') }}" media="print" onload="this.media='all'" />
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/ion.rangeSlider.css') }}" media="print" onload="this.media='all'" />
 
         {% block head_javascripts %}
 
@@ -128,7 +129,7 @@
         </div>
 
         {% block footer_javascripts %}
-            <script src="{{ asset('bundles/app/js/jquery-1.12.4.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/jquery-3.7.1.min.js') }}"></script>
             <script src="{{ asset('bundles/app/js/html2canvas.min.js') }}"></script>
             <script src="{{ asset('bundles/app/js/jquery.inputmask.js') }}"></script>
             <script src="{{ asset('bundles/app/js/lazysizes.min.js') }}"></script>

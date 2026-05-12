@@ -2309,6 +2309,15 @@ footer {
 .containerFeedback {
   margin: 45px 0 60px;
 }
+.field-error {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-bottom: 10px;
+  min-height: 16px;
+}
+.input-error {
+  border-color: #e74c3c !important;
+}
 .form-area {
   margin-bottom: 40px;
 }

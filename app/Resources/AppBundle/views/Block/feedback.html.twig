@@ -8,17 +8,14 @@
         <input type="hidden" name="form_time" value="{{ "now"|date("U") }}">
         <div class="row">
             <div class="col-lg-6 form-group">
-                <input name="name" placeholder="{{ 'frontend.homepage.feedback_form.name'|trans([], 'AppBundle') }}*" class="common-input form-control" autocomplete="off" type="text">
-                <div class="field-error" id="error-name"></div>
+                <input name="name" placeholder="{{ 'frontend.homepage.feedback_form.name'|trans([], 'AppBundle') }}*" class="common-input mb-20 form-control" autocomplete="off" type="text">
 
-                <input name="email" placeholder="{{ 'frontend.homepage.feedback_form.email'|trans([], 'AppBundle') }}" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" autocomplete="off" class="common-input form-control" type="email">
+                <input name="email" placeholder="{{ 'frontend.homepage.feedback_form.email'|trans([], 'AppBundle') }}" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" autocomplete="off" class="common-input mb-20 form-control" type="email">
 
-                <input name="phone" placeholder="{{ 'frontend.homepage.feedback_form.phone'|trans([], 'AppBundle') }}" class="common-input form-control phone-input" autocomplete="off" type="text">
-                <div class="field-error" id="error-contact"></div>
+                <input name="phone" placeholder="{{ 'frontend.homepage.feedback_form.phone'|trans([], 'AppBundle') }}" class="common-input mb-20 form-control phone-input" autocomplete="off" type="text">
             </div>
             <div class="col-lg-6 form-group">
                 <textarea class="common-textarea mt-10 form-control" name="message" placeholder="{{ 'frontend.homepage.feedback_form.message'|trans([], 'AppBundle') }}*"></textarea>
-                <div class="field-error" id="error-message"></div>
                 <button class="mt-20 button" id="sendFeedback">{{ 'frontend.homepage.feedback_form.btn_send'|trans([], 'AppBundle') }}</button>
                 <div class="alert-msg">
                 </div>

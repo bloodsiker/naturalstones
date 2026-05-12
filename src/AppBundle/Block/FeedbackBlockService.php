@@ -92,9 +92,16 @@ class FeedbackBlockService extends AbstractAdminBlockService
         $request = $this->request->getCurrentRequest();
 
         if ($request->isXmlHttpRequest()) {
+            $formTime = (int) $request->get('form_time', 0);
+            $honeypot = $request->get('website', '');
+
+            if ($honeypot !== '' || (time() - $formTime) < 3) {
+                return new JsonResponse(['type' => 'success']);
+            }
+
             $this->sendTelegramService->sendFeedback($request);
 
-            return  new JsonResponse([
+            return new JsonResponse([
                 'type' => 'success'
             ]);
         }

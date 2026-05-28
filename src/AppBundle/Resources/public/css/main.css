@@ -6046,10 +6046,6 @@ select.custom_select option {
   flex-wrap: wrap;
   gap: 18px;
 }
-.reviews-page {
-  max-width: 1060px;
-  margin: 0 auto;
-}
 .reviews-page-title {
   position: relative;
   overflow: hidden;

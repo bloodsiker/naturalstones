@@ -6657,7 +6657,7 @@ select.custom_select option {
 .list-stones--zodiac .stone-item__img {
   width: 100%;
   height: 155px;
-  padding: 16px;
+  padding: 30px;
   background: linear-gradient(145deg, #fffafa 0%, #fdf1f1 100%);
   display: flex;
   align-items: center;

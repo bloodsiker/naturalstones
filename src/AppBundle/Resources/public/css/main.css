@@ -6124,6 +6124,58 @@ select.custom_select option {
   font-weight: 500;
   line-height: 1.3;
 }
+
+/* Stones — zodiac page card style */
+.list-stones--zodiac {
+  margin-top: 30px;
+  gap: 18px;
+}
+.list-stones--zodiac .stone-item {
+  width: calc(20% - 15px);
+  margin: 0;
+  padding-bottom: 0;
+  background: #fff;
+  border: 1px solid #f0d8d8;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(20, 9, 35, 0.08);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.list-stones--zodiac .stone-item:hover {
+  border-color: #f08383;
+  box-shadow: 0 16px 38px rgba(20, 9, 35, 0.13);
+  transform: translateY(-3px);
+}
+.list-stones--zodiac .stone-item__img {
+  width: 100%;
+  height: 155px;
+  padding: 16px;
+  background: linear-gradient(145deg, #fffafa 0%, #fdf1f1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.list-stones--zodiac .stone-item__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.list-stones--zodiac .stone-item:hover .stone-item__img img {
+  transform: scale(1.05);
+}
+.list-stones--zodiac .head-stone {
+  margin: 0;
+  padding: 13px 12px 15px;
+  color: #140923;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+}
 /* -------------------------------- */
 
 .stones-list-letter {
@@ -6174,29 +6226,69 @@ select.custom_select option {
   font-size: 16px;
 }
 .head-zodiac {
-  margin: 25px 0 15px;
-  color: #525252;
+  margin: 0;
+  padding: 0 8px 14px;
+  color: #140923;
   font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
 }
 .zodiac-item {
-  width: calc(7% - 5px);
-  margin: 0 10px 30px;
+  position: relative;
+  overflow: hidden;
+  width: calc(8.333% - 16px);
+  min-height: 130px;
+  margin: 0 8px 18px;
   flex-direction: column;
   text-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding-bottom: 15px;
-  border: 1px solid #f5f5f5;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
+  display: flex;
+  justify-content: center;
+  padding: 16px 8px 0;
+  border: 1px solid #f0d8d8;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(20, 9, 35, 0.07);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+.zodiac-item:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #f08383, #fbdfdf);
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 .zodiac-item.active {
-  border-color: #c2c0c0;
+  border-color: #f08383;
+  background: linear-gradient(135deg, #fff 0%, #fff7f7 100%);
+  box-shadow: 0 10px 28px rgba(240, 131, 131, 0.18);
+}
+.zodiac-item.active:before {
+  opacity: 1;
 }
 .zodiac-item img {
-  margin-top: 20px;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
 }
 .zodiac-item:hover {
-  border-color: #e0e0e0;
+  border-color: #f08383;
+  box-shadow: 0 12px 30px rgba(20, 9, 35, 0.11);
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #fff 0%, #fff7f7 100%);
+}
+.zodiac-item:hover:before {
+  opacity: 1;
+}
+.zodiac-item:hover img {
+  transform: scale(1.06);
 }
 
 .product-description-container {
@@ -7871,6 +7963,16 @@ select.custom_select option {
   .list-stones--main .stone-item__img {
     height: 110px;
   }
+  .list-stones--zodiac {
+    gap: 12px;
+  }
+  .list-stones--zodiac .stone-item {
+    width: calc(50% - 6px);
+    margin: 0;
+  }
+  .list-stones--zodiac .stone-item__img {
+    height: 120px;
+  }
 
   .comment-item {
     width: 100%;
@@ -7908,15 +8010,17 @@ select.custom_select option {
   .zodiac-item {
     width: calc(50% - 10px);
     margin: 0 5px 15px;
+    min-height: 124px;
   }
 
   .zodiac-item img {
-    width: 50px;
-    margin-top: 20px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0;
   }
 
   .head-zodiac {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .col-lg-6 {

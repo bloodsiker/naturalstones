@@ -38,7 +38,7 @@
         {% endfor %}
     {% endif %}
 {% else %}
-    <div class="list-stones{{ settings.is_main ? ' list-stones--main' : '' }}">
+    <div class="list-stones{{ settings.is_main ? ' list-stones--main' : '' }}{{ settings.zodiac is defined ? ' list-stones--zodiac' : '' }}">
         {% for stone in stones %}
             <a href="{{ path('product_stone_list', {'slug': stone.slug}) }}" class="stone-item">
                 <div class="stone-item__img">

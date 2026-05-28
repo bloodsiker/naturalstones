@@ -12,6 +12,11 @@
                 </a>
                 <div class="product-category"><a href="{{ path('product_list', {'slug': product.category.slug}) }}">{{ product.category.name }}</a></div>
                 <div class="name"><a href="{{ product_path(product) }}">{{ product.name }}</a></div>
+                {% if product.discount %}
+                    <div class="viewed-price">{{ product.discount }} грн</div>
+                {% elseif product.price %}
+                    <div class="viewed-price">{{ product.price }} грн</div>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

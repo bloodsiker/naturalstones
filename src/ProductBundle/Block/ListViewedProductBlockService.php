@@ -68,7 +68,7 @@ class ListViewedProductBlockService extends AbstractAdminBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'items_count'      => 7,
+            'items_count'      => 6,
             'class'            => 'section',
             'template'         => self::TEMPLATE_DEFAULT,
         ]);
@@ -94,7 +94,7 @@ class ListViewedProductBlockService extends AbstractAdminBlockService
         $limit = (int) $blockContext->getSetting('items_count');
 
         if ($request->isXmlHttpRequest()) {
-            $ids = array_slice((array) $request->get('ids', []), 0, 8);
+            $ids = array_slice((array) $request->get('ids', []), 0, $limit);
 
             if (!empty($ids)) {
                 $repository = $this->doctrine->getRepository(Product::class);
@@ -102,19 +102,36 @@ class ListViewedProductBlockService extends AbstractAdminBlockService
 
                 $qb->where('p.id IN (:ids)')
                     ->setParameter('ids', $ids)
-                    ->resetDQLPart('orderBy')
-                    ->groupBy('p.productGroup');
+                    ->resetDQLPart('orderBy');
 
-                $result = $qb->setFirstResult(0)
-                    ->setMaxResults($limit)
-                    ->getQuery()
-                    ->getResult();
+                $allProducts = $qb->getQuery()->getResult();
 
-                usort($result, function($a, $b) use ($ids) {
+                $seen = [];
+                $deduped = [];
+                foreach ($allProducts as $product) {
+                    $groupKey = $product->getProductGroup() ?? ('id_' . $product->getId());
+                    if (!isset($seen[$groupKey])) {
+                        $seen[$groupKey] = true;
+                        $deduped[] = $product;
+                    }
+                }
+
+                $locale = $this->normalizeLocale($request->getLocale());
+                foreach ($deduped as $product) {
+                    $product->setCurrentLocale($locale);
+
+                    if ($product->getCategory()) {
+                        $product->getCategory()->setCurrentLocale($locale);
+                    }
+                }
+
+                usort($deduped, function($a, $b) use ($ids) {
                     $sort = array_flip($ids);
 
-                    return $sort[$a->getId()] > $sort[$b->getId()];
+                    return $sort[$a->getId()] <=> $sort[$b->getId()];
                 });
+
+                $result = array_slice($deduped, 0, $limit);
             }
         }
 
@@ -123,5 +140,15 @@ class ListViewedProductBlockService extends AbstractAdminBlockService
             'block'     => $block,
             'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
         ], $response);
+    }
+
+    /**
+     * @param string|null $locale
+     *
+     * @return string
+     */
+    private function normalizeLocale($locale)
+    {
+        return $locale === 'ua' ? 'uk' : ($locale ?: 'uk');
     }
 }

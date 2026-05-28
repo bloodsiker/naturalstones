@@ -1,4 +1,10 @@
 $(document).ready(function() {
+	const constructor = $('.constructor');
+
+	if (!constructor.length) {
+		return;
+	}
+
 	let selectedStone = 'Ruby'; // По умолчанию
 	let selectedStoneImage = null; // По умолчанию
 	let selectedStoneId = null; // По умолчанию id пустой
@@ -72,7 +78,7 @@ $(document).ready(function() {
 	};
 
 	function fetchStoneType(size, callback) {
-		let url = $('.constructor').data('url');
+		let url = constructor.data('url');
 		$.ajax({
 			url: url,
 			method: 'POST',

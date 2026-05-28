@@ -81,6 +81,35 @@
             <div class="product-information">
                 <div class="product-info-top clearfix">
                     <form action="#" method="post" class="product-add-form">
+                        <div class="bottom-block">
+                            <div class="total-price" itemprop="offers" itemtype="https://schema.org/Offer" itemscope>
+                                <link itemprop="url" href="{{ product_path(product, true) }}" />
+                                {% if product.discount %}
+                                    <div class="price">
+                                        <span class="old-price">{{ product.price}} грн</span><br>
+                                        <span>{{ product.discount}} грн</span>
+                                        <meta itemprop="availability" content="https://schema.org/InStock" />
+                                        <meta itemprop="priceCurrency" content="UAH" />
+                                        <meta itemprop="price" content="{{ product.price}}" />
+                                    </div>
+                                {% else %}
+                                    <div class="price"><span>{{ product.price}} грн</span></div>
+                                    <meta itemprop="availability" content="https://schema.org/InStock" />
+                                    <meta itemprop="priceCurrency" content="UAH" />
+                                    <meta itemprop="price" content="{{ product.price}}" />
+                                {% endif %}
+                            </div>
+                            {{
+                                sonata_block_render(
+                                    { 'type': 'app.block.service.cart' },
+                                    {
+                                        'product': product,
+                                        'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_BUTTON_IN_PRODUCT')
+                                    }
+                                )
+                            }}
+                        </div>
+
                         <div class="top-block">
                             {% if product.productHasOptionColour|length > 0 %}
                                 <div class="inner-block">
@@ -274,43 +303,19 @@
                                             </a>
                                         </div>
                                         <div class="relations_products_desc">
-                                            <a href="{{ product_path(prodSet.productSet) }}" class="link" itemprop="url"><span itemprop="name">{{ prodSet.productSet.name }}</span></a> {{ prodSet.productSet.price }} грн - <span>{{ prodSet.quantity }} шт.</span>
+                                            <a href="{{ product_path(prodSet.productSet) }}" class="link" itemprop="url"><span itemprop="name">{{ prodSet.productSet.name }}</span></a>
+                                            <div class="relations_products_meta">
+                                                <span class="relations_products_price">{{ prodSet.productSet.price }} грн</span>
+                                                <span class="relations_products_quantity">{{ prodSet.quantity }} шт.</span>
+                                            </div>
                                             {% if prodSet.productSet.size %}
-                                                <br><span>{{ prodSet.productSet.size }}</span>
+                                                <span class="relations_products_size">{{ prodSet.productSet.size }}</span>
                                             {% endif %}
                                         </div>
                                     </div>
                                 {% endfor %}
                             </div>
                         {% endif %}
-                        <div class="bottom-block">
-                            <div class="total-price" itemprop="offers" itemtype="https://schema.org/Offer" itemscope>
-                                <link itemprop="url" href="{{ product_path(product, true) }}" />
-                                {% if product.discount %}
-                                    <div class="price">
-                                        <span class="old-price">{{ product.price}} грн</span><br>
-                                        <span>{{ product.discount}} грн</span>
-                                        <meta itemprop="availability" content="https://schema.org/InStock" />
-                                        <meta itemprop="priceCurrency" content="UAH" />
-                                        <meta itemprop="price" content="{{ product.price}}" />
-                                    </div>
-                                {% else %}
-                                    <div class="price"><span>{{ product.price}} грн</span></div>
-                                    <meta itemprop="availability" content="https://schema.org/InStock" />
-                                    <meta itemprop="priceCurrency" content="UAH" />
-                                    <meta itemprop="price" content="{{ product.price}}" />
-                                {% endif %}
-                            </div>
-                            {{
-                                sonata_block_render(
-                                    { 'type': 'app.block.service.cart' },
-                                    {
-                                        'product': product,
-                                        'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_BUTTON_IN_PRODUCT')
-                                    }
-                                )
-                            }}
-                        </div>
                     </form>
 
                     <div class="product-quick">

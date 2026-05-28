@@ -1016,36 +1016,60 @@ footer {
 }
 .container-form {
   margin-bottom: 30px;
+  padding: 14px;
+  background: #fff;
+  border: 1px solid #f0d8d8;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(20, 9, 35, 0.07);
 }
 .form {
-  margin: 15px 0;
+  margin: 0;
 }
 .form>.inputs {
   display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .form>.inputs input {
-  border: 1px solid #d6cfcf;
-  width: 90%;
-  border-radius: 3px 0 0 3px;
+  border: 1px solid #f0d8d8;
+  width: 100%;
+  border-radius: 99px;
   display: block;
-  height: 40px;
-  line-height: 40px;
-  padding: 0 15px;
-  color: #000;
-  background-color: #fff;
+  height: 48px;
+  line-height: 48px;
+  padding: 0 20px;
+  color: #140923;
+  background: linear-gradient(135deg, #fff 0%, #fff7f7 100%);
   -webkit-appearance: none;
-  box-shadow: none!important;
+  box-shadow: 0 5px 16px rgba(20, 9, 35, 0.05) !important;
+  font-weight: 500;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.form>.inputs input:focus {
+  border-color: #f08383;
+  box-shadow: 0 0 0 3px rgba(240, 131, 131, 0.18), 0 5px 16px rgba(20, 9, 35, 0.07) !important;
+  outline: none;
 }
 .form>.inputs button {
-  width: 10%;
-  border-radius: 0 3px 3px 0!important;
-  padding: 0 15px;
-  line-height: 40px;
-  background-color: #f08383;
+  width: auto;
+  min-width: 132px;
+  height: 48px;
+  border-radius: 99px !important;
+  padding: 0 22px;
+  line-height: 48px;
+  background: #f08383;
   color: #fff;
   text-transform: uppercase;
   border: none;
   cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 7px 16px rgba(240, 131, 131, 0.24);
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.form>.inputs button:hover {
+  background: #e76f6f;
+  box-shadow: 0 9px 20px rgba(240, 131, 131, 0.32);
+  transform: translateY(-1px);
 }
 .no-result {
   text-align: center;
@@ -6702,24 +6726,49 @@ select.custom_select option {
   margin-bottom: 35px;
 }
 .search-title {
-  margin-bottom: 20px;
-  background: #fafafa;
-  border: 1px solid #e2dcdc;
-  padding: 11px;
-  border-radius: 5px;
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, #fff 0%, #fff7f7 100%);
+  border: 1px solid #f0d8d8;
+  padding: 14px 16px;
+  border-radius: 8px;
+  box-shadow: 0 7px 20px rgba(20, 9, 35, 0.06);
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
 }
 .search-category-link {
-  font-size: 16px;
-  color: #525252;
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f08383;
+  background: #fff;
+  border: 1px solid #f0d8d8;
+  border-radius: 99px;
+  box-shadow: 0 5px 14px rgba(20, 9, 35, 0.05);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.search-category-link:hover {
+  color: #fff;
+  background: #f08383;
+  border-color: #f08383;
+  box-shadow: 0 7px 16px rgba(240, 131, 131, 0.24);
+  transform: translateY(-1px);
 }
 .search-category-title {
   font-size: 18px;
-  color: #525252;
+  font-weight: 600;
+  color: #140923;
+  line-height: 1.25;
+}
+.search-category-title a:hover {
+  color: #f08383;
 }
 .search_count {
   font-size: 14px;
+  color: #b09090;
 }
 
 /* ========================== COMMENTS ===========================*/
@@ -7506,10 +7555,10 @@ select.custom_select option {
     height: 30px;
   }
   .form>.inputs input {
-    width: 75%;
+    width: 100%;
   }
   .form>.inputs button {
-    width: 25%;
+    width: auto;
   }
   .container-form-search .input{
     font-size: 1rem;
@@ -8311,19 +8360,32 @@ select.custom_select option {
     font-size: 15px!important;
   }
   .search-title {
-    padding: 8px;
+    padding: 10px;
+    align-items: flex-start;
+    flex-direction: column;
   }
   .search-category-link {
+    min-height: 30px;
+    padding: 6px 11px;
     font-size: 12px;
-    color: #525252;
   }
   .search-category-title {
     font-size: 14px;
-    color: #525252;
   }
 }
 
 @media (max-width: 480px) {
+  .container-form {
+    padding: 10px;
+  }
+  .form>.inputs {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .form>.inputs button {
+    width: 100%;
+  }
+
   .catalog-block {
     width: calc(50% - 10px);
   }

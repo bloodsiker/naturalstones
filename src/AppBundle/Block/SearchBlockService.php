@@ -98,24 +98,27 @@ class SearchBlockService extends AbstractAdminBlockService
         }
 
         $request = $this->request->getCurrentRequest();
-        $limit = (int) $blockContext->getSetting('items_count');
+        $limit = max(1, (int) $blockContext->getSetting('items_count'));
         $isAjax = $request->isXmlHttpRequest();
         $loadMore = $request->get('load_more', false);
-        $page = $isAjax ? $request->get('page') : $blockContext->getSetting('page');
+        $page = max(1, (int) ($isAjax ? $request->get('page') : $blockContext->getSetting('page')));
         $category = $request->get('category');
 
         if ($request->get('show_paginator')) {
             $blockContext->setSetting('show_paginator', true);
         }
 
-        $search = $blockContext->getSetting('search')
-            ? $blockContext->getSetting('search') : $request->get('search');
+        $search = trim((string) ($blockContext->getSetting('search') ?: $request->get('search')));
 
         if ($search) {
             $repository = $this->em->getRepository(Product::class);
 
             $qb = $repository->baseProductQueryBuilder();
-            $qb = $repository->filterByLocale($qb, $search);
+            $qb
+                ->innerJoin('p.category', 'category')
+                ->addSelect('category');
+
+            $repository->filterByLocale($qb, $search);
 
             if ($category) {
                 $qb = $repository->filterByCategory($qb, $category);
@@ -128,13 +131,9 @@ class SearchBlockService extends AbstractAdminBlockService
             $results->setMaxPerPage($limit);
             $results->setCurrentPage($page);
 
-            $ip = $request->server->get('REMOTE_ADDR');
-            $history = new ProductSearchHistory();
-            $history->setSearch($search);
-            $history->setIp($ip);
-
-            $this->em->persist($history);
-            $this->em->flush();
+            if (!$loadMore) {
+                $this->saveSearchHistory($search, $request->server->get('REMOTE_ADDR'));
+            }
         }
 
         $template = !is_null($blockContext->getSetting('list_type'))
@@ -168,5 +167,41 @@ class SearchBlockService extends AbstractAdminBlockService
             'block'       => $block,
             'settings'    => array_merge($blockContext->getSettings(), $block->getSettings()),
         ]);
+    }
+
+    private function saveSearchHistory($search, $ip)
+    {
+        if (strlen($search) < 2) {
+            return;
+        }
+
+        $ip = $ip ? substr($ip, 0, 20) : null;
+
+        $qb = $this->em->getRepository(ProductSearchHistory::class)
+            ->createQueryBuilder('history')
+            ->where('history.search = :search')
+            ->andWhere('history.createdAt >= :createdAt')
+            ->setParameter('search', $search)
+            ->setParameter('createdAt', new \DateTime('-15 minutes'))
+            ->setMaxResults(1);
+
+        if ($ip) {
+            $qb->andWhere('history.ip = :ip')->setParameter('ip', $ip);
+        } else {
+            $qb->andWhere('history.ip IS NULL');
+        }
+
+        $recentSearch = $qb->getQuery()->getOneOrNullResult();
+
+        if ($recentSearch) {
+            return;
+        }
+
+        $history = new ProductSearchHistory();
+        $history->setSearch($search);
+        $history->setIp($ip);
+
+        $this->em->persist($history);
+        $this->em->flush();
     }
 }

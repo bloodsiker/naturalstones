@@ -49,8 +49,8 @@ class ProductController extends Controller
         $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
         $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
         $categorySeo = $this->getCategorySeo($category->getSlug(), $category->getName());
-        $metaTitle = $categorySeo['meta_title'] ?? $this->get('translator')->trans('frontend.meta.meta_title_products', ['%CATEGORY%' => $category->getName()], 'AppBundle');
-        $metaDescription = $categorySeo['meta_description'] ?? $this->get('translator')->trans('frontend.meta.meta_description_products', ['%CATEGORY%' => $category->getName()], 'AppBundle');
+        $metaTitle = isset($categorySeo['meta_title']) ? $categorySeo['meta_title'] : $this->get('translator')->trans('frontend.meta.meta_title_products', ['%CATEGORY%' => $category->getName()], 'AppBundle');
+        $metaDescription = isset($categorySeo['meta_description']) ? $categorySeo['meta_description'] : $this->get('translator')->trans('frontend.meta.meta_description_products', ['%CATEGORY%' => $category->getName()], 'AppBundle');
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $metaTitle.$page,

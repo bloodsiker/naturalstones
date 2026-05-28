@@ -48,10 +48,13 @@ class ProductController extends Controller
 
         $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
         $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
+        $categorySeo = $this->getCategorySeo($category->getSlug(), $category->getName());
+        $metaTitle = $categorySeo['meta_title'] ?? $this->get('translator')->trans('frontend.meta.meta_title_products', ['%CATEGORY%' => $category->getName()], 'AppBundle');
+        $metaDescription = $categorySeo['meta_description'] ?? $this->get('translator')->trans('frontend.meta.meta_description_products', ['%CATEGORY%' => $category->getName()], 'AppBundle');
 
         $this->get('app.seo.updater')->doMagic(null, [
-            'title' => $this->get('translator')->trans('frontend.meta.meta_title_products', ['%CATEGORY%' => $category->getName()], 'AppBundle').$page,
-            'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_products', ['%CATEGORY%' => $category->getName()], 'AppBundle'),
+            'title' => $metaTitle.$page,
+            'description' => $pageDesc.$metaDescription,
             'og' => [
                 'og:type' => 'website',
                 'og:url' => $request->getSchemeAndHttpHost(),
@@ -59,7 +62,10 @@ class ProductController extends Controller
             'canonicalUrl' => $router->generate('product_list', ['slug' => $slug, 'page' => $request->get('page')], 0),
         ]);
 
-        return $this->render('ProductBundle::product_list.html.twig', ['category' => $category]);
+        return $this->render('ProductBundle::product_list.html.twig', [
+            'category' => $category,
+            'categorySeo' => $categorySeo,
+        ]);
     }
 
     /**
@@ -230,18 +236,33 @@ class ProductController extends Controller
         }
         $breadcrumb->addBreadcrumb(['title' => $product->getName()]);
 
-        $title = $product->getName().' - '. $this->get('translator')->trans('frontend.meta.meta_title_single_product', [], 'AppBundle');
+        $price = $product->getDiscount() ?: $product->getPrice();
+        $priceStr = $price ? ' — від '.number_format($price, 0, '.', ' ').' грн' : '';
+        $availabilityStr = $product->getIsAvailable()
+            ? $this->get('translator')->trans('frontend.meta.in_stock', [], 'AppBundle')
+            : '';
+
+        $title = $product->getName().$priceStr.' | Naturalstones Jewerly';
+
+        $cleanDescription = trim(strip_tags($product->getDescription()));
+        $description = mb_substr($cleanDescription, 0, 140);
+        if (mb_strlen($cleanDescription) > 140) {
+            $description .= '...';
+        }
+        $metaDescription = $availabilityStr.$description;
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $title,
-            'description' => mb_substr($product->getDescription(), 0, 150),
+            'description' => $metaDescription,
             'og' => [
                 'og:site_name' => $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
-                'og:type' => 'article',
+                'og:type' => 'product',
                 'og:title' => $title,
-                'og:url' => $request->getSchemeAndHttpHost(),
+                'og:url' => $request->getSchemeAndHttpHost().$request->getPathInfo(),
                 'og:image' => $request->getSchemeAndHttpHost().$product->getImage()->getPath(),
-                'og:description' => mb_substr($product->getDescription(), 0, 150),
+                'og:description' => $metaDescription,
+                'product:price:amount' => $price,
+                'product:price:currency' => 'UAH',
             ],
         ]);
 
@@ -250,6 +271,55 @@ class ProductController extends Controller
             $this->container->get('product.helper.views')->doView($product);
         }
 
-        return $this->render('ProductBundle::product_view.html.twig', ['product' => $product, 'sizes' => $sizes]);
+        $em = $this->getDoctrine()->getManager();
+        $ratingData = $em->createQuery(
+            'SELECT AVG(c.rating) as avgRating, COUNT(c.id) as reviewCount
+             FROM CommentBundle\Entity\Comment c
+             WHERE c.product = :product AND c.isActive = 1'
+        )->setParameter('product', $product)->getSingleResult();
+
+        return $this->render('ProductBundle::product_view.html.twig', [
+            'product' => $product,
+            'sizes' => $sizes,
+            'avgRating' => $ratingData['avgRating'] ? round((float)$ratingData['avgRating'], 1) : null,
+            'reviewCount' => (int)$ratingData['reviewCount'],
+        ]);
+    }
+
+    /**
+     * @param string $slug
+     * @param string $fallbackTitle
+     *
+     * @return array
+     */
+    private function getCategorySeo($slug, $fallbackTitle)
+    {
+        $seoSlugs = ['braslety', 'kole', 'podveski', 'niti-oberegi'];
+
+        if (!in_array($slug, $seoSlugs, true)) {
+            return ['h1' => $fallbackTitle];
+        }
+
+        $translator = $this->get('translator');
+        $prefix = 'frontend.category_seo.'.$slug.'.';
+        $faq = [];
+
+        for ($i = 1; $i <= 3; $i++) {
+            $faq[] = [
+                'question' => $translator->trans($prefix.'faq_'.$i.'_question', [], 'AppBundle'),
+                'answer' => $translator->trans($prefix.'faq_'.$i.'_answer', [], 'AppBundle'),
+            ];
+        }
+
+        return [
+            'h1' => $translator->trans($prefix.'h1', [], 'AppBundle'),
+            'intro' => $translator->trans($prefix.'intro', [], 'AppBundle'),
+            'bottom_title' => $translator->trans($prefix.'bottom_title', [], 'AppBundle'),
+            'bottom' => $translator->trans($prefix.'bottom', [], 'AppBundle'),
+            'faq_title' => $translator->trans('frontend.category_seo.faq_title', [], 'AppBundle'),
+            'faq' => $faq,
+            'meta_title' => $translator->trans($prefix.'meta_title', [], 'AppBundle'),
+            'meta_description' => $translator->trans($prefix.'meta_description', [], 'AppBundle'),
+        ];
     }
 }

@@ -3633,47 +3633,77 @@ footer {
 
 /*================= ARTICLE ======================*/
 .article-categories {
-  display: inline-flex;
-  white-space: nowrap;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  overflow-x: auto;
-  font-size: .9rem;
-  margin-bottom: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 40px;
 }
 .category-block {
-  margin-right: 10px;
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  display: block;
-  border: 1px solid #e0e0e0;
-  border-radius: 0.25rem;
-  color: #525252;
+  padding: 7px 16px;
+  display: inline-block;
+  border: 1px solid #f0d8d8;
+  border-radius: 99px;
+  color: #6b4f4f;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.category-block:hover {
+  background: #fff7f7;
+  border-color: #f08383;
+  color: #f08383;
 }
 .category-active {
-  background: #e0e0e0;
-  border: 1px solid #b2aeae;
+  background: #fff7f7;
+  border-color: #f08383;
+  color: #f08383;
 }
 .articles {
   display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
 }
 .article-grid {
-  margin-bottom: 50px;
+  margin-bottom: 0;
 }
 article.article {
   display: flex;
-  color: #525252;;
+  flex-direction: column;
+  color: #525252;
+  position: relative;
+  background: #fff;
+  border: 1px solid #f0d8d8;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(20, 9, 35, 0.08);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  height: 100%;
+}
+article.article:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #f08383, #fbdfdf);
+  z-index: 1;
+}
+article.article:hover {
+  box-shadow: 0 14px 36px rgba(20, 9, 35, 0.13);
+  transform: translateY(-2px);
 }
 .article-img {
-  width: 40%;
+  width: 100%;
+  flex-shrink: 0;
 }
 .img-relative {
   position: relative;
   padding-bottom: 56.25%;
-  border-radius: 0.5rem;
   overflow: hidden;
+  border-radius: 0;
 }
 .img-relative img {
   width: 100%;
@@ -3686,24 +3716,27 @@ article.article {
   object-fit: cover;
   height: 100%;
   display: block;
-  transition-property: opacity;
-  transition-duration: .1s;
+  transition: opacity 0.1s, transform 0.3s ease;
+}
+article.article:hover .img-relative img {
+  transform: scale(1.03);
 }
 .article-desc {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  margin-right: calc(1.5rem*0);
-  margin-left: calc(1.5rem*(1 - 0));
+  flex-grow: 1;
+  padding: 20px 22px 24px;
+  margin: 0;
 }
 .article-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  font-size: 1rem;
+  font-size: 0.82rem;
   color: #a8a8a8;
   text-transform: uppercase;
   letter-spacing: .05em;
+  margin-bottom: 8px;
 }
 .article-meta span {
   display: block;
@@ -3712,13 +3745,18 @@ article.article {
 }
 .article-title {
   line-height: 1.375;
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #140923;
+  margin-bottom: 8px;
+}
+.article-title:hover {
+  color: #f08383;
 }
 .article-text {
   color: #707070;
-  font-size: 1.14rem;
-  line-height: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
 }
 .font-bold {
   font-weight: 700;
@@ -3892,12 +3930,15 @@ article.article {
 }
 
 @media (max-width: 767px) {
+  .articles {
+    grid-template-columns: 1fr;
+  }
   .article-title {
     line-height: 1.375;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
   }
   .article-meta {
-    font-size: .9rem;
+    font-size: .82rem;
   }
   .article-description {
     font-size: 1.4rem;
@@ -3912,16 +3953,13 @@ article.article {
     border-radius: 3px;
   }
   .article-grid {
-    margin-bottom: 25px;
+    margin-bottom: 0;
   }
   article.article {
-    display: block;
-    border: 1px solid #ddd;
-    border-radius: 10px;
+    transform: none !important;
   }
   .article-desc {
-    margin: 10px 0 0 0;
-    padding: 10px;
+    padding: 14px 16px 18px;
   }
   .article-img {
     width: 100%;

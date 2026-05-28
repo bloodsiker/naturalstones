@@ -31,6 +31,18 @@ $(document).ready(function() {
 			counts: [16, 17, 18, 19, 20],
 			defaultCount: 18
 		},
+		8: {
+			stoneSize: 45,
+			radii: {
+				18: 132,
+				19: 139,
+				20: 145,
+				21: 152,
+				22: 158
+			},
+			counts: [18, 19, 20, 21, 22],
+			defaultCount: 20
+		},
 		6: {
 			stoneSize: 40,
 			radii: {
@@ -42,6 +54,18 @@ $(document).ready(function() {
 			},
 			counts: [20, 21, 22, 23, 24],
 			defaultCount: 22
+		},
+		4: {
+			stoneSize: 30,
+			radii: {
+				26: 125,
+				27: 129,
+				28: 134,
+				29: 139,
+				30: 144
+			},
+			counts: [26, 27, 28, 29, 30],
+			defaultCount: 28
 		}
 	};
 
@@ -94,8 +118,8 @@ $(document).ready(function() {
 
 			const lineStone = $('<div class="line-stone" data-index="' + i + '"></div>');
 			lineStone.css({
-				width: '30px',
-				height: '30px'
+				width: Math.max(stoneSize - 10, 20) + 'px',
+				height: Math.max(stoneSize - 10, 20) + 'px'
 			});
 			lineContainer.append(lineStone);
 		}
@@ -117,9 +141,11 @@ $(document).ready(function() {
 	}
 
 	function generateStoneOptions(type) {
-		const stones = stoneType[type];
+		const stones = stoneType[type] || [];
 		const stonePicker = $('.stone-picker');
 		stonePicker.empty();
+		selectedStoneId = null;
+		selectedStoneImage = null;
 		stones.forEach(stone => {
 			const stoneOption = $('<div class="stone-option"></div>');
 			stoneOption.css('background-image', `url(${stone.img})`);

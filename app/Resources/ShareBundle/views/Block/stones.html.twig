@@ -12,40 +12,48 @@
     </ul>
 
     {% if app.request.get('letter') %}
-        <div class="list-stones">
+        <div class="list-stones list-stones--main">
             {% for stone in stones %}
                 <a href="{{ path('product_stone_list', {'slug': stone.slug}) }}" class="stone-item">
+                    <div class="stone-item__img">
+                        <img src="" class="lazyload" data-src="{{ stone.image ? asset(stone.image.path) : null }}" alt="{{ stone.name }}">
+                    </div>
                     <div class="head-stone">{{ stone.name }}</div>
-                    <img src="" class="lazyload" data-src="{{ stone.image ? asset(stone.image.path) : null }}" alt="{{ stone.name }}">
                 </a>
             {% endfor %}
         </div>
     {% else %}
         {% for key, letter in letters %}
             <h2 class="stone-letter-title">{{ key }}</h2>
-            <div class="list-stones">
+            <div class="list-stones list-stones--main">
                 {% for stone in letter %}
                     <a href="{{ path('product_stone_list', {'slug': stone.slug}) }}" class="stone-item">
+                        <div class="stone-item__img">
+                            <img src="" class="lazyload" data-src="{{ stone.image ? asset(stone.image.path) : null }}" alt="{{ stone.name }}">
+                        </div>
                         <div class="head-stone">{{ stone.name }}</div>
-                        <img src="" class="lazyload" data-src="{{ stone.image ? asset(stone.image.path) : null }}" alt="{{ stone.name }}">
                     </a>
                 {% endfor %}
             </div>
         {% endfor %}
     {% endif %}
 {% else %}
-    <div class="list-stones">
+    <div class="list-stones{{ settings.is_main ? ' list-stones--main' : '' }}">
         {% for stone in stones %}
             <a href="{{ path('product_stone_list', {'slug': stone.slug}) }}" class="stone-item">
+                <div class="stone-item__img">
+                    <img src="" class="lazyload" data-src="{{ stone.image ? asset(stone.image.path) : null }}" alt="{{ stone.name }}">
+                </div>
                 <div class="head-stone">{{ stone.name }}</div>
-                <img src="" class="lazyload" data-src="{{ stone.image ? asset(stone.image.path) : null }}" alt="{{ stone.name }}">
             </a>
         {% endfor %}
 
         {% if settings.view_all %}
-            <a href="{{ path('stone_list') }}" class="stone-item">
+            <a href="{{ path('stone_list') }}" class="stone-item stone-item--all">
+                <div class="stone-item__img stone-item__img--arrow">
+                    <img src="" class="lazyload" data-src="{{ asset('bundles/app/images/arrow_rght.png') }}" alt="Всі камені">
+                </div>
                 <div class="head-stone">{{ 'frontend.homepage.btn_all_stones'|trans([], 'AppBundle') }}</div>
-                <img src="" style="width: 150px;" class="lazyload" data-src="{{ asset('bundles/app/images/arrow_rght.png') }}" alt="Посмотреть все">
             </a>
         {% endif %}
     </div>

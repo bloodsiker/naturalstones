@@ -5399,24 +5399,29 @@ article.article {
 
 /*===================  CONSTRUCTOR  =========================*/
 .constructor {
-  margin-bottom: 10px;
-  justify-content: flex-start;
+  gap: 18px;
+  align-items: stretch;
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 18px;
 }
 .constructor-settings {
-  width: calc(30% - 10px);
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  margin-right: 10px;
-  background: #fafafa;
+  width: calc(30% - 9px);
+  min-width: 270px;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #f0d8d8;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(20, 9, 35, 0.08);
 }
 .constructor-view {
-  width: 70%;
-  border-radius: 10px;
-  padding: 10px 10px 50px;
-  border: 1px solid #ccc;
-  background: #fafafa;
+  width: calc(70% - 9px);
+  min-height: 470px;
+  border-radius: 8px;
+  padding: 34px 24px 58px;
+  border: 1px solid #f0d8d8;
+  background: radial-gradient(circle at 50% 44%, #fff7f7 0%, #fff 46%, #fbf6f6 100%);
+  box-shadow: 0 10px 30px rgba(20, 9, 35, 0.08);
 }
 .bracelet-container {
   position: relative;
@@ -5436,116 +5441,231 @@ article.article {
   position: absolute;
   width: 50px;
   height: 50px;
-  border: 1px solid #ccc;
-  color: #ccc;
+  border: 1px solid #f0caca;
+  color: #b18f8f;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
+  font-weight: 600;
   background-size: cover;
+  background-color: #fff;
+  box-shadow: 0 4px 14px rgba(20, 9, 35, 0.1);
   cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.bracelet-stone:hover {
+  border-color: #f08383;
+  box-shadow: 0 8px 20px rgba(240, 131, 131, 0.22);
+  transform: translate(-50%, -50%) scale(1.04);
 }
 .stone-count {
   text-align: center;
-  padding: 20px 0;
-  border-bottom: 1px solid #ccc;
+  padding: 22px 18px;
+  border-bottom: 1px solid #f4dddd;
 }
 .stone-select {
   text-align: center;
-  padding: 20px 0;
-  border-bottom: 1px solid #ccc;
+  padding: 22px 18px;
+  border-bottom: 1px solid #f4dddd;
+}
+.stone-count label,
+.stone-select label {
+  display: block;
+  margin-bottom: 9px;
+  color: #140923;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.stone-count-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.stone-count-button {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  cursor: pointer;
+  border: 1px solid #f0caca;
+  border-radius: 50%;
+  color: #140923;
+  background: #fff;
+  font-weight: 600;
+  line-height: 42px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(20, 9, 35, 0.06);
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.stone-count-button:hover {
+  border-color: #f08383;
+  box-shadow: 0 7px 18px rgba(240, 131, 131, 0.18);
+  transform: translateY(-1px);
+}
+.stone-count-button.selected {
+  color: #fff;
+  border-color: #f08383;
+  background: #f08383;
+  box-shadow: 0 8px 20px rgba(240, 131, 131, 0.28);
 }
 .stone-picker {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
   text-align: center;
-  padding: 15px 0;
-  border-bottom: 1px solid #ccc;
+  min-height: 84px;
+  padding: 20px 16px;
+  border-bottom: 1px solid #f4dddd;
 }
 .stone-option {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  border: 1px solid #ccc;
+  display: inline-flex;
+  width: 46px;
+  height: 46px;
+  border: 2px solid #fff;
   border-radius: 50%;
   cursor: pointer;
-  margin: 0 5px;
   background-size: cover;
+  box-shadow: 0 5px 16px rgba(20, 9, 35, 0.14);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
-.selected {
-  border: 2px solid #000;
+.stone-option:hover {
+  border-color: #f08383;
+  transform: translateY(-2px);
+  box-shadow: 0 9px 22px rgba(240, 131, 131, 0.24);
+}
+.stone-option.selected {
+  border-color: #f08383;
+}
+.constructor-notice {
+  display: none;
+  margin: 16px 18px 0;
+  padding: 12px 14px;
+  color: #140923;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid #f0caca;
+  border-radius: 8px;
+  background: #fff7f7;
+  box-shadow: 0 6px 18px rgba(240, 131, 131, 0.16);
+}
+.constructor-notice.is-visible {
+  display: block;
 }
 .stone-summary {
   text-align: left;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  padding: 22px 24px;
+  border: 1px solid #f0d8d8;
+  border-radius: 8px;
   margin-bottom: 100px;
-  background: #fafafa;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(20, 9, 35, 0.07);
 }
 .summary-item {
   display: flex;
   align-items: center;
+  gap: 10px;
   margin-bottom: 10px;
+  color: #3F3F3F;
+  font-weight: 500;
 }
 .summary-item img {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  margin-right: 10px;
+  box-shadow: 0 4px 12px rgba(20, 9, 35, 0.12);
 }
 .size-buttons {
   text-align: center;
-  padding: 15px 0;
-  border-bottom: 1px solid #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 16px;
+  border-bottom: 1px solid #f4dddd;
+  background: linear-gradient(135deg, #fff 0%, #fff7f7 100%);
 }
 .size-button {
-  padding: 10px;
+  min-width: 64px;
+  min-height: 40px;
+  padding: 10px 14px;
   cursor: pointer;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin: 0 5px;
-  display: inline-block;
+  border: 1px solid #f0caca;
+  border-radius: 99px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #140923;
+  background: #fff;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(20, 9, 35, 0.06);
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.size-button:hover {
+  border-color: #f08383;
+  box-shadow: 0 7px 18px rgba(240, 131, 131, 0.18);
+  transform: translateY(-1px);
 }
 .size-button.selected {
-  border: 2px solid #000;
+  color: #fff;
+  border-color: #f08383;
+  background: #f08383;
+  box-shadow: 0 8px 20px rgba(240, 131, 131, 0.28);
 }
 .line-container {
   text-align: center;
-  margin-top: 20px;
-  padding: 20px 0;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
-  background: #fafafa;
+  margin-top: 18px;
+  padding: 22px 18px;
+  border-radius: 8px;
+  border: 1px solid #f0d8d8;
+  margin-bottom: 14px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(20, 9, 35, 0.06);
 }
 .line-stone {
   display: inline-block;
   width: 50px;
   height: 50px;
-  border: 1px solid #ccc;
+  border: 1px solid #f0caca;
   border-radius: 50%;
-  margin: 0 5px;
+  margin: 5px;
   background-size: cover;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(20, 9, 35, 0.1);
 }
 .title_stone_summary {
-  font-size: 16px;
-  margin-bottom: 10px;
-  font-weight: 500;
+  color: #140923;
+  font-size: 18px;
+  margin-bottom: 14px;
+  font-weight: 600;
 }
 .screenshot {
   text-align: center;
-  padding: 20px 0;
+  padding: 22px 16px;
 }
 #btn-screenshot {
-  padding: 10px;
+  min-height: 42px;
+  padding: 0 22px;
   cursor: pointer;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin: 0 5px;
-  color: black;
+  border: 1px solid #f08383;
+  border-radius: 99px;
+  margin: 0;
+  color: #fff;
+  background: #f08383;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(240, 131, 131, 0.28);
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+#btn-screenshot:hover {
+  background: #e76f6f;
+  box-shadow: 0 10px 24px rgba(240, 131, 131, 0.34);
+  transform: translateY(-1px);
 }
 
 /* Основной стиль для <select> */
@@ -5553,15 +5673,15 @@ select.custom_select {
   appearance: none; /* Убирает стандартный стиль браузера */
   -webkit-appearance: none; /* Убирает стандартный стиль браузера в WebKit-браузерах */
   -moz-appearance: none; /* Убирает стандартный стиль браузера в Firefox */
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
+  background-color: #fff;
+  border: 1px solid #f0caca;
+  padding: 9px 34px 9px 14px;
   font-size: 14px;
   text-align: center;
-  border-radius: 4px;
-  min-width: 50px;
+  border-radius: 8px;
+  min-width: 86px;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 14px rgba(20, 9, 35, 0.08);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -5577,13 +5697,13 @@ select.custom_select::after {
 
 /* Стили при наведении */
 select.custom_select:hover {
-  border-color: #888;
+  border-color: #f08383;
 }
 
 /* Стили при фокусе */
 select.custom_select:focus {
-  border-color: #555;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  border-color: #f08383;
+  box-shadow: 0 0 0 3px rgba(240, 131, 131, 0.22);
   outline: none; /* Убирает стандартное выделение */
 }
 
@@ -7686,28 +7806,49 @@ select.custom_select option {
   }
 
   /****  CONSTRUCTOR  ******/
+  .constructor {
+    gap: 12px;
+  }
   .constructor-settings {
     width: 100%;
-    margin-bottom: 10px;
+    min-width: 0;
+    margin-bottom: 0;
   }
   .constructor-view {
     width: 100%;
-    padding-bottom: 80px;
-    padding-top: 30px;
+    min-height: 360px;
+    padding: 26px 10px 58px;
   }
   .bracelet {
-    left: 56%;
+    left: 50%;
   }
   .bracelet-container {
     position: relative;
     width: 300px;
     height: 300px;
-    margin: 0 0;
+    margin: 0 auto;
   }
   .line-container {
     display: none;
   }
   .stone-picker {
     border-bottom: none;
+    min-height: 74px;
+  }
+  .stone-summary {
+    padding: 18px;
+    margin-bottom: 60px;
+  }
+  .size-buttons {
+    padding: 14px 12px;
+  }
+  .size-button {
+    min-width: 58px;
+    min-height: 38px;
+  }
+  .stone-count-button {
+    width: 39px;
+    height: 39px;
+    line-height: 39px;
   }
 }

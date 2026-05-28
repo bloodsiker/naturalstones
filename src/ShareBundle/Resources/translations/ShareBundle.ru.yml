@@ -113,3 +113,4 @@ frontend:
         count_stone: "Количество бусин:"
         stone_summary: "Заполненные камни:"
         btn_screenshot: Сделать скриншот
+        select_stone_notice: Сначала выберите камень

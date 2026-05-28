@@ -113,3 +113,4 @@ frontend:
         count_stone: "Кількість намистин:"
         stone_summary: "Заповнені камені:"
         btn_screenshot: Зробити скріншот
+        select_stone_notice: Спочатку виберіть камінь

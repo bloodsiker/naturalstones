@@ -4,10 +4,12 @@ $(document).ready(function() {
 	let selectedStoneId = null; // По умолчанию id пустой
 	let stoneSize = 50; // По умолчанию размер камня 50px
 	let stoneType = {}; // Объект для хранения типов камней и их изображений с уникальными id
-	let stones = []; // Массив для хранения списка камней
-	const bracelet = $('#bracelet');
-	const lineContainer = $('#line-container');
-	const stoneSummary = $('#stone-summary');
+		let stones = []; // Массив для хранения списка камней
+		const bracelet = $('#bracelet');
+		const lineContainer = $('#line-container');
+		const stoneSummary = $('#stone-summary');
+		const constructorNotice = $('#constructor-notice');
+		const stoneCountButtons = $('#stone-count-buttons');
 
 	//Объект для хранения типов камней и их изображений с уникальными id
 	// const stoneType = {
@@ -98,10 +100,10 @@ $(document).ready(function() {
 		}
 	}
 
-	function generateBracelet(num, size) {
-		bracelet.empty();
-		lineContainer.empty();
-		const radius = sizeOptions[size].radii[num] || 150; // Используем радиус по умолчанию, если значение не найдено
+		function generateBracelet(num, size) {
+			bracelet.empty();
+			lineContainer.empty();
+			const radius = sizeOptions[size].radii[num] || 150; // Используем радиус по умолчанию, если значение не найдено
 
 		for (let i = 0; i < num; i++) {
 			const angle = (i / num) * 2 * Math.PI - Math.PI / 2; // Начинаем с вершины круга
@@ -125,19 +127,26 @@ $(document).ready(function() {
 		}
 
 		$('.bracelet-stone').on('click', function() {
-			if (selectedStoneId) {
-				const index = $(this).data('index');
-				const lineStone = $('.line-stone[data-index="' + index + '"]');
-				lineStone.css('background-image', selectedStoneImage);
-				lineStone.css('background-size', 'cover');
-				$(this).css('background-image', selectedStoneImage);
-				$(this).css('background-size', 'cover');
-				$(this).css('border', 'none');
-				$(this).data('id', selectedStoneId);
-				$(this).text('');
-				updateStoneSummary();
+			if (!selectedStoneId) {
+				showConstructorNotice();
+				return;
 			}
+
+			const index = $(this).data('index');
+			const lineStone = $('.line-stone[data-index="' + index + '"]');
+			lineStone.css('background-image', selectedStoneImage);
+			lineStone.css('background-size', 'cover');
+			$(this).css('background-image', selectedStoneImage);
+			$(this).css('background-size', 'cover');
+			$(this).css('border', 'none');
+			$(this).data('id', selectedStoneId);
+			$(this).text('');
+			updateStoneSummary();
 		});
+	}
+
+	function showConstructorNotice() {
+		constructorNotice.addClass('is-visible');
 	}
 
 	function generateStoneOptions(type) {
@@ -158,6 +167,7 @@ $(document).ready(function() {
 			selectedStoneImage = $(this).css('background-image');
 			$('.stone-option').removeClass('selected');
 			$(this).addClass('selected');
+			constructorNotice.removeClass('is-visible');
 		});
 	}
 
@@ -182,7 +192,7 @@ $(document).ready(function() {
 		for (const [stoneId, stoneInfo] of Object.entries(stoneCounts)) {
 			const summaryItem = $('<div class="summary-item"></div>');
 			summaryItem.append(`<img src=${stoneInfo.img} alt="${stoneId}">`);
-			summaryItem.append(`<span>${stoneInfo.name}: ${stoneInfo.count}</span>`);
+			summaryItem.append(`<span>${stoneInfo.name}: ${stoneInfo.count} шт.</span>`);
 			stoneSummary.append(summaryItem);
 		}
 	}
@@ -190,12 +200,11 @@ $(document).ready(function() {
 	function updateStoneCountOptions(size) {
 		const options = sizeOptions[size].counts;
 		const defaultCount = sizeOptions[size].defaultCount;
-		const stoneCountSelect = $('#stone-count-select');
-		stoneCountSelect.empty();
+		stoneCountButtons.empty();
 		options.forEach(option => {
-			stoneCountSelect.append(`<option value="${option}">${option}</option>`);
+			const isSelected = option === defaultCount ? ' selected' : '';
+			stoneCountButtons.append(`<button type="button" class="stone-count-button${isSelected}" data-count="${option}">${option}</button>`);
 		});
-		stoneCountSelect.val(defaultCount); // Устанавливаем значение по умолчанию
 		numStones = defaultCount;
 		generateBracelet(numStones, size);
 	}
@@ -220,9 +229,11 @@ $(document).ready(function() {
 		generateStoneOptions(selectedType);
 	});
 
-	$('#stone-count-select').on('change', function() {
+	stoneCountButtons.on('click', '.stone-count-button', function() {
 		stoneSummary.empty();
-		numStones = parseInt($(this).val());
+		$('.stone-count-button').removeClass('selected');
+		$(this).addClass('selected');
+		numStones = parseInt($(this).data('count'));
 		generateBracelet(numStones, $('.size-button.selected').data('size'));
 	});
 

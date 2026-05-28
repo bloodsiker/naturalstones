@@ -5924,13 +5924,13 @@ select.custom_select option {
 }
 .list-stones--main .stone-item__img {
   width: 100%;
-  height: 140px;
+  height: 150px;
   overflow: hidden;
   background: #fdf6f6;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 25px;
+  padding: 15px;
 }
 .list-stones--main .stone-item__img img {
   width: 100%;
@@ -6099,46 +6099,69 @@ select.custom_select option {
 
 /* ========================== COMMENTS ===========================*/
 .title-comments h4 {
-  font-weight: bold;
-  font-size: 24px;
+  font-weight: 700;
+  font-size: 26px;
   line-height: 1.2;
-  margin-bottom: 23px;
+  margin-bottom: 8px;
   padding-top: 8px;
   text-align: center;
+  color: #140923;
 }
 .list-comments {
-  margin-top: 50px;
+  margin-top: 32px;
   margin-bottom: 30px;
-  justify-content: flex-start;
   display: flex;
   flex-wrap: wrap;
+  gap: 24px;
 }
 .comment-item {
-  width: calc(33% - 30px);
-  border-radius: 20px;
-  padding: 35px 25px 35px 40px;
-  margin: 0 15px 30px;
+  width: calc(33.333% - 16px);
+  margin: 0;
+  padding: 28px 26px 26px;
   flex-direction: column;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #fff;
+  background: #fff;
+  border: 1px solid #f0d8d8;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(20, 9, 35, 0.08);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+.comment-item::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, #f08383, #fbdfdf);
+}
+.comment-item:hover {
+  border-color: #f08383;
+  box-shadow: 0 14px 36px rgba(20, 9, 35, 0.13);
+  transform: translateY(-2px);
 }
 .comment-item > .comment {
   line-height: 1.8;
+  color: #444;
+  font-size: 14px;
 }
 .comment-user {
-  margin-bottom: 10px;
-  font-weight: bold;
+  margin-bottom: 4px;
+  font-weight: 700;
+  font-size: 15px;
+  color: #140923;
 }
 .comment-product {
-  margin-bottom: 25px;
-  font-weight: bold;
+  margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 500;
   color: #f08383;
 }
 .comment-rating {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
 }
 .comment-rating > .stars i {
   display: inline-block;
@@ -6154,32 +6177,30 @@ select.custom_select option {
   text-align: center;
 }
 .more-comments > a.btn-more-comments {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
-  padding: 11px 20px;
-  font-size: 12px;
-  font-weight: bold;
+  padding: 13px 28px;
+  font-size: 14px;
+  font-weight: 600;
   text-align: center;
-  background: #f08383;
-  border: 2px solid #f08383;
-  color: #fff;
-  border-radius: 20px;
-  transition: .2s;
-  line-height: 1.2;
-  padding-right: 32px;
-  position: relative;
+  background: #fff;
+  border: 1px solid #f0d8d8;
+  color: #140923;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(20, 9, 35, 0.07);
+  transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, color 0.18s ease;
+}
+.more-comments > a.btn-more-comments:hover {
+  background: #fff7f7;
+  border-color: #f08383;
+  color: #f08383;
+  box-shadow: 0 6px 18px rgba(240, 131, 131, 0.2);
 }
 .btn-more-comments:after {
-  content: "";
-  position: absolute;
-  display: block;
-  width: 8px;
-  height: 5px;
-  background: url(../images/ico-arrow-down.svg) no-repeat;
-  transform: rotate(-90deg);
-  top: 15px;
-  right: 15px;
-  transition: .2s;
+  content: "→";
+  font-size: 15px;
 }
 
 .page-list-comments {
@@ -7675,9 +7696,9 @@ select.custom_select option {
   }
 
   .comment-item {
-    width: calc(100% - 10px);
-    margin: 0 5px 20px;
-    padding: 30px 25px 30px 35px;
+    width: 100%;
+    margin: 0;
+    padding: 24px 20px 22px;
   }
   .reviews-page-title {
     padding: 22px 18px;

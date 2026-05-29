@@ -24,3 +24,5 @@ services:
             - [ "setDefaultSelections", ["%ibrows_sonata_translation.defaultSelections%"] ]
             - [ "setEmptyPrefixes", ["%ibrows_sonata_translation.emptyPrefixes%"] ]
             - [ "setTransUnitManager", ["@lexik_translation.trans_unit.manager"] ]
+            - [ "setDoctrine", ["@doctrine"] ]
+            - [ "setDefaultDomain", ["%ibrows_sonata_translation.defaultDomain%"] ]

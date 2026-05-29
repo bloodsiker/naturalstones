@@ -136,7 +136,8 @@ class BookCollectionAdmin extends Admin
                     'property' => 'name',
                     'multiple' => true,
                     'attr' => ['class' => 'form-control'],
-                    'btn_catalogue' => $this->translationDomain,
+                    'btn_translation_domain' => $this->getTranslationDomain(),
+                    'btn_add' => 'book_collection.buttons.link_add',
                     'minimum_input_length' => 2,
                 ])
                 ->add('slug', TextType::class, [

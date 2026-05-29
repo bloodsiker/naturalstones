@@ -43,7 +43,7 @@ class ColourAdmin extends Admin
         $formMapper
             ->with('share.form_group.basic', ['class' => 'col-md-8', 'label' => false])
                 ->add('translations', TranslationsType::class, [
-                    'translation_domain' => $this->translationDomain,
+                    'translation_domain' => $this->getTranslationDomain(),
                     'label' => false,
                     'fields' => [
                         'name' => [

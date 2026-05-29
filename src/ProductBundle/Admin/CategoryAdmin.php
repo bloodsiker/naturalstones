@@ -75,11 +75,13 @@ class CategoryAdmin extends Admin
             ])
             ->add('type', null, [
                 'label' => 'category.fields.type',
-            ], ChoiceType::class, [
-                'choices' => $this->getTypes(),
-                'choice_translation_domain' => $this->getTranslationDomain(),
-                'expanded' => false,
-                'multiple' => false,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => $this->getTypes(),
+                    'choice_translation_domain' => $this->getTranslationDomain(),
+                    'expanded' => false,
+                    'multiple' => false,
+                ],
             ])
             ->add('isActive', null, [
                 'label' => 'category.fields.is_active',
@@ -93,7 +95,7 @@ class CategoryAdmin extends Admin
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('translations', TranslationsType::class, [
-                    'translation_domain' => $this->translationDomain,
+                    'translation_domain' => $this->getTranslationDomain(),
                     'label' => false,
                     'fields' => [
                         'name' => [

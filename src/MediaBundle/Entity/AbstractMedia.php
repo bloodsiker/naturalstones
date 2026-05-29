@@ -127,6 +127,11 @@ abstract class AbstractMedia
         return $this->description;
     }
 
+    public function getTitle(): string
+    {
+        return $this->description ?: basename((string) $this->path);
+    }
+
     /**
      * Set path
      *

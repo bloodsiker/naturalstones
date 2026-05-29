@@ -118,7 +118,7 @@ class ProductAdmin extends Admin
             }
         }
 
-        if ($object->getPrice() !== $object->getOldPrice()) {
+        if (null !== $object->getOldPrice() && $object->getPrice() !== $object->getOldPrice()) {
             $log = new ProductLog();
             $log->setProduct($object);
             $log->setNewPrice($object->getPrice());
@@ -269,7 +269,7 @@ class ProductAdmin extends Admin
             ->with('product.tab.product', ['tab' => true])
                 ->with('form_group.basic', ['class' => 'col-md-8', 'name' => null])
                     ->add('translations', TranslationsType::class, [
-                        'translation_domain' => $this->translationDomain,
+                        'translation_domain' => $this->getTranslationDomain(),
                         'label' => false,
                         'fields' => [
                             'name' => [
@@ -339,7 +339,6 @@ class ProductAdmin extends Admin
                     ->add('percent', IntegerType::class, [
                         'label' => 'product.fields.percent',
                         'required' => false,
-                        'scale' => 0,
                     ])
                     ->add('isWoman', null, [
                         'label' => 'product.fields.is_woman',
@@ -378,7 +377,8 @@ class ProductAdmin extends Admin
                             $datagrid->setValue($filterActive->getFormName(), null, true);
                             $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
                         },
-                        'btn_catalogue' => $this->translationDomain,
+                        'btn_translation_domain' => $this->getTranslationDomain(),
+                        'btn_add' => 'product.buttons.link_add',
                         'minimum_input_length' => 2,
                     ])
                     ->add('colours', ModelAutocompleteType::class, [
@@ -406,7 +406,8 @@ class ProductAdmin extends Admin
                             $datagrid->setValue($filterActive->getFormName(), null, true);
                             $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
                         },
-                        'btn_catalogue' => $this->translationDomain,
+                        'btn_translation_domain' => $this->getTranslationDomain(),
+                        'btn_add' => 'product.buttons.link_add',
                         'minimum_input_length' => 2,
                     ])
                     ->add('stones', ModelAutocompleteType::class, [
@@ -434,7 +435,8 @@ class ProductAdmin extends Admin
                             $datagrid->setValue($filterActive->getFormName(), null, true);
                             $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
                         },
-                        'btn_catalogue' => $this->translationDomain,
+                        'btn_translation_domain' => $this->getTranslationDomain(),
+                        'btn_add' => 'product.buttons.link_add',
                         'minimum_input_length' => 2,
                     ])
                     ->add('tags', ModelAutocompleteType::class, [
@@ -462,7 +464,8 @@ class ProductAdmin extends Admin
                             $datagrid->setValue($filterActive->getFormName(), null, true);
                             $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
                         },
-                        'btn_catalogue' => $this->translationDomain,
+                        'btn_translation_domain' => $this->getTranslationDomain(),
+                        'btn_add' => 'product.buttons.link_add',
                         'minimum_input_length' => 2,
                     ])
                     ->add('orderNum', IntegerType::class, [

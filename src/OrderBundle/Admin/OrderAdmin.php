@@ -103,19 +103,23 @@ class OrderAdmin extends Admin
             ])
             ->add('type', null, [
                 'label' => 'order.fields.type',
-            ], ChoiceType::class, [
-                'choices' => $this->getTypes(),
-                'choice_translation_domain' => $this->getTranslationDomain(),
-                'expanded' => false,
-                'multiple' => false,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => $this->getTypes(),
+                    'choice_translation_domain' => $this->getTranslationDomain(),
+                    'expanded' => false,
+                    'multiple' => false,
+                ],
             ])
             ->add('status', null, [
                 'label' => 'order.fields.status',
-            ], ChoiceType::class, [
-                'choices' => $this->getStatuses(),
-                'choice_translation_domain' => $this->getTranslationDomain(),
-                'expanded' => false,
-                'multiple' => false,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => $this->getStatuses(),
+                    'choice_translation_domain' => $this->getTranslationDomain(),
+                    'expanded' => false,
+                    'multiple' => false,
+                ],
             ])
             ->add('createdAt', DateFilter::class, [
                 'label'         => 'order.fields.created_at',

@@ -64,7 +64,7 @@ class TextAdmin extends Admin
             return '@Admin/Ckeditor/ajax.html.twig';
         }
 
-        return parent::getTemplate($name);
+        return $this->getTemplateRegistry()->getTemplate($name);
     }
 
     /**
@@ -110,7 +110,7 @@ class TextAdmin extends Admin
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('translations', TranslationsType::class, [
-                    'translation_domain' => $this->translationDomain,
+                    'translation_domain' => $this->getTranslationDomain(),
                     'label' => false,
                     'fields' => [
                         'name' => [

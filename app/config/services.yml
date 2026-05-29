@@ -27,6 +27,14 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    AdminBundle\Controller\:
+        resource: '../../src/AdminBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+    Sonata\BlockBundle\Block\BlockContextManagerInterface: '@sonata.block.context_manager.default'
+    Sonata\BlockBundle\Block\BlockRendererInterface: '@sonata.block.renderer.default'
+
     ProductBundle\Controller\:
         resource: '../../src/ProductBundle/Controller'
         public: true
@@ -54,6 +62,30 @@ services:
 
     ShareBundle\Controller\:
         resource: '../../src/ShareBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+    AdminBundle\Controller\CRUDController:
+        public: true
+        tags: ['controller.service_arguments']
+
+    ArticleBundle\Controller\ArticleAdminController:
+        public: true
+        tags: ['controller.service_arguments']
+
+    BookBundle\Controller\BookAdminController:
+        public: true
+        tags: ['controller.service_arguments']
+
+    MediaBundle\Controller\MediaAdminController:
+        public: true
+        tags: ['controller.service_arguments']
+
+    ProductBundle\Controller\ProductAdminController:
+        public: true
+        tags: ['controller.service_arguments']
+
+    ShareBundle\Controller\TextAdminController:
         public: true
         tags: ['controller.service_arguments']
 

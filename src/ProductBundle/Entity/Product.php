@@ -1348,12 +1348,12 @@ class Product implements TranslatableInterface
         return $this->finalPrice;
     }
 
-    public function getOldPrice(): float
+    public function getOldPrice(): ?float
     {
         return $this->oldPrice;
     }
 
-    public function setOldPrice(float $oldPrice): void
+    public function setOldPrice(?float $oldPrice): void
     {
         $this->oldPrice = $oldPrice;
     }

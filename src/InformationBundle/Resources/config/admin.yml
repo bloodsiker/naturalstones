@@ -6,6 +6,6 @@ services:
         arguments:
           - ~
           - InformationBundle\Entity\Information
-          - AdminBundle:CRUD
+          - AdminBundle\Controller\CRUDController
         calls:
           - [ setTranslationDomain, [InformationBundle] ]

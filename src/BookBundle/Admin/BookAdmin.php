@@ -315,7 +315,7 @@ class BookAdmin extends Admin
 
                         return true;
                     },
-                    'btn_catalogue' => $this->translationDomain,
+                    'btn_translation_domain' => $this->getTranslationDomain(),
                     'minimum_input_length' => 2,
                 ])
                 ->add('tags', ModelAutocompleteType::class, [
@@ -325,7 +325,7 @@ class BookAdmin extends Admin
                     'multiple' => true,
                     'btn_add' => 'book.buttons.link_add',
                     'attr' => ['class' => 'form-control'],
-                    'btn_catalogue' => $this->translationDomain,
+                    'btn_translation_domain' => $this->getTranslationDomain(),
                     'minimum_input_length' => 2,
                 ])
                 ->add('rating', TextType::class, [

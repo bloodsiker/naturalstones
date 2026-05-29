@@ -1,5 +1,4 @@
 {% set url = null %}
-{% set app_router = admin.configurationPool.container.get('router') %}
 {% if object is instanceof('ProductBundle\\Entity\\Product')%}
     {% set url = product_path(object) %}
 {% endif %}

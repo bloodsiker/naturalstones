@@ -6,10 +6,10 @@ services:
         arguments:
           - ~
           - ProductBundle\Entity\Product
-          - ProductBundle:ProductAdmin
+          - ProductBundle\Controller\ProductAdminController
         calls:
           - [ setTranslationDomain, [ProductBundle] ]
-          - [ setTemplate, ['edit', 'ProductBundle\Controller\AdminController::editAction.html.twig'] ]
+          - [ setTemplate, ['edit', '@@Product/Admin/edit.html.twig'] ]
           - [ setEntityManager, ['@app.entity_manager'] ]
           - [ setTelegramNotification, ['@app.send_telegram'] ]
 
@@ -86,7 +86,7 @@ services:
         arguments:
             - ~
             - ProductBundle\Entity\Category
-            - ProductBundle:ProductAdmin
+            - ProductBundle\Controller\ProductAdminController
         calls:
             - [ setTranslationDomain, [ ProductBundle ] ]
 
@@ -97,7 +97,7 @@ services:
         arguments:
             - ~
             - ProductBundle\Entity\ProductOptionLabel
-            - ProductBundle:ProductAdmin
+            - ProductBundle\Controller\ProductAdminController
         calls:
             - [ setTranslationDomain, [ ProductBundle ] ]
 

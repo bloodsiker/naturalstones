@@ -4,6 +4,8 @@ sonata_admin:
     show_mosaic_button: false
     security:
         handler: sonata.admin.security.handler.role
+    default_admin_services:
+        label_translator_strategy: sonata.admin.label.strategy.noop
 
     templates:
         short_object_description: '@Media/Helper/short-object-description.html.twig'

@@ -1,5 +1,4 @@
 {% set url = null %}
-{% set app_router = admin.configurationPool.container.get('router') %}
 {% if object is instanceof('OrderBundle\\Entity\\Order') %}
     {% set url = path('success_order', {'secret': object.secret}) %}
 {% endif %}

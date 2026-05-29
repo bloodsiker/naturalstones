@@ -30,19 +30,6 @@ class MediaFileAdmin extends Admin
     /**
      * @return mixed
      */
-    public function getAdminUser()
-    {
-        return $this
-            ->getConfigurationPool()
-            ->getContainer()
-            ->get('security.token_storage')
-            ->getToken()
-            ->getUser();
-    }
-
-    /**
-     * @return mixed
-     */
     protected function alterNewInstance(object $object): void
     {
         $object->setCreatedBy($this->getAdminUser());

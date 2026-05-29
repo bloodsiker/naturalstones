@@ -110,7 +110,7 @@ class ProductLog
         return $this->oldPrice;
     }
 
-    public function setOldPrice(float $oldPrice)
+    public function setOldPrice(?float $oldPrice)
     {
         $this->oldPrice = $oldPrice;
 

@@ -6,7 +6,7 @@ services:
         arguments:
             - ~
             - ArticleBundle\Entity\Category
-            - AdminBundle:CRUD
+            - AdminBundle\Controller\CRUDController
         calls:
             - [ setTranslationDomain, [ ArticleBundle ] ]
 
@@ -17,6 +17,6 @@ services:
         arguments:
           - ~
           - ArticleBundle\Entity\Article
-          - ArticleBundle:ArticleAdmin
+          - ArticleBundle\Controller\ArticleAdminController
         calls:
           - [ setTranslationDomain, [ArticleBundle] ]

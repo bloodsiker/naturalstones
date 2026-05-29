@@ -6,10 +6,10 @@ services:
         arguments:
           - ~
           - BookBundle\Entity\Book
-          - BookBundle:BookAdmin
+          - BookBundle\Controller\BookAdminController
         calls:
           - [ setTranslationDomain, [BookBundle] ]
-          - [ setTemplate, ['edit', 'BookBundle\Controller\AdminController::editAction.html.twig'] ]
+          - [ setTemplate, ['edit', '@@Book/Admin/edit.html.twig'] ]
           - [ setEntityManager, ['@app.entity_manager'] ]
 
     sonata.admin.book_has_files:

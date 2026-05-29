@@ -3,9 +3,9 @@
 namespace ProductBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
-
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\Form\Type\DateTimePickerType;
@@ -44,6 +44,15 @@ class ProductInfoViewAdmin extends Admin
         $this->datagridValues['viewAt'] = [
             'value' => (new \DateTime('now'))->format('d.m.Y'),
         ];
+    }
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $query = parent::configureQuery($query);
+        $rootAlias = current($query->getRootAliases());
+        $query->innerJoin(sprintf('%s.product', $rootAlias), '_product');
+
+        return $query;
     }
 
     /**

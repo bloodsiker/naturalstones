@@ -15,11 +15,6 @@ services:
         tags:
             - { name: form.type, alias: upload_vich_image }
 
-    admin.form.type.download_image:
-        class: "AdminBundle\\Form\\Type\\DownloadImageType"
-        tags:
-            - { name: form.type, alias: download_image }
-
     admin.form.type.textarea_counter:
         class: "AdminBundle\\Form\\Type\\TextareaCounterType"
         tags:

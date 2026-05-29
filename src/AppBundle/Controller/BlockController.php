@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sonata\BlockBundle\Block\BlockContextManagerInterface;
+use Sonata\BlockBundle\Block\BlockRendererInterface;
 use Sonata\BlockBundle\Model\Block;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -12,6 +14,21 @@ use Symfony\Component\HttpFoundation\Request;
 class BlockController extends BaseController
 {
 //     * @Cache(maxage=600, public=true)
+    /**
+     * @var BlockContextManagerInterface
+     */
+    private $blockContextManager;
+
+    /**
+     * @var BlockRendererInterface
+     */
+    private $blockRenderer;
+
+    public function __construct(BlockContextManagerInterface $blockContextManager, BlockRendererInterface $blockRenderer)
+    {
+        $this->blockContextManager = $blockContextManager;
+        $this->blockRenderer = $blockRenderer;
+    }
 
     /**
      * @param Request $request
@@ -29,8 +46,8 @@ class BlockController extends BaseController
         $block->setType($blockType);
         $block->setEnabled(true);
 
-        $blockContext = $this->get('sonata.block.context_manager.default')->get($block);
+        $blockContext = $this->blockContextManager->get($block);
 
-        return $this->get('sonata.block.renderer.default')->render($blockContext);
+        return $this->blockRenderer->render($blockContext);
     }
 }

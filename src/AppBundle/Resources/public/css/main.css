@@ -226,7 +226,7 @@ a:hover {
   filter: blur(25px);
 }
 .page {
-  overflow: hidden;
+  overflow-x: clip;
   display: -ms-flexbox;
   display: flex;
   min-height: 100vh;
@@ -2974,7 +2974,6 @@ footer {
 .context-constructor {
   position: relative;
   overflow: hidden;
-  margin-bottom: 45px;
   padding: 26px 24px;
   text-align: center;
   border: 1px solid #f0d8d8;
@@ -3433,9 +3432,9 @@ footer {
 .product-add-form .cart-button {
   -ms-flex-positive: 1;
   flex-grow: 1;
-  font-size: 18px;
+  font-size: 16px;
   width: auto;
-  padding: 18px 24px;
+  padding: 16px 24px;
   background: #f08383;
   border: 1px solid #f08383;
   border-radius: 99px;
@@ -7177,6 +7176,38 @@ select.custom_select option {
 @media (min-width: 1320px) {
   .container {
     width: 1300px;
+  }
+
+  .product-gallery {
+    position: sticky;
+    top: 102px;
+    -ms-flex-item-align: start;
+    align-self: flex-start;
+  }
+
+  .product-info-top {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .product-add-form {
+    float: none;
+    width: auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .product-quick {
+    float: none;
+    margin-left: 0;
+    position: sticky;
+    top: 102px;
+    -ms-flex-item-align: start;
+    align-self: flex-start;
   }
 }
 

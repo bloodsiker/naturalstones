@@ -55,7 +55,7 @@ class SiteVariablePlacementAdmin extends AbstractAdmin
                 'help'          => $this->getTranslator()->trans(
                     'form.validation.regexp',
                     ['%rule%' => 'a-z 0-9 -'],
-                    $this->translationDomain
+                    $this->getTranslationDomain()
                 ),
                 'constraints'   => [
                     new NotBlank(),

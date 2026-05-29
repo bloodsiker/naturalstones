@@ -1,4 +1,4 @@
-{% extends admin.getTemplate('base_list_field') %}
+{% extends admin.templateRegistry.getTemplate('base_list_field') %}
 
 {% block field %}
     {% if object is instanceof('\\ProductBundle\\Entity\\Product') %}
@@ -11,14 +11,22 @@
                 </span>
             </p>
         {% elseif field_description.name == 'size' %}
-            {% set route_name = field_description.options.route.name %}
             {% if object.size %}
-                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, object.size, field_description.options.route.parameters) }}" class="label label-primary">{{ object.size }}</a>
+                {% set route = field_description.options.route|default(null) %}
+                {% if route and field_description.associationadmin %}
+                    <a href="{{ field_description.associationadmin.generateObjectUrl(route.name, object.size, route.parameters|default({})) }}" class="label label-primary">{{ object.size }}</a>
+                {% else %}
+                    <span class="label label-primary">{{ object.size }}</span>
+                {% endif %}
             {% endif %}
         {% elseif field_description.name == 'colours' %}
-            {% set route_name = field_description.options.route.name %}
+            {% set route = field_description.options.route|default(null) %}
             {% for colour in object.colours %}
-                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, colour, field_description.options.route.parameters) }}"><span class="colorpicker__preview" style="background-color: {{ '#' ~ colour.colour }}; margin: 0;"></span></a>
+                {% if route and field_description.associationadmin %}
+                    <a href="{{ field_description.associationadmin.generateObjectUrl(route.name, colour, route.parameters|default({})) }}"><span class="colorpicker__preview" style="background-color: {{ '#' ~ colour.colour }}; margin: 0;"></span></a>
+                {% else %}
+                    <span class="colorpicker__preview" style="background-color: {{ '#' ~ colour.colour }}; margin: 0;"></span>
+                {% endif %}
             {% endfor %}
         {% elseif field_description.name == 'name' %}
             <a href="{{ admin.generateUrl('edit', { id : object.id }) }}" class="sonata-link-identifier">{{ object.name }}</a>
@@ -30,8 +38,13 @@
     {% elseif object is instanceof('\\ProductBundle\\Entity\\ProductInfoView') %}
 
         {% if field_description.name == 'product' %}
-            {% set route_name = field_description.options.route.name %}
-            <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, object.product, field_description.options.route.parameters) }}" class="sonata-link-identifier">{{ object.product.getName ~ ' ' ~ (object.product.size ? object.product.size.name : null)}}</a>
+            {% set route = field_description.options.route|default(null) %}
+            {% set product_name = object.product.getName ~ ' ' ~ (object.product.size ? object.product.size.name : null) %}
+            {% if route and field_description.associationadmin %}
+                <a href="{{ field_description.associationadmin.generateObjectUrl(route.name, object.product, route.parameters|default({})) }}" class="sonata-link-identifier">{{ product_name }}</a>
+            {% else %}
+                <span class="sonata-link-identifier">{{ product_name }}</span>
+            {% endif %}
         {% endif %}
     {% endif %}
 {% endblock %}

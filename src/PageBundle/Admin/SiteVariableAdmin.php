@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 /**
@@ -93,17 +94,15 @@ class SiteVariableAdmin extends AbstractAdmin
                     'label' => 'form.label_active',
                     'required' => false,
                 ])
-                ->add('createdAt', null, [
+                ->add('createdAt', DateTimePickerType::class, [
                     'label' => 'form.label_created_at',
-                    'widget' => 'single_text',
                     'format' => 'eeee dd.MM.yyyy, HH:mm:ss',
                     'attr' => [
                         'readonly' => true,
                     ],
                 ])
-                ->add('modifiedAt', null, [
+                ->add('modifiedAt', DateTimePickerType::class, [
                     'label' => 'form.label_modified_at',
-                    'widget' => 'single_text',
                     'format' => 'eeee dd.MM.yyyy, HH:mm:ss',
                     'attr' => [
                         'readonly' => true,

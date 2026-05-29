@@ -275,13 +275,17 @@
     <div id="field_container_{{ id }}" class="field-container">
         <span id="field_actions_{{ id }}" class="field-actions">
             <span id="field_widget_{{ id }}" class="field-short-description">
-                {% if sonata_admin.field_description.associationadmin.id(sonata_admin.value) %}
-                    {{ render( url('sonata_admin_short_object_information', {
-                        'code':     sonata_admin.field_description.associationadmin.code,
-                        'objectId': sonata_admin.field_description.associationadmin.id(sonata_admin.value),
+                {% if sonata_admin.value and sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value) is not null %}
+                    {{ render(path('sonata_admin_short_object_information', {
+                        '_sonata_admin': sonata_admin.field_description.associationadmin.baseCodeRoute,
+                        'objectId': sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value),
                         'uniqid':   sonata_admin.field_description.associationadmin.uniqid,
-                        'linkParameters': sonata_admin.field_description.options.link_parameters
-                    })) }}
+                        'linkParameters': sonata_admin.field_description.getOption('link_parameters', {})
+                    } + (
+                        sonata_admin.field_description.associationadmin.hasRequest()
+                        ? sonata_admin.field_description.associationadmin.request.attributes.get('_route_params', {})
+                        : {}
+                    ) + app.request.query.all|default({}))) }}
                 {% elseif sonata_admin.field_description.options.placeholder is defined and sonata_admin.field_description.options.placeholder %}
                     <span class="inner-field-short-description">
                         {{ sonata_admin.field_description.options.placeholder|trans({}, 'SonataAdminBundle') }}
@@ -348,7 +352,7 @@
         </div>
     </div>
 
-    {% include '@SonataDoctrineORMAdmin/CRUD/edit_orm_many_association_script.html.twig' %}
+    {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
     {% include '@Book/Form/CRUD/edit_orm_many_association_for_media_script.html.twig' %}
 
 {% endblock %}

@@ -91,7 +91,7 @@ class MainImageAdmin extends Admin
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('translations', TranslationsType::class, [
-                    'translation_domain' => $this->translationDomain,
+                    'translation_domain' => $this->getTranslationDomain(),
                     'label' => false,
                     'fields' => [
                         'title' => [

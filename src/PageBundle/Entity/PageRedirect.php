@@ -240,6 +240,15 @@ class PageRedirect implements RedirectInterface
         return $this->help;
     }
 
+    public function getPageHost(): ?string
+    {
+        if (null === $this->toPage || null === $this->toPage->getSite()) {
+            return null;
+        }
+
+        return $this->toPage->getSite()->getHost();
+    }
+
     /**
      * @return array
      */

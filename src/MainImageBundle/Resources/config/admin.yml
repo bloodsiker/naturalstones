@@ -6,6 +6,6 @@ services:
         arguments:
           - ~
           - MainImageBundle\Entity\MainImage
-          - AdminBundle:CRUD
+          - AdminBundle\Controller\CRUDController
         calls:
           - [ setTranslationDomain, [MainImageBundle] ]

@@ -2,6 +2,8 @@
 
 namespace ShareBundle\Controller;
 
+use AppBundle\Services\BreadcrumbService;
+use AppBundle\Services\SeoUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +15,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 class StoneController extends AbstractController
 {
     /**
+     * @var BreadcrumbService
+     */
+    private $breadcrumb;
+
+    /**
+     * @var SeoUpdater
+     */
+    private $seoUpdater;
+
+    public function __construct(BreadcrumbService $breadcrumb, SeoUpdater $seoUpdater)
+    {
+        $this->breadcrumb = $breadcrumb;
+        $this->seoUpdater = $seoUpdater;
+    }
+
+    /**
      * @param Request $request
      *
      * @return Response
@@ -21,13 +39,12 @@ class StoneController extends AbstractController
      */
     public function listAction(Request $request)
     {
-        $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Все камни']);
+        $this->breadcrumb->addBreadcrumb(['title' => 'Все камни']);
 
         $title = 'Все натуральные камни | Naturalstones Jewerly - Изделия из натуральных камней';
         $description = "Список всех натуральных камней";
 
-        $this->get('app.seo.updater')->doMagic(null, [
+        $this->seoUpdater->doMagic(null, [
             'title' => $title,
             'description' => $description.' | Naturalstones Jewerly - Изделия из натуральных камней',
             'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',
@@ -45,14 +62,13 @@ class StoneController extends AbstractController
     public function listLetterAction(Request $request)
     {
         $router = $this->get('router');
-        $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Все камни',  'href' => $router->generate('stone_list')]);
-        $breadcrumb->addBreadcrumb(['title' => 'Камни на букву: ' . $request->get('letter')]);
+        $this->breadcrumb->addBreadcrumb(['title' => 'Все камни',  'href' => $router->generate('stone_list')]);
+        $this->breadcrumb->addBreadcrumb(['title' => 'Камни на букву: ' . $request->get('letter')]);
 
         $title = "Натуральные камни на букву {$request->get('letter')} | Naturalstones Jewerly - Изделия из натуральных камней";
         $description = "Список натуральных камней на букву {$request->get('letter')}.  Найдите камни на любую букву алфавита";
 
-        $this->get('app.seo.updater')->doMagic(null, [
+        $this->seoUpdater->doMagic(null, [
             'title' => $title,
             'description' => $description.' | Naturalstones Jewerly - Изделия из натуральных камней',
             'keywords' => 'Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала',

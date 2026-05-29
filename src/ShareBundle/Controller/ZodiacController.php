@@ -2,6 +2,8 @@
 
 namespace ShareBundle\Controller;
 
+use AppBundle\Services\BreadcrumbService;
+use AppBundle\Services\SeoUpdater;
 use ShareBundle\Entity\Zodiac;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +16,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 class ZodiacController extends AbstractController
 {
     const ZODIAC_404 = 'Zodiac doesn\'t exist';
+
+    /**
+     * @var BreadcrumbService
+     */
+    private $breadcrumb;
+
+    /**
+     * @var SeoUpdater
+     */
+    private $seoUpdater;
+
+    public function __construct(BreadcrumbService $breadcrumb, SeoUpdater $seoUpdater)
+    {
+        $this->breadcrumb = $breadcrumb;
+        $this->seoUpdater = $seoUpdater;
+    }
 
     /**
      * @param Request $request
@@ -31,12 +49,11 @@ class ZodiacController extends AbstractController
             throw $this->createNotFoundException(self::ZODIAC_404);
         }
 
-        $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => 'Камни для знака зодиака ' . $zodiac->getName()]);
+        $this->breadcrumb->addBreadcrumb(['title' => 'Камни для знака зодиака ' . $zodiac->getName()]);
 
         $title = 'Изделия для знака зодиака - ' . $zodiac->getName().' | Изделия | Страница '.$request->get('page', 1).' | Naturalstones Jewerly - Изделия из натуральных камней';
 
-        $this->get('app.seo.updater')->doMagic(null, [
+        $this->seoUpdater->doMagic(null, [
             'title' => $title,
             'description' => "Купить изделия для знака зодиака {$zodiac->getName()} ",
             'keywords' => "{$zodiac->getName()}, Натуральные камни, серебро, браслеты, кольца, чокеры, подвески, вставки, нити-обереги, индивидуальные заказы, шамбала",

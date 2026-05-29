@@ -73,7 +73,7 @@ class ArticleAdmin extends Admin
             return '@Admin/Ckeditor/ajax.html.twig';
         }
 
-        return parent::getTemplate($name);
+        return $this->getTemplateRegistry()->getTemplate($name);
     }
 
     /**
@@ -135,7 +135,7 @@ class ArticleAdmin extends Admin
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('translations', TranslationsType::class, [
-                    'translation_domain' => $this->translationDomain,
+                    'translation_domain' => $this->getTranslationDomain(),
                     'label' => false,
                     'fields' => [
                         'title' => [
@@ -205,7 +205,6 @@ class ArticleAdmin extends Admin
                         $datagrid->setValue($filterActive->getFormName(), null, true);
                         $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
                     },
-                    'btn_catalogue' => $this->translationDomain,
                     'minimum_input_length' => 2,
                 ])
                 ->add('views', IntegerType::class, [

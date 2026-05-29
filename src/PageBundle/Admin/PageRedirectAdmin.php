@@ -39,14 +39,14 @@ class PageRedirectAdmin extends AbstractAdmin
         if (null !== $fromPath && $fromPath->getId() !== $object->getId()) {
             $errorElement
                 ->with('fromPath')
-                    ->addViolation($this->translator->trans('form_valid.unique', [], $this->translationDomain))
+                    ->addViolation($this->translator->trans('form_valid.unique', [], $this->getTranslationDomain()))
                 ->end();
         }
         if (empty($object->getToPath()) && empty($object->getToPage())) {
             $errorElement
                 ->with('toPath')
                 ->with('toPage')
-                    ->addViolation($this->translator->trans('form_valid.start_path', [], $this->translationDomain))
+                    ->addViolation($this->translator->trans('form_valid.start_path', [], $this->getTranslationDomain()))
                 ->end();
         }
     }

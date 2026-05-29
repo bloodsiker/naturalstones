@@ -103,6 +103,8 @@ book_collection:
         is_active: Активно
         updated_at: Изменена
         created_at: Создана
+    buttons:
+        link_add: Добавить новый
 
 book_collection_has_book:
     fields:

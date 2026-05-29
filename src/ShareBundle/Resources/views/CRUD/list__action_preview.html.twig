@@ -1,5 +1,4 @@
 {% set url = null %}
-{% set app_router = admin.configurationPool.container.get('router') %}
 {% if object is instanceof('ShareBundle\\Entity\\Stone') %}
     {% set url = path('product_stone_list', { 'slug': object.slug })%}
 {% elseif object is instanceof('ShareBundle\\Entity\\Colour') %}

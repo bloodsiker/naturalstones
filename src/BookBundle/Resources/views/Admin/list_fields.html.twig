@@ -1,4 +1,4 @@
-{% extends admin.getTemplate('base_list_field') %}
+{% extends admin.templateRegistry.getTemplate('base_list_field') %}
 
 {% block field %}
     {% if object is instanceof('\\BookBundle\\Entity\\Book') %}
@@ -10,22 +10,29 @@
                 {% endfor %}
             </div>
         {% elseif field_description.name == 'authors' %}
-            {% set route_name = field_description.options.route.name %}
+            {% set route = field_description.options.route|default(null) %}
             {% for author in object.authors %}
-                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, author, field_description.options.route.parameters) }}" class="label label-warning">{{ author.name }}</a>
+                {% if route and field_description.associationadmin %}
+                    <a href="{{ field_description.associationadmin.generateObjectUrl(route.name, author, route.parameters|default({})) }}" class="label label-warning">{{ author.name }}</a>
+                {% else %}
+                    <span class="label label-warning">{{ author.name }}</span>
+                {% endif %}
             {% endfor %}
         {% elseif field_description.name == 'name' %}
-            {% set route_name = field_description.options.route.name %}
             <a href="{{ admin.generateUrl('edit', { id : object.id }) }}" class="sonata-link-identifier">{{ object.name }}</a>
         {% elseif field_description.name == 'genres' %}
-            {% set route_name = field_description.options.route.name %}
+            {% set route = field_description.options.route|default(null) %}
             {% for genre in object.genres %}
                 {% if genre.isActive %}
                     {% set class = 'primary' %}
                 {% else %}
                     {% set class = 'danger' %}
                 {% endif %}
-                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, genre, field_description.options.route.parameters) }}" class="label label-{{ class }}">{{ genre.name }}</a>
+                {% if route and field_description.associationadmin %}
+                    <a href="{{ field_description.associationadmin.generateObjectUrl(route.name, genre, route.parameters|default({})) }}" class="label label-{{ class }}">{{ genre.name }}</a>
+                {% else %}
+                    <span class="label label-{{ class }}">{{ genre.name }}</span>
+                {% endif %}
             {% endfor %}
         {% elseif field_description.name == 'poster' %}
             {% set v = asset('bundles/admin/images/preview_placeholder.png') %}

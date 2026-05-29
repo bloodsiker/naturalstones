@@ -2,6 +2,7 @@
 
 namespace TranslationBundle\Admin;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
@@ -13,7 +14,6 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
 use Lexik\Bundle\TranslationBundle\Manager\TransUnitManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -27,6 +27,10 @@ class SonataTranslationAdmin extends AbstractAdmin
      * @var TransUnitManagerInterface
      */
     protected $transUnitManager;
+
+    private ManagerRegistry $doctrine;
+
+    private string $defaultDomain = 'messages';
 
     /**
      * @var array
@@ -42,6 +46,16 @@ class SonataTranslationAdmin extends AbstractAdmin
      * @var array
      */
     protected $emptyFieldPrefixes = array();
+
+    public function setDoctrine(ManagerRegistry $doctrine): void
+    {
+        $this->doctrine = $doctrine;
+    }
+
+    public function setDefaultDomain(string $defaultDomain): void
+    {
+        $this->defaultDomain = $defaultDomain;
+    }
 
     /**
      * @var array
@@ -170,7 +184,7 @@ class SonataTranslationAdmin extends AbstractAdmin
             return 'IbrowsSonataTranslationBundle:CRUD:list.html.twig';
         }
 
-        return parent::getTemplate($name);
+        return $this->getTemplateRegistry()->getTemplate($name);
     }
 
     /**
@@ -180,7 +194,7 @@ class SonataTranslationAdmin extends AbstractAdmin
      */
     public function getOriginalTemplate($name)
     {
-        return parent::getTemplate($name);
+        return $this->getTemplateRegistry()->getTemplate($name);
     }
 
     /**
@@ -349,19 +363,11 @@ class SonataTranslationAdmin extends AbstractAdmin
     }
 
     /**
-     * @return ContainerInterface
-     */
-    protected function getContainer()
-    {
-        return $this->getConfigurationPool()->getContainer();
-    }
-
-    /**
      * @return string
      */
     protected function getDefaultDomain()
     {
-        return $this->getContainer()->getParameter('ibrows_sonata_translation.defaultDomain');
+        return $this->defaultDomain;
     }
 
     /**
@@ -372,7 +378,7 @@ class SonataTranslationAdmin extends AbstractAdmin
         $defaultDomain = $this->getDefaultDomain();
 
         /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $this->getContainer()->get('doctrine')->getManagerForClass('Lexik\Bundle\TranslationBundle\Entity\File');
+        $em = $this->doctrine->getManagerForClass('Lexik\Bundle\TranslationBundle\Entity\File');
 
         $domains = array();
         $domainsQueryResult = $em->createQueryBuilder()

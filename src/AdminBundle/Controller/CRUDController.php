@@ -2,6 +2,8 @@
 
 namespace AdminBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
+use ShareBundle\Services\TagFinder;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,6 +16,15 @@ class CRUDController extends Controller
     //TODO: add translations for string values
     const ERROR_MESSAGE = 'Unable to find the object with id : %s';//'Unable to find the object with id : %s';
     const SUCCESS_MESSAGE = 'Moved successfully';//'Moved successfully';
+
+    public static function getSubscribedServices(): array
+    {
+        return [
+            'doctrine' => ManagerRegistry::class,
+            'doctrine.orm.default_entity_manager' => '?' . \Doctrine\ORM\EntityManagerInterface::class,
+            'share.tag.finder' => '?' . TagFinder::class,
+        ] + parent::getSubscribedServices();
+    }
 
     /**
      * Move item up by decrementing order_num value

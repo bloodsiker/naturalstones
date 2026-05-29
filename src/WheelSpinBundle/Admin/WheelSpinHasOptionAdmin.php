@@ -87,7 +87,6 @@ class WheelSpinHasOptionAdmin extends Admin
             ->add('valuation', IntegerType::class, [
                 'label' => 'wheel_spin_has_option.fields.valuation',
                 'required' => false,
-                'scale' => 0,
             ])
             ->add('percent', TextType::class, [
                 'label' => 'wheel_spin_has_option.fields.percent',

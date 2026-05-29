@@ -70,11 +70,13 @@ class SizeAdmin extends Admin
             ])
             ->add('type', null, [
                 'label' => 'size.fields.type',
-            ], ChoiceType::class, [
-                'choices' => $this->getTypes(),
-                'choice_translation_domain' => $this->getTranslationDomain(),
-                'expanded' => false,
-                'multiple' => false,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => $this->getTypes(),
+                    'choice_translation_domain' => $this->getTranslationDomain(),
+                    'expanded' => false,
+                    'multiple' => false,
+                ],
             ])
             ->add('isActive', null, [
                 'label' => 'size.fields.is_active',

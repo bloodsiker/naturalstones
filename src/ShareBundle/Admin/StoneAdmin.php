@@ -108,7 +108,7 @@ class StoneAdmin extends Admin
             ->with('stone.tab.stone', ['tab' => true])
                 ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                     ->add('translations', TranslationsType::class, [
-                        'translation_domain' => $this->translationDomain,
+                        'translation_domain' => $this->getTranslationDomain(),
                         'label' => false,
                         'fields' => [
                             'name' => [
@@ -156,7 +156,6 @@ class StoneAdmin extends Admin
                         'property' => 'translations.name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
-                        'btn_catalogue' => $this->translationDomain,
                         'minimum_input_length' => 2,
                     ])
                     ->add('createdAt', DateTimePickerType::class, [

@@ -9,6 +9,7 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [MediaBundle] ]
+            - [ setTokenStorage, ['@security.token_storage'] ]
 
     sonata.admin.media_image:
         class: MediaBundle\Admin\MediaImageAdmin
@@ -17,10 +18,11 @@ services:
         arguments:
             - ~
             - MediaBundle\Entity\MediaImage
-            - MediaBundle:MediaAdmin
+            - MediaBundle\Controller\MediaAdminController
         calls:
             - [ setTranslationDomain, [MediaBundle] ]
             - [ setOptimizer, ['@app.image.optimizer'] ]
+            - [ setTokenStorage, ['@security.token_storage'] ]
 
     sonata.admin.media_video:
         class: MediaBundle\Admin\MediaVideoAdmin
@@ -32,3 +34,4 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [ MediaBundle ] ]
+            - [ setTokenStorage, ['@security.token_storage'] ]

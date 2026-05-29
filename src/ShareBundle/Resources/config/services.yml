@@ -1,7 +1,7 @@
 services:
   share.tag.finder:
     class: ShareBundle\Services\TagFinder
-    calls:
-      - [ setContainer, ['@service_container'] ]
+    arguments:
+      - '@doctrine.orm.entity_manager'
 
   ShareBundle\Services\TagFinder: '@share.tag.finder'

@@ -11,7 +11,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\Form\Type\DateTimePickerType;
 use Sonata\DatagridBundle\Filter\FilterInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
@@ -39,8 +39,7 @@ class ArticleAdmin extends Admin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollection $collection)
-    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void    {
         $collection->remove('acl');
 
         $collection->add('preview', 'preview');
@@ -49,7 +48,7 @@ class ArticleAdmin extends Admin
     /**
      * @return array
      */
-    public function getPersistentParameters()
+    protected function configurePersistentParameters(): array
     {
         if (!$this->hasRequest()) {
             return [];
@@ -80,8 +79,7 @@ class ArticleAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('id', null, [
                 'label' => 'article.fields.id',
@@ -117,8 +115,7 @@ class ArticleAdmin extends Admin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
         $datagridMapper
             ->add('translations.title', null, [
                 'label' => 'article.fields.title',
@@ -134,8 +131,7 @@ class ArticleAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('translations', TranslationsType::class, [

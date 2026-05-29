@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
 use Lexik\Bundle\TranslationBundle\Manager\TransUnitManagerInterface;
@@ -206,8 +206,7 @@ class SonataTranslationAdmin extends AbstractAdmin
     /**
      * @param DatagridMapper $filter
      */
-    protected function configureDatagridFilters(DatagridMapper $filter)
-    {
+    protected function configureDatagridFilters(DatagridMapper $filter): void    {
         $filter
             ->add(
                 'locale',
@@ -300,8 +299,7 @@ class SonataTranslationAdmin extends AbstractAdmin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollection $collection)
-    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void    {
         $collection
             ->add('clear_cache')
             ->add('create_trans_unit');
@@ -310,8 +308,7 @@ class SonataTranslationAdmin extends AbstractAdmin
     /**
      * @param ListMapper $list
      */
-    protected function configureListFields(ListMapper $list)
-    {
+    protected function configureListFields(ListMapper $list): void    {
         $list
             ->add('id', 'integer')
             ->add('key', 'string')
@@ -333,8 +330,7 @@ class SonataTranslationAdmin extends AbstractAdmin
     /**
      * @param FormMapper $form
      */
-    protected function configureFormFields(FormMapper $form)
-    {
+    protected function configureFormFields(FormMapper $form): void    {
         $subject = $this->getSubject();
 
         if (null === $subject->getId()) {

@@ -2,8 +2,7 @@ services:
     book.block.list:
         class: BookBundle\Block\ListBooksBlockService
         arguments:
-          - book.block.list
-          - '@templating'
+          - '@twig'
           - '@?doctrine'
         tags:
           - { name: sonata.block }
@@ -11,8 +10,7 @@ services:
     book.block.book_voting:
         class: BookBundle\Block\BookVotingBlockService
         arguments:
-          - book.block.book_voting
-          - '@templating'
+          - '@twig'
           - '@request_stack'
           - '@book.entity_manager'
         tags:
@@ -21,8 +19,7 @@ services:
     book.block.popular:
       class: BookBundle\Block\PopularBooksBlockService
       arguments:
-        - book.block.popular
-        - '@templating'
+        - '@twig'
         - '@?doctrine'
       tags:
         - { name: sonata.block }
@@ -30,8 +27,7 @@ services:
     book.block.collection_list:
       class: BookBundle\Block\ListCollectionBlockService
       arguments:
-        - book.block.collection_list
-        - '@templating'
+        - '@twig'
         - '@?doctrine'
       tags:
         - { name: sonata.block }
@@ -39,8 +35,7 @@ services:
     book.block.collection_genre:
       class: BookBundle\Block\CollectionGenreBlockService
       arguments:
-        - book.block.collection_genre
-        - '@templating'
+        - '@twig'
         - '@?doctrine'
       tags:
         - { name: sonata.block }

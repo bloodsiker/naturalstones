@@ -58,8 +58,7 @@ trait StrictRelationSonataAdminTrait
     /**
      * @param BlockInterface $block
      */
-    public function load(BlockInterface $block)
-    {
+    public function load(BlockInterface $block): void    {
         parent::load($block);
         $doctrine = $this->doctrine;
         foreach ($this->filterSettings($block->getSettings()) as $name => $entity) {

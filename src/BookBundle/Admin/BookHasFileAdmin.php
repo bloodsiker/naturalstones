@@ -21,8 +21,7 @@ class BookHasFileAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('book', null, [
                 'label' => 'book_has_file.fields.book',
@@ -41,8 +40,7 @@ class BookHasFileAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $linkParameters = [];
 
         if ($this->hasParentFieldDescription()) {

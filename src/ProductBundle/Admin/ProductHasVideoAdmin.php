@@ -20,8 +20,7 @@ class ProductHasVideoAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('product', null, [
                 'label' => 'product_has_video.fields.product',
@@ -40,8 +39,7 @@ class ProductHasVideoAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $linkParameters = [];
 
         if ($this->hasParentFieldDescription()) {

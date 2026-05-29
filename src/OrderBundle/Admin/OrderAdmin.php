@@ -7,7 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\Form\Type\DateTimePickerType;
 use Sonata\Form\Type\CollectionType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
@@ -32,19 +32,9 @@ class OrderAdmin extends Admin
     ];
 
     /**
-     * {@inheritdoc}
+     * @param RouteCollectionInterface $collection
      */
-    public function setTranslationDomain($translationDomain)
-    {
-        $this->translationDomain = $translationDomain;
-        $this->formOptions['translation_domain'] = $translationDomain;
-    }
-
-    /**
-     * @param RouteCollection $collection
-     */
-    protected function configureRoutes(RouteCollection $collection)
-    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void    {
         $collection->remove('acl');
 
         $collection->add('preview', 'preview');
@@ -55,8 +45,7 @@ class OrderAdmin extends Admin
      *
      * @throws \Exception
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('id', null, [
                 'label' => 'order.fields.id',
@@ -98,8 +87,7 @@ class OrderAdmin extends Admin
      *
      * @throws \Exception
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
         $datagridMapper
             ->add('email', null, [
                 'label' => 'order.fields.email',
@@ -142,8 +130,7 @@ class OrderAdmin extends Admin
      *
      * @throws \Exception
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $context = $this->getPersistentParameter('context');
 
         $formMapper

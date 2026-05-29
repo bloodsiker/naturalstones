@@ -49,8 +49,7 @@ class ProductInfoViewAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->addIdentifier('id', null, [
                 'label' => 'product_view.fields.id',
@@ -76,8 +75,7 @@ class ProductInfoViewAdmin extends Admin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
         $datagridMapper
             ->add('product', null, [
                 'label' => 'product_view.fields.product',
@@ -93,8 +91,7 @@ class ProductInfoViewAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => null])
                 ->add('views', IntegerType::class, [

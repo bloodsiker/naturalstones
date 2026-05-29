@@ -7,7 +7,7 @@ use MediaBundle\Helper\MimeTypeHelper;
 /**
  * Class MediaExtension
  */
-class MediaExtension extends \Twig_Extension
+class MediaExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * {@inheritdoc}
@@ -15,7 +15,7 @@ class MediaExtension extends \Twig_Extension
     public function getTests()
     {
         return array(
-            new \Twig_SimpleTest('mediainstanceof', array($this, 'isMediaInstanceOf')),
+            new \Twig\TwigTest('mediainstanceof', array($this, 'isMediaInstanceOf')),
         );
     }
 
@@ -25,9 +25,9 @@ class MediaExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('set_frame_size', array($this, 'setFrameSize')),
-            new \Twig_SimpleFilter('file_extension', array($this, 'getFileExtension')),
-            new \Twig_SimpleFilter('file_mime_icon_class', array($this, 'getFileMimeIconClass')),
+            new \Twig\TwigFilter('set_frame_size', array($this, 'setFrameSize')),
+            new \Twig\TwigFilter('file_extension', array($this, 'getFileExtension')),
+            new \Twig\TwigFilter('file_mime_icon_class', array($this, 'getFileMimeIconClass')),
         ];
     }
 

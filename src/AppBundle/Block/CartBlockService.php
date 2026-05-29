@@ -4,11 +4,10 @@ namespace AppBundle\Block;
 
 use AppBundle\Services\Cart;
 use Doctrine\ORM\EntityManager;
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class CartBlockService
  */
-class CartBlockService extends AbstractAdminBlockService
+class CartBlockService extends AbstractBlockService
 {
     const TEMPLATE_CART = 'AppBundle:Block/cart:cart.html.twig';
     const TEMPLATE_CART_QUANTITY = 'AppBundle:Block/cart:cart_quantity.html.twig';
@@ -52,35 +51,18 @@ class CartBlockService extends AbstractAdminBlockService
      * @param Cart            $cart
      * @param RequestStack    $request
      */
-    public function __construct($name, EngineInterface $templating, Cart $cart, RequestStack $request)
+    public function __construct(Environment $twig, Cart $cart, RequestStack $request)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->cart = $cart;
         $this->request  = $request;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'AppBundle',
-            ['class' => 'fa fa-th-large']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'product'     => null,
             'action'      => null,
@@ -97,8 +79,7 @@ class CartBlockService extends AbstractAdminBlockService
      *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         if (!$blockContext->getBlock()->getEnabled()) {
             return new Response();
         }

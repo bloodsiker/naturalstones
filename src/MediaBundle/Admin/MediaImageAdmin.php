@@ -10,7 +10,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\Form\Type\DateTimePickerType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -56,18 +56,15 @@ class MediaImageAdmin extends Admin
     /**
      * @return mixed
      */
-    public function getNewInstance()
+    protected function alterNewInstance(object $object): void
     {
-        $instance = parent::getNewInstance();
-        $instance->setCreatedBy($this->getAdminUser());
-
-        return $instance;
+        $object->setCreatedBy($this->getAdminUser());
     }
 
     /**
      * @return array
      */
-    public function getPersistentParameters()
+    protected function configurePersistentParameters(): array
     {
         if (!$this->hasRequest()) {
             return [];
@@ -98,7 +95,7 @@ class MediaImageAdmin extends Admin
     /**
      * @param MediaImage $object
      */
-    public function prePersist($object)
+    public function prePersist(object $object): void
     {
         $this->preUpdate($object);
     }
@@ -106,7 +103,7 @@ class MediaImageAdmin extends Admin
     /**
      * @param MediaImage $object
      */
-    public function preUpdate($object)
+    public function preUpdate(object $object): void
     {
         $file = $object->getFile();
         if ($file) {
@@ -126,7 +123,7 @@ class MediaImageAdmin extends Admin
     /**
      * @param MediaImage $object
      */
-    public function postPersist($object)
+    public function postPersist(object $object): void
     {
         parent::postPersist($object);
 
@@ -136,7 +133,7 @@ class MediaImageAdmin extends Admin
     /**
      * @param MediaImage $object
      */
-    public function postUpdate($object)
+    public function postUpdate(object $object): void
     {
         if ($object->getFile()) {
             $this->optimizer->resize($object);
@@ -146,8 +143,7 @@ class MediaImageAdmin extends Admin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollection $collection)
-    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void    {
         $collection->remove('acl');
 
         $collection->add('preview', 'preview');
@@ -156,8 +152,7 @@ class MediaImageAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('id', null, [
                 'label' => 'media.fields.id',
@@ -190,8 +185,7 @@ class MediaImageAdmin extends Admin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
         $datagridMapper
             ->add('id', null, [
                 'label' => 'media.fields.id',
@@ -213,8 +207,7 @@ class MediaImageAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-4', 'label' => false])
                 ->add('description', TextType::class, [

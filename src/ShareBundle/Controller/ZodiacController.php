@@ -3,7 +3,7 @@
 namespace ShareBundle\Controller;
 
 use ShareBundle\Entity\Zodiac;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 /**
  * Class ZodiacController
  */
-class ZodiacController extends Controller
+class ZodiacController extends AbstractController
 {
     const ZODIAC_404 = 'Zodiac doesn\'t exist';
 

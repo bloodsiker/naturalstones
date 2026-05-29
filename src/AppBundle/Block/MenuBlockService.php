@@ -4,18 +4,17 @@ namespace AppBundle\Block;
 
 use Doctrine\ORM\EntityManager;
 use ProductBundle\Entity\Category;
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 
 /**
  * Class MenuBlockService
  */
-class MenuBlockService extends AbstractAdminBlockService
+class MenuBlockService extends AbstractBlockService
 {
     /**
      * @var EntityManager
@@ -29,34 +28,17 @@ class MenuBlockService extends AbstractAdminBlockService
      * @param EngineInterface $templating
      * @param EntityManager   $em
      */
-    public function __construct($name, EngineInterface $templating, EntityManager $em)
+    public function __construct(Environment $twig, EntityManager $em)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->em = $em;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'AppBundle',
-            ['class' => 'fa fa-th-large']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'template'  => 'AppBundle:Block:menu.html.twig',
             'type'      => 'header',
@@ -69,8 +51,7 @@ class MenuBlockService extends AbstractAdminBlockService
      *
      * @return Response
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         if (!$blockContext->getBlock()->getEnabled()) {
             return new Response();
         }

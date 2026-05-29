@@ -4,7 +4,7 @@ namespace CommentBundle\Controller;
 
 use CommentBundle\Entity\Comment;
 use CommentBundle\Entity\CommentVotesResult;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 /**
  * Class CommentController
  */
-class CommentController extends Controller
+class CommentController extends AbstractController
 {
     /**
      * @param Request $request

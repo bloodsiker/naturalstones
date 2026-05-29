@@ -5,19 +5,18 @@ namespace AppBundle\Block;
 use Doctrine\ORM\EntityManager;
 use ProductBundle\Entity\Product;
 use ProductBundle\Entity\ProductSearchHistory;
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 
 /**
  * Class SearchCategoryBlockService
  */
-class SearchCategoryBlockService extends AbstractAdminBlockService
+class SearchCategoryBlockService extends AbstractBlockService
 {
     const DEFAULT_TEMPLATE = 'AppBundle:search_category/Block:large_list.html.twig';
 
@@ -39,35 +38,18 @@ class SearchCategoryBlockService extends AbstractAdminBlockService
      * @param EntityManager   $em
      * @param RequestStack    $request
      */
-    public function __construct($name, EngineInterface $templating, EntityManager $em, RequestStack $request)
+    public function __construct(Environment $twig, EntityManager $em, RequestStack $request)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->em = $em;
         $this->request = $request;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'AppBundle',
-            ['class' => 'fa fa-th-large']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'list_type'      => null,
             'search'         => null,
@@ -82,8 +64,7 @@ class SearchCategoryBlockService extends AbstractAdminBlockService
      *
      * @return Response
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
         if (!$block->getEnabled()) {
             return new Response();

@@ -43,18 +43,15 @@ class MediaFileAdmin extends Admin
     /**
      * @return mixed
      */
-    public function getNewInstance()
+    protected function alterNewInstance(object $object): void
     {
-        $instance = parent::getNewInstance();
-        $instance->setCreatedBy($this->getAdminUser());
-
-        return $instance;
+        $object->setCreatedBy($this->getAdminUser());
     }
 
     /**
      * @param MediaFile $object
      */
-    public function prePersist($object)
+    public function prePersist(object $object): void
     {
         $this->preUpdate($object);
     }
@@ -62,7 +59,7 @@ class MediaFileAdmin extends Admin
     /**
      * @param MediaFile $object
      */
-    public function preUpdate($object)
+    public function preUpdate(object $object): void
     {
         $file = $object->getFile();
         if ($file) {
@@ -74,8 +71,7 @@ class MediaFileAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('id', null, [
                 'label' => 'media.fields.id',
@@ -107,8 +103,7 @@ class MediaFileAdmin extends Admin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
         $datagridMapper
             ->add('description', null, [
                 'label' => 'media.fields.description',
@@ -124,8 +119,7 @@ class MediaFileAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-4', 'label' => false])
                 ->add('description', TextType::class, [

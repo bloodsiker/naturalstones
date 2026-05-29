@@ -7,20 +7,19 @@ use BookBundle\Entity\Book;
 use Doctrine\ORM\EntityManager;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 
 /**
  * Class FeedbackBlockService
  */
-class FeedbackBlockService extends AbstractAdminBlockService
+class FeedbackBlockService extends AbstractBlockService
 {
     const DEFAULT_TEMPLATE = 'AppBundle:Block:feedback.html.twig';
 
@@ -41,35 +40,18 @@ class FeedbackBlockService extends AbstractAdminBlockService
      * @param EngineInterface $templating
      * @param RequestStack    $request
      */
-    public function __construct($name, EngineInterface $templating, RequestStack $request, SendTelegramService $sendTelegramService)
+    public function __construct(Environment $twig, RequestStack $request, SendTelegramService $sendTelegramService)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->request = $request;
         $this->sendTelegramService = $sendTelegramService;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'AppBundle',
-            ['class' => 'fa fa-th-large']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'list_type'   => null,
             'template'    => self::DEFAULT_TEMPLATE,
@@ -82,8 +64,7 @@ class FeedbackBlockService extends AbstractAdminBlockService
      *
      * @return Response
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
         if (!$block->getEnabled()) {
             return new Response();

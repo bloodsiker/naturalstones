@@ -50,7 +50,7 @@ class WheelSpinAdmin extends Admin
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function postPersist($object)
+    public function postPersist(object $object): void
     {
         $totalValuation = 0;
         foreach ($object->getWheelSpinHasOption()->getValues() as $option) {
@@ -68,7 +68,7 @@ class WheelSpinAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    public function postUpdate($object)
+    public function postUpdate(object $object): void
     {
         $totalValuation = 0;
         foreach ($object->getWheelSpinHasOption()->getValues() as $option) {
@@ -86,8 +86,7 @@ class WheelSpinAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->addIdentifier('id', null, [
                 'label' => 'wheel_spin.fields.id',
@@ -112,8 +111,7 @@ class WheelSpinAdmin extends Admin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
         $datagridMapper
             ->add('isActive', null, [
                 'label' => 'wheel_spin.fields.is_active',
@@ -129,8 +127,7 @@ class WheelSpinAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $context = $this->getPersistentParameter('context');
 
         $formMapper

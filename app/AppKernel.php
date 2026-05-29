@@ -13,7 +13,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
-            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Oneup\UploaderBundle\OneupUploaderBundle(),
@@ -45,29 +44,25 @@ class AppKernel extends Kernel
             // Sonata Intl bundle
             new Sonata\IntlBundle\SonataIntlBundle(),
 
-            // Sonata PageBundle and its dependencies
+            // Sonata PageBundle
             new Sonata\PageBundle\SonataPageBundle(),
-            new Sonata\CacheBundle\SonataCacheBundle(),
-            new Sonata\NotificationBundle\SonataNotificationBundle(),
             new Cocur\Slugify\Bridge\Symfony\CocurSlugifyBundle(),
 
             // Sonata Seo bundle
             new Sonata\SeoBundle\SonataSeoBundle(),
 
-            // Sonata UserBundle and its dependencies
-            new FOS\UserBundle\FOSUserBundle(),
+            // Sonata UserBundle
             new Sonata\UserBundle\SonataUserBundle(),
 
             // Store translations in database
             new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
-            new Ibrows\SonataTranslationBundle\IbrowsSonataTranslationBundle(),
 
             // A2lix multilingual forms
             new A2lix\AutoFormBundle\A2lixAutoFormBundle(),
             new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
 
             // Doctrine2 Behaviors
-            new Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle(),
+            new Knp\DoctrineBehaviors\DoctrineBehaviorsBundle(),
 
             // Image manipulations
             new Liip\ImagineBundle\LiipImagineBundle(),
@@ -82,7 +77,7 @@ class AppKernel extends Kernel
             new AdminBundle\AdminBundle(),
 
             // Pagerfanta Bundle
-            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+            new BabDev\PagerfantaBundle\BabDevPagerfantaBundle(),
 
 //            new Sentry\SentryBundle\SentryBundle(),
 

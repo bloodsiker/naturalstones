@@ -32,21 +32,10 @@ services:
     #     arguments:
     #         $someArgument: 'some_value'
 
-    sonata.page.kernel.exception_listener:
+    app.exception.locale_listener:
         class: "AppBundle\\EventSubscriber\\ExceptionListener"
         tags:
-            - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException',  priority: -127 }
-            - { name: 'monolog.logger',  channel: "request" }
+            - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException', priority: -126 }
         calls:
             - [ 'setDefaultLocale', [ '%kernel.default_locale%' ] ]
             - [ 'setTranslator', [ '@translator' ] ]
-        arguments:
-            - '@sonata.page.site.selector'
-            - '@sonata.page.cms_manager_selector'
-            - '%kernel.debug%'
-            - '@sonata.templating'
-            - '@sonata.page.page_service_manager'
-            - '@sonata.page.decorator_strategy'
-            -   404: _page_internal_error_not_found    # render 404 page with "not_found" key (name generated: _page_internal_error_{key})
-                500: _page_internal_error_fatal
-            - '@?logger'

@@ -12,7 +12,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateTimePickerType;
 use Sonata\Form\Validator\ErrorElement;
@@ -53,21 +53,15 @@ class BookAdmin extends Admin
         return $this->entityManager = $entityManager;
     }
 
-    /**
-     * @return array
-     */
-    public function getFormTheme()
+    protected function configure(): void
     {
-        return array_merge(
-            parent::getFormTheme(),
-            ['BookBundle:Form:admin_fields.html.twig']
-        );
+        $this->setFormTheme(array_merge($this->getFormTheme(), ['BookBundle:Form:admin_fields.html.twig']));
     }
 
     /**
      * @param Book $object
      */
-    public function prePersist($object)
+    public function prePersist(object $object): void
     {
         $this->changeEntity($object);
     }
@@ -75,7 +69,7 @@ class BookAdmin extends Admin
     /**
      * @param $object
      */
-    public function preUpdate($object)
+    public function preUpdate(object $object): void
     {
         $this->changeEntity($object);
     }
@@ -147,8 +141,7 @@ class BookAdmin extends Admin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollection $collection)
-    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void    {
         $collection->remove('acl');
 
         $collection->add('preview', 'preview');
@@ -160,8 +153,7 @@ class BookAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('id', null, [
                 'label' => 'book.fields.id',
@@ -205,8 +197,7 @@ class BookAdmin extends Admin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
         $datagridMapper
             ->add('name', null, [
                 'label' => 'book.fields.name',
@@ -230,8 +221,7 @@ class BookAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $context = $this->getPersistentParameter('context');
 
         $formMapper

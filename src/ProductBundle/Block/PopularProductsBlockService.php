@@ -5,17 +5,16 @@ namespace ProductBundle\Block;
 use BookBundle\Entity\BookInfoView;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use ProductBundle\Entity\ProductInfoView;
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class PopularProductsBlockService
  */
-class PopularProductsBlockService extends AbstractAdminBlockService
+class PopularProductsBlockService extends AbstractBlockService
 {
     const POPULAR_LIST = 'ProductBundle:Block:popular_list.html.twig';
 
@@ -31,34 +30,17 @@ class PopularProductsBlockService extends AbstractAdminBlockService
      * @param EngineInterface $templating
      * @param Registry        $doctrine
      */
-    public function __construct($name, EngineInterface $templating, Registry $doctrine)
+    public function __construct(Environment $twig, Registry $doctrine)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->doctrine = $doctrine;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'ProductBundle',
-            ['class' => 'fa fa-th-large']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'list_type'        => null,
             'items_count'      => 20,
@@ -78,8 +60,7 @@ class PopularProductsBlockService extends AbstractAdminBlockService
      *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
 
         if (!$block->getEnabled()) {

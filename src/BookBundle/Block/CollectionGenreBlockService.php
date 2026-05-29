@@ -4,17 +4,16 @@ namespace BookBundle\Block;
 
 use BookBundle\Entity\BookCollection;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class CollectionGenreBlockService
  */
-class CollectionGenreBlockService extends AbstractAdminBlockService
+class CollectionGenreBlockService extends AbstractBlockService
 {
     /**
      * @var Registry $doctrine
@@ -28,34 +27,17 @@ class CollectionGenreBlockService extends AbstractAdminBlockService
      * @param EngineInterface $templating
      * @param Registry        $doctrine
      */
-    public function __construct($name, EngineInterface $templating, Registry $doctrine)
+    public function __construct(Environment $twig, Registry $doctrine)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->doctrine = $doctrine;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'BookBundle',
-            ['class' => 'fa fa-th-large']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'template'      => 'BookBundle:Block:collection_genres.html.twig',
         ]);
@@ -69,8 +51,7 @@ class CollectionGenreBlockService extends AbstractAdminBlockService
      *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
 
         if (!$block->getEnabled()) {

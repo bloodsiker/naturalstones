@@ -3,7 +3,7 @@
 namespace PageBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -27,14 +27,6 @@ class PageRedirectAdmin extends AbstractAdmin
         '_sort_order'   => 'DESC',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setTranslationDomain($translationDomain)
-    {
-        $this->translationDomain = $translationDomain;
-        $this->formOptions['translation_domain'] = $translationDomain;
-    }
 
     /**
      * @param ErrorElement $errorElement
@@ -64,8 +56,7 @@ class PageRedirectAdmin extends AbstractAdmin
      *
      * @throws \Exception
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $formMapper
             ->with('football.form_group.basic', ['class' => 'col-md-6', 'label' => false])
                 ->add('fromPath', TextType::class, [
@@ -102,8 +93,7 @@ class PageRedirectAdmin extends AbstractAdmin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
         $datagridMapper
             ->add('fromPath', null, [
                 'label' => 'form.label_redirect_from',
@@ -120,8 +110,7 @@ class PageRedirectAdmin extends AbstractAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('type', null, [
                 'label' => 'form.label_type',

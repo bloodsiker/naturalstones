@@ -7,7 +7,7 @@ use ShortcodeBundle\Templating\ShortcodeHelper;
 /**
  * Class ShortcodeExtension
  */
-class ShortcodeExtension extends \Twig_Extension
+class ShortcodeExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var ShortcodeHelper
@@ -38,9 +38,9 @@ class ShortcodeExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('shortcode', [$this, 'shortcodeFilter'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('shortcode_only', [$this, 'shortcodeOnlyFilter'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('shortcode_pure', [$this, 'shortcodePureFilter'], ['is_safe' => ['html']]),
+            new \Twig\TwigFilter('shortcode', [$this, 'shortcodeFilter'], ['is_safe' => ['html']]),
+            new \Twig\TwigFilter('shortcode_only', [$this, 'shortcodeOnlyFilter'], ['is_safe' => ['html']]),
+            new \Twig\TwigFilter('shortcode_pure', [$this, 'shortcodePureFilter'], ['is_safe' => ['html']]),
         ];
     }
 

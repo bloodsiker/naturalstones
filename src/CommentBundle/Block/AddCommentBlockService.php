@@ -5,10 +5,9 @@ namespace CommentBundle\Block;
 use BookBundle\Entity\Book;
 use CommentBundle\Entity\Comment;
 use Doctrine\ORM\EntityManager;
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class AddCommentBlockService
  */
-class AddCommentBlockService extends AbstractAdminBlockService
+class AddCommentBlockService extends AbstractBlockService
 {
     const FORM_TEMPLATE = 'CommentBundle:Block:comment_form.html.twig';
     const AJAX_COMMENT_TEMPLATE = 'CommentBundle:Block:ajax_comment.html.twig';
@@ -39,35 +38,18 @@ class AddCommentBlockService extends AbstractAdminBlockService
      * @param EntityManager   $em
      * @param RequestStack    $request
      */
-    public function __construct($name, EngineInterface $templating, EntityManager $em, RequestStack $request)
+    public function __construct(Environment $twig, EntityManager $em, RequestStack $request)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->em = $em;
         $this->request = $request;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'CommentBundle',
-            ['class' => 'fa fa-code']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'book'     => null,
             'template' => self::FORM_TEMPLATE,
@@ -82,8 +64,7 @@ class AddCommentBlockService extends AbstractAdminBlockService
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
 
         if (!$block->getEnabled()) {

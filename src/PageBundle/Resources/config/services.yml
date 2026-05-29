@@ -7,7 +7,7 @@ services:
         class: "PageBundle\\Block\\SiteVariableBlockService"
         arguments:
             - page.block.site_variable
-            - '@templating'
+            - '@twig'
             - '@?doctrine'
         tags:
             - { name: sonata.block }

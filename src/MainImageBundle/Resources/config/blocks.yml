@@ -2,8 +2,7 @@ services:
     main.block.image:
         class: MainImageBundle\Block\MainImageBlockService
         arguments:
-          - main.block.image
-          - '@templating'
+          - '@twig'
           - '@app.entity_manager'
         tags:
           - { name: sonata.block }

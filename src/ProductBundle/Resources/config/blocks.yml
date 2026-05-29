@@ -2,8 +2,7 @@ services:
     product.block.list:
         class: ProductBundle\Block\ListProductBlockService
         arguments:
-            - product.block.service.list
-            - '@templating'
+            - '@twig'
             - '@request_stack'
         calls:
             - [ setDoctrine, [ '@?doctrine' ] ]
@@ -21,8 +20,7 @@ services:
     product.block.popular:
         class: ProductBundle\Block\PopularProductsBlockService
         arguments:
-            - product.block.popular
-            - '@templating'
+            - '@twig'
             - '@?doctrine'
         tags:
             - { name: sonata.block }
@@ -30,8 +28,7 @@ services:
     product.block.viewed:
         class: ProductBundle\Block\ListViewedProductBlockService
         arguments:
-            - product.block.viewed
-            - '@templating'
+            - '@twig'
             - '@?doctrine'
             - '@request_stack'
         tags:

@@ -37,7 +37,7 @@ class DefaultView implements ViewInterface
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'default';
     }
@@ -49,7 +49,7 @@ class DefaultView implements ViewInterface
      *
      * @return mixed
      */
-    public function render(PagerfantaInterface $pagerfanta, $routeGenerator, array $options = array())
+    public function render(PagerfantaInterface $pagerfanta, callable $routeGenerator, array $options = []): string
     {
         $this->initializePagerfanta($pagerfanta);
         $this->initializeOptions($options);

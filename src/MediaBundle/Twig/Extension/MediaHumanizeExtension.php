@@ -13,7 +13,7 @@ namespace MediaBundle\Twig\Extension;
 /**
  * Class MediaHumanizeExtension
  */
-class MediaHumanizeExtension extends \Twig_Extension
+class MediaHumanizeExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @return array
@@ -21,10 +21,10 @@ class MediaHumanizeExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('media_humanize_filesize', array($this, 'mediaHumanizeFilesizeFilter')),
-            new \Twig_SimpleFilter('media_humanize_duration', array($this, 'mediaHumanizeDurationFilter')),
-            new \Twig_SimpleFilter('media_humanize_bitrate', array($this, 'mediaHumanizeBitRateFilter')),
-            new \Twig_SimpleFilter('media_humanize_byteconvert', array($this, 'mediaByteConvertFilter')),
+            new \Twig\TwigFilter('media_humanize_filesize', array($this, 'mediaHumanizeFilesizeFilter')),
+            new \Twig\TwigFilter('media_humanize_duration', array($this, 'mediaHumanizeDurationFilter')),
+            new \Twig\TwigFilter('media_humanize_bitrate', array($this, 'mediaHumanizeBitRateFilter')),
+            new \Twig\TwigFilter('media_humanize_byteconvert', array($this, 'mediaByteConvertFilter')),
         );
     }
 

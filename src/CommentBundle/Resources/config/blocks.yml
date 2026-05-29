@@ -2,8 +2,7 @@ services:
     comment.block.list_comments:
         class: "CommentBundle\\Block\\ListCommentBlockService"
         arguments:
-          - comment.block.list_comments
-          - '@templating'
+          - '@twig'
           - '@app.entity_manager'
         tags:
           - { name: sonata.block }
@@ -11,8 +10,7 @@ services:
     comment.block.add_comment:
         class: "CommentBundle\\Block\\AddCommentBlockService"
         arguments:
-          - comment.block.add_comment
-          - '@templating'
+          - '@twig'
           - '@app.entity_manager'
           - '@request_stack'
         tags:

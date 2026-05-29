@@ -5,7 +5,7 @@ namespace PageBundle\Admin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\Length;
@@ -20,16 +20,14 @@ class SiteVariablePlacementAdmin extends AbstractAdmin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollection $collection)
-    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void    {
         $collection->remove('acl');
     }
 
     /**
      * @param ListMapper $list
      */
-    protected function configureListFields(ListMapper $list)
-    {
+    protected function configureListFields(ListMapper $list): void    {
         $list
             ->add('id', null, [
                 'label' => 'list.label_id',
@@ -48,8 +46,7 @@ class SiteVariablePlacementAdmin extends AbstractAdmin
     /**
      * @param FormMapper $form
      */
-    protected function configureFormFields(FormMapper $form)
-    {
+    protected function configureFormFields(FormMapper $form): void    {
         $form
             ->add('alias', TextType::class, [
                 'label'         => 'form.label_alias',

@@ -22,8 +22,7 @@ class WheelSpinHasOptionAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('wheelSpinOption', null, [
                 'label' => 'wheel_spin_has_option.fields.option',
@@ -51,8 +50,7 @@ class WheelSpinHasOptionAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $linkParameters = [];
 
         if ($this->hasParentFieldDescription()) {

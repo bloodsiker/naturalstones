@@ -3,18 +3,17 @@
 namespace AppBundle\Block;
 
 use AppBundle\Services\BreadcrumbService;
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 
 /**
  * Class BreadcrumbBlockService
  */
-class BreadcrumbBlockService extends AbstractAdminBlockService
+class BreadcrumbBlockService extends AbstractBlockService
 {
     /**
      * @var BreadcrumbService
@@ -28,34 +27,17 @@ class BreadcrumbBlockService extends AbstractAdminBlockService
      * @param EngineInterface   $templating
      * @param BreadcrumbService $breadcrumb
      */
-    public function __construct($name, EngineInterface $templating, BreadcrumbService $breadcrumb)
+    public function __construct(Environment $twig, BreadcrumbService $breadcrumb)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->breadcrumb = $breadcrumb;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'AppBundle',
-            ['class' => 'fa fa-th-large']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'template'  => 'AppBundle:Block:breadcrumb.html.twig',
         ]);
@@ -69,8 +51,7 @@ class BreadcrumbBlockService extends AbstractAdminBlockService
      *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         if (!$blockContext->getBlock()->getEnabled()) {
             return new Response();
         }

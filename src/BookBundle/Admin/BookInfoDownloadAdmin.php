@@ -30,8 +30,7 @@ class BookInfoDownloadAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->addIdentifier('id', null, [
                 'label' => 'book_download.fields.id',
@@ -56,8 +55,7 @@ class BookInfoDownloadAdmin extends Admin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
         $datagridMapper
             ->add('book', null, [
                 'label' => 'book_download.fields.book',
@@ -75,8 +73,7 @@ class BookInfoDownloadAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => null])
                 ->add('ip', TextType::class, [

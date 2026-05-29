@@ -4,15 +4,12 @@ imports:
     - { resource: services.yml }
     - { resource: sonata/block.yml }
     - { resource: sonata/admin.yml }
-    - { resource: sonata/notification.yml }
     - { resource: sonata/user.yml }
     - { resource: sonata/intl.yml }
     - { resource: sonata/seo.yml }
     - { resource: sonata/page.yml }
-    - { resource: fos/user.yml }
     - { resource: fos/ckeditor.yml }
     - { resource: lexik/translation.yml }
-    - { resource: ibrows/sonata-translation.yml }
     - { resource: a2lix/translation-form.yml }
     - { resource: symfony-cmf/cmf-routing.yml }
     - { resource: jms/i18n_routing.yml }
@@ -21,7 +18,6 @@ imports:
     - { resource: oneup/oneup-upload.yml }
     - { resource: shortcode/shortcode.yml }
     - { resource: vich/vich_uploader.yml }
-    - { resource: whiteoctober/pagerfanta.yml }
 #    - { resource: sentry/sentry.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
@@ -44,9 +40,7 @@ framework:
     form: ~
     csrf_protection: ~
     validation: { enable_annotations: true }
-    templating:
-        engines: ['twig']
-    #serializer: { enable_annotations: true }
+    serializer: { enable_annotations: true }
     default_locale: '%locale%'
     trusted_hosts: ~
     session:
@@ -83,8 +77,6 @@ doctrine:
         user: '%database_user%'
         password: '%database_password%'
         charset: UTF8
-        types:
-            json: Sonata\Doctrine\Types\JsonType
 
     orm:
         default_entity_manager: default
@@ -100,13 +92,6 @@ doctrine:
                     numeric_functions:
                         rand: DoctrineExtensions\Query\Mysql\Rand
 
-# Swiftmailer Configuration
-swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
-    spool: { type: memory }
 
 sensio_framework_extra:
     router:

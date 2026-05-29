@@ -19,8 +19,7 @@ class BookHasRelatedAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('book', null, [
                 'label' => 'book_has_related.fields.book',
@@ -39,8 +38,7 @@ class BookHasRelatedAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $linkParameters = [];
 
         if ($this->hasParentFieldDescription()) {

@@ -2,8 +2,7 @@ services:
     share.block.tag_list:
         class: "ShareBundle\\Block\\ListTagsBlockService"
         arguments:
-          - share.block.tag_list
-          - '@templating'
+          - '@twig'
           - '@?doctrine'
         tags:
           - { name: sonata.block }
@@ -11,8 +10,7 @@ services:
     share.block.author_list:
         class: "ShareBundle\\Block\\ListAuthorsBlockService"
         arguments:
-          - share.block.author_list
-          - '@templating'
+          - '@twig'
           - '@?doctrine'
         tags:
           - { name: sonata.block }
@@ -20,8 +18,7 @@ services:
     share.block.stones:
         class: "ShareBundle\\Block\\StonesBlockService"
         arguments:
-            - share.block.stones
-            - '@templating'
+            - '@twig'
             - '@?doctrine'
             - '@request_stack'
         tags:
@@ -30,8 +27,7 @@ services:
     share.block.stone_constructor:
         class: "ShareBundle\\Block\\StoneConstructorBlockService"
         arguments:
-            - share.block.stone_constructor
-            - '@templating'
+            - '@twig'
             - '@?doctrine'
             - '@request_stack'
         tags:
@@ -40,8 +36,7 @@ services:
     share.block.zodiac:
         class: "ShareBundle\\Block\\ZodiacBlockService"
         arguments:
-            - share.block.zodiac
-            - '@templating'
+            - '@twig'
             - '@?doctrine'
         tags:
             - { name: sonata.block }

@@ -10,7 +10,7 @@ use Sonata\BlockBundle\Model\Block;
 /**
  * Class AppExtension
  */
-class AppExtension extends \Twig_Extension
+class AppExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var RouterInterface
@@ -48,11 +48,11 @@ class AppExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('block_ajax_url', array($this, 'blockAjaxUrl')),
-            new \Twig_SimpleFunction('replace_highlight', array($this, 'replaceHighlight')),
-            new \Twig_SimpleFunction('book_change_end', array($this, 'countBookChangeEnd')),
-            new \Twig_SimpleFunction('icon_order_status', array($this, 'iconOrderStatus')),
-            new \Twig_SimpleFunction('is_constrain', array($this, 'isConstrain')),
+            new \Twig\TwigFunction('block_ajax_url', array($this, 'blockAjaxUrl')),
+            new \Twig\TwigFunction('replace_highlight', array($this, 'replaceHighlight')),
+            new \Twig\TwigFunction('book_change_end', array($this, 'countBookChangeEnd')),
+            new \Twig\TwigFunction('icon_order_status', array($this, 'iconOrderStatus')),
+            new \Twig\TwigFunction('is_constrain', array($this, 'isConstrain')),
         );
     }
 
@@ -62,7 +62,7 @@ class AppExtension extends \Twig_Extension
     public function getTests()
     {
         return array(
-            new \Twig_SimpleTest('instanceof', array($this, 'isInstanceOf')),
+            new \Twig\TwigTest('instanceof', array($this, 'isInstanceOf')),
         );
     }
 
@@ -72,10 +72,10 @@ class AppExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('file_size_humanize', array($this, 'fileSizeHumanize')),
-            new \Twig_SimpleFilter('date_humanize', array($this, 'dateHumanize')),
-            new \Twig_SimpleFilter('date_time_humanize', array($this, 'dateTimeHumanize')),
-            new \Twig_SimpleFilter('url_decode', array($this, 'urlDecode')),
+            new \Twig\TwigFilter('file_size_humanize', array($this, 'fileSizeHumanize')),
+            new \Twig\TwigFilter('date_humanize', array($this, 'dateHumanize')),
+            new \Twig\TwigFilter('date_time_humanize', array($this, 'dateTimeHumanize')),
+            new \Twig\TwigFilter('url_decode', array($this, 'urlDecode')),
         );
     }
 

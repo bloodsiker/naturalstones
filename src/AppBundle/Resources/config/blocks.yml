@@ -2,8 +2,7 @@ services:
     app.block.service.language_switcher:
         class: "AppBundle\\Block\\LanguageSwitcherBlockService"
         arguments:
-            - app.block.service.language_switcher
-            - '@templating'
+            - '@twig'
             - '@request_stack'
             - '%locales%'
         tags:
@@ -12,16 +11,14 @@ services:
     app.block.service.footer:
         class: "AppBundle\\Block\\FooterBlockService"
         arguments:
-            - app.block.service.footer
-            - '@templating'
+            - '@twig'
         tags:
             - { name: sonata.block }
 
     app.block.service.header:
         class: "AppBundle\\Block\\HeaderBlockService"
         arguments:
-            - app.block.service.header
-            - '@templating'
+            - '@twig'
             - '@app.entity_manager'
         tags:
             - { name: sonata.block }
@@ -29,8 +26,7 @@ services:
     app.block.service.menu:
         class: "AppBundle\\Block\\MenuBlockService"
         arguments:
-            - app.block.service.menu
-            - '@templating'
+            - '@twig'
             - '@app.entity_manager'
         tags:
             - { name: sonata.block }
@@ -38,8 +34,7 @@ services:
     app.block.service.search:
         class: "AppBundle\\Block\\SearchBlockService"
         arguments:
-            - app.block.service.search
-            - '@templating'
+            - '@twig'
             - '@app.entity_manager'
             - '@request_stack'
         tags:
@@ -48,8 +43,7 @@ services:
     app.block.service.search_category:
         class: "AppBundle\\Block\\SearchCategoryBlockService"
         arguments:
-            - app.block.service.search_category
-            - '@templating'
+            - '@twig'
             - '@app.entity_manager'
             - '@request_stack'
         tags:
@@ -58,16 +52,14 @@ services:
     app.block.service.banner:
         class: "AppBundle\\Block\\BannerBlockService"
         arguments:
-            - app.block.service.banner
-            - '@templating'
+            - '@twig'
         tags:
             - { name: sonata.block }
 
     app.block.service.feedback:
         class: "AppBundle\\Block\\FeedbackBlockService"
         arguments:
-            - app.block.service.feedback
-            - '@templating'
+            - '@twig'
             - '@request_stack'
             - '@app.send_telegram'
         tags:
@@ -76,8 +68,7 @@ services:
     app.block.service.get_state_value:
         class: "AppBundle\\Block\\GetStateValueBlockService"
         arguments:
-            - app.block.service.get_state_value
-            - '@templating'
+            - '@twig'
         calls:
             - [ 'setSaveStateService', [ '@app.save.state.value' ] ]
         tags:
@@ -86,8 +77,7 @@ services:
     app.block.service.breadcrumb:
         class: "AppBundle\\Block\\BreadcrumbBlockService"
         arguments:
-            - app.block.service.breadcrumb
-            - '@templating'
+            - '@twig'
             - '@app.breadcrumb'
         tags:
             - { name: sonata.block }
@@ -95,8 +85,7 @@ services:
     app.block.service.cart:
         class: AppBundle\Block\CartBlockService
         arguments:
-            - app.block.service.cart
-            - '@templating'
+            - '@twig'
             - '@app.cart'
             - '@request_stack'
         tags:

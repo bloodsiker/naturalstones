@@ -2,8 +2,7 @@ services:
     information.block.info:
         class: InformationBundle\Block\InformationBlockService
         arguments:
-          - information.block.info
-          - '@templating'
+          - '@twig'
           - '@app.entity_manager'
         tags:
           - { name: sonata.block }

@@ -19,8 +19,7 @@ class BookCollectionHasBookAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('article', null, [
                 'label' => 'book_collection_has_book.fields.article',
@@ -39,8 +38,7 @@ class BookCollectionHasBookAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $linkParameters = [];
 
         if ($this->hasParentFieldDescription()) {

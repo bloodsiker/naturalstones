@@ -6,7 +6,7 @@ use AppBundle\Helper\AppHelper;
 use ArticleBundle\Entity\Article;
 use ArticleBundle\Entity\Category;
 use ShareBundle\Entity\Tag;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 /**
  * Class ArticleController
  */
-class ArticleController extends Controller
+class ArticleController extends AbstractController
 {
     const ARTICLE_404 = 'Article doesn\'t exist';
 

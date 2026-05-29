@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelType;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 /**
@@ -19,16 +19,14 @@ class SiteVariableAdmin extends AbstractAdmin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollection $collection)
-    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void    {
         $collection->remove('acl');
     }
 
     /**
      * @param ListMapper $list
      */
-    protected function configureListFields(ListMapper $list)
-    {
+    protected function configureListFields(ListMapper $list): void    {
         $list
             ->add('isActive', null, [
                 'label' => 'list.label_active',
@@ -52,8 +50,7 @@ class SiteVariableAdmin extends AbstractAdmin
     /**
      * @param DatagridMapper $filter
      */
-    protected function configureDatagridFilters(DatagridMapper $filter)
-    {
+    protected function configureDatagridFilters(DatagridMapper $filter): void    {
         $filter
             ->add('name', null, [
                 'label' => 'filter.label_name',
@@ -70,8 +67,7 @@ class SiteVariableAdmin extends AbstractAdmin
     /**
      * @param FormMapper $form
      */
-    protected function configureFormFields(FormMapper $form)
-    {
+    protected function configureFormFields(FormMapper $form): void    {
         $form
             ->with('site_variable_form_group.basic', ['class' => 'col-md-8', 'label' => false])
                 ->add('name', null, [

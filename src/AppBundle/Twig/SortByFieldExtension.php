@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 /**
  * Class SortByFieldExtension
  */
-class SortByFieldExtension extends \Twig_Extension
+class SortByFieldExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @return string
@@ -23,7 +23,7 @@ class SortByFieldExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('sortbyfield', [$this, 'sortByFieldFilter']),
+            new \Twig\TwigFilter('sortbyfield', [$this, 'sortByFieldFilter']),
         ];
     }
 

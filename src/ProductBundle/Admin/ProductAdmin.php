@@ -16,7 +16,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\Form\Validator\ErrorElement;
 use Sonata\DatagridBundle\Filter\FilterInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
@@ -78,7 +78,7 @@ class ProductAdmin extends Admin
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function postPersist($object)
+    public function postPersist(object $object): void
     {
         $object->setProductGroup($object->getId());
         $this->entityManager->persist($object);
@@ -96,7 +96,7 @@ class ProductAdmin extends Admin
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function preRemove($object)
+    public function preRemove(object $object): void
     {
         $products = $this->entityManager->getRepository(ProductHasProduct::class)->findBy(['productSet' => $object->getId()]);
         foreach ($products as $product) {
@@ -108,7 +108,7 @@ class ProductAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    public function postUpdate($object)
+    public function postUpdate(object $object): void
     {
         if ($object->getIsActive() && $object->getIsMainProduct()) {
             if ($object->getTelegramMessageId()) {
@@ -129,15 +129,9 @@ class ProductAdmin extends Admin
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getFormTheme()
+    protected function configure(): void
     {
-        return array_merge(
-            parent::getFormTheme(),
-            ['ProductBundle:Form:admin_fields.html.twig']
-        );
+        $this->setFormTheme(array_merge($this->getFormTheme(), ['ProductBundle:Form:admin_fields.html.twig']));
     }
 
     /**
@@ -156,8 +150,7 @@ class ProductAdmin extends Admin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollection $collection)
-    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void    {
         $collection->remove('acl');
 
         $collection->add('preview', 'preview');
@@ -167,8 +160,7 @@ class ProductAdmin extends Admin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('id', null, [
                 'label' => 'product.fields.id',
@@ -221,8 +213,7 @@ class ProductAdmin extends Admin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
         $datagridMapper
             ->add('id', null, [
                 'label' => 'product.fields.id',
@@ -271,8 +262,7 @@ class ProductAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $context = $this->getPersistentParameter('context');
 
         $formMapper

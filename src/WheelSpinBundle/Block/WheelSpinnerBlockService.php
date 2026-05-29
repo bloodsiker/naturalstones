@@ -4,10 +4,9 @@ namespace WheelSpinBundle\Block;
 
 use Doctrine\ORM\EntityManager;
 use OrderBundle\Entity\Order;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Sonata\BlockBundle\Meta\Metadata;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +17,7 @@ use WheelSpinBundle\Entity\WheelSpinHasOption;
 /**
  * Class WheelSpinnerBlockService
  */
-class WheelSpinnerBlockService extends AbstractAdminBlockService
+class WheelSpinnerBlockService extends AbstractBlockService
 {
     const DEFAULT_TEMPLATE = 'WheelSpinBundle:Block:wheel_spinner.html.twig';
 
@@ -40,35 +39,18 @@ class WheelSpinnerBlockService extends AbstractAdminBlockService
      * @param EntityManager   $em
      * @param RequestStack    $request
      */
-    public function __construct($name, EngineInterface $templating, EntityManager $em, RequestStack $request)
+    public function __construct(Environment $twig, EntityManager $em, RequestStack $request)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->em = $em;
         $this->request = $request;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'WheelSpinBundle',
-            ['class' => 'fa fa-code']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'order' => null,
             'template' => self::DEFAULT_TEMPLATE,
@@ -83,8 +65,7 @@ class WheelSpinnerBlockService extends AbstractAdminBlockService
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
 
         if (!$block->getEnabled()) {
@@ -117,7 +98,7 @@ class WheelSpinnerBlockService extends AbstractAdminBlockService
         if ($request->isXmlHttpRequest()) {
 
             if ($order->getIsSpin() || $order->getStatus() !== Order::STATUS_COMPLETED) {
-                return;
+                return new Response();
             }
 
             $data = [];

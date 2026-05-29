@@ -4,17 +4,16 @@ namespace MainImageBundle\Block;
 
 use Doctrine\ORM\EntityManager;
 use MainImageBundle\Entity\MainImage;
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class MainImageBlockService
  */
-class MainImageBlockService extends AbstractAdminBlockService
+class MainImageBlockService extends AbstractBlockService
 {
     /**
      * @var EntityManager
@@ -28,34 +27,17 @@ class MainImageBlockService extends AbstractAdminBlockService
      * @param EngineInterface $templating
      * @param EntityManager   $em
      */
-    public function __construct($name, EngineInterface $templating, EntityManager $em)
+    public function __construct(Environment $twig, EntityManager $em)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->em = $em;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'MainImageBundle',
-            ['class' => 'fa fa-code']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'template' => 'MainImageBundle:Block:main_image.html.twig',
         ]);
@@ -67,8 +49,7 @@ class MainImageBlockService extends AbstractAdminBlockService
      *
      * @return Response
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
 
         if (!$block->getEnabled()) {

@@ -10,15 +10,14 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 /**
  * Class BannerBlockService
  */
-class BannerBlockService extends AbstractAdminBlockService
+class BannerBlockService extends AbstractBlockService
 {
     const BANNER_PREMIUM_1 = 'banner-premium1-index';
     const BANNER_PREMIUM_2 = 'banner-premium2-index';
@@ -26,28 +25,11 @@ class BannerBlockService extends AbstractAdminBlockService
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'banner'   => null,
             'template' => 'AppBundle:Block:banner.html.twig',
         ]);
-    }
-
-    /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'AppBundle',
-            ['class' => 'fa fa-newspaper-o']
-        );
     }
 
     /**
@@ -93,8 +75,7 @@ class BannerBlockService extends AbstractAdminBlockService
      *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
 
         if (!$block->getEnabled()) {

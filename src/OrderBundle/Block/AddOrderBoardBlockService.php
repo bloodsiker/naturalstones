@@ -4,10 +4,9 @@ namespace OrderBundle\Block;
 
 use Doctrine\ORM\EntityManager;
 use OrderBundle\Entity\OrderBoard;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Sonata\BlockBundle\Meta\Metadata;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class AddOrderBoardBlockService
  */
-class AddOrderBoardBlockService extends AbstractAdminBlockService
+class AddOrderBoardBlockService extends AbstractBlockService
 {
     const FORM_TEMPLATE = 'OrderBundle:Block:order_board_form.html.twig';
     const AJAX_ORDER_TEMPLATE = 'OrderBundle:Block:ajax_order_board.html.twig';
@@ -38,35 +37,18 @@ class AddOrderBoardBlockService extends AbstractAdminBlockService
      * @param EntityManager   $em
      * @param RequestStack    $request
      */
-    public function __construct($name, EngineInterface $templating, EntityManager $em, RequestStack $request)
+    public function __construct(Environment $twig, EntityManager $em, RequestStack $request)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->em = $em;
         $this->request = $request;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'OrderBundle',
-            ['class' => 'fa fa-code']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'template' => self::FORM_TEMPLATE,
         ]);
@@ -80,8 +62,7 @@ class AddOrderBoardBlockService extends AbstractAdminBlockService
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
 
         if (!$block->getEnabled()) {

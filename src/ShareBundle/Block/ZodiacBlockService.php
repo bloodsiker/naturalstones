@@ -6,17 +6,16 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use ShareBundle\Entity\Stone;
 use ShareBundle\Entity\Tag;
 use ShareBundle\Entity\Zodiac;
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class ZodiacBlockService
  */
-class ZodiacBlockService extends AbstractAdminBlockService
+class ZodiacBlockService extends AbstractBlockService
 {
     /**
      * @var Registry $doctrine
@@ -30,34 +29,17 @@ class ZodiacBlockService extends AbstractAdminBlockService
      * @param EngineInterface $templating
      * @param Registry        $doctrine
      */
-    public function __construct($name, EngineInterface $templating, Registry $doctrine)
+    public function __construct(Environment $twig, Registry $doctrine)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->doctrine = $doctrine;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'ShareBundle',
-            ['class' => 'fa fa-code']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'items_count' => 100,
             'title' => null,
@@ -72,8 +54,7 @@ class ZodiacBlockService extends AbstractAdminBlockService
      *
      * @return Response
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
 
         if (!$block->getEnabled()) {

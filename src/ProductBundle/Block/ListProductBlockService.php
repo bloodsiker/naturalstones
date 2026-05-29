@@ -10,12 +10,11 @@ use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
 use ShareBundle\Entity\Tag;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\Form\Type\ImmutableArrayType;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,7 +26,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class ListProductBlockService
  */
-class ListProductBlockService extends AbstractAdminBlockService
+class ListProductBlockService extends AbstractBlockService
 {
     use StrictRelationSonataAdminTrait,
         HomepageDefaultMethodTrait;
@@ -51,34 +50,17 @@ class ListProductBlockService extends AbstractAdminBlockService
      * @param EngineInterface $templating
      * @param RequestStack    $requestStack
      */
-    public function __construct($name, EngineInterface $templating, RequestStack $requestStack)
+    public function __construct(Environment $twig, RequestStack $requestStack)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->requestStack = $requestStack;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'ProductBundle',
-            ['class' => 'fa fa-th-large']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'title'            => null,
             'title_url'        => null,
@@ -155,8 +137,7 @@ class ListProductBlockService extends AbstractAdminBlockService
      *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
 
         if (!$block->getEnabled()) {

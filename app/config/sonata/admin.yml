@@ -9,8 +9,6 @@ sonata_admin:
         short_object_description: 'MediaBundle:Helper:short-object-description.html.twig'
         layout: 'AdminBundle::standard_layout.html.twig'
         list: 'AdminBundle:Core:list.html.twig'
-    options:
-        title_mode: single_image
 
     assets:
         extra_javascripts:

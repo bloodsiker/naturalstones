@@ -9,12 +9,9 @@ use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
  */
 class BaseAdmin extends Admin
 {
-    /**
-     * @return array
-     */
-    public function getBatchActions()
+    protected function configureBatchActions(array $actions): array
     {
-        $actions = parent::getBatchActions();
+        $actions = parent::configureBatchActions($actions);
         unset($actions['delete']);
 
         return $actions;
@@ -23,7 +20,7 @@ class BaseAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    public function postPersist($object)
+    public function postPersist(object $object): void
     {
         $container = $this->getConfigurationPool()->getContainer();
         if ($container->has('search.synchronization') && $container->getParameter('search_sphinx_enabled')) {
@@ -34,7 +31,7 @@ class BaseAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    public function postUpdate($object)
+    public function postUpdate(object $object): void
     {
         $container = $this->getConfigurationPool()->getContainer();
         if ($container->has('search.synchronization') && $container->getParameter('search_sphinx_enabled')) {
@@ -45,7 +42,7 @@ class BaseAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    public function preRemove($object)
+    public function preRemove(object $object): void
     {
         $container = $this->getConfigurationPool()->getContainer();
         if ($container->has('search.synchronization') && $container->getParameter('search_sphinx_enabled')) {

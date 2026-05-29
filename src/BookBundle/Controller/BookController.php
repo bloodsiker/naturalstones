@@ -7,7 +7,7 @@ use BookBundle\Entity\BookCollection;
 use BookBundle\Entity\BookInfoDownload;
 use GenreBundle\Entity\Genre;
 use MediaBundle\Entity\MediaFile;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -15,7 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 /**
  * Class BookController
  */
-class BookController extends Controller
+class BookController extends AbstractController
 {
     const BOOK_404 = 'Book doesn\'t exist';
 

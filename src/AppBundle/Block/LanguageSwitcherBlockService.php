@@ -2,11 +2,10 @@
 
 namespace AppBundle\Block;
 
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class LanguageSwitcherBlockService
  */
-class LanguageSwitcherBlockService extends AbstractAdminBlockService
+class LanguageSwitcherBlockService extends AbstractBlockService
 {
     const TYPE_MAIN   = 'main';
     const TYPE_FOOTER = 'footer';
@@ -35,35 +34,18 @@ class LanguageSwitcherBlockService extends AbstractAdminBlockService
      * @param RequestStack    $requestStack
      * @param array           $locales
      */
-    public function __construct($name, EngineInterface $templating, RequestStack $requestStack, $locales)
+    public function __construct(Environment $twig, RequestStack $requestStack, $locales)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->request = $requestStack->getCurrentRequest();
         $this->locales = $locales;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'AppBundle',
-            ['class' => 'fa fa-language']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'is_mobile' => false,
             'type'      => self::TYPE_MAIN,
@@ -77,8 +59,7 @@ class LanguageSwitcherBlockService extends AbstractAdminBlockService
      *
      * @return Response
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
 
         if (!$block->getEnabled()) {

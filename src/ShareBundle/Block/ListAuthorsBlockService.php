@@ -6,17 +6,16 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use ShareBundle\Entity\Author;
-use Sonata\BlockBundle\Meta\Metadata;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class ListAuthorsBlockService
  */
-class ListAuthorsBlockService extends AbstractAdminBlockService
+class ListAuthorsBlockService extends AbstractBlockService
 {
     /**
      * @var Registry $doctrine
@@ -30,34 +29,17 @@ class ListAuthorsBlockService extends AbstractAdminBlockService
      * @param EngineInterface $templating
      * @param Registry        $doctrine
      */
-    public function __construct($name, EngineInterface $templating, Registry $doctrine)
+    public function __construct(Environment $twig, Registry $doctrine)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->doctrine = $doctrine;
     }
 
     /**
-     * @param null $code
-     *
-     * @return Metadata
-     */
-    public function getBlockMetadata($code = null)
-    {
-        return new Metadata(
-            $this->getName(),
-            (!is_null($code) ? $code : $this->getName()),
-            false,
-            'ShareBundle',
-            ['class' => 'fa fa-code']
-        );
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
-    {
+    public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'items_count' => 20,
             'page'        => 1,
@@ -73,8 +55,7 @@ class ListAuthorsBlockService extends AbstractAdminBlockService
      *
      * @return Response
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
-    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
         $block = $blockContext->getBlock();
 
         if (!$block->getEnabled()) {

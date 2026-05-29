@@ -2,8 +2,7 @@ services:
     wheel_spin.block.wheel_spinner:
         class: "WheelSpinBundle\\Block\\WheelSpinnerBlockService"
         arguments:
-            - wheel_spin.block.wheel_spinner
-            - '@templating'
+            - '@twig'
             - '@app.entity_manager'
             - '@request_stack'
         tags:

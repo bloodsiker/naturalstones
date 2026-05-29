@@ -42,19 +42,9 @@ class ProductSearchHistoryAdmin extends Admin
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function setTranslationDomain($translationDomain)
-    {
-        $this->translationDomain = $translationDomain;
-        $this->formOptions['translation_domain'] = $translationDomain;
-    }
-
-    /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
+    protected function configureListFields(ListMapper $listMapper): void    {
         $listMapper
             ->add('id', null, [
                 'label' => 'history_search.fields.id',
@@ -78,8 +68,7 @@ class ProductSearchHistoryAdmin extends Admin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
         $datagridMapper
             ->add('search', null, [
                 'label' => 'history_search.fields.search',
@@ -98,8 +87,7 @@ class ProductSearchHistoryAdmin extends Admin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
-    {
+    protected function configureFormFields(FormMapper $formMapper): void    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('search', TextType::class, [

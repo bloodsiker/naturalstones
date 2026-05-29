@@ -4,6 +4,7 @@ namespace InformationBundle\Entity;
 
 use AppBundle\Traits\TranslatableProxyTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
@@ -13,9 +14,9 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  * @ORM\Table(name="informations")
  * @ORM\HasLifecycleCallbacks
  */
-class Information
+class Information implements TranslatableInterface
 {
-    use ORMBehaviors\Translatable\Translatable;
+    use ORMBehaviors\Translatable\TranslatableTrait;
     use TranslatableProxyTrait;
 
     /**

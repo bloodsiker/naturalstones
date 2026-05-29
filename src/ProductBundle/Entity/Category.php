@@ -6,6 +6,7 @@ use AppBundle\Traits\TranslatableProxyTrait;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
@@ -15,9 +16,9 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  * @ORM\Table(name="product_category")
  * @ORM\HasLifecycleCallbacks
  */
-class Category
+class Category implements TranslatableInterface
 {
-    use ORMBehaviors\Translatable\Translatable;
+    use ORMBehaviors\Translatable\TranslatableTrait;
     use TranslatableProxyTrait;
 
     const TYPE_MAIN      = 1;

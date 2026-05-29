@@ -2,10 +2,8 @@
 
 namespace PageBundle\Listener;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use PageBundle\Entity\PageRedirect;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use PageBundle\Route\RedirectRouter;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,7 +32,7 @@ class RedirectListener
      *
      * @throws \Exception
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
         $isMain = 'index' === $request->attributes->get('_route');

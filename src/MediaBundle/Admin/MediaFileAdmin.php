@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
-use Sonata\CoreBundle\Form\Type\DateTimePickerType;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
@@ -135,7 +135,7 @@ class MediaFileAdmin extends Admin
                 ->add('file', VichFileType::class, [
                     'label'     => 'media.fields.file',
                     'required'  => false,
-                    'help'      => $this->getSubject()->getPath() ?: false,
+                    'help'      => $this->getSubject()->getPath() ?: null,
                 ])
             ->end()
             ->with('form_group.basic2', ['class' => 'col-md-4', 'label' => false])

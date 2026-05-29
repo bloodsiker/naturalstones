@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Cmf\Component\Routing\ChainRouterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class SeoUpdater

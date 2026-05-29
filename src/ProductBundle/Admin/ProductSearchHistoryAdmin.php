@@ -6,7 +6,7 @@ use AdminBundle\Admin\BaseAdmin as Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\CoreBundle\Form\Type\DateTimePickerType;
+use Sonata\Form\Type\DateTimePickerType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

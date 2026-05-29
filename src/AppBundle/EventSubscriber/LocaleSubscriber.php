@@ -3,7 +3,7 @@
 namespace AppBundle\EventSubscriber;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Cmf\Component\Routing\ChainRouter as Router;
@@ -41,7 +41,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     /**
      * @param GetResponseEvent $event
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
         $request->setDefaultLocale($this->defaultLocale);

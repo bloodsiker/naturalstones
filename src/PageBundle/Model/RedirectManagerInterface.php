@@ -2,7 +2,7 @@
 
 namespace PageBundle\Model;
 
-use Sonata\CoreBundle\Model\ManagerInterface;
+use Sonata\Doctrine\Model\ManagerInterface;
 
 /**
  * Interface RedirectManagerInterface

@@ -5,21 +5,33 @@ services:
 
     media.upload_namer.file:
         class: "MediaBundle\\Naming\\MediaNamer"
+        public: true
+        arguments:
+            - '@Vich\UploaderBundle\Util\Transliterator'
         calls:
             - [ 'setPrefix', [ '/file/' ]]
 
     media.upload_namer.image:
         class: "MediaBundle\\Naming\\MediaNamer"
+        public: true
+        arguments:
+            - '@Vich\UploaderBundle\Util\Transliterator'
         calls:
             - [ 'setPrefix', [ '/image/' ]]
 
     media.upload_namer.video:
         class: "MediaBundle\\Naming\\MediaNamer"
+        public: true
+        arguments:
+            - '@Vich\UploaderBundle\Util\Transliterator'
         calls:
             - [ 'setPrefix', [ '/video/' ]]
 
     media.upload_namer.audio:
         class: "MediaBundle\\Naming\\MediaNamer"
+        public: true
+        arguments:
+            - '@Vich\UploaderBundle\Util\Transliterator'
         calls:
             - [ 'setPrefix', [ '/audio/' ]]
 
@@ -28,10 +40,11 @@ services:
 
     media.upload_listener:
         class: "MediaBundle\\EventListener\\UploadListener"
-        calls:
-            - [ 'setContainer', ['@service_container'] ]
-            - [ 'setImageService', [ '@media.image.service' ]]
-            - [ 'setVideoService', [ '@media.video.service' ]]
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@security.token_storage'
+            - '@media.image.service'
+            - '@media.video.service'
         tags:
             - { name: kernel.event_listener, event: oneup_uploader.post_upload, method: onPostUploadFile }
             - { name: kernel.event_listener, event: oneup_uploader.post_upload.media_multiple_upload_image, method: onPostUploadImageFile }

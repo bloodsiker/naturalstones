@@ -1,4 +1,11 @@
 services:
+    ProductBundle\Command\PushProductToTelegramChannelCommand:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@app.send_telegram'
+        tags:
+            - { name: console.command }
+
     product.helper.views:
         class: ProductBundle\Helper\ProductViewHelper
         arguments:

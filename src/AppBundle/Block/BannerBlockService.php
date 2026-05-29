@@ -4,8 +4,8 @@ namespace AppBundle\Block;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\BlockBundle\Model\BlockInterface;
-use Sonata\CoreBundle\Form\Type\ImmutableArrayType;
-use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\Form\Type\ImmutableArrayType;
+use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;

@@ -3,14 +3,7 @@ sonata_admin:
     title_logo: /bundles/admin/images/logo.jpg
     show_mosaic_button: false
     security:
-        handler: sonata.admin.security.handler.acl
-        information:
-            GUEST:    [VIEW, LIST]
-            STAFF:    [EDIT, LIST, CREATE]
-            EDITOR:   [OPERATOR, EXPORT]
-            ADMIN:    [MASTER]
-        admin_permissions: [CREATE, LIST, EDIT, DELETE, UNDELETE, EXPORT, OPERATOR, MASTER]
-        object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
+        handler: sonata.admin.security.handler.role
 
     templates:
         short_object_description: 'MediaBundle:Helper:short-object-description.html.twig'

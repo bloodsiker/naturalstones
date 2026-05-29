@@ -1,10 +1,16 @@
 services:
     media.upload_namer.file:
         class: "MediaBundle\\Naming\\MediaNamer"
+        public: true
+        arguments:
+            - '@Vich\UploaderBundle\Util\Transliterator'
         calls:
         - [ setPathImage, ["/files/media_file/[YEAR]/[MONTH]/[FILE]"]]
 
     media.upload_namer.image:
         class: "MediaBundle\\Naming\\MediaNamer"
+        public: true
+        arguments:
+            - '@Vich\UploaderBundle\Util\Transliterator'
         calls:
         - [ setPathImage, ["/files/media_image/[YEAR]/[MONTH]/[FILE]"]]

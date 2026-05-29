@@ -12,7 +12,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\CoreBundle\Form\Type\DateTimePickerType;
+use Sonata\Form\Type\DateTimePickerType;
 use Sonata\DatagridBundle\Filter\FilterInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;

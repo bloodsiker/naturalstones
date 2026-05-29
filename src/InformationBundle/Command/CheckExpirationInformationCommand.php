@@ -2,55 +2,47 @@
 
 namespace InformationBundle\Command;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InformationBundle\Entity\Information;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class CheckExpirationInformationCommand
- */
-class CheckExpirationInformationCommand extends ContainerAwareCommand
+class CheckExpirationInformationCommand extends Command
 {
-    /**
-     * Configure console command arguments
-     */
-    protected function configure()
+    protected static $defaultName = 'information:check-expiration';
+
+    private EntityManagerInterface $em;
+
+    public function __construct(EntityManagerInterface $em)
     {
-        $this
-            ->setName('information:check-expiration')
-            ->setDescription('Disable inactive informations')
-        ;
+        parent::__construct();
+        $this->em = $em;
     }
 
-    /**
-     * Command execute
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return bool
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function configure(): void
     {
-        /** @var EntityManager $entityManager */
-        $entityManager = $this->getContainer()->get('doctrine')->getManager();
+        $this->setDescription('Disable inactive informations');
+    }
 
-        $repository = $entityManager->getRepository(Information::class);
-
-        $informationList = $repository->createQueryBuilder('i')
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $informationList = $this->em->getRepository(Information::class)
+            ->createQueryBuilder('i')
             ->where('i.isActive = 1')
-            ->andWhere('i.finishedAt < :now')->setParameter('now', new \DateTime('now'))
-            ->getQuery()->getResult();
+            ->andWhere('i.finishedAt < :now')
+            ->setParameter('now', new \DateTime('now'))
+            ->getQuery()
+            ->getResult();
 
         foreach ($informationList as $information) {
             $information->setIsActive(false);
-            $entityManager->persist($information);
+            $this->em->persist($information);
             $output->writeln('Information ID ' . $information->getId());
         }
-        $entityManager->flush();
 
-        return true;
+        $this->em->flush();
+
+        return Command::SUCCESS;
     }
 }

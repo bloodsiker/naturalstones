@@ -3,6 +3,7 @@
 namespace InformationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslationInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
@@ -12,9 +13,17 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  * @ORM\Table(name="informations_translation")
  * @ORM\HasLifecycleCallbacks
  */
-class InformationTranslation
+class InformationTranslation implements TranslationInterface
 {
-    use ORMBehaviors\Translatable\Translation;
+    use ORMBehaviors\Translatable\TranslationTrait;
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
+     */
+    private $id;
 
     /**
      * @var string

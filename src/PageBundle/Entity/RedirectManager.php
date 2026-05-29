@@ -2,7 +2,7 @@
 
 namespace PageBundle\Entity;
 
-use Sonata\CoreBundle\Model\BaseEntityManager;
+use Sonata\Doctrine\Entity\BaseEntityManager;
 use PageBundle\Model\RedirectManagerInterface;
 
 /**

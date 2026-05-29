@@ -7,7 +7,7 @@ use Pagerfanta\View\Template\DefaultTemplate;
 use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class PagerfantaTemplate

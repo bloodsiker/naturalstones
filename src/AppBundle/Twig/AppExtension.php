@@ -4,7 +4,7 @@ namespace AppBundle\Twig;
 
 use OrderBundle\Entity\OrderBoard;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Sonata\BlockBundle\Model\Block;
 
 /**

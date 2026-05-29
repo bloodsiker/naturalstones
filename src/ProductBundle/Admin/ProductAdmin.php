@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\Form\Validator\ErrorElement;
 use Sonata\DatagridBundle\Filter\FilterInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
 use Sonata\Form\Type\CollectionType;

@@ -13,5 +13,7 @@ stone_list_letter:
     path: /stones/letter/{letter}
     defaults:
         _controller: ShareBundle:Stone:listLetter
+    options:
+        utf8: true
     requirements:
         letter: "([a-zA-Zа-яА-Я]+\\/?)+"

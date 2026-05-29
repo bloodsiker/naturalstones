@@ -2,54 +2,35 @@
 
 namespace MediaBundle\EventListener;
 
+use Doctrine\ORM\EntityManagerInterface;
 use MediaBundle\Entity\MediaImage;
 use MediaBundle\Entity\MediaImageTranslation;
 use MediaBundle\Services\MediaImageService;
 use MediaBundle\Services\MediaVideoService;
 use Oneup\UploaderBundle\Event\PostUploadEvent;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-/**
- * Class UploadListener
- */
-class UploadListener implements ContainerAwareInterface
+class UploadListener
 {
-    use ContainerAwareTrait;
+    private EntityManagerInterface $em;
+    private TokenStorageInterface $tokenStorage;
+    private MediaImageService $imageService;
+    private MediaVideoService $videoService;
 
-    /**
-     * @var MediaVideoService
-     */
-    private $videoService;
-
-    /**
-     * @var MediaImageService
-     */
-    private $imageService;
-
-    /**
-     * @param MediaVideoService $videoService
-     */
-    public function setVideoService(MediaVideoService $videoService)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        TokenStorageInterface $tokenStorage,
+        MediaImageService $imageService,
+        MediaVideoService $videoService
+    ) {
+        $this->em = $em;
+        $this->tokenStorage = $tokenStorage;
+        $this->imageService = $imageService;
         $this->videoService = $videoService;
     }
 
-    /**
-     * @param MediaImageService $imageService
-     */
-    public function setImageService(MediaImageService $imageService)
-    {
-        $this->imageService = $imageService;
-    }
-
-    /**
-     * @param PostUploadEvent $event
-     *
-     * @return \Oneup\UploaderBundle\Uploader\Response\ResponseInterface
-     */
     public function onPostUploadFile(PostUploadEvent $event)
     {
         $response = $event->getResponse();
@@ -64,13 +45,6 @@ class UploadListener implements ContainerAwareInterface
         return $response;
     }
 
-    /**
-     * @param PostUploadEvent $event
-     *
-     * @return \Oneup\UploaderBundle\Uploader\Response\ResponseInterface
-     *
-     * @throws \MediaBundle\Exception\MediaException
-     */
     public function onPostUploadImageFile(PostUploadEvent $event)
     {
         $request = $event->getRequest();
@@ -92,10 +66,7 @@ class UploadListener implements ContainerAwareInterface
             $image->setMimeType($metadata['mimeType']);
             $image->setTempPath($metadata['tempPath']);
             $image->setCreatedBy(
-                $this->container
-                    ->get('security.token_storage')
-                    ->getToken()
-                    ->getUser()
+                $this->tokenStorage->getToken()->getUser()
             );
 
             $file = $request->files->get($request->get('field'));
@@ -117,64 +88,50 @@ class UploadListener implements ContainerAwareInterface
             $image->addTranslation($imageUK);
             $image->addTranslation($imageRU);
 
-            $em = $this->container->get('doctrine.orm.entity_manager');
-            $em->persist($image);
-            $em->flush();
+            $this->em->persist($image);
+            $this->em->flush();
         } else {
             $image = $metadata['object'];
         }
 
-        $response['success']    = true;
-        $response['files']      = $metadata;
-        $response['image']      = $image->getId();
+        $response['success'] = true;
+        $response['files']   = $metadata;
+        $response['image']   = $image->getId();
 
         return $response;
     }
 
-    /**
-     * @param GaufretteFile|File $file
-     * @param string             $storage
-     * @param bool               $findImageDuplicate
-     *
-     * @return array
-     */
-    private function getFileUploadMetadata($file, $storage, $findImageDuplicate = false)
+    private function getFileUploadMetadata($file, $storage, $findImageDuplicate = false): array
     {
         $data = ['tempPath' => null];
+
         if ($file instanceof File) {
             $filePath = $file->getRealPath();
-//            $mimeType = $file->getMimeType();
         } elseif ($file instanceof GaufretteFile) {
             $filePath = $file->getKey();
         } else {
-            $filePath =  null;
+            $filePath = null;
         }
 
         if ($filePath) {
             $md5File = md5_file($filePath);
 
             $data = [
-                'tempPath'  => $storage.'|'.$filePath,
-                'mimeType'  => $file->getMimeType(),
-                'name'      => $file->getBaseName(),
-                'size'      => $file->getSize(),
-                'hash'      => $md5File,
-                'object'    => null,
+                'tempPath' => $storage . '|' . $filePath,
+                'mimeType' => $file->getMimeType(),
+                'name'     => $file->getBaseName(),
+                'size'     => $file->getSize(),
+                'hash'     => $md5File,
+                'object'   => null,
             ];
 
             if (true === $findImageDuplicate) {
-                $data['object'] = $this->container
-                    ->get('doctrine')
-                    ->getRepository(MediaImage::class)
-                    ->findOneBy(['hash' => $md5File], ['createdAt' => 'DESC'])
-                ;
+                $data['object'] = $this->em->getRepository(MediaImage::class)
+                    ->findOneBy(['hash' => $md5File], ['createdAt' => 'DESC']);
             }
 
             if (false !== strpos($file->getMimeType(), 'image/')) {
-                list($width, $height) = getimagesize($filePath);
-
-                $data['width'] = $width;
-                $data['height'] = $height;
+                [$data['width'], $data['height']] = getimagesize($filePath);
             } elseif (false !== strpos($file->getMimeType(), 'video/')) {
                 $metadata = $this->videoService->getVideoMetadata($filePath);
 
@@ -183,9 +140,9 @@ class UploadListener implements ContainerAwareInterface
                 }
 
                 if (!empty($metadata->streams[0]) && $metadata->streams[0]->codec_type === 'video') {
-                    $data['width']     = (int) $metadata->streams[0]->width;
-                    $data['height']    = (int) $metadata->streams[0]->height;
-                    $data['duration']  = (int) $metadata->streams[0]->duration;
+                    $data['width']    = (int) $metadata->streams[0]->width;
+                    $data['height']   = (int) $metadata->streams[0]->height;
+                    $data['duration'] = (int) $metadata->streams[0]->duration;
                 }
             }
         }

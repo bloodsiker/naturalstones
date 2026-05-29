@@ -7,6 +7,7 @@ use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
@@ -18,9 +19,9 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  *
  * @Vich\Uploadable
  */
-class Product
+class Product implements TranslatableInterface
 {
-    use ORMBehaviors\Translatable\Translatable;
+    use ORMBehaviors\Translatable\TranslatableTrait;
     use TranslatableProxyTrait;
 
     const WHO_MAN = 'man';

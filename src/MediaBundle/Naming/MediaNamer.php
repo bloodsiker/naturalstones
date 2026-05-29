@@ -6,38 +6,25 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Naming\NamerInterface;
 use Vich\UploaderBundle\Util\Transliterator;
 
-/**
- * Class MediaNamer
- */
 class MediaNamer implements NamerInterface
 {
-    /**
-     * image path
-     *
-     * @var $pathImage
-     */
     private $pathImage = null;
+    private Transliterator $transliterator;
 
-    /**
-     * @param object          $object
-     * @param PropertyMapping $mapping
-     *
-     * @return string
-     */
+    public function __construct(Transliterator $transliterator)
+    {
+        $this->transliterator = $transliterator;
+    }
+
     public function name($object, PropertyMapping $mapping): string
     {
         $file = $mapping->getFile($object);
         $name = $file->getClientOriginalName();
-        $name = uniqid().'_'.Transliterator::transliterate($name);
+        $name = uniqid().'_'.$this->transliterator->transliterate($name);
 
         return $this->fillPath($name);
     }
 
-    /**
-     * @param string $pathImage
-     *
-     * @return $this
-     */
     public function setPathImage(string $pathImage): self
     {
         $this->pathImage = $pathImage;
@@ -45,19 +32,12 @@ class MediaNamer implements NamerInterface
         return $this;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
     protected function fillPath($name): string
     {
         $date = new \DateTime();
-        list($year, $month) = explode('/', $date->format('Y/m'));
+        [$year, $month] = explode('/', $date->format('Y/m'));
         if (null !== $this->pathImage) {
-            $pattern = ['[YEAR]', '[MONTH]', '[FILE]'];
-            $replace = [$year, $month, $name];
-            $path = str_replace($pattern, $replace, $this->pathImage);
+            $path = str_replace(['[YEAR]', '[MONTH]', '[FILE]'], [$year, $month, $name], $this->pathImage);
         } else {
             $path = '/img_tmp/'.$name;
         }

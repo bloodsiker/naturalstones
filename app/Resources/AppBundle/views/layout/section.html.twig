@@ -1,16 +1,7 @@
 {% extends 'AppBundle:layout:default.html.twig' %}
 {% block head_javascripts %}
     {{ parent() }}
-    {% if app.debug %}
-        <script src="{{ asset('bundles/app/js/lib/pikaday.js') }}"></script>
-    {% else %}
-        {% javascripts
-        '@AppBundle/Resources/public/js/lib/pikaday.js'
-        filter='?uglifyjs2' output='js/pikaday.min.js'
-        %}
-        <script src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-    {% endif %}
+    <script src="{{ asset('bundles/app/js/lib/pikaday.js') }}"></script>
 {% endblock %}
 {% block content_main %}
     {{

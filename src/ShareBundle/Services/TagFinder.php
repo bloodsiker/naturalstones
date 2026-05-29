@@ -2,92 +2,65 @@
 
 namespace ShareBundle\Services;
 
+use Doctrine\ORM\EntityManagerInterface;
 use ShareBundle\Entity\Tag;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-/**
- * Class TagFinder
- */
 class TagFinder
 {
-    use ContainerAwareTrait;
-
     const LIMIT_RESULTS = 20;
 
-    /**
-     * @param string $text
-     * @param array  $excludeTags
-     * @param array  $bookFile
-     *
-     * @return array
-     *
-     * @throws \Exception
-     */
-    public function findTagsInText($text, $excludeTags = [], $bookFile = [])
-    {
-        $foundTags = $this->findTagsInTextBySubstr($text, $excludeTags, $bookFile);
+    private EntityManagerInterface $em;
 
-        return $foundTags;
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
     }
 
-    /**
-     * @param string $text
-     * @param array  $excludeTags
-     * @param array  $bookFile
-     *
-     * @return array
-     */
-    private function findTagsInTextBySubstr($text, $excludeTags, $bookFile)
+    public function findTagsInText($text, $excludeTags = [], $bookFile = []): array
+    {
+        return $this->findTagsInTextBySubstr($text, $excludeTags, $bookFile);
+    }
+
+    private function findTagsInTextBySubstr($text, $excludeTags, $bookFile): array
     {
         $text = $this->prepareTextForSearch($text);
 
         $foundTags = [];
-
-        $repository = $this->container->get('doctrine')->getManager()->getRepository(Tag::class);
-        $results = $repository->baseTagQueryBuilder($excludeTags);
+        $results = $this->em->getRepository(Tag::class)->baseTagQueryBuilder($excludeTags);
 
         foreach ($results as $result) {
-            $count = mb_substr_count($text, " ".mb_strtolower($result['name'], "utf8")." ", "utf8");
+            $count = mb_substr_count($text, " " . mb_strtolower($result['name'], "utf8") . " ", "utf8");
             if ($count > 0 && !in_array($result['id'], $excludeTags)) {
                 $foundTags[$result['id']] = [
                     'count' => intval($count),
-                    'name' => $result['name'],
+                    'name'  => $result['name'],
                 ];
             }
         }
 
-        uasort($foundTags, function ($a, $b) {
-            return $a['count'] <=> $b['count'];
-        });
+        uasort($foundTags, fn($a, $b) => $a['count'] <=> $b['count']);
 
         if (count($foundTags) > self::LIMIT_RESULTS) {
             $foundTags = array_slice($foundTags, 0, self::LIMIT_RESULTS, true);
         }
 
         foreach ($foundTags as $id => $tag) {
-            $foundTags[$id]['id'] = $id;
-            $foundTags[$id]['name'] = $tag['name'];
+            $foundTags[$id]['id']    = $id;
+            $foundTags[$id]['name']  = $tag['name'];
             $foundTags[$id]['count'] = $tag['count'];
         }
 
         return $foundTags;
     }
 
-    /**
-     * @param string $text
-     *
-     * @return string
-     */
-    public function prepareTextForSearch($text)
+    public function prepareTextForSearch($text): string
     {
         $text = preg_replace('/<script([^>]*)>(.*?)<\/script>/sui', '', $text);
-
         $text = strip_tags($text);
 
         $words = explode(" ", $text);
         $words = array_map(function ($word) {
             $word = trim($word);
-
             return $word && mb_strlen($word) >= 3 ? $word : '';
         }, $words);
         $text = implode(" ", $words);
@@ -100,8 +73,7 @@ class TagFinder
         while (false !== strpos($text, '  ')) {
             $text = str_replace('  ', ' ', $text);
         }
-        $text = " ".$text." ";
 
-        return $text;
+        return " " . $text . " ";
     }
 }

@@ -3,6 +3,7 @@
 namespace ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslationInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
@@ -12,9 +13,17 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  * @ORM\Table(name="product_category_translation")
  * @ORM\HasLifecycleCallbacks
  */
-class CategoryTranslation
+class CategoryTranslation implements TranslationInterface
 {
-    use ORMBehaviors\Translatable\Translation;
+    use ORMBehaviors\Translatable\TranslationTrait;
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
+     */
+    private $id;
 
     /**
      * @var string

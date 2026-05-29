@@ -3,7 +3,7 @@
 namespace ShareBundle\Block;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use ShareBundle\Entity\Author;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
@@ -45,7 +45,7 @@ class ListAuthorsBlockService extends AbstractBlockService
             'page'        => 1,
             'letter'      => null,
             'search'      => null,
-            'template'    => 'ShareBundle:Block:author_list.html.twig',
+            'template'    => '@Share/Block/author_list.html.twig',
         ]);
     }
 
@@ -77,7 +77,7 @@ class ListAuthorsBlockService extends AbstractBlockService
             $repository->filterByLetter($qb, $blockContext->getSetting('letter'));
         }
 
-        $paginator = new Pagerfanta(new DoctrineORMAdapter($qb, true, false));
+        $paginator = new Pagerfanta(new QueryAdapter($qb, true, false));
         $paginator->setAllowOutOfRangePages(true);
         $paginator->setMaxPerPage((int) $limit);
         $paginator->setCurrentPage((int) $page);

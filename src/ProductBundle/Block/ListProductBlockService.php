@@ -31,10 +31,10 @@ class ListProductBlockService extends AbstractBlockService
     use StrictRelationSonataAdminTrait,
         HomepageDefaultMethodTrait;
 
-    const SIMILAR_LIST = 'ProductBundle:Block:similar_list.html.twig';
-    const BUY_WITH_LIST = 'ProductBundle:Block:buy_with_list.html.twig';
-    const TEMPLATE_AJAX  = 'ProductBundle:Block:large_list_ajax.html.twig';
-    const TEMPLATE_PAGINATION  = 'ProductBundle:Block:_pagination.html.twig';
+    const SIMILAR_LIST = '@Product/Block/similar_list.html.twig';
+    const BUY_WITH_LIST = '@Product/Block/buy_with_list.html.twig';
+    const TEMPLATE_AJAX  = '@Product/Block/large_list_ajax.html.twig';
+    const TEMPLATE_PAGINATION  = '@Product/Block/_pagination.html.twig';
 
     const CATEGORY_NABORI = 5;
 
@@ -79,7 +79,7 @@ class ListProductBlockService extends AbstractBlockService
             'exclude_ids'      => null,
             'show_paginator'   => false,
             'ajax_paginator'   => false,
-            'template'         => 'ProductBundle:Block:large_list.html.twig',
+            'template'         => '@Product/Block/large_list.html.twig',
         ]);
     }
 

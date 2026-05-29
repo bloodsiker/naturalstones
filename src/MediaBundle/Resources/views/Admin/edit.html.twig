@@ -1,7 +1,7 @@
-{% extends 'SonataAdminBundle:CRUD:edit.html.twig' %}
+{% extends '@SonataAdmin/CRUD/edit.html.twig' %}
 
 {% block form %}
     {{ parent() }}
 
-    {% include 'MediaBundle:Admin:crop_popup.html.twig' %}
+    {% include '@Media/Admin/crop_popup.html.twig' %}
 {% endblock %}

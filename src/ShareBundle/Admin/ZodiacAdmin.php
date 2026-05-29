@@ -44,7 +44,7 @@ class ZodiacAdmin extends Admin
             ])
             ->add('image', null, [
                 'label'     => 'stone.fields.image',
-                'template'  => 'ShareBundle:Admin:list_fields.html.twig',
+                'template'  => '@Share/Admin/list_fields.html.twig',
             ])
             ->addIdentifier('name', null, [
                 'label' => 'zodiac.fields.name',
@@ -65,7 +65,7 @@ class ZodiacAdmin extends Admin
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'preview' => ['template' => 'ShareBundle:CRUD:list__action_preview.html.twig'],
+                    'preview' => ['template' => '@Share/CRUD/list__action_preview.html.twig'],
                     'edit' => [],
                 ],
             ]);

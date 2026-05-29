@@ -37,7 +37,7 @@ class SiteVariableAdmin extends AbstractAdmin
             ])
             ->add('placement', 'text', [
                 'label' => 'list.label_placement',
-                'template'  => 'PageBundle:Admin:list.html.twig',
+                'template'  => '@Page/Admin/list.html.twig',
             ])
             ->add('_action', 'actions', [
                 'actions' => [

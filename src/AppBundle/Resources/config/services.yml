@@ -122,3 +122,10 @@ services:
         class: AppBundle\Builder\OrderMessageBuilder
         arguments:
             - '@product.router.helper'
+
+    # FQCN aliases needed for AbstractController::getSubscribedServices() type resolution
+    AppBundle\Services\SeoUpdater: '@app.seo.updater'
+    AppBundle\Services\BreadcrumbService: '@app.breadcrumb'
+    AppBundle\Services\SendTelegramService: '@app.send_telegram'
+    AppBundle\Services\Cart: '@app.cart'
+    AppBundle\Helper\EncryptHelper: '@app.helper.encrypt'

@@ -4,7 +4,7 @@ namespace CommentBundle\Controller;
 
 use CommentBundle\Entity\Comment;
 use CommentBundle\Entity\CommentVotesResult;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 /**
  * Class CommentController
  */
-class CommentController extends AbstractController
+class CommentController extends BaseController
 {
     /**
      * @param Request $request
@@ -38,7 +38,7 @@ class CommentController extends AbstractController
             ],
         ]);
 
-        return $this->render('CommentBundle::last_comments_list.html.twig');
+        return $this->render('@Comment/last_comments_list.html.twig');
     }
 
     /**
@@ -64,7 +64,7 @@ class CommentController extends AbstractController
             ],
         ]);
 
-        return $this->render('CommentBundle::swap_list.html.twig');
+        return $this->render('@Comment/swap_list.html.twig');
     }
 
     /**

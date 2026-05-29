@@ -39,7 +39,7 @@ class StoneController extends AbstractController
             ],
         ]);
 
-        return $this->render('ShareBundle::stone_list.html.twig');
+        return $this->render('@Share/stone_list.html.twig');
     }
 
     public function listLetterAction(Request $request)
@@ -64,6 +64,6 @@ class StoneController extends AbstractController
             ],
         ]);
 
-        return $this->render('ShareBundle::stone_list.html.twig');
+        return $this->render('@Share/stone_list.html.twig');
     }
 }

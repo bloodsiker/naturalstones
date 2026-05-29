@@ -40,7 +40,7 @@ class SiteVariableBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'placement' => null,
-            'template'  => 'PageBundle:Block:site_variable.html.twig',
+            'template'  => '@Page/Block/site_variable.html.twig',
         ]);
     }
 

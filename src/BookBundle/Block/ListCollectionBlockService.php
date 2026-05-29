@@ -4,7 +4,7 @@ namespace BookBundle\Block;
 
 use BookBundle\Entity\BookCollection;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
@@ -44,7 +44,7 @@ class ListCollectionBlockService extends AbstractBlockService
             'items_count'   => 20,
             'page'          => 1,
             'genre'         => null,
-            'template'      => 'BookBundle:Block:collection_list.html.twig',
+            'template'      => '@Book/Block/collection_list.html.twig',
         ]);
     }
 
@@ -74,7 +74,7 @@ class ListCollectionBlockService extends AbstractBlockService
             $repository->filterByGenre($qb, $blockContext->getSetting('genre'));
         }
 
-        $paginator = new Pagerfanta(new DoctrineORMAdapter($qb, true, false));
+        $paginator = new Pagerfanta(new QueryAdapter($qb, true, false));
         $paginator->setAllowOutOfRangePages(true);
         $paginator->setMaxPerPage($limit);
         $paginator->setCurrentPage($page);

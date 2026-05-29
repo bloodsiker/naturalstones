@@ -48,6 +48,6 @@ class ZodiacController extends AbstractController
             ],
         ]);
 
-        return $this->render('ShareBundle::zodiac_list.html.twig', ['zodiac' => $zodiac]);
+        return $this->render('@Share/zodiac_list.html.twig', ['zodiac' => $zodiac]);
     }
 }

@@ -41,6 +41,7 @@ framework:
     csrf_protection: ~
     validation: { enable_annotations: true }
     serializer: { enable_annotations: true }
+    property_info: { enabled: true }
     default_locale: '%locale%'
     trusted_hosts: ~
     session:
@@ -60,8 +61,20 @@ twig:
     globals:
         locales_list: "%locales%"
         company_name: '%company_name%'
+    paths:
+        '%kernel.project_dir%/app/Resources/AppBundle/views': App
+        '%kernel.project_dir%/app/Resources/ArticleBundle/views': Article
+        '%kernel.project_dir%/app/Resources/BookBundle/views': Book
+        '%kernel.project_dir%/app/Resources/CommentBundle/views': Comment
+        '%kernel.project_dir%/app/Resources/InformationBundle/views': Information
+        '%kernel.project_dir%/app/Resources/MainImageBundle/views': MainImage
+        '%kernel.project_dir%/app/Resources/OrderBundle/views': Order
+        '%kernel.project_dir%/app/Resources/ProductBundle/views': Product
+        '%kernel.project_dir%/app/Resources/ShareBundle/views': Share
+        '%kernel.project_dir%/app/Resources/WheelSpinBundle/views': WheelSpin
+        '%kernel.project_dir%/app/Resources/SonataUserBundle/views': SonataUser
     form_themes:
-        - 'AdminBundle:Form:fields.html.twig'
+        - '@Admin/Form/fields.html.twig'
         - '@SonataForm/Form/datepicker.html.twig'
         - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
 

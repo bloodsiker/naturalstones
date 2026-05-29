@@ -49,7 +49,7 @@ class BookCollectionAdmin extends Admin
             ])
             ->add('poster', null, [
                 'label'     => 'book_collection.fields.poster',
-                'template'  => 'BookBundle:Admin:list_fields.html.twig',
+                'template'  => '@Book/Admin/list_fields.html.twig',
             ])
             ->addIdentifier('title', null, [
                 'label' => 'book_collection.fields.title',
@@ -66,7 +66,7 @@ class BookCollectionAdmin extends Admin
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'preview' => ['template' => 'BookBundle:CRUD:list__action_preview.html.twig'],
+                    'preview' => ['template' => '@Book/CRUD/list__action_preview.html.twig'],
                     'edit' => [],
                 ],
             ])

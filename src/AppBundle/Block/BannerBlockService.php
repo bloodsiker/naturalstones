@@ -28,7 +28,7 @@ class BannerBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'banner'   => null,
-            'template' => 'AppBundle:Block:banner.html.twig',
+            'template' => '@App/Block/banner.html.twig',
         ]);
     }
 

@@ -2,17 +2,17 @@
 stone_list:
     path: /stones
     defaults:
-        _controller: ShareBundle:Stone:list
+        _controller: ShareBundle\Controller\StoneController::listAction
 
 zodiac_stone_list:
     path: /zodiac/{slug}
     defaults:
-        _controller: ShareBundle:Zodiac:list
+        _controller: ShareBundle\Controller\ZodiacController::listAction
 
 stone_list_letter:
     path: /stones/letter/{letter}
     defaults:
-        _controller: ShareBundle:Stone:listLetter
+        _controller: ShareBundle\Controller\StoneController::listLetterAction
     options:
         utf8: true
     requirements:

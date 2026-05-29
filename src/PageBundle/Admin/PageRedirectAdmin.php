@@ -114,18 +114,18 @@ class PageRedirectAdmin extends AbstractAdmin
         $listMapper
             ->add('type', null, [
                 'label' => 'form.label_type',
-                'template' => 'PageBundle::PageAdmin/redirect_type.html.twig',
+                'template' => '@Page/PageAdmin/redirect_type.html.twig',
             ])
             ->add('fromPath', null, [
                 'label' => 'form.label_redirect_from',
-                'template' => 'PageBundle::PageAdmin/redirect_type.html.twig',
+                'template' => '@Page/PageAdmin/redirect_type.html.twig',
             ])
             ->add('toPath', null, [
                 'label' => 'form.label_redirect_to',
             ])
             ->add('pageHost', null, [
                 'label' => 'form.label_page_host',
-                'template' => 'PageBundle::PageAdmin/redirect_type.html.twig',
+                'template' => '@Page/PageAdmin/redirect_type.html.twig',
             ])
             ->add('toPage', null, [
                 'label' => 'form.label_redirect_to_page',

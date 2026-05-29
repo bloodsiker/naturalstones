@@ -1,7 +1,7 @@
-{% extends 'SonataUserBundle:Admin/Core:user_block.html.twig' %}
+{% extends '@SonataUser/Admin/Core/user_block.html.twig' %}
 
 {% block user_block %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if app.user %}
             <li class="user-header bg-light-blue">
                 <img src="{{ asset('/bundles/admin/images/default_avatar.png') }}" class="img-circle" alt="Avatar">
@@ -27,5 +27,5 @@
                 </div>
             </li>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}

@@ -17,13 +17,15 @@
                 <ul class="dropdown-menu" role="menu">
 
 
-                    {% for filter in admin.datagrid.filters if (filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null) %}
+                    {% for filter in admin.datagrid.filters %}
+                        {% if filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null %}
                         {% set filterActive = ((filter.isActive() or filter.options['show_filter']) and not admin.isDefaultFilter(filter.formName)) %}
                         <li>
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ filter_target }}-{{ filter.name }}" filter-container="filter-container-{{ filter_target }}">
                                 <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
                             </a>
                         </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </li>

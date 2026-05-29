@@ -39,7 +39,7 @@ class HeaderBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
-            'template'  => 'AppBundle:Block:header.html.twig',
+            'template'  => '@App/Block/header.html.twig',
             'class'     => null,
         ]);
     }

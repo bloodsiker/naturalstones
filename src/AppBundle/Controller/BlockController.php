@@ -4,13 +4,12 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sonata\BlockBundle\Model\Block;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class BlockController
  */
-class BlockController extends AbstractController
+class BlockController extends BaseController
 {
 //     * @Cache(maxage=600, public=true)
 

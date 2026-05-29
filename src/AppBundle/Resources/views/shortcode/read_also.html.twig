@@ -1,6 +1,6 @@
 {% if shortcode_data.read_also_content_id and (shortcode_data.read_also_articles or shortcode_data.read_also_videos) %}
-    {% import 'AppBundle:Block:_articles_macro.html.twig' as article_macro %}
-    {% import 'AppBundle:Block:_videos_macro.html.twig' as video_macro %}
+    {% import '@App/Block/_articles_macro.html.twig' as article_macro %}
+    {% import '@App/Block/_videos_macro.html.twig' as video_macro %}
 
     <div class="read-also">
         {% if shortcode_data.read_also_title is not empty %}

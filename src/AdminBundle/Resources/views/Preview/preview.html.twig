@@ -9,9 +9,9 @@
     </head>
     <body>
         {% set queryParams = {'CKEditor': 1, 'CKEditorFuncNum': 1, 'langCode': language} %}
-        {% spaceless %}
+        {% apply spaceless %}
             {% block ckPreview %}{% endblock %}
-        {% endspaceless %}
+        {% endapply %}
         <script>
             function popupWindow(url, title, w, h) {
                 var p = 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, ',

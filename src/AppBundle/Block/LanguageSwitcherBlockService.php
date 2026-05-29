@@ -49,7 +49,7 @@ class LanguageSwitcherBlockService extends AbstractBlockService
         $resolver->setDefaults([
             'is_mobile' => false,
             'type'      => self::TYPE_MAIN,
-            'template'  => 'AppBundle:Block:language_switcher.html.twig',
+            'template'  => '@App/Block/language_switcher.html.twig',
         ]);
     }
 

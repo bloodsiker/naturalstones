@@ -6,7 +6,6 @@ services:
     page.block.site_variable:
         class: "PageBundle\\Block\\SiteVariableBlockService"
         arguments:
-            - page.block.site_variable
             - '@twig'
             - '@?doctrine'
         tags:

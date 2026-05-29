@@ -39,7 +39,7 @@
 {#{% endblock %}#}
 
 {% block colorpicker_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if widget == "image" %}
             <div id="{{ id }}_color" {{ block("widget_container_attributes") }}>
                 <div{% if value %} style="background-color: #{{ value }};"{% endif %}>&nbsp;</div>
@@ -96,7 +96,7 @@
                 {% endif %}
             });
         </script>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock colorpicker_widget %}
 
 {#{% block choice_player_widget %}#}
@@ -234,14 +234,14 @@
 {#{% endblock %}#}
 
 {#{% block bitwise_choice_widget_expanded %}#}
-    {#{% spaceless %}#}
+    {#{% apply spaceless %}#}
         {#{% set options = choices %}#}
         {#{{ block('bitwise_choice_widget_expanded_multiples') }}#}
-    {#{% endspaceless %}#}
+    {#{% endapply %}#}
 {#{% endblock %}#}
 
 {#{% block bitwise_choice_widget_expanded_multiples %}#}
-    {#{% spaceless %}#}
+    {#{% apply spaceless %}#}
         {#{% for group_label, choice in options %}#}
             {#{% if choice is iterable %}#}
                 {#<div class="col-md-6">#}
@@ -256,7 +256,7 @@
                 {#</div>#}
             {#{% endif %}#}
         {#{% endfor %}#}
-    {#{% endspaceless %}#}
+    {#{% endapply %}#}
 {#{% endblock %}#}
 
 {% block sonata_admin_book_name_text_counter_widget %}
@@ -391,7 +391,7 @@
 {% endblock %}
 
 {% block codemirror_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {{ block('textarea_widget') }}
 
         <script type="text/javascript">
@@ -407,5 +407,5 @@
                 });
             }
         </script>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}

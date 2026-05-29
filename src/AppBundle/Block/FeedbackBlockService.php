@@ -5,7 +5,7 @@ namespace AppBundle\Block;
 use AppBundle\Services\SendTelegramService;
 use BookBundle\Entity\Book;
 use Doctrine\ORM\EntityManager;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
@@ -21,7 +21,7 @@ use Twig\Environment;
  */
 class FeedbackBlockService extends AbstractBlockService
 {
-    const DEFAULT_TEMPLATE = 'AppBundle:Block:feedback.html.twig';
+    const DEFAULT_TEMPLATE = '@App/Block/feedback.html.twig';
 
     /**
      * @var RequestStack

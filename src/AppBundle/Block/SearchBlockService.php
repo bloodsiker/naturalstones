@@ -21,9 +21,9 @@ use Twig\Environment;
  */
 class SearchBlockService extends AbstractBlockService
 {
-    const DEFAULT_TEMPLATE = 'AppBundle:search/Block:large_list.html.twig';
-    const TEMPLATE_AJAX  = 'AppBundle:search/Block:large_list_ajax.html.twig';
-    const TEMPLATE_PAGINATION  = 'ProductBundle:Block:_pagination.html.twig';
+    const DEFAULT_TEMPLATE = '@App/search/Block/large_list.html.twig';
+    const TEMPLATE_AJAX  = '@App/search/Block/large_list_ajax.html.twig';
+    const TEMPLATE_PAGINATION  = '@Product/Block/_pagination.html.twig';
 
     /**
      * @var EntityManager

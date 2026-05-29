@@ -86,7 +86,7 @@ class MediaImageAdmin extends Admin
     {
         $parameters = $this->getPersistentParameters();
         if (in_array($name, ['list', 'edit']) && !empty($parameters['CKEditor'])) {
-            return 'AdminBundle:Ckeditor:ajax.html.twig';
+            return '@Admin/Ckeditor/ajax.html.twig';
         }
 
         return parent::getTemplate($name);
@@ -160,11 +160,11 @@ class MediaImageAdmin extends Admin
             ->addIdentifier('title', null, [
                 'label' => 'media.fields.file',
                 'field' => 'title',
-                'template' => 'MediaBundle:Admin:list_title.html.twig',
+                'template' => '@Media/Admin/list_title.html.twig',
             ])
             ->addIdentifier('description', null, [
                 'label' => 'media.fields.description',
-                'template'  => 'MediaBundle:Admin:list_media.html.twig',
+                'template'  => '@Media/Admin/list_media.html.twig',
             ])
             ->add('isActive', null, [
                 'label' => 'media.fields.is_active',
@@ -174,7 +174,7 @@ class MediaImageAdmin extends Admin
                 'label' => 'media.fields.created_at',
             ])
             ->add('_action', 'actions', [
-                'template' => isset($this->getPersistentParameters()['CKEditor']) ? 'AdminBundle:Ckeditor:select.html.twig' : null,
+                'template' => isset($this->getPersistentParameters()['CKEditor']) ? '@Admin/Ckeditor/select.html.twig' : null,
                 'actions' => [
                     'delete' => [],
                     'edit' => [],

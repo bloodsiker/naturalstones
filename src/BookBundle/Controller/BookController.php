@@ -48,7 +48,7 @@ class BookController extends AbstractController
             ],
         ]);
 
-        return $this->render('BookBundle::book_list.html.twig');
+        return $this->render('@Book/book_list.html.twig');
     }
 
     /**
@@ -122,7 +122,7 @@ class BookController extends AbstractController
         $repo->incViewCounter($book->getId());
         $this->container->get('book.helper.views')->doView($book);
 
-        return $this->render('BookBundle::book_view.html.twig', ['book' => $book]);
+        return $this->render('@Book/book_view.html.twig', ['book' => $book]);
     }
 
     /**
@@ -178,7 +178,7 @@ class BookController extends AbstractController
             ],
         ]);
 
-        return $this->render('BookBundle::year_list.html.twig');
+        return $this->render('@Book/year_list.html.twig');
     }
 
     /**
@@ -252,7 +252,7 @@ class BookController extends AbstractController
             ],
         ]);
 
-        return $this->render('BookBundle::collection_list.html.twig', ['genre' => $genre ?? null]);
+        return $this->render('@Book/collection_list.html.twig', ['genre' => $genre ?? null]);
     }
 
     /**
@@ -291,6 +291,6 @@ class BookController extends AbstractController
 
         $repo->incViewCounter($collection->getId());
 
-        return $this->render('BookBundle::collection_view.html.twig', ['bookCollection' => $collection]);
+        return $this->render('@Book/collection_view.html.twig', ['bookCollection' => $collection]);
     }
 }

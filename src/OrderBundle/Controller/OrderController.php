@@ -149,6 +149,6 @@ class OrderController extends AbstractController
             throw $this->createNotFoundException(self::ORDER_404);
         }
 
-        return $this->render('OrderBundle::order_success.html.twig', ['order' => $order]);
+        return $this->render('@Order/order_success.html.twig', ['order' => $order]);
     }
 }

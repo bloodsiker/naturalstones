@@ -17,8 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AddCommentBlockService extends AbstractBlockService
 {
-    const FORM_TEMPLATE = 'CommentBundle:Block:comment_form.html.twig';
-    const AJAX_COMMENT_TEMPLATE = 'CommentBundle:Block:ajax_comment.html.twig';
+    const FORM_TEMPLATE = '@Comment/Block/comment_form.html.twig';
+    const AJAX_COMMENT_TEMPLATE = '@Comment/Block/ajax_comment.html.twig';
 
     /**
      * @var EntityManager

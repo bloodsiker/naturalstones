@@ -101,7 +101,7 @@ class ColourAdmin extends Admin
             ])
             ->add('colour', null, [
                 'label' => 'colour.fields.colour',
-                'template'  => 'ShareBundle:Admin:list_fields.html.twig',
+                'template'  => '@Share/Admin/list_fields.html.twig',
             ])
             ->addIdentifier('name', null, [
                 'label' => 'colour.fields.name',
@@ -116,7 +116,7 @@ class ColourAdmin extends Admin
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'preview' => ['template' => 'ShareBundle:CRUD:list__action_preview.html.twig'],
+                    'preview' => ['template' => '@Share/CRUD/list__action_preview.html.twig'],
                     'edit' => [],
                 ],
             ]);

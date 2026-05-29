@@ -19,6 +19,7 @@
     "require": {
         "php": ">=7.4",
         "a2lix/translation-form-bundle": "^3.0",
+        "babdev/pagerfanta-bundle": "^3.0",
         "beberlei/doctrineextensions": "^1.3",
         "cocur/slugify": "^4.0",
         "doctrine/common": "^3.0",
@@ -33,7 +34,10 @@
         "knplabs/knp-gaufrette-bundle": "^0.8",
         "lexik/translation-bundle": "^6.0",
         "liip/imagine-bundle": "^2.7",
+        "monolog/monolog": "^2.0",
         "oneup/uploader-bundle": "^4.0",
+        "pagerfanta/doctrine-orm-adapter": "*",
+        "pagerfanta/twig": "*",
         "sensio/framework-extra-bundle": "^6.1",
         "sentry/sentry-symfony": "^4.4",
         "sonata-project/admin-bundle": "^4.0",
@@ -42,13 +46,11 @@
         "sonata-project/intl-bundle": "^2.5",
         "sonata-project/page-bundle": "^4.0",
         "sonata-project/user-bundle": "^5.0",
-        "monolog/monolog": "^2.0",
         "symfony/monolog-bundle": "^3.6",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/symfony": "^5.4",
         "twig/twig": "^3.0",
-        "vich/uploader-bundle": "^1.20",
-        "babdev/pagerfanta-bundle": "^3.0"
+        "vich/uploader-bundle": "^1.20"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^5.4"

@@ -1,4 +1,4 @@
-{% extends 'SonataAdminBundle:CRUD:base_'~(action in ['edit', 'list'] ? action : 'edit')~'.html.twig' %}
+{% extends '@SonataAdmin/CRUD/base_'~(action in ['edit', 'list'] ? action : 'edit')~'.html.twig' %}
 {% set ckParameters = {'CKEditor': app.request.get('CKEditor'), 'CKEditorFuncNum': app.request.get('CKEditorFuncNum')} %}
 
 {% block stylesheets %}

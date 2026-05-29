@@ -39,7 +39,7 @@ class MainImageBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
-            'template' => 'MainImageBundle:Block:main_image.html.twig',
+            'template' => '@MainImage/Block/main_image.html.twig',
         ]);
     }
 

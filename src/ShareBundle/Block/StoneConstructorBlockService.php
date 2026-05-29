@@ -49,7 +49,7 @@ class StoneConstructorBlockService extends AbstractBlockService
         $resolver->setDefaults([
             'show_letters' => false,
             'title'        => null,
-            'template'     => 'ShareBundle:Block:stone_constructor.html.twig',
+            'template'     => '@Share/Block/stone_constructor.html.twig',
         ]);
     }
 

@@ -49,7 +49,7 @@ class BookVotingBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'book'     => null,
-            'template' => 'BookBundle:Block:book_voting.html.twig',
+            'template' => '@Book/Block/book_voting.html.twig',
         ]);
     }
 

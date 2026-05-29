@@ -44,7 +44,7 @@ sonata_page:
 
     templates:
         wide:
-            path: 'AppBundle:layout:wide.html.twig'
+            path: '@App/layout/wide.html.twig'
             name: 'sonata.page.template.wide'
             containers:
                 header:
@@ -73,7 +73,7 @@ sonata_page:
                     F: footer
 
         default:
-            path: 'AppBundle:layout:default.html.twig'
+            path: '@App/layout/default.html.twig'
             name: 'sonata.page.template.default'
             containers:
                 header:
@@ -105,7 +105,7 @@ sonata_page:
                     F: footer
 
         section:
-            path: 'AppBundle:layout:section.html.twig'
+            path: '@App/layout/section.html.twig'
             name: 'sonata.page.template.section'
             containers:
                 header:
@@ -141,7 +141,7 @@ sonata_page:
                     F: footer
 
         view:
-            path: 'AppBundle:layout:view.html.twig'
+            path: '@App/layout/view.html.twig'
             name: 'sonata.page.template.view'
             containers:
                 header:
@@ -179,7 +179,7 @@ sonata_page:
                     F: footer
 
         homepage:
-            path: 'AppBundle:layout:homepage.html.twig'
+            path: '@App/layout/homepage.html.twig'
             name: 'sonata.page.template.homepage'
             containers:
                 header:
@@ -218,7 +218,7 @@ sonata_page:
                     B: content_bottom
                     F: footer
         error:
-            path: 'AppBundle:layout:error.html.twig'
+            path: '@App/layout/error.html.twig'
             name: 'sonata.page.template.error'
             containers:
                 header:

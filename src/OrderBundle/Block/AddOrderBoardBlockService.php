@@ -16,8 +16,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AddOrderBoardBlockService extends AbstractBlockService
 {
-    const FORM_TEMPLATE = 'OrderBundle:Block:order_board_form.html.twig';
-    const AJAX_ORDER_TEMPLATE = 'OrderBundle:Block:ajax_order_board.html.twig';
+    const FORM_TEMPLATE = '@Order/Block/order_board_form.html.twig';
+    const AJAX_ORDER_TEMPLATE = '@Order/Block/ajax_order_board.html.twig';
 
     /**
      * @var EntityManager

@@ -39,7 +39,7 @@ class ListTagsBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
-            'template'  => 'ShareBundle:Block:tag_list.html.twig',
+            'template'  => '@Share/Block/tag_list.html.twig',
         ]);
     }
 

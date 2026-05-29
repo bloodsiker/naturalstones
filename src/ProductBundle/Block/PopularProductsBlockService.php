@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PopularProductsBlockService extends AbstractBlockService
 {
-    const POPULAR_LIST = 'ProductBundle:Block:popular_list.html.twig';
+    const POPULAR_LIST = '@Product/Block/popular_list.html.twig';
 
     /**
      * @var Registry $doctrine

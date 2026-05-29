@@ -1,18 +1,18 @@
 {% import _self as macro %}
 {% macro macro(text, href, key) %}
-    {% spaceless %}
+    {% apply spaceless %}
         <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
             <a href="{{ href }}" itemtype="http://schema.org/Thing" itemprop="item"><span itemprop="name">{{ text }}</span></a>
             <meta itemprop="position" content="{{ key }}" />
         </li>
-    {% endspaceless %}
+    {% endapply %}
 {% endmacro %}
 {% macro macro_text(text) %}
-    {% spaceless %}
+    {% apply spaceless %}
         <li>
             <span>{{ text }}</span>
         </li>
-    {% endspaceless %}
+    {% endapply %}
 {% endmacro %}
 
 {% if breadcrumbs|length %}

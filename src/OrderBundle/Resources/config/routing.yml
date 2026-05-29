@@ -1,21 +1,21 @@
 quick_order:
     path: /quick-order
     defaults:
-        _controller: OrderBundle:Order:quickOrder
+        _controller: OrderBundle\Controller\OrderController::quickOrderAction
 
 product_quick_order:
     path: /product-quick-order
     defaults:
-        _controller: OrderBundle:Order:productQuickOrder
+        _controller: OrderBundle\Controller\OrderController::productQuickOrderAction
 
 full_order:
     path: /order
     defaults:
-        _controller: OrderBundle:Order:order
+        _controller: OrderBundle\Controller\OrderController::orderAction
 
 success_order:
     path: /order/{secret}/success
     defaults:
-        _controller: OrderBundle:Order:success
+        _controller: OrderBundle\Controller\OrderController::successAction
     requirements:
         hash: "([a-zA-Z\\-0-9\\_]+)?"

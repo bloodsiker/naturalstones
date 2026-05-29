@@ -1,7 +1,7 @@
 {% extends admin.getTemplate('base_list_field') %}
 
 {% block field %}
-    {% import 'MediaBundle:Admin:_media_macro.html.twig' as _media %}
+    {% import '@Media/Admin/_media_macro.html.twig' as _media %}
     {% set mediaId = 'media'~object.id %}
     {% set isIcon = true %}
 

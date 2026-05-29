@@ -39,7 +39,7 @@ class CollectionGenreBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
-            'template'      => 'BookBundle:Block:collection_genres.html.twig',
+            'template'      => '@Book/Block/collection_genres.html.twig',
         ]);
     }
 

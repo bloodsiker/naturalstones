@@ -4,7 +4,7 @@ namespace CommentBundle\Block;
 
 use CommentBundle\Entity\Comment;
 use Doctrine\ORM\EntityManager;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ListCommentBlockService extends AbstractBlockService
 {
-    const PAGE_LIST = 'CommentBundle:Block:page_comments_list.html.twig';
+    const PAGE_LIST = '@Comment/Block/page_comments_list.html.twig';
 
     /**
      * @var EntityManager
@@ -49,7 +49,7 @@ class ListCommentBlockService extends AbstractBlockService
             'items_count'    => 30,
             'page'           => 1,
             'show_paginator' => true,
-            'template'       => 'CommentBundle:Block:comments_list.html.twig',
+            'template'       => '@Comment/Block/comments_list.html.twig',
         ]);
     }
 
@@ -81,7 +81,7 @@ class ListCommentBlockService extends AbstractBlockService
             $qb->andWhere('c.product = :product')->setParameter('product', $product);
             $results = $qb->getQuery()->enableResultCache(true, 60)->getResult();
         } else {
-            $results = new Pagerfanta(new DoctrineORMAdapter($qb, true, false));
+            $results = new Pagerfanta(new QueryAdapter($qb, true, false));
             $results->setAllowOutOfRangePages(true);
             $results->setMaxPerPage($limit);
             $results->setCurrentPage($page);

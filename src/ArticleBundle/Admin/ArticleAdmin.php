@@ -70,7 +70,7 @@ class ArticleAdmin extends Admin
     {
         $parameters = $this->getPersistentParameters();
         if (in_array($name, ['list', 'edit']) && !empty($parameters['CKEditor'])) {
-            return 'AdminBundle:Ckeditor:ajax.html.twig';
+            return '@Admin/Ckeditor/ajax.html.twig';
         }
 
         return parent::getTemplate($name);
@@ -86,7 +86,7 @@ class ArticleAdmin extends Admin
             ])
             ->add('image', null, [
                 'label'    => 'article.fields.image',
-                'template' => 'ArticleBundle:Admin:list_fields.html.twig',
+                'template' => '@Article/Admin/list_fields.html.twig',
             ])
             ->addIdentifier('title', null, [
                 'label' => 'article.fields.title',
@@ -105,7 +105,7 @@ class ArticleAdmin extends Admin
                 'editable'  => true,
             ])
             ->add('_action', 'actions', [
-                'template' => isset($this->getPersistentParameters()['CKEditor']) ? 'AdminBundle:Ckeditor:select.html.twig' : null,
+                'template' => isset($this->getPersistentParameters()['CKEditor']) ? '@Admin/Ckeditor/select.html.twig' : null,
                 'actions' => [
                     'edit'      => [],
                 ],

@@ -15,8 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PopularBooksBlockService extends AbstractBlockService
 {
-    const POPULAR_LIST = 'BookBundle:Block:popular_list.html.twig';
-    const TOP_100_LIST = 'BookBundle:Block:top_100_list.html.twig';
+    const POPULAR_LIST = '@Book/Block/popular_list.html.twig';
+    const TOP_100_LIST = '@Book/Block/top_100_list.html.twig';
 
     /**
      * @var Registry $doctrine

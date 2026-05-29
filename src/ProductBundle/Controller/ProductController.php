@@ -13,7 +13,7 @@ use ProductBundle\Entity\Product;
 use ShareBundle\Entity\Colour;
 use ShareBundle\Entity\Stone;
 use ShareBundle\Entity\Tag;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -21,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 /**
  * Class BookController
  */
-class ProductController extends AbstractController
+class ProductController extends BaseController
 {
     const PRODUCT_404 = 'Product doesn\'t exist';
 
@@ -62,7 +62,7 @@ class ProductController extends AbstractController
             'canonicalUrl' => $router->generate('product_list', ['slug' => $slug, 'page' => $request->get('page')], 0),
         ]);
 
-        return $this->render('ProductBundle::product_list.html.twig', [
+        return $this->render('@Product/product_list.html.twig', [
             'category' => $category,
             'categorySeo' => $categorySeo,
         ]);
@@ -94,7 +94,7 @@ class ProductController extends AbstractController
             ],
         ]);
 
-        return $this->render('ProductBundle::product_list_who.html.twig', ['whois' => $whoIs]);
+        return $this->render('@Product/product_list_who.html.twig', ['whois' => $whoIs]);
     }
 
     /**
@@ -127,7 +127,7 @@ class ProductController extends AbstractController
             ],
         ]);
 
-        return $this->render('ProductBundle::product_list_tag.html.twig', ['tag' => $tag]);
+        return $this->render('@Product/product_list_tag.html.twig', ['tag' => $tag]);
     }
 
     /**
@@ -160,7 +160,7 @@ class ProductController extends AbstractController
             ],
         ]);
 
-        return $this->render('ProductBundle::product_list_colour.html.twig', ['colour' => $colour]);
+        return $this->render('@Product/product_list_colour.html.twig', ['colour' => $colour]);
     }
 
     /**
@@ -195,7 +195,7 @@ class ProductController extends AbstractController
             ],
         ]);
 
-        return $this->render('ProductBundle::product_list_stone.html.twig', ['stone' => $stone]);
+        return $this->render('@Product/product_list_stone.html.twig', ['stone' => $stone]);
     }
 
     /**
@@ -278,7 +278,7 @@ class ProductController extends AbstractController
              WHERE c.product = :product AND c.isActive = 1'
         )->setParameter('product', $product)->getSingleResult();
 
-        return $this->render('ProductBundle::product_view.html.twig', [
+        return $this->render('@Product/product_view.html.twig', [
             'product' => $product,
             'sizes' => $sizes,
             'avgRating' => $ratingData['avgRating'] ? round((float)$ratingData['avgRating'], 1) : null,

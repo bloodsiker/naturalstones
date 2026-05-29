@@ -79,11 +79,11 @@ class MediaFileAdmin extends Admin
             ->addIdentifier('title', null, [
                 'label' => 'media.fields.file',
                 'field' => 'title',
-                'template' => 'MediaBundle:Admin:list_title.html.twig',
+                'template' => '@Media/Admin/list_title.html.twig',
             ])
             ->addIdentifier('description', null, [
                 'label' => 'media.fields.description',
-                'template'  => 'MediaBundle:Admin:list_media.html.twig',
+                'template'  => '@Media/Admin/list_media.html.twig',
             ])
             ->add('isActive', null, [
                 'label' => 'media.fields.is_active',

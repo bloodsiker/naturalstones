@@ -7,12 +7,12 @@
         {% endif %}
 
         {% if settings.filter %}
-            {% include 'AppBundle:Block:filter.html.twig' %}
+            {% include '@App/Block/filter.html.twig' %}
         {% endif %}
     </div>
 
     <div class="catalog-flex main-catalog">
-        {% include 'ProductBundle:Block:large_list_ajax.html.twig' %}
+        {% include '@Product/Block/large_list_ajax.html.twig' %}
     </div>
 
     {% if settings.ajax_paginator and products.hasNextPage %}
@@ -30,6 +30,6 @@
     {% endif %}
 
     <div class="pagination-container">
-        {% include 'ProductBundle:Block:_pagination.html.twig' %}
+        {% include '@Product/Block/_pagination.html.twig' %}
     </div>
 {% endif %}

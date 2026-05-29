@@ -57,7 +57,7 @@ class ArticleListBlockService extends AbstractBlockService
             'tag'            => null,
             'show_paginator' => true,
             'ajax_paginator' => false,
-            'template'       => 'ArticleBundle:Block:large_list.html.twig',
+            'template'       => '@Article/Block/large_list.html.twig',
         ]);
     }
 

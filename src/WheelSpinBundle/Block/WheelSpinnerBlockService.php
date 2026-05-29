@@ -19,7 +19,7 @@ use WheelSpinBundle\Entity\WheelSpinHasOption;
  */
 class WheelSpinnerBlockService extends AbstractBlockService
 {
-    const DEFAULT_TEMPLATE = 'WheelSpinBundle:Block:wheel_spinner.html.twig';
+    const DEFAULT_TEMPLATE = '@WheelSpin/Block/wheel_spinner.html.twig';
 
     /**
      * @var EntityManager

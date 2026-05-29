@@ -19,7 +19,7 @@ class FooterBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults(array(
-            'template' => 'AppBundle:Block:footer.html.twig',
+            'template' => '@App/Block/footer.html.twig',
         ));
     }
 

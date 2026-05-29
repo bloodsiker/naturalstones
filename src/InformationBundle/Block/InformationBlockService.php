@@ -39,7 +39,7 @@ class InformationBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
-            'template' => 'InformationBundle:Block:modal_info.html.twig',
+            'template' => '@Information/Block/modal_info.html.twig',
         ]);
     }
 

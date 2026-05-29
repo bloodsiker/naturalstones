@@ -2,4 +2,4 @@
 review_list:
     path: /reviews
     defaults:
-        _controller: CommentBundle:Comment:list
+        _controller: CommentBundle\Controller\CommentController::listAction

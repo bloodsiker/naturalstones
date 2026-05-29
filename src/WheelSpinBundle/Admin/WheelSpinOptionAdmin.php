@@ -101,7 +101,7 @@ class WheelSpinOptionAdmin extends Admin
             ])
             ->add('image', null, [
                 'label' => 'wheel_spin_option.fields.image',
-                'template'  => 'WheelSpinBundle:Admin:list_fields.html.twig',
+                'template'  => '@WheelSpin/Admin/list_fields.html.twig',
             ])
             ->add('product', null, [
                 'label' => 'wheel_spin_option.fields.product',

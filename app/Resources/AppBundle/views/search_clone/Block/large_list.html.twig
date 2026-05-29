@@ -17,7 +17,7 @@
 
 <div class="catalog-flex main-catalog">
     {% if products|length %}
-        {% include 'AppBundle:search:Block/large_list_ajax.html.twig' %}
+        {% include '@App/search/Block/large_list_ajax.html.twig' %}
     {% else %}
         <div class="no-result">
             <span>⚆ _ ⚆</span>
@@ -45,5 +45,5 @@
 {% endif %}
 
 <div class="pagination-container">
-    {% include 'ProductBundle:Block:_pagination.html.twig' %}
+    {% include '@Product/Block/_pagination.html.twig' %}
 </div>

@@ -52,7 +52,7 @@ class OrderAdmin extends Admin
             ])
             ->add('fio', null, [
                 'label' => 'order.fields.fio',
-                'template' => 'OrderBundle:Admin:list_fields.html.twig',
+                'template' => '@Order/Admin/list_fields.html.twig',
             ])
             ->add('orderSum', null, [
                 'label' => 'order.fields.order_sum',
@@ -76,7 +76,7 @@ class OrderAdmin extends Admin
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'preview' => ['template' => 'OrderBundle:CRUD:list__action_preview.html.twig'],
+                    'preview' => ['template' => '@Order/CRUD/list__action_preview.html.twig'],
                     'edit' => []
                 ],
             ]);

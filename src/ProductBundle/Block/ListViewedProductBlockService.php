@@ -16,8 +16,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ListViewedProductBlockService extends AbstractBlockService
 {
-    const TEMPLATE_DEFAULT = 'ProductBundle:Block:viewed_list.html.twig';
-    const TEMPLATE_AJAX  = 'ProductBundle:Block:viewed_list_ajax.html.twig';
+    const TEMPLATE_DEFAULT = '@Product/Block/viewed_list.html.twig';
+    const TEMPLATE_AJAX  = '@Product/Block/viewed_list_ajax.html.twig';
 
     /**
      * @var Registry $doctrine

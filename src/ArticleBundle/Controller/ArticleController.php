@@ -6,7 +6,7 @@ use AppBundle\Helper\AppHelper;
 use ArticleBundle\Entity\Article;
 use ArticleBundle\Entity\Category;
 use ShareBundle\Entity\Tag;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 /**
  * Class ArticleController
  */
-class ArticleController extends AbstractController
+class ArticleController extends BaseController
 {
     const ARTICLE_404 = 'Article doesn\'t exist';
 
@@ -50,7 +50,7 @@ class ArticleController extends AbstractController
             ],
         ]);
 
-        return $this->render('ArticleBundle::list.html.twig', ['categories' => $categories]);
+        return $this->render('@Article/list.html.twig', ['categories' => $categories]);
     }
 
     /**
@@ -96,7 +96,7 @@ class ArticleController extends AbstractController
             ],
         ]);
 
-        return $this->render('ArticleBundle::list_category.html.twig', [
+        return $this->render('@Article/list_category.html.twig', [
             'category' => $categoryObject,
             'categories' => $categories
         ]);
@@ -146,7 +146,7 @@ class ArticleController extends AbstractController
             ],
         ]);
 
-        return $this->render('ArticleBundle::list_tag.html.twig', [
+        return $this->render('@Article/list_tag.html.twig', [
             'tag' => $tag,
             'categories' => $categories
         ]);
@@ -196,6 +196,6 @@ class ArticleController extends AbstractController
             $repo->incViewCounter($article->getId());
         }
 
-        return $this->render('ArticleBundle::view.html.twig', ['article' => $article]);
+        return $this->render('@Article/view.html.twig', ['article' => $article]);
     }
 }

@@ -2,42 +2,42 @@
 product_who_list:
     path: /catalog/{who}
     defaults:
-        _controller: ProductBundle:Product:listWho
+        _controller: ProductBundle\Controller\ProductController::listWhoAction
     requirements:
         who: "man|woman"
 
 product_tags_list:
     path: /catalog/tag-{slug}
     defaults:
-        _controller: ProductBundle:Product:listTag
+        _controller: ProductBundle\Controller\ProductController::listTagAction
     requirements:
         slug: "([a-zA-Z\\-0-9\\_]+)?"
 
 product_colour_list:
     path: /catalog/colour-{slug}
     defaults:
-        _controller: ProductBundle:Product:listColour
+        _controller: ProductBundle\Controller\ProductController::listColourAction
     requirements:
         slug: "([a-zA-Z\\-0-9\\_]+)?"
 
 product_stone_list:
     path: /catalog/stone-{slug}
     defaults:
-        _controller: ProductBundle:Product:listStone
+        _controller: ProductBundle\Controller\ProductController::listStoneAction
     requirements:
         slug: "([a-zA-Z\\-0-9\\_]+)?"
 
 product_list:
     path: /catalog/{slug}
     defaults:
-        _controller: ProductBundle:Product:list
+        _controller: ProductBundle\Controller\ProductController::listAction
     requirements:
         slug: "([a-zA-Z\\-0-9\\_]+)?"
 
 product_view:
     path: /product/{category}/{id}-{slug}
     defaults:
-        _controller: ProductBundle:Product:view
+        _controller: ProductBundle\Controller\ProductController::viewAction
     requirements:
         category: "([a-zA-Z\\-0-9\\_]+)?"
         slug: "([a-zA-Z\\-0-9\\_]+)?"

@@ -1,4 +1,4 @@
-{% spaceless %}
+{% apply spaceless %}
     {% set storage = attr.upload_storage|default('media_multiple_upload_image') %}
     {% set max_upload_files = attr.max_upload_files|default(20) %}
     {% set upload_field = id~'_file' %}
@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-{% endspaceless %}
+{% endapply %}
 {% autoescape false %}
     <!-- edit one related -->
     <script type="text/javascript">

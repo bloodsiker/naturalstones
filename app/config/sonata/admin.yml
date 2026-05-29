@@ -6,9 +6,9 @@ sonata_admin:
         handler: sonata.admin.security.handler.role
 
     templates:
-        short_object_description: 'MediaBundle:Helper:short-object-description.html.twig'
-        layout: 'AdminBundle::standard_layout.html.twig'
-        list: 'AdminBundle:Core:list.html.twig'
+        short_object_description: '@Media/Helper/short-object-description.html.twig'
+        layout: '@Admin/standard_layout.html.twig'
+        list: '@Admin/Core/list.html.twig'
 
     assets:
         extra_javascripts:

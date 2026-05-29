@@ -53,7 +53,7 @@ class StonesBlockService extends AbstractBlockService
             'zodiac'       => null,
             'view_all'     => false,
             'title'        => null,
-            'template'     => 'ShareBundle:Block:stones.html.twig',
+            'template'     => '@Share/Block/stones.html.twig',
         ]);
     }
 

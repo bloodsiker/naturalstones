@@ -5,7 +5,7 @@ index:
         _locale: '%route_locales%'
     defaults:
         _locale: '%locale%'
-        _controller: AppBundle:Default:index
+        _controller: AppBundle\Controller\DefaultController::indexAction
 
 app:
     resource: '@AppBundle/Resources/config/routing.yml'
@@ -63,7 +63,7 @@ reviews:
 sitemap:
     path: /sitemap.{_format}
     defaults:
-        _controller: AppBundle:Default:sitemap
+        _controller: AppBundle\Controller\DefaultController::sitemapAction
     requirements:
         _format: "xml"
     options: { i18n: false }
@@ -71,7 +71,7 @@ sitemap:
 facebook_feed:
     path: /facebookfeed.{_format}
     defaults:
-        _controller: AppBundle:Default:generateFeed
+        _controller: AppBundle\Controller\DefaultController::generateFeedAction
     requirements:
         _format: "csv"
     options: { i18n: false }
@@ -80,7 +80,7 @@ opensearch:
     path: /opensearch.{_format}
     defaults:
         _format: "xml"
-        _controller: AppBundle:Default:openSearch
+        _controller: AppBundle\Controller\DefaultController::openSearchAction
     requirements:
         _format: "xml"
     options: { i18n: false }
@@ -119,7 +119,7 @@ sonata_page_exceptions:
 # Remove trailing slash =======================================================
 remove_trailing_slash:
     path: /{url}
-    defaults: { _controller: AppBundle:Default:removeTrailingSlash }
+    defaults: { _controller: AppBundle\Controller\DefaultController::removeTrailingSlashAction }
     requirements:
         url: .*/$
     methods: [GET]

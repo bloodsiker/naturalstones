@@ -46,7 +46,7 @@ class GetStateValueBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults(array(
-            'template'  => 'AppBundle:Block:get_state_value.html.twig',
+            'template'  => '@App/Block/get_state_value.html.twig',
             'key' => null,
         ));
     }

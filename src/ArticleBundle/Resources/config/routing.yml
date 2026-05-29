@@ -2,26 +2,26 @@
 article_list:
     path: /articles
     defaults:
-        _controller: ArticleBundle:Article:list
+        _controller: ArticleBundle\Controller\ArticleController::listAction
 
 article_tags_list:
     path: /articles/tag-{slug}
     defaults:
-        _controller: ArticleBundle:Article:listTag
+        _controller: ArticleBundle\Controller\ArticleController::listTagAction
     requirements:
         slug: "([a-zA-Z\\-0-9\\_]+)?"
 
 article_category:
     path: /articles/{category}
     defaults:
-        _controller: ArticleBundle:Article:listCategory
+        _controller: ArticleBundle\Controller\ArticleController::listCategoryAction
     requirements:
         category: "([a-zA-Z\\-0-9\\_]+)?"
 
 article_view:
     path: /article/{category}/{id}-{slug}
     defaults:
-        _controller: ArticleBundle:Article:view
+        _controller: ArticleBundle\Controller\ArticleController::viewAction
     requirements:
         category: "([a-zA-Z\\-0-9\\_]+)?"
         slug: "([a-zA-Z\\-0-9\\_]+)?"

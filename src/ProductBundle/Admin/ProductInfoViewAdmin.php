@@ -56,7 +56,7 @@ class ProductInfoViewAdmin extends Admin
             ])
             ->add('product', null, [
                 'label' => 'product_view.fields.product',
-                'template'  => 'ProductBundle:Admin:list_fields.html.twig',
+                'template'  => '@Product/Admin/list_fields.html.twig',
             ])
             ->add('views', null, [
                 'label' => 'product_view.fields.views',

@@ -1,6 +1,6 @@
-{% import 'AppBundle:Block:_articles_macro.html.twig' as article_helper %}
-{% import 'AppBundle:Block:_events_macro.html.twig' as event_helper %}
-{% import 'AppBundle:Block:_videos_macro.html.twig' as video_helper %}
+{% import '@App/Block/_articles_macro.html.twig' as article_helper %}
+{% import '@App/Block/_events_macro.html.twig' as event_helper %}
+{% import '@App/Block/_videos_macro.html.twig' as video_helper %}
 
 {% set checkforTranslation = false %}
 {% if object is instanceof('\\AppBundle\\Entity\\Article') and object.articleHasCategories|length > 0 %}

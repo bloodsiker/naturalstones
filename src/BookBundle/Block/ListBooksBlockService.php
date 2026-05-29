@@ -4,7 +4,7 @@ namespace BookBundle\Block;
 
 use BookBundle\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
@@ -17,8 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ListBooksBlockService extends AbstractBlockService
 {
-    const POPULAR_LIST = 'BookBundle:Block:popular_list.html.twig';
-    const TOP_100_LIST = 'BookBundle:Block:top_100_list.html.twig';
+    const POPULAR_LIST = '@Book/Block/popular_list.html.twig';
+    const TOP_100_LIST = '@Book/Block/top_100_list.html.twig';
 
     /**
      * @var Registry $doctrine
@@ -55,7 +55,7 @@ class ListBooksBlockService extends AbstractBlockService
             'year'             => null,
             'tag'              => null,
             'top_book'         => false,
-            'template'         => 'BookBundle:Block:large_list.html.twig',
+            'template'         => '@Book/Block/large_list.html.twig',
         ]);
     }
 
@@ -110,7 +110,7 @@ class ListBooksBlockService extends AbstractBlockService
             $repository->filterByTag($qb, $blockContext->getSetting('tag'));
         }
 
-        $paginator = new Pagerfanta(new DoctrineORMAdapter($qb, true, false));
+        $paginator = new Pagerfanta(new QueryAdapter($qb, true, false));
         $paginator->setAllowOutOfRangePages(true);
         $paginator->setMaxPerPage($limit);
         $paginator->setCurrentPage($page);

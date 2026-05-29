@@ -9,7 +9,7 @@ services:
           - ProductBundle:ProductAdmin
         calls:
           - [ setTranslationDomain, [ProductBundle] ]
-          - [ setTemplate, ['edit', 'ProductBundle:Admin:edit.html.twig'] ]
+          - [ setTemplate, ['edit', 'ProductBundle\Controller\AdminController::editAction.html.twig'] ]
           - [ setEntityManager, ['@app.entity_manager'] ]
           - [ setTelegramNotification, ['@app.send_telegram'] ]
 

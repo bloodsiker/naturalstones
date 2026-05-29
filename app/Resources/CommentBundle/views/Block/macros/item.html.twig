@@ -1,5 +1,5 @@
 {% macro comment(comment, show_title = true) %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="comment-item" itemprop="review" itemscope itemtype="http://schema.org/Review">
             <div class="comment-rating">
                 <p style="display: none" itemprop="datePublished" content="{{ comment.createdAt|date('Y-m-d') }}"></p>
@@ -22,11 +22,11 @@
                 {{ comment.comment|raw }}
             </div>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endmacro %}
 
 {% macro pageComment(comment, show_title = true) %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="page-comment-item" itemprop="review" itemscope="" itemtype="http://schema.org/Review">
             <div class="comment-block-product">
                 <a href="{{ product_path(comment.product) }}" class="comment-product-image">
@@ -57,5 +57,5 @@
                 </div>
             </div>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endmacro %}

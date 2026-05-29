@@ -40,7 +40,7 @@ class MenuBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
-            'template'  => 'AppBundle:Block:menu.html.twig',
+            'template'  => '@App/Block/menu.html.twig',
             'type'      => 'header',
         ]);
     }

@@ -49,7 +49,7 @@ class MainImageAdmin extends Admin
             ])
             ->add('image', null, [
                 'label'     => 'main_image.fields.image',
-                'template'  => 'MainImageBundle:Admin:list_fields.html.twig',
+                'template'  => '@MainImage/Admin/list_fields.html.twig',
             ])
             ->addIdentifier('title', null, [
                 'label' => 'main_image.fields.title',
@@ -63,9 +63,9 @@ class MainImageAdmin extends Admin
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'move_up'   => ['template' => 'AdminBundle:CRUD:list__action_move_up.html.twig'],
-                    'order_num' => ['template' => 'AdminBundle:CRUD:list__action_order_num.html.twig'],
-                    'move_down' => ['template' => 'AdminBundle:CRUD:list__action_move_down.html.twig'],
+                    'move_up'   => ['template' => '@Admin/CRUD/list__action_move_up.html.twig'],
+                    'order_num' => ['template' => '@Admin/CRUD/list__action_order_num.html.twig'],
+                    'move_down' => ['template' => '@Admin/CRUD/list__action_move_down.html.twig'],
                     'edit'      => [],
                 ],
             ]);

@@ -32,7 +32,7 @@
 
 {#{% block category_multiple_choice_widget %}#}
     {#{% import _self as tree %}#}
-    {#{% spaceless %}#}
+    {#{% apply spaceless %}#}
         {#<div style="max-height: 600px; overflow-y: scroll;">#}
             {#{% set childrens = choices %}#}
             {#{% for group_label, choice in childrens %}#}
@@ -58,7 +58,7 @@
                 {#{% endif %}#}
             {#{% endfor %}#}
         {#</div>#}
-    {#{% endspaceless %}#}
+    {#{% endapply %}#}
 {#{% endblock %}#}
 
 {#{% macro drawChilds(childrens, form, color) %}#}
@@ -160,7 +160,7 @@
 
     <div id="field_search_tags_{{ id }}" style="max-height: 300px;overflow: auto;margin-top:10px;"></div>
 
-    {% include 'BookBundle:CRUD/Association:edit_tags_script.html.twig' %}
+    {% include '@Book/CRUD/Association/edit_tags_script.html.twig' %}
 {% endblock %}
 
 {% block sonata_admin_book_bookHasRelated_sonata_type_collection_widget %}
@@ -226,7 +226,7 @@
                                 {{ 'btn_search_related'|trans({}, 'BookBundle') }}
                             </a>
 
-                            {% include 'BookBundle:CRUD/Association:edit_related_script.html.twig' %}
+                            {% include '@Book/CRUD/Association/edit_related_script.html.twig' %}
                         {% endif %}
                     </span>
                 {% endif %}
@@ -348,7 +348,7 @@
         </div>
     </div>
 
-    {% include 'SonataDoctrineORMAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
+    {% include '@SonataDoctrineORMAdmin/CRUD/edit_orm_many_association_script.html.twig' %}
     {% include '@Book/Form/CRUD/edit_orm_many_association_for_media_script.html.twig' %}
 
 {% endblock %}

@@ -18,7 +18,7 @@ use Twig\Environment;
  */
 class SearchCategoryBlockService extends AbstractBlockService
 {
-    const DEFAULT_TEMPLATE = 'AppBundle:search_category/Block:large_list.html.twig';
+    const DEFAULT_TEMPLATE = '@App/search_category/Block/large_list.html.twig';
 
     /**
      * @var EntityManager

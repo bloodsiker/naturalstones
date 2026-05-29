@@ -1,5 +1,5 @@
 {% block media_code_widget %}
-    {% import 'MediaBundle:Admin:_media_macro.html.twig' as _media %}
+    {% import '@Media/Admin/_media_macro.html.twig' as _media %}
 
     {% set object = sonata_admin.admin.subject %}
     {% if object.id %}
@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block media_upload_image_widget %}
-    {% import 'MediaBundle:Admin:_media_macro.html.twig' as _media %}
+    {% import '@Media/Admin/_media_macro.html.twig' as _media %}
 
     {% set object = sonata_admin.admin.subject %}
     <div>
@@ -37,7 +37,7 @@
 {% endblock %}
 
 {% block media_upload_audio_widget %}
-    {% import 'MediaBundle:Admin:_media_macro.html.twig' as _media %}
+    {% import '@Media/Admin/_media_macro.html.twig' as _media %}
 
     {% set object = sonata_admin.admin.subject %}
     {% if object.id %}
@@ -57,7 +57,7 @@
 {% endblock %}
 
 {% block media_upload_video_widget %}
-    {% import 'MediaBundle:Admin:_media_macro.html.twig' as _media %}
+    {% import '@Media/Admin/_media_macro.html.twig' as _media %}
 
     {% set object = sonata_admin.admin.subject %}
     {% if object.id %}
@@ -242,7 +242,7 @@
 {% endblock %}
 
 {% block media_crop_image_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div>
             {% set imgId = form.vars.id %}
             {% set imgWidth = form.x.parent.vars.crop_w %}
@@ -306,7 +306,7 @@
                 </div>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block media_filesize_widget %}
@@ -404,7 +404,7 @@
                         </a>
 
                         {% if attr.upload_storage %}
-                            {% include 'MediaBundle:CRUD/Association:edit_multiupload_widget.html.twig' %}
+                            {% include '@Media/CRUD/Association/edit_multiupload_widget.html.twig' %}
                         {% endif %}
                     </span>
                 {% endif %}

@@ -39,7 +39,7 @@ class BreadcrumbBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
-            'template'  => 'AppBundle:Block:breadcrumb.html.twig',
+            'template'  => '@App/Block/breadcrumb.html.twig',
         ]);
     }
 

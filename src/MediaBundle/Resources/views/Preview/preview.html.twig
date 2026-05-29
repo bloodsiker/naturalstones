@@ -6,7 +6,7 @@
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     </head>
     <body>
-        {% spaceless %}
+        {% apply spaceless %}
             {% if entity %}
                 {% set isFile       = entity is instanceof("\\MediaBundle\\Entity\\MediaFile") %}
                 {% set isImage      = entity is instanceof("\\MediaBundle\\Entity\\MediaImage") %}
@@ -14,7 +14,7 @@
                 {% set isAudio      = entity is instanceof("\\MediaBundle\\Entity\\MediaAudio") %}
                 {% set isGallery    = entity is instanceof("\\MediaBundle\\Entity\\MediaGallery") %}
 
-                {% import 'MediaBundle:Admin:_media_macro.html.twig' as _media %}
+                {% import '@Media/Admin/_media_macro.html.twig' as _media %}
                 {% set entityId = 'entity'~entity.id %}
 
                 <div>
@@ -40,6 +40,6 @@
                 {% endif %}
                 </div>
             {% endif %}
-        {% endspaceless %}
+        {% endapply %}
     </body>
 </html>

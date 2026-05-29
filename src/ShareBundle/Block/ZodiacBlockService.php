@@ -44,7 +44,7 @@ class ZodiacBlockService extends AbstractBlockService
             'items_count' => 100,
             'title' => null,
             'mobile_select' => false,
-            'template'  => 'ShareBundle:Block:zodiac.html.twig',
+            'template'  => '@Share/Block/zodiac.html.twig',
         ]);
     }
 

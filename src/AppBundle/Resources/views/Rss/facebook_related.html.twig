@@ -2,8 +2,8 @@
 {% set relatedTvVideos = article.getArticleHasRelatedTvVideos() %}
 
 {% if content_id and (relatedArticles or relatedTvVideos) %}
-    {% import 'AppBundle:Block:_articles_macro.html.twig' as article_macro %}
-    {% import 'AppBundle:Block:_videos_macro.html.twig' as video_macro %}
+    {% import '@App/Block/_articles_macro.html.twig' as article_macro %}
+    {% import '@App/Block/_videos_macro.html.twig' as video_macro %}
 
     <ul class="op-related-articles" title="{{ 'frontend.article.read_more'|trans({}, 'AppBundle') }}">
         {% for item in relatedArticles %}

@@ -9,7 +9,7 @@ use ShareBundle\Entity\Colour;
 use ShareBundle\Entity\Stone;
 use ShareBundle\Entity\Tag;
 use ShareBundle\Entity\Zodiac;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class DefaultController
  */
-class DefaultController extends AbstractController
+class DefaultController extends BaseController
 {
     /**
      * @param Request $request
@@ -58,7 +58,7 @@ class DefaultController extends AbstractController
             ],
         ]);
 
-        return $this->render('AppBundle:cart:cart.html.twig');
+        return $this->render('@App/cart/cart.html.twig');
     }
 
     public function cartStepOneAction(Request $request)
@@ -76,7 +76,7 @@ class DefaultController extends AbstractController
             ],
         ]);
 
-        return $this->render('AppBundle:cart:step_1.html.twig');
+        return $this->render('@App/cart/step_1.html.twig');
     }
 
     public function cartStepTwoAction(Request $request)
@@ -96,7 +96,7 @@ class DefaultController extends AbstractController
             ],
         ]);
 
-        return $this->render('AppBundle:cart:step_2.html.twig');
+        return $this->render('@App/cart/step_2.html.twig');
     }
 
     public function constructorAction(Request $request)
@@ -113,7 +113,7 @@ class DefaultController extends AbstractController
             ],
         ]);
 
-        return $this->render('AppBundle:constructor:index.html.twig');
+        return $this->render('@App/constructor/index.html.twig');
     }
 
     /**
@@ -136,7 +136,7 @@ class DefaultController extends AbstractController
             'description' => $this->get('translator')->trans('frontend.meta.meta_description_search', [], 'AppBundle'),
         ]);
 
-        return $this->render('AppBundle:search:search.html.twig');
+        return $this->render('@App/search/search.html.twig');
     }
 
     public function searchCategoryAction(Request $request)
@@ -149,7 +149,7 @@ class DefaultController extends AbstractController
             'description' => $this->get('translator')->trans('frontend.meta.meta_description_search', [], 'AppBundle'),
         ]);
 
-        return $this->render('AppBundle:search_category:search.html.twig');
+        return $this->render('@App/search_category/search.html.twig');
     }
 
     /**
@@ -367,7 +367,7 @@ class DefaultController extends AbstractController
             }
         }
 
-        $response = new Response($this->renderView('AppBundle:Block:sitemap.html.twig', ['urls' => $urls, 'hostname' => $hostname]));
+        $response = new Response($this->renderView('@App/Block/sitemap.html.twig', ['urls' => $urls, 'hostname' => $hostname]));
         $response->headers->set('Content-Type', 'application/xml; charset=utf-8');
 
         return $response;
@@ -480,7 +480,7 @@ class DefaultController extends AbstractController
      */
     public function openSearchAction(Request $request)
     {
-        $response = new Response($this->renderView('AppBundle:Block:open_searche.html.twig'));
+        $response = new Response($this->renderView('@App/Block/open_searche.html.twig'));
         $response->headers->set('Content-Type', 'application/xml; charset=utf-8');
 
         return $response;

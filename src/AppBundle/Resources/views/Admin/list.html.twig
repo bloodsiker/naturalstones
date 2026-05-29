@@ -1,4 +1,4 @@
-{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+{% extends '@SonataAdmin/CRUD/base_list.html.twig' %}
 {% block list_filters %}
     {{ parent() }}
     {% if admin.class is defined and admin.class in ['AppBundle\\Entity\\Article', 'AppBundle\\Entity\\Event', 'AppBundle\\Entity\\TvVideo'] %}

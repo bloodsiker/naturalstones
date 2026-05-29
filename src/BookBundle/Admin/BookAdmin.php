@@ -55,7 +55,7 @@ class BookAdmin extends Admin
 
     protected function configure(): void
     {
-        $this->setFormTheme(array_merge($this->getFormTheme(), ['BookBundle:Form:admin_fields.html.twig']));
+        $this->setFormTheme(array_merge($this->getFormTheme(), ['@Book/Form/admin_fields.html.twig']));
     }
 
     /**
@@ -160,19 +160,19 @@ class BookAdmin extends Admin
             ])
             ->add('poster', null, [
                 'label'     => 'book.fields.poster',
-                'template'  => 'BookBundle:Admin:list_fields.html.twig',
+                'template'  => '@Book/Admin/list_fields.html.twig',
             ])
             ->addIdentifier('name', null, [
                 'label' => 'book.fields.name',
-                'template'  => 'BookBundle:Admin:list_fields.html.twig',
+                'template'  => '@Book/Admin/list_fields.html.twig',
             ])
             ->add('genres', null, [
                 'label' => 'book.fields.genres',
-                'template'  => 'BookBundle:Admin:list_fields.html.twig',
+                'template'  => '@Book/Admin/list_fields.html.twig',
             ])
             ->add('files', null, [
                 'label' => 'book.fields.files',
-                'template'  => 'BookBundle:Admin:list_fields.html.twig',
+                'template'  => '@Book/Admin/list_fields.html.twig',
             ])
             ->add('isAllowDownload', null, [
                 'label' => 'book.fields.is_allow_download',
@@ -187,7 +187,7 @@ class BookAdmin extends Admin
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'preview' => ['template' => 'BookBundle:CRUD:list__action_preview.html.twig'],
+                    'preview' => ['template' => '@Book/CRUD/list__action_preview.html.twig'],
                     'edit' => [],
                 ],
             ])

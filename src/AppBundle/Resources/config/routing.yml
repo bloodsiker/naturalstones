@@ -2,42 +2,42 @@
 cart:
   path: /cart
   defaults:
-    _controller: AppBundle:Default:cart
+    _controller: AppBundle\Controller\DefaultController::cartAction
 
 step-1:
   path: /cart/step-1
   defaults:
-    _controller: AppBundle:Default:cartStepOne
+    _controller: AppBundle\Controller\DefaultController::cartStepOneAction
 
 step-2:
   path: /cart/step-2
   defaults:
-    _controller: AppBundle:Default:cartStepTwo
+    _controller: AppBundle\Controller\DefaultController::cartStepTwoAction
 
 constructor:
   path: /constructor
   defaults:
-    _controller: AppBundle:Default:constructor
+    _controller: AppBundle\Controller\DefaultController::constructorAction
 
 _sentry-test:
   path: /_sentry-test
   defaults:
-    _controller: AppBundle:SentryTest:testLog
+    _controller: AppBundle\Controller\SentryTestController::testLogAction
 
 search:
   path: /search
   defaults:
-    _controller: AppBundle:Default:search
+    _controller: AppBundle\Controller\DefaultController::searchAction
 
 search_category:
   path: /search_category
   defaults:
-    _controller: AppBundle:Default:searchCategory
+    _controller: AppBundle\Controller\DefaultController::searchCategoryAction
 
 block__ajax:
   path: /_block/ajax/{blockType}/{blockId}
   defaults:
-    _controller: AppBundle:Block:ajax
+    _controller: AppBundle\Controller\BlockController::ajaxAction
   methods: [GET, POST]
   requirements:
     blockType: .+

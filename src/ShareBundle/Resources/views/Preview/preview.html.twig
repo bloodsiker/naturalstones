@@ -1,7 +1,7 @@
-{% extends 'AdminBundle:Preview:preview.html.twig' %}
+{% extends '@Admin/Preview/preview.html.twig' %}
 
 {% block ckPreview %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if entity %}
             {% set language = language|default('ru') %}
             {% set languageAbbr = '('~((language == 'uk' ? 'ua' : language)|upper)~')' %}
@@ -18,5 +18,5 @@
                 </button>
             </div>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}

@@ -16,7 +16,7 @@ class ShortcodeHelper extends Helper
     private $container;
 
     /**
-     * @var \Twig_Environment
+     * @var \Twig\Environment
      */
     private $twig;
 
@@ -79,7 +79,7 @@ class ShortcodeHelper extends Helper
                     $data = $matches;
                 }
 
-                if ($template instanceof \Twig_Template) {
+                if ($template instanceof \Twig\TemplateWrapper) {
                     return $template->render(['shortcode_data' => $data]);
                 } else {
                     return $this->vksprintf($template, $data);
@@ -88,7 +88,7 @@ class ShortcodeHelper extends Helper
         }
 
         if ($this->container->getParameter('shortcode.wrapper.template') !== null) {
-            $wrapperTemplate = $this->twig->loadTemplate($this->container->getParameter('shortcode.wrapper.template'));
+            $wrapperTemplate = $this->twig->load($this->container->getParameter('shortcode.wrapper.template'));
 
             $content = $wrapperTemplate->render(array(
                 'wrap' => $needWrapping,
@@ -166,19 +166,16 @@ class ShortcodeHelper extends Helper
      * @param array  $definition
      * @param string $mode
      *
-     * @return \Twig_Template|\Twig_TemplateInterface
-     *
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @return \Twig\TemplateWrapper|string
      */
     private function getShortcodeTemplate($definition, $mode)
     {
         try {
-            $template = $this->twig->loadTemplate($definition['template'.($mode?'_'.$mode:'')]);
-        } catch (\Twig_Error_Loader $e) {
+            $template = $this->twig->load($definition['template'.($mode?'_'.$mode:'')]);
+        } catch (\Twig\Error\LoaderError $e) {
             try {
-                $template = $this->twig->loadTemplate($definition['template']);
-            } catch (\Twig_Error_Loader $e) {
+                $template = $this->twig->load($definition['template']);
+            } catch (\Twig\Error\LoaderError $e) {
                 $template = $definition['template'];
             }
         }
@@ -226,14 +223,14 @@ class ShortcodeHelper extends Helper
                         $data = $matches;
                     }
 
-                    if ($template instanceof \Twig_Template) {
+                    if ($template instanceof \Twig\TemplateWrapper) {
                         $finalContent = $template->render(['shortcode_data' => $data]);
                     } else {
                         $finalContent = $this->vksprintf($template, $data);
                     }
 
                     if ($this->container->getParameter('shortcode.wrapper.template') !== null) {
-                        $wrapperTemplate = $this->twig->loadTemplate($this->container->getParameter('shortcode.wrapper.template'));
+                        $wrapperTemplate = $this->twig->load($this->container->getParameter('shortcode.wrapper.template'));
 
                         $finalContent = $wrapperTemplate->render(array(
                             'wrap' => $needWrapping,

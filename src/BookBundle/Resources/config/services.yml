@@ -9,6 +9,8 @@ services:
         arguments:
             - '@app.entity_manager'
 
+    BookBundle\Helper\BookViewHelper: '@book.helper.views'
+
 #
 #    book.repository.abstract:
 #        factory: [ '@book.entity_manager', 'getRepository' ]

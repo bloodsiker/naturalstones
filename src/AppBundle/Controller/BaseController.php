@@ -7,6 +7,9 @@ use AppBundle\Services\BreadcrumbService;
 use AppBundle\Services\Cart;
 use AppBundle\Services\SendTelegramService;
 use AppBundle\Services\SeoUpdater;
+use BookBundle\Helper\BookViewHelper;
+use ProductBundle\Helper\ProductViewHelper;
+use ShareBundle\Services\TagFinder;
 use Sonata\BlockBundle\Block\BlockContextManager;
 use Sonata\BlockBundle\Block\BlockRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,6 +28,9 @@ abstract class BaseController extends AbstractController
             'app.cart' => '?' . Cart::class,
             'sonata.block.renderer.default' => '?' . BlockRenderer::class,
             'sonata.block.context_manager.default' => '?' . BlockContextManager::class,
+            'product.helper.views' => '?' . ProductViewHelper::class,
+            'book.helper.views' => '?' . BookViewHelper::class,
+            'share.tag.finder' => '?' . TagFinder::class,
         ]);
     }
 }

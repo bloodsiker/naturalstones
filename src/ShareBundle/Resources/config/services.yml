@@ -3,3 +3,5 @@ services:
     class: ShareBundle\Services\TagFinder
     calls:
       - [ setContainer, ['@service_container'] ]
+
+  ShareBundle\Services\TagFinder: '@share.tag.finder'

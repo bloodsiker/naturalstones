@@ -11,6 +11,8 @@ services:
         arguments:
             - '@app.entity_manager'
 
+    ProductBundle\Helper\ProductViewHelper: '@product.helper.views'
+
     product.router.helper:
         class: ProductBundle\Helper\ProductRouterHelper
         arguments:

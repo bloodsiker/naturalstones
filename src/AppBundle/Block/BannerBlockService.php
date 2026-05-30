@@ -2,6 +2,9 @@
 
 namespace AppBundle\Block;
 
+use Sonata\BlockBundle\Form\Mapper\FormMapper as BlockFormMapper;
+use Sonata\BlockBundle\Meta\Metadata;
+use Sonata\BlockBundle\Meta\MetadataInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\Form\Type\ImmutableArrayType;
@@ -11,13 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 /**
  * Class BannerBlockService
  */
-class BannerBlockService extends AbstractBlockService
+class BannerBlockService extends AbstractEditableBlockService
 {
     const BANNER_PREMIUM_1 = 'banner-premium1-index';
     const BANNER_PREMIUM_2 = 'banner-premium2-index';
@@ -64,6 +66,28 @@ class BannerBlockService extends AbstractBlockService
                 ],
                 ],
             ],
+        ]);
+    }
+
+    public function configureEditForm(BlockFormMapper $form, BlockInterface $block): void
+    {
+        $this->buildEditForm($form, $block);
+    }
+
+    public function configureCreateForm(BlockFormMapper $form, BlockInterface $block): void
+    {
+        $this->configureEditForm($form, $block);
+    }
+
+    public function validate(ErrorElement $errorElement, BlockInterface $block): void
+    {
+        $this->validateBlock($errorElement, $block);
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        return new Metadata('Banner', null, null, 'AppBundle', [
+            'class' => 'fa fa-image',
         ]);
     }
 

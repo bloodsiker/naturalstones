@@ -4,7 +4,7 @@ namespace BookBundle\Block;
 
 use BookBundle\Entity\BookCollection;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class CollectionGenreBlockService
  */
-class CollectionGenreBlockService extends AbstractBlockService
+class CollectionGenreBlockService extends AbstractEditableBlockService
 {
     /**
      * @var Registry $doctrine

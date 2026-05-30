@@ -4,7 +4,7 @@ namespace MainImageBundle\Block;
 
 use Doctrine\ORM\EntityManager;
 use MainImageBundle\Entity\MainImage;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class MainImageBlockService
  */
-class MainImageBlockService extends AbstractBlockService
+class MainImageBlockService extends AbstractEditableBlockService
 {
     /**
      * @var EntityManager

@@ -2,7 +2,6 @@
 
 namespace ProductBundle\Block\Traits;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\BlockBundle\Model\BlockInterface;
@@ -29,20 +28,14 @@ trait StrictRelationSonataAdminTrait
             ]);
         }
 
-        $fieldDescription = $this
-            ->admins[$fieldName]
-            ->getModelManager()
-            ->getNewFieldDescriptionInstance($this->admins[$fieldName]->getClass(), $fieldName);
+        $fieldDescription = $this->admins[$fieldName]->createFieldDescription($fieldName, [
+            'translation_domain' => 'ProductBundle',
+        ]);
         if (method_exists($this->admins[$fieldName], 'setAllowAllRoutes')) {
             $this->admins[$fieldName]->setAllowAllRoutes(true);
         }
         $fieldDescription->setAssociationAdmin($this->admins[$fieldName]);
         $fieldDescription->setAdmin($formMapper->getAdmin());
-        $fieldDescription->setAssociationMapping([
-            'fieldName' => $fieldName,
-            'type'      => ClassMetadataInfo::ONE_TO_MANY,
-        ]);
-        $fieldDescription->setOption('translation_domain', 'ProductBundle');
 
         return $formMapper->create($fieldName, ModelListType::class, [
             'sonata_field_description'  => $fieldDescription,

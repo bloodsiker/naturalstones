@@ -4,7 +4,7 @@ namespace ProductBundle\Block;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use ProductBundle\Entity\Product;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class ListViewedProductBlockService
  */
-class ListViewedProductBlockService extends AbstractBlockService
+class ListViewedProductBlockService extends AbstractEditableBlockService
 {
     const TEMPLATE_DEFAULT = '@Product/Block/viewed_list.html.twig';
     const TEMPLATE_AJAX  = '@Product/Block/viewed_list_ajax.html.twig';

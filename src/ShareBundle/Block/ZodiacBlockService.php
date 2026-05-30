@@ -6,7 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use ShareBundle\Entity\Stone;
 use ShareBundle\Entity\Tag;
 use ShareBundle\Entity\Zodiac;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class ZodiacBlockService
  */
-class ZodiacBlockService extends AbstractBlockService
+class ZodiacBlockService extends AbstractEditableBlockService
 {
     /**
      * @var Registry $doctrine

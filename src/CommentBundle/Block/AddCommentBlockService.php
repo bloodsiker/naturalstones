@@ -5,7 +5,7 @@ namespace CommentBundle\Block;
 use BookBundle\Entity\Book;
 use CommentBundle\Entity\Comment;
 use Doctrine\ORM\EntityManager;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class AddCommentBlockService
  */
-class AddCommentBlockService extends AbstractBlockService
+class AddCommentBlockService extends AbstractEditableBlockService
 {
     const FORM_TEMPLATE = '@Comment/Block/comment_form.html.twig';
     const AJAX_COMMENT_TEMPLATE = '@Comment/Block/ajax_comment.html.twig';

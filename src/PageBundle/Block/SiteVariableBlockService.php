@@ -4,7 +4,7 @@ namespace PageBundle\Block;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use PageBundle\Entity\SiteVariable;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class SiteVariableBlockService
  */
-class SiteVariableBlockService extends AbstractBlockService
+class SiteVariableBlockService extends AbstractEditableBlockService
 {
     /**
      * @var Registry $doctrine

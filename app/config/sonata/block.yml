@@ -15,98 +15,98 @@ sonata_block:
 #        sonata.page.block.context_manager:
 #            contexts: [sonata_page_bundle]
         page.block.site_variable:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
 
         # AppBundle's Blocks
         app.block.service.header:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
         app.block.service.footer:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
         app.block.service.menu:
-            contexts: [ cms ]
+            contexts: [cms, sonata_page_bundle]
         app.block.service.cart:
-            contexts: [ cms ]
+            contexts: [cms, sonata_page_bundle]
         app.block.service.feedback:
-            contexts: [ cms ]
+            contexts: [cms, sonata_page_bundle]
         app.block.service.search:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
         app.block.service.search_category:
-            contexts: [ cms ]
+            contexts: [cms, sonata_page_bundle]
         app.block.service.breadcrumb:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
 #        app.block.service.get_state_value:
 #            contexts: [cms]
 
         # MainImageBundle Block's
         main.block.image:
-            contexts: [ cms ]
+            contexts: [cms, sonata_page_bundle]
 
         information.block.info:
-            contexts: [ cms ]
+            contexts: [cms, sonata_page_bundle]
 
         # BookBundle Block's
         book.block.list:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
         book.block.book_voting:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
         book.block.popular:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
         book.block.collection_list:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
         book.block.collection_genre:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
 
         product.block.list:
-            contexts: [sonata_page_bundle]
+            contexts: [cms, sonata_page_bundle]
         product.block.popular:
-            contexts: [ cms ]
+            contexts: [cms, sonata_page_bundle]
         product.block.viewed:
-            contexts: [ cms ]
+            contexts: [cms, sonata_page_bundle]
 
         # ArticleBundle Block's
         article.block.list:
-            contexts: [ cms ]
+            contexts: [cms, sonata_page_bundle]
 
         # GenreBundle Block's
         genre.block.genre_list:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
 
         # SeriesBundle Block's
         series.block.series_list:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
 
         # ShareBundle Block's
         share.block.tag_list:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
         share.block.author_list:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
         share.block.stones:
-            contexts: [ cms ]
+            contexts: [cms, sonata_page_bundle]
         share.block.stone_constructor:
-            contexts: [ cms ]
+            contexts: [cms, sonata_page_bundle]
         share.block.zodiac:
-            contexts: [ cms ]
+            contexts: [cms, sonata_page_bundle]
 
         quiz.block.service.quiz:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
 
         # OrderBundle Block's
         order.block.order_board_list:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
 
         # WheelSpin Block's
         wheel_spin.block.wheel_spinner:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
 
         # CommentBundle Block's
         comment.block.list_comments:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
         comment.block.add_comment:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
         comment.block.list_swaps:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
         comment.block.add_swap:
-            contexts: [cms]
+            contexts: [cms, sonata_page_bundle]
 #
 #        # UserBundle's Blocks
 #        sonata.user.block.account: # used to display menu option (login option)

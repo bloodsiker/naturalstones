@@ -7,7 +7,7 @@ use BookBundle\Entity\Book;
 use Doctrine\ORM\EntityManager;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +19,7 @@ use Twig\Environment;
 /**
  * Class FeedbackBlockService
  */
-class FeedbackBlockService extends AbstractBlockService
+class FeedbackBlockService extends AbstractEditableBlockService
 {
     const DEFAULT_TEMPLATE = '@App/Block/feedback.html.twig';
 

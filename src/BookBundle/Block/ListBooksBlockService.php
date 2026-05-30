@@ -6,7 +6,7 @@ use BookBundle\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class ListBooksBlockService
  */
-class ListBooksBlockService extends AbstractBlockService
+class ListBooksBlockService extends AbstractEditableBlockService
 {
     const POPULAR_LIST = '@Book/Block/popular_list.html.twig';
     const TOP_100_LIST = '@Book/Block/top_100_list.html.twig';

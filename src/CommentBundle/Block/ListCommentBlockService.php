@@ -6,7 +6,7 @@ use CommentBundle\Entity\Comment;
 use Doctrine\ORM\EntityManager;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class ListCommentBlockService
  */
-class ListCommentBlockService extends AbstractBlockService
+class ListCommentBlockService extends AbstractEditableBlockService
 {
     const PAGE_LIST = '@Comment/Block/page_comments_list.html.twig';
 

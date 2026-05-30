@@ -4,7 +4,7 @@ namespace ShareBundle\Block;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use ShareBundle\Entity\Stone;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class StonesBlockService
  */
-class StoneConstructorBlockService extends AbstractBlockService
+class StoneConstructorBlockService extends AbstractEditableBlockService
 {
     /**
      * @var Registry $doctrine

@@ -4,7 +4,7 @@ namespace WheelSpinBundle\Block;
 
 use Doctrine\ORM\EntityManager;
 use OrderBundle\Entity\Order;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +17,7 @@ use WheelSpinBundle\Entity\WheelSpinHasOption;
 /**
  * Class WheelSpinnerBlockService
  */
-class WheelSpinnerBlockService extends AbstractBlockService
+class WheelSpinnerBlockService extends AbstractEditableBlockService
 {
     const DEFAULT_TEMPLATE = '@WheelSpin/Block/wheel_spinner.html.twig';
 

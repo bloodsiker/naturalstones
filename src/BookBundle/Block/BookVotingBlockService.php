@@ -5,7 +5,7 @@ namespace BookBundle\Block;
 use BookBundle\Entity\Book;
 use BookBundle\Entity\BookVotesResult;
 use Doctrine\ORM\EntityManager;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class BookVotingBlockService
  */
-class BookVotingBlockService extends AbstractBlockService
+class BookVotingBlockService extends AbstractEditableBlockService
 {
     /**
      * @var RequestStack

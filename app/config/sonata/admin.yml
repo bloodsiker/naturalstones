@@ -14,8 +14,7 @@ sonata_admin:
 
     assets:
         extra_javascripts:
-            - bundles/admin/js/jquery-ui.custom.min.js
-            - bundles/sonatapage/sonata-page.back.min.js
+            - bundles/sonatapage/app.js
             - bundles/admin/js/textcounter.min.js
             - bundles/admin/js/colorpicker.js
             - bundles/admin/js/codemirror/codemirror.js
@@ -26,7 +25,7 @@ sonata_admin:
             - bundles/admin/js/codemirror/htmlmixed.js
             - bundles/admin/js/lazysizes.min.js
         extra_stylesheets:
-            - bundles/sonatapage/sonata-page.back.min.css
+            - bundles/sonatapage/app.css
             - bundles/admin/css/colorpicker.css
             - bundles/admin/css/codemirror/codemirror.css
             - bundles/admin/css/style.css

@@ -3,7 +3,7 @@
 namespace AppBundle\Block;
 
 use Doctrine\ORM\EntityManager;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ use Twig\Environment;
 /**
  * Class HeaderBlockService
  */
-class HeaderBlockService extends AbstractBlockService
+class HeaderBlockService extends AbstractEditableBlockService
 {
     /**
      * @var EntityManager

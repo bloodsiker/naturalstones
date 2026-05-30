@@ -4,7 +4,7 @@ namespace ShareBundle\Block;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use ShareBundle\Entity\Tag;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class ListTagsBlockService
  */
-class ListTagsBlockService extends AbstractBlockService
+class ListTagsBlockService extends AbstractEditableBlockService
 {
     /**
      * @var Registry $doctrine

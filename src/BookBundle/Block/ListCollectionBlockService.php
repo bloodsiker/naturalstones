@@ -6,7 +6,7 @@ use BookBundle\Entity\BookCollection;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class ListCollectionBlockService
  */
-class ListCollectionBlockService extends AbstractBlockService
+class ListCollectionBlockService extends AbstractEditableBlockService
 {
     /**
      * @var Registry $doctrine

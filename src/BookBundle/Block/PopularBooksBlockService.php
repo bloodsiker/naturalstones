@@ -4,7 +4,7 @@ namespace BookBundle\Block;
 
 use BookBundle\Entity\BookInfoView;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class PopularBooksBlockService
  */
-class PopularBooksBlockService extends AbstractBlockService
+class PopularBooksBlockService extends AbstractEditableBlockService
 {
     const POPULAR_LIST = '@Book/Block/popular_list.html.twig';
     const TOP_100_LIST = '@Book/Block/top_100_list.html.twig';

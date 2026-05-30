@@ -10,7 +10,7 @@ use InformationBundle\Entity\Information;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use ProductBundle\Entity\Product;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class ArticleListBlockService
  */
-class ArticleListBlockService extends AbstractBlockService
+class ArticleListBlockService extends AbstractEditableBlockService
 {
     /**
      * @var Registry $doctrine

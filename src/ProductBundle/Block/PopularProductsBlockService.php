@@ -5,7 +5,7 @@ namespace ProductBundle\Block;
 use BookBundle\Entity\BookInfoView;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use ProductBundle\Entity\ProductInfoView;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class PopularProductsBlockService
  */
-class PopularProductsBlockService extends AbstractBlockService
+class PopularProductsBlockService extends AbstractEditableBlockService
 {
     const POPULAR_LIST = '@Product/Block/popular_list.html.twig';
 

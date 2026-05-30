@@ -2,7 +2,7 @@
 
 namespace AppBundle\Block;
 
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class FooterBlockService
  */
-class FooterBlockService extends AbstractBlockService
+class FooterBlockService extends AbstractEditableBlockService
 {
 
     /**

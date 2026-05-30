@@ -7,7 +7,7 @@ use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use ProductBundle\Entity\Product;
 use ProductBundle\Entity\ProductSearchHistory;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +19,7 @@ use Twig\Environment;
 /**
  * Class SearchBlockService
  */
-class SearchBlockService extends AbstractBlockService
+class SearchBlockService extends AbstractEditableBlockService
 {
     const DEFAULT_TEMPLATE = '@App/search/Block/large_list.html.twig';
     const TEMPLATE_AJAX  = '@App/search/Block/large_list_ajax.html.twig';

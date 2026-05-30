@@ -5,7 +5,7 @@ namespace AppBundle\Block;
 use Doctrine\ORM\EntityManager;
 use ProductBundle\Entity\Product;
 use ProductBundle\Entity\ProductSearchHistory;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -16,7 +16,7 @@ use Twig\Environment;
 /**
  * Class SearchCategoryBlockService
  */
-class SearchCategoryBlockService extends AbstractBlockService
+class SearchCategoryBlockService extends AbstractEditableBlockService
 {
     const DEFAULT_TEMPLATE = '@App/search_category/Block/large_list.html.twig';
 

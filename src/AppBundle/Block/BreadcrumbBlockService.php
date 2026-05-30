@@ -3,7 +3,7 @@
 namespace AppBundle\Block;
 
 use AppBundle\Services\BreadcrumbService;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ use Twig\Environment;
 /**
  * Class BreadcrumbBlockService
  */
-class BreadcrumbBlockService extends AbstractBlockService
+class BreadcrumbBlockService extends AbstractEditableBlockService
 {
     /**
      * @var BreadcrumbService

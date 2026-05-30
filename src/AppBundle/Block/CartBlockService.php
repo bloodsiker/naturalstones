@@ -4,7 +4,7 @@ namespace AppBundle\Block;
 
 use AppBundle\Services\Cart;
 use Doctrine\ORM\EntityManager;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Twig\Environment;
@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class CartBlockService
  */
-class CartBlockService extends AbstractBlockService
+class CartBlockService extends AbstractEditableBlockService
 {
     const TEMPLATE_CART = '@App/Block/cart/cart.html.twig';
     const TEMPLATE_CART_QUANTITY = '@App/Block/cart/cart_quantity.html.twig';

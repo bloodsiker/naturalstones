@@ -2,7 +2,7 @@
 
 namespace AppBundle\Block;
 
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Twig\Environment;
@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class LanguageSwitcherBlockService
  */
-class LanguageSwitcherBlockService extends AbstractBlockService
+class LanguageSwitcherBlockService extends AbstractEditableBlockService
 {
     const TYPE_MAIN   = 'main';
     const TYPE_FOOTER = 'footer';

@@ -4,7 +4,7 @@ namespace AppBundle\Block;
 
 use Doctrine\ORM\EntityManager;
 use ProductBundle\Entity\Category;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ use Twig\Environment;
 /**
  * Class MenuBlockService
  */
-class MenuBlockService extends AbstractBlockService
+class MenuBlockService extends AbstractEditableBlockService
 {
     /**
      * @var EntityManager

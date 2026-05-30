@@ -2,19 +2,22 @@
 
 namespace ProductBundle\Block;
 
+use AppBundle\Block\AbstractEditableBlockService;
 use ProductBundle\Block\Traits\HomepageDefaultMethodTrait;
 use ProductBundle\Block\Traits\StrictRelationSonataAdminTrait;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
+use ShareBundle\Entity\Colour;
+use ShareBundle\Entity\Stone;
 use ShareBundle\Entity\Tag;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
+use Sonata\BlockBundle\Form\Mapper\FormMapper;
 use Sonata\BlockBundle\Model\BlockInterface;
+use Sonata\BlockBundle\Meta\Metadata;
+use Sonata\BlockBundle\Meta\MetadataInterface;
 use Sonata\Form\Type\ImmutableArrayType;
-use Twig\Environment;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,11 +25,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
  * Class ListProductBlockService
  */
-class ListProductBlockService extends AbstractBlockService
+class ListProductBlockService extends AbstractEditableBlockService
 {
     use StrictRelationSonataAdminTrait,
         HomepageDefaultMethodTrait;
@@ -83,49 +87,81 @@ class ListProductBlockService extends AbstractBlockService
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildEditForm(FormMapper $formMapper, BlockInterface $block)
+    private function buildEntityChoices(string $entityClass, string $labelMethod): array
     {
-        $formMapper->add('settings', ImmutableArrayType::class, [
+        $choices = [];
+        foreach ($this->doctrine->getRepository($entityClass)->findAll() as $entity) {
+            $choices[$entity->$labelMethod()] = $entity->getId();
+        }
+        return $choices;
+    }
+
+    public function configureEditForm(FormMapper $form, BlockInterface $block): void
+    {
+        foreach (['category', 'tag', 'stone', 'colour'] as $field) {
+            $value = $block->getSetting($field);
+            if (is_object($value) && method_exists($value, 'getId')) {
+                $block->setSetting($field, $value->getId());
+            }
+        }
+
+        $form->add('settings', ImmutableArrayType::class, [
             'translation_domain' => 'ProductBundle',
-            'label' => false,
-            'keys' => [
+            'label'              => false,
+            'keys'               => [
                 ['title', TextType::class, [
-                    'label'     => 'product.block.fields.title',
-                    'required'  => false,
-                ], ],
+                    'label'    => 'product.block.fields.title',
+                    'required' => false,
+                ]],
                 ['items_count', TextType::class, [
-                    'label'     => 'product.block.fields.items_count',
-                    'required'  => false,
-                ], ],
-                [$this->getAdminBuilder($formMapper, 'category'), null, [
+                    'label'    => 'product.block.fields.items_count',
                     'required' => false,
-                ], ],
-                [$this->getAdminBuilder($formMapper, 'tag'), null, [
-                    'required' => false,
-                ], ],
-                [$this->getAdminBuilder($formMapper, 'stone'), null, [
-                    'required' => false,
-                ], ],
-                [$this->getAdminBuilder($formMapper, 'colour'), null, [
-                    'required' => false,
-                ], ],
+                ]],
+                ['category', ChoiceType::class, [
+                    'label'       => 'product.block.fields.category',
+                    'required'    => false,
+                    'placeholder' => '—',
+                    'choices'     => $this->buildEntityChoices(Category::class, 'getName'),
+                ]],
+                ['tag', ChoiceType::class, [
+                    'label'       => 'product.block.fields.tag',
+                    'required'    => false,
+                    'placeholder' => '—',
+                    'choices'     => $this->buildEntityChoices(Tag::class, 'getName'),
+                ]],
+                ['stone', ChoiceType::class, [
+                    'label'       => 'product.block.fields.stone',
+                    'required'    => false,
+                    'placeholder' => '—',
+                    'choices'     => $this->buildEntityChoices(Stone::class, 'getName'),
+                ]],
+                ['colour', ChoiceType::class, [
+                    'label'       => 'product.block.fields.colour',
+                    'required'    => false,
+                    'placeholder' => '—',
+                    'choices'     => $this->buildEntityChoices(Colour::class, 'getName'),
+                ]],
                 ['who', ChoiceType::class, [
-                    'label'     => 'product.block.fields.who',
-                    'required'  => false,
-                    'choices'   => array_merge(['' => ''], array_flip(Product::$whois)),
-                ], ],
+                    'label'    => 'product.block.fields.who',
+                    'required' => false,
+                    'choices'  => array_merge(['' => ''], array_flip(Product::$whois)),
+                ]],
                 ['discount', CheckboxType::class, [
-                    'label'     => 'product.block.fields.discount',
-                    'required'  => false,
-                ], ],
+                    'label'    => 'product.block.fields.discount',
+                    'required' => false,
+                ]],
                 ['random', CheckboxType::class, [
-                    'label'     => 'product.block.fields.random',
-                    'required'  => false,
-                ], ],
+                    'label'    => 'product.block.fields.random',
+                    'required' => false,
+                ]],
             ],
+        ]);
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        return new Metadata('Products', null, null, 'ProductBundle', [
+            'class' => 'fa fa-shopping-bag',
         ]);
     }
 

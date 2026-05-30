@@ -4,7 +4,7 @@ namespace OrderBundle\Block;
 
 use Doctrine\ORM\EntityManager;
 use OrderBundle\Entity\OrderBoard;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Twig\Environment;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class AddOrderBoardBlockService
  */
-class AddOrderBoardBlockService extends AbstractBlockService
+class AddOrderBoardBlockService extends AbstractEditableBlockService
 {
     const FORM_TEMPLATE = '@Order/Block/order_board_form.html.twig';
     const AJAX_ORDER_TEMPLATE = '@Order/Block/ajax_order_board.html.twig';

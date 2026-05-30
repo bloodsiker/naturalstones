@@ -331,7 +331,7 @@ class SonataTranslationAdmin extends AbstractAdmin
         $localesToShow = count($this->filterLocales) > 0 ? $this->filterLocales : $this->managedLocales;
 
         foreach ($localesToShow as $locale) {
-            $fieldDescription = $this->modelManager->getNewFieldDescriptionInstance($this->getClass(), $locale);
+            $fieldDescription = $this->createFieldDescription($locale);
             $fieldDescription->setTemplate(
                 'IbrowsSonataTranslationBundle:CRUD:base_inline_translation_field.html.twig'
             );

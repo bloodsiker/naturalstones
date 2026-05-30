@@ -1,3 +1,81 @@
+# User auth & cabinet =========================================================
+login:
+    path: /login
+    defaults:
+        _controller: AppBundle\Controller\SecurityController::loginAction
+    options: { i18n: false }
+
+logout:
+    path: /logout
+    defaults:
+        _controller: AppBundle\Controller\SecurityController::logoutAction
+    options: { i18n: false }
+
+register:
+    path: /register
+    defaults:
+        _controller: AppBundle\Controller\SecurityController::registerAction
+    options: { i18n: false }
+
+cabinet:
+    path: /cabinet
+    defaults:
+        _controller: AppBundle\Controller\CabinetController::indexAction
+    options: { i18n: false }
+
+cabinet_profile:
+    path: /cabinet/profile
+    defaults:
+        _controller: AppBundle\Controller\CabinetController::profileAction
+    options: { i18n: false }
+
+cabinet_favorites:
+    path: /cabinet/favorites
+    defaults:
+        _controller: AppBundle\Controller\CabinetController::favoritesAction
+    options: { i18n: false }
+
+cabinet_addresses:
+    path: /cabinet/addresses
+    defaults:
+        _controller: AppBundle\Controller\CabinetController::addressesAction
+    options: { i18n: false }
+
+cabinet_address_default:
+    path: /cabinet/addresses/{id}/default
+    defaults:
+        _controller: AppBundle\Controller\CabinetController::addressDefaultAction
+    options: { i18n: false }
+    methods: [POST]
+
+cabinet_address_delete:
+    path: /cabinet/addresses/{id}/delete
+    defaults:
+        _controller: AppBundle\Controller\CabinetController::addressDeleteAction
+    options: { i18n: false }
+    methods: [POST]
+
+cabinet_order_show:
+    path: /cabinet/order/{secret}
+    defaults:
+        _controller: AppBundle\Controller\CabinetController::orderAction
+    options: { i18n: false }
+
+favorite_toggle:
+    path: /favorite/toggle/{id}
+    defaults:
+        _controller: AppBundle\Controller\CabinetController::toggleFavoriteAction
+    options: { i18n: false }
+    methods: [POST]
+
+favorite_ids:
+    path: /favorite/ids
+    defaults:
+        _controller: AppBundle\Controller\CabinetController::favoriteIdsAction
+    options: { i18n: false }
+    methods: [GET]
+# =============================================================================
+
 # Application =================================================================
 index:
     path: /

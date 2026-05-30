@@ -4,6 +4,7 @@ namespace OrderBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
 use WheelSpinBundle\Entity\WheelSpinOption;
 
 /**
@@ -150,6 +151,14 @@ class Order
      * @ORM\JoinColumn(name="wheel_spin_option_id", referencedColumnName="id", nullable=true)
      */
     protected $wheelSpinOption;
+
+    /**
+     * @var User|null
+     *
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    protected $user;
 
     /**
      * @var string
@@ -586,6 +595,18 @@ class Order
     public function setWheelSpinOption(WheelSpinOption $wheelSpinOption = null)
     {
         $this->wheelSpinOption = $wheelSpinOption;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

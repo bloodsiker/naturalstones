@@ -15,28 +15,45 @@
                 )
             }}
 
-            <button class="btn btn-search" type="button"><img src="{{ asset('bundles/app/images/search.png') }}" alt=""></button>
+            <div class="header-actions">
+                <button class="btn btn-search header-action-btn" type="button" aria-label="{{ 'frontend.search.title'|trans([], 'AppBundle') }}" title="{{ 'frontend.search.title'|trans([], 'AppBundle') }}">
+                    <img src="{{ asset('bundles/app/images/search.png') }}" alt="">
+                </button>
 
-            {% if app.request.get('_route') != 'cart' %}
+                {% if app.user %}
+                    <a href="{{ path('cabinet') }}" class="header-action-btn header-account-link" aria-label="{{ 'frontend.footer.links.cabinet'|trans([], 'AppBundle') }}" title="{{ 'frontend.footer.links.cabinet'|trans([], 'AppBundle') }}">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M12 12a4.5 4.5 0 1 0-4.5-4.5A4.505 4.505 0 0 0 12 12zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z"></path>
+                        </svg>
+                    </a>
+                {% else %}
+                    <a href="{{ path('login') }}" class="header-action-btn header-account-link" aria-label="{{ 'frontend.footer.links.login'|trans([], 'AppBundle') }}" title="{{ 'frontend.footer.links.login'|trans([], 'AppBundle') }}">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M10 17v-2h4V9h-4V7l-5 5 5 5zm7-13H11V2h6a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2h-6v-2h6V4z"></path>
+                        </svg>
+                    </a>
+                {% endif %}
 
-                <div class="header-cart">
-                    {{
-                        sonata_block_render(
-                            { 'type': 'app.block.service.cart' },
-                            { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART_QUANTITY') }
-                        )
-                    }}
-
-                    <div class="header-cart-info">
+                {% if app.request.get('_route') != 'cart' %}
+                    <div class="header-cart">
                         {{
                             sonata_block_render(
                                 { 'type': 'app.block.service.cart' },
-                                { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART') }
+                                { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART_QUANTITY') }
                             )
                         }}
+
+                        <div class="header-cart-info">
+                            {{
+                                sonata_block_render(
+                                    { 'type': 'app.block.service.cart' },
+                                    { 'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_CART') }
+                                )
+                            }}
+                        </div>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
     <div class="header-overlay"></div>

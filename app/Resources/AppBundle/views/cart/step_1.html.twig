@@ -5,7 +5,7 @@
             { 'type': 'app.block.service.breadcrumb' }
         ) }}
 
-        {% set infoCart = app.session.get('infoCart') %}
+        {% set infoCart = infoCart is defined ? infoCart : app.session.get('infoCart') %}
 
         <h1>{{ 'frontend.cart.ordering'|trans([], 'AppBundle') }}</h1>
         <form action="{{ path('step-2') }}" method="get" class="order-form simple-form">
@@ -76,8 +76,31 @@
                 <div class="input-block">
                     <input type="text" name="email" placeholder="{{ 'frontend.cart.form.email'|trans([], 'AppBundle') }}" value="{{ infoCart.email is defined ? infoCart.email : null }}">
                 </div>
-                <div class="input-block">
-                    <input type="text" name="address" placeholder="{{ 'frontend.cart.form.address'|trans([], 'AppBundle') }}" value="{{ infoCart.address is defined ? infoCart.address : null }}">
+                {% set selectedAddressId = infoCart.saved_address_id is defined ? infoCart.saved_address_id : null %}
+                <div class="input-block checkout-address-block">
+                    <label class="checkout-address-block__label">{{ 'frontend.cart.form.address_delivery'|trans([], 'AppBundle') }}</label>
+                    {% if app.user and savedAddresses is defined and savedAddresses is not empty %}
+                        <div class="checkout-address-block__select-wrap">
+                            <select class="checkout-address-select" id="checkoutAddressSelect" name="saved_address_id">
+                                <option value="manual" {{ selectedAddressId is null ? 'selected' : null }}>
+                                    {{ 'frontend.cart.form.enter_address_manually'|trans([], 'AppBundle') }}
+                                </option>
+                                {% for savedAddress in savedAddresses %}
+                                    <option value="{{ savedAddress.id }}"
+                                            data-address="{{ savedAddress.address|e('html_attr') }}"
+                                            {{ selectedAddressId == savedAddress.id ? 'selected' : null }}>
+                                        {{ savedAddress.title ?: ('frontend.cabinet.addresses.no_title'|trans([], 'AppBundle')) }} - {{ savedAddress.address }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                    <textarea class="checkout-address-manual" id="checkoutAddressManual" {% if not (app.user and savedAddresses is defined and savedAddresses is not empty) %}name="address"{% endif %} rows="3"
+                              placeholder="{{ 'frontend.cart.form.address_manual_placeholder'|trans([], 'AppBundle') }}"
+                              {% if app.user and selectedAddressId is not null %}style="display:none"{% endif %}>{{ infoCart.address is defined and selectedAddressId is null ? infoCart.address : null }}</textarea>
+                    {% if app.user and savedAddresses is defined and savedAddresses is not empty %}
+                        <input type="hidden" name="address" id="checkoutAddressHidden" value="{{ infoCart.address is defined ? infoCart.address : null }}">
+                    {% endif %}
                 </div>
                 <div class="input-block">
                     <textarea name="comment" id="" cols="30" rows="3" placeholder="{{ 'frontend.cart.form.comment'|trans([], 'AppBundle') }}">{{ infoCart.comment is defined ? infoCart.comment : null }}</textarea>
@@ -99,6 +122,48 @@
             }}
 
         </form>
+
+        <script>
+            (function () {
+                var select = document.getElementById('checkoutAddressSelect');
+                var manual = document.getElementById('checkoutAddressManual');
+                var hidden = document.getElementById('checkoutAddressHidden');
+
+                if (!hidden) {
+                    return;
+                }
+
+                function syncAddress() {
+                    if (!select) {
+                        hidden.value = manual ? manual.value : hidden.value;
+                        return;
+                    }
+
+                    if (select.value === 'manual') {
+                        if (manual) {
+                            manual.style.display = '';
+                            hidden.value = manual.value;
+                        }
+                    } else {
+                        var option = select.options[select.selectedIndex];
+                        if (manual) {
+                            manual.style.display = 'none';
+                        }
+                        hidden.value = option ? (option.getAttribute('data-address') || '') : '';
+                    }
+                }
+
+                if (select) {
+                    select.addEventListener('change', syncAddress);
+                }
+
+                if (manual) {
+                    manual.addEventListener('input', syncAddress);
+                }
+
+                syncAddress();
+            })();
+        </script>
 
     </div>
 </section>

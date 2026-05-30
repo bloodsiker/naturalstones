@@ -1,0 +1,37 @@
+<section class="simple-section">
+    <div class="container">
+        <div class="auth-wrap">
+            <div class="auth-card">
+                <h1 class="auth-card__title">{{ 'frontend.login.title'|trans([], 'AppBundle') }}</h1>
+
+                {% if error %}
+                    <div class="auth-card__error">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+
+                <form method="post" action="{{ path('login') }}" class="auth-form">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <div class="auth-form__field">
+                        <label class="auth-form__label" for="login_email">Email</label>
+                        <input class="auth-form__input" id="login_email" type="email" name="_username"
+                               value="{{ last_username }}" required autocomplete="email" placeholder="your@email.com">
+                    </div>
+
+                    <div class="auth-form__field">
+                        <label class="auth-form__label" for="login_password">{{ 'frontend.login.password_label'|trans([], 'AppBundle') }}</label>
+                        <input class="auth-form__input" id="login_password" type="password" name="_password"
+                               required autocomplete="current-password" placeholder="••••••">
+                    </div>
+
+                    <button class="button auth-form__submit" type="submit">{{ 'frontend.login.submit'|trans([], 'AppBundle') }}</button>
+                </form>
+
+                <div class="auth-card__footer">
+                    {{ 'frontend.login.no_account'|trans([], 'AppBundle') }}&nbsp;<a href="{{ path('register') }}">{{ 'frontend.login.register_link'|trans([], 'AppBundle') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

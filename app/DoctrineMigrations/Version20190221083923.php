@@ -13,7 +13,7 @@ final class Version20190221083923 extends AbstractMigration
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Page redirect (PageBundle)';
     }
@@ -23,7 +23,7 @@ final class Version20190221083923 extends AbstractMigration
      *
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $redirect = $schema->createTable('page_page_redirect');
         $redirect->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
@@ -41,7 +41,7 @@ final class Version20190221083923 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('page_page_redirect');
     }

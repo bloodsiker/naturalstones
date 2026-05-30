@@ -14,10 +14,14 @@ class OrderMessageBuilder implements BuilderMessage
 
     private ProductRouterHelper $productRouterHelper;
 
+    private string $fullDomain;
+
     public function __construct(
-        ProductRouterHelper $productRouterHelper
+        ProductRouterHelper $productRouterHelper,
+        string $fullDomain
     ) {
         $this->productRouterHelper = $productRouterHelper;
+        $this->fullDomain = rtrim($fullDomain, '/');
     }
 
     public function get(): string
@@ -52,10 +56,10 @@ class OrderMessageBuilder implements BuilderMessage
     public function getMessageFeedback(Request $request): string
     {
         $this->message = "Не нашли то, что искали?" . PHP_EOL;
-        $this->message .= "<b>Имя:</b> " . $request->get('name') . PHP_EOL;
-        $this->message .= "<b>Телефон:</b> " . $request->get('phone') . PHP_EOL;
-        $this->message .= "<b>Email:</b> " . $request->get('email') . PHP_EOL;
-        $this->message .= "<b>Сообщение:</b> " . $request->get('message') . PHP_EOL;
+        $this->message .= "<b>Имя:</b> " . $this->escape($request->get('name')) . PHP_EOL;
+        $this->message .= "<b>Телефон:</b> " . $this->escape($request->get('phone')) . PHP_EOL;
+        $this->message .= "<b>Email:</b> " . $this->escape($request->get('email')) . PHP_EOL;
+        $this->message .= "<b>Сообщение:</b> " . $this->escape($request->get('message')) . PHP_EOL;
 
         return $this->get();
     }
@@ -86,9 +90,9 @@ class OrderMessageBuilder implements BuilderMessage
     public function getMessenger(): self
     {
         if ($this->order->getMessenger() === 'instagram') {
-            $this->message .= "<b>Ссылка на инстаграм:</b> " . $this->order->getInstagram() . PHP_EOL;
+            $this->message .= "<b>Ссылка на инстаграм:</b> " . $this->escape($this->order->getInstagram()) . PHP_EOL;
         } else {
-            $this->message .= "<b>Телефон:</b> " . $this->order->getPhone() . ' - ' . $this->order->getMessenger() . PHP_EOL;
+            $this->message .= "<b>Телефон:</b> " . $this->escape($this->order->getPhone()) . ' - ' . $this->escape($this->order->getMessenger()) . PHP_EOL;
         }
 
         return $this;
@@ -96,7 +100,7 @@ class OrderMessageBuilder implements BuilderMessage
 
     public function getName(): self
     {
-        $this->message .= "<b>Имя:</b> " . $this->order->getFio() . PHP_EOL;
+        $this->message .= "<b>Имя:</b> " . $this->escape($this->order->getFio()) . PHP_EOL;
 
         return $this;
     }
@@ -104,7 +108,7 @@ class OrderMessageBuilder implements BuilderMessage
     public function getEmail(): self
     {
         if ($this->order->getEmail()) {
-            $this->message .= "<b>Email:</b> " . $this->order->getEmail() . PHP_EOL;
+            $this->message .= "<b>Email:</b> " . $this->escape($this->order->getEmail()) . PHP_EOL;
         }
 
         return $this;
@@ -113,7 +117,7 @@ class OrderMessageBuilder implements BuilderMessage
     public function getAddress(): self
     {
         if ($this->order->getAddress()) {
-            $this->message .= "<b>Адрес:</b> " . $this->order->getAddress() . PHP_EOL;
+            $this->message .= "<b>Адрес:</b> " . $this->escape($this->order->getAddress()) . PHP_EOL;
         }
 
         return $this;
@@ -122,7 +126,7 @@ class OrderMessageBuilder implements BuilderMessage
     public function getComment(): self
     {
         if ($this->order->getComment()) {
-            $this->message .= "<b>Комментарий:</b> " . $this->order->getComment() . PHP_EOL;
+            $this->message .= "<b>Комментарий:</b> " . $this->escape($this->order->getComment()) . PHP_EOL;
         }
 
         return $this;
@@ -148,13 +152,20 @@ class OrderMessageBuilder implements BuilderMessage
     {
         foreach ($this->order->getOrderHasItems() as $orderItem) {
             $product = $orderItem->getProduct();
-            $link = $this->productRouterHelper->getProductPath($product, true);
-            $this->message .= "--- " . sprintf("<a href='%s'>%s %s</a>", $link, $product->getName(), $product->getSize()  ) ." - " . $orderItem->getQuantity() . 'шт' . ' - ' . $orderItem->getPrice() . ' грн';
+            $link = $this->productRouterHelper->getProductPath($product, true, $this->fullDomain);
+
+            $this->message .= "--- " . sprintf(
+                '<a href="%s">%s %s</a>',
+                $this->escape($link),
+                $this->escape($product->getName()),
+                $this->escape($product->getSize())
+            ) . ' - ' . $orderItem->getQuantity() . ' шт - ' . $orderItem->getPrice() . ' грн';
+
             if ($orderItem->getColour()) {
-                $this->message .= " Цвет: " . $orderItem->getColour()->getName();
+                $this->message .= ' Цвет: ' . $this->escape($orderItem->getColour()->getName());
             }
             if ($orderItem->getOptions()) {
-                $this->message .= " Параметры : " . $orderItem->getOptions();
+                $this->message .= ' Параметры : ' . $this->escape($orderItem->getOptions());
             }
             if ($orderItem->getDiscount()) {
                 $this->message .= ' (Скидка ' . $orderItem->getDiscount() . ' грн)' . PHP_EOL;
@@ -164,5 +175,10 @@ class OrderMessageBuilder implements BuilderMessage
         }
 
         return $this;
+    }
+
+    private function escape(?string $value): string
+    {
+        return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 }

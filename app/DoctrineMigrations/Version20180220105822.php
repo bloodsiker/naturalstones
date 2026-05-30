@@ -2,7 +2,7 @@
 
 namespace Application\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
@@ -13,7 +13,7 @@ class Version20180220105822 extends AbstractMigration
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return "Users, Groups and associations between these two (UserBundle)";
     }
@@ -21,7 +21,7 @@ class Version20180220105822 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         // table for users
         $users = $schema->createTable('user_users');
@@ -88,7 +88,7 @@ class Version20180220105822 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('user_users_groups');
         $schema->dropTable('user_groups');

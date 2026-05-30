@@ -2,7 +2,7 @@
 
 namespace Application\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
@@ -16,7 +16,7 @@ class Version20150201000020 extends AbstractMigration
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Alter table page_site delete columns (title, meta_keywords, meta_description), and create table page_site_translations';
     }
@@ -82,7 +82,7 @@ class Version20150201000020 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         $stmt = $this->connection->prepare('
             INSERT INTO page_site_translation
@@ -153,7 +153,7 @@ class Version20150201000020 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function postDown(Schema $schema)
+    public function postDown(Schema $schema): void
     {
         $stmt = $this->connection->prepare('
             UPDATE page_site

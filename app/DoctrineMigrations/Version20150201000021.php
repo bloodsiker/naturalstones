@@ -13,7 +13,7 @@ final class Version20150201000021 extends AbstractMigration
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Site variables (PageBundle)';
     }
@@ -21,7 +21,7 @@ final class Version20150201000021 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $placement = $schema->createTable('page_site_variable_placement');
         $placement->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
@@ -44,7 +44,7 @@ final class Version20150201000021 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('page_site_variable');
         $schema->dropTable('page_site_variable_placement');
@@ -55,7 +55,7 @@ final class Version20150201000021 extends AbstractMigration
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         $this->connection->executeQuery('
             INSERT INTO `page_site_variable_placement` (`id`, `alias`)

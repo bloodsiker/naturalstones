@@ -1,4 +1,66 @@
+/* Favorites =================================================================*/
+var _favoriteIds = new Set();
+
+function _updateFavoriteButtons(scope) {
+    var btns = (scope || document).querySelectorAll('.product-favorite');
+    btns.forEach(function (btn) {
+        var id = parseInt(btn.dataset.id, 10);
+        btn.classList.toggle('product-favorite--active', _favoriteIds.has(id));
+    });
+}
+
+function _loadFavoriteIds() {
+    $.getJSON('/favorite/ids', function (ids) {
+        _favoriteIds = new Set(ids);
+        _updateFavoriteButtons();
+    });
+}
+
+$(document).on('click', '.product-favorite', function (e) {
+    e.preventDefault();
+    var btn = this;
+    var id  = btn.dataset.id;
+
+    $(btn).removeClass('product-favorite--pop');
+    void btn.offsetWidth; // reflow to restart animation
+    $(btn).addClass('product-favorite--pop').one('animationend webkitAnimationEnd', function () {
+        $(this).removeClass('product-favorite--pop');
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: '/favorite/toggle/' + id,
+        success: function (data) {
+            if (data.favorited) {
+                _favoriteIds.add(parseInt(id, 10));
+            } else {
+                _favoriteIds.delete(parseInt(id, 10));
+            }
+            _updateFavoriteButtons();
+
+            var $label = $(btn).find('.product-favorite__label');
+            if ($label.length) {
+                $label.text(data.favorited ? $label.data('active') : $label.data('default'));
+            }
+
+            if (!data.favorited && $(btn).closest('.cabinet-fav-item').length) {
+                $(btn).closest('.cabinet-fav-item').fadeOut(300, function () { $(this).remove(); });
+            }
+        },
+        error: function (xhr) {
+            if (xhr.status === 401) {
+                window.location.href = '/login';
+            }
+        }
+    });
+});
+/* ===========================================================================*/
+
 $(document).ready(function() {
+
+    if ($('.product-favorite').length) {
+        _loadFavoriteIds();
+    }
 
 	// Адаптация меню под мобильные
 	$('.header-menu-desctop').find('.topmenu').each(function(i) {
@@ -756,8 +818,10 @@ $(document).ready(function() {
 			url: ajaxUrl,
 			data: paramsObj,
 			success: function (response) {
-				$('.main-catalog').find('.catalog-block:last').after(response.view);
+				var $newItems = $(response.view);
+				$('.main-catalog').find('.catalog-block:last').after($newItems);
 				$('.pagination-container').html(response.pagination);
+				_updateFavoriteButtons();
 				_this.removeClass('loading');
 				console.log(page);
 

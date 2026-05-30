@@ -16,8 +16,8 @@ use ProductBundle\Entity\Product;
 use ProductBundle\Helper\ProductRouterHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -63,7 +63,7 @@ class SendTelegramService
 
     public function sendMessageFromQuickForm(Order $order)
     {
-        $adminOrderLink = $this->route->generate('admin_order_order_edit', ['id' => $order->getId()], Router::ABSOLUTE_URL);
+        $adminOrderLink = $this->fullDomain . $this->route->generate('admin_order_order_edit', ['id' => $order->getId()], UrlGeneratorInterface::ABSOLUTE_PATH);
 
         $html = $this->orderMessageBuilder
             ->setOrder($order)
@@ -86,7 +86,7 @@ class SendTelegramService
 
     public function sendMessageFromCart(Order $order)
     {
-        $adminOrderLink = $this->route->generate('admin_order_order_edit', ['id' => $order->getId()], Router::ABSOLUTE_URL);
+        $adminOrderLink = $this->fullDomain . $this->route->generate('admin_order_order_edit', ['id' => $order->getId()], UrlGeneratorInterface::ABSOLUTE_PATH);
 
         $html = $this->orderMessageBuilder
             ->setOrder($order)

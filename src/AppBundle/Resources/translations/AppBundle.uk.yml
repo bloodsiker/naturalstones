@@ -66,7 +66,7 @@ frontend:
         continue: Продовжити покупки
         checkout: Оформити замовлення
         empty: Кошик порожній
-        add_to_cart: Додати до кошику
+        add_to_cart: В кошик
         your_order: Ваше замовлення
         edit_order: Редагувати
         total_order: Сума замовлення
@@ -81,6 +81,8 @@ frontend:
             email_2: E-mail
             address: Адреса доставки (Відділення Нової пошти)
             address_delivery: Адреса доставки
+            enter_address_manually: Ввести адресу вручну
+            address_manual_placeholder: Вкажіть адресу доставки вручну
             comment: Коментар
             btn_cancel: Скасувати
             btn_next: Далі
@@ -237,6 +239,85 @@ frontend:
             constructor: Конструктор браслетів
             articles: Статті
             reviews: Відгуки
+            cabinet: Кабінет
+            login: Увійти
+
+    product:
+        add_to_favorites: В обране
+        in_favorites: В обраних
+
+    login:
+        title: Вхід до кабінету
+        password_label: Пароль
+        submit: Увійти
+        no_account: Немає акаунту?
+        register_link: Зареєструватись
+
+    register:
+        title: Реєстрація
+        firstname: "Ім'я"
+        lastname: Прізвище
+        phone: Телефон
+        password_label: Пароль
+        password_hint: (мін. 6 символів)
+        submit: Зареєструватись
+        have_account: Вже є акаунт?
+        login_link: Увійти
+        error:
+            invalid_csrf: Невірний токен безпеки, спробуйте ще раз.
+            empty_email: Введіть email.
+            invalid_email: Введіть коректний email.
+            empty_password: Введіть пароль.
+            weak_password: Пароль повинен містити мінімум 6 символів.
+            email_exists: Користувач з таким email вже зареєстрований.
+
+    cabinet:
+        title: Особистий кабінет
+        profile_title: Мій профіль
+        email_label: Email
+        name_label: "Ім'я"
+        logout: Вийти з акаунту
+        orders_title: Мої замовлення
+        no_orders: Замовлень поки немає.
+        order_id: "№"
+        order_date: Дата
+        order_sum: Сума
+        order_status: Статус
+        items_count: Кількість
+        view_order: Переглянути замовлення
+        back_to_orders: Повернутися до замовлень
+        status_new: Нове
+        status_completed: Виконано
+        status_cancelled: Скасовано
+        favorites_title: Обрані товари
+        no_favorites: У вас ще немає обраних товарів.
+        favorites_remove: Видалити з обраних
+        addresses_title: Мої адреси
+        addresses:
+            saved: Збережені адреси
+            empty: Збережених адрес поки немає.
+            default_badge: Основна
+            no_title: Без назви
+            make_default: Зробити основною
+            delete: Видалити
+            form:
+                title: Назва адреси
+                title_placeholder: Наприклад, Дім або Офіс
+                address: Адреса доставки
+                address_placeholder: Вулиця, номер будинку, квартира, місто
+                default: Зробити основною
+                save: Зберегти адресу
+            error:
+                invalid_csrf: Невірний токен безпеки, спробуйте ще раз.
+                empty_address: Вкажіть адресу доставки.
+        profile:
+            firstname: "Ім'я"
+            lastname: Прізвище
+            phone: Телефон
+            save: Зберегти зміни
+            saved: Дані успішно збережено.
+            error:
+                invalid_csrf: Невірний токен безпеки, спробуйте ще раз.
 
     breadcrumb:
         main: Головна

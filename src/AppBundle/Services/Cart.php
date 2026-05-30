@@ -7,8 +7,10 @@ use OrderBundle\Entity\Order;
 use OrderBundle\Entity\OrderHasItem;
 use ProductBundle\Entity\Product;
 use ShareBundle\Entity\Colour;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use UserBundle\Entity\User;
 
 /**
  * Class Cart
@@ -29,14 +31,21 @@ class Cart
     private $entityManager;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
      * Cart constructor.
      * @param Session       $session
      * @param EntityManager $entityManager
+     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(Session $session, EntityManager $entityManager)
+    public function __construct(Session $session, EntityManager $entityManager, TokenStorageInterface $tokenStorage)
     {
         $this->session = $session;
         $this->entityManager = $entityManager;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -241,6 +250,14 @@ class Cart
         $order->setMessenger($messenger);
         $order->setType($orderType);
         $order->setCallMe($callMe);
+
+        $token = $this->tokenStorage->getToken();
+        if ($token) {
+            $user = $token->getUser();
+            if ($user instanceof User) {
+                $order->setUser($user);
+            }
+        }
 
         if ($productObject) {
             $productObject->setFinalPrice($colourObject);

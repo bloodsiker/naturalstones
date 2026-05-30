@@ -41,7 +41,9 @@ security:
                 check_path: app_login_check
                 success_handler: app.security.authentication_handler
                 failure_handler: app.security.authentication_handler
-            logout:             true
+            logout:
+                path:   logout
+                target: index
             anonymous:          true
 
     password_hashers:

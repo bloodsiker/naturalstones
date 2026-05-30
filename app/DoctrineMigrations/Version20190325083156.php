@@ -13,7 +13,7 @@ final class Version20190325083156 extends AbstractMigration
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Get info download book (BookBundle)';
     }
@@ -23,7 +23,7 @@ final class Version20190325083156 extends AbstractMigration
      *
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $infoDownload = $schema->createTable('books_info_download');
         $infoDownload->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
@@ -37,7 +37,7 @@ final class Version20190325083156 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('books_info_download');
     }

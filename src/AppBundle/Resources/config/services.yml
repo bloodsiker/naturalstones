@@ -106,6 +106,7 @@ services:
         arguments:
             - '@session'
             - '@app.entity_manager'
+            - '@security.token_storage'
 
     app.helper.encrypt:
         class: AppBundle\Helper\EncryptHelper
@@ -122,6 +123,7 @@ services:
         class: AppBundle\Builder\OrderMessageBuilder
         arguments:
             - '@product.router.helper'
+            - '%full_domain%'
 
     # FQCN aliases needed for AbstractController::getSubscribedServices() type resolution
     AppBundle\Services\SeoUpdater: '@app.seo.updater'

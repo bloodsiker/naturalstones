@@ -124,7 +124,7 @@
                 <div class="top">
                     <h5>{{ 'frontend.quic_order.title'|trans([], 'AppBundle') }}</h5>
                     <div class="messengers-input">
-                        <input class="telegram phone-input quick-phone" name="phone" type="text" placeholder="+38 (___) ___-__-__" autocomplete="off">
+                        <input class="telegram phone-input quick-phone" name="phone" type="text" placeholder="+38 (___) ___-__-__" value="{{ infoCart.phone is defined ? infoCart.phone : null }}" autocomplete="off">
                         <input class="" name="instagram" type="text" placeholder="https://instagram.com" style="display: none" autocomplete="off">
                         <span class="error-message text-red"></span>
                     </div>

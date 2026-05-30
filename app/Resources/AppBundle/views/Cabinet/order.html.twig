@@ -1,0 +1,96 @@
+<section class="simple-section">
+    <div class="container">
+
+        <h1>{{ 'frontend.cabinet.title'|trans([], 'AppBundle') }}</h1>
+
+        <div class="cabinet-layout">
+
+            {{ include('@App/Cabinet/_sidebar.html.twig') }}
+
+            <div class="cabinet-content">
+                <div class="cabinet-card">
+                    <div class="cabinet-card__title cabinet-order-detail__title">
+                        <div>
+                            <div class="cabinet-order-detail__heading">{{ 'frontend.cabinet.view_order'|trans([], 'AppBundle') }} #{{ order.id }}</div>
+                            <div class="cabinet-order-detail__date">{{ order.createdAt|date('d.m.Y H:i') }}</div>
+                        </div>
+                        <span class="cabinet-orders-status cabinet-orders-status--{{ order.status }}">
+                            {% if order.status == 1 %}{{ 'frontend.cabinet.status_new'|trans([], 'AppBundle') }}
+                            {% elseif order.status == 2 %}{{ 'frontend.cabinet.status_completed'|trans([], 'AppBundle') }}
+                            {% else %}{{ 'frontend.cabinet.status_cancelled'|trans([], 'AppBundle') }}{% endif %}
+                        </span>
+                    </div>
+
+                    <div class="cabinet-order-detail">
+                        <div class="cabinet-order-detail__meta">
+                            <span>{{ 'frontend.cabinet.order_sum'|trans([], 'AppBundle') }}</span>
+                            <strong>{{ order.orderSum|number_format(2, ',', ' ') }} грн</strong>
+                        </div>
+                        <div class="cabinet-order-detail__meta">
+                            <span>{{ 'frontend.cabinet.items_count'|trans([], 'AppBundle') }}</span>
+                            <strong>{{ order.orderHasItems|length }}</strong>
+                        </div>
+                        {% if order.fio %}
+                            <div class="cabinet-order-detail__meta">
+                                <span>{{ 'frontend.order.client_name'|trans([], 'AppBundle') }}</span>
+                                <strong>{{ order.fio }}</strong>
+                            </div>
+                        {% endif %}
+                        {% if order.phone %}
+                            <div class="cabinet-order-detail__meta">
+                                <span>{{ 'frontend.order.client_phone'|trans([], 'AppBundle') }}</span>
+                                <strong>{{ order.phone }}</strong>
+                            </div>
+                        {% endif %}
+                        {% if order.email %}
+                            <div class="cabinet-order-detail__meta">
+                                <span>E-mail</span>
+                                <strong>{{ order.email }}</strong>
+                            </div>
+                        {% endif %}
+                        {% if order.address %}
+                            <div class="cabinet-order-detail__meta cabinet-order-detail__meta--full">
+                                <span>{{ 'frontend.order.client_delivery'|trans([], 'AppBundle') }}</span>
+                                <strong>{{ order.address }}</strong>
+                            </div>
+                        {% endif %}
+                        {% if order.comment %}
+                            <div class="cabinet-order-detail__meta cabinet-order-detail__meta--full">
+                                <span>{{ 'frontend.order.comment'|trans([], 'AppBundle') }}</span>
+                                <strong>{{ order.comment }}</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="cabinet-order-items">
+                        {% for item in order.orderHasItems %}
+                            <div class="cabinet-order-item">
+                                <a href="{{ product_path(item.product) }}" class="cabinet-order-item__image">
+                                    <img src="{{ asset(item.product.image.getPath()) }}" alt="{{ item.product.name }}">
+                                </a>
+                                <div class="cabinet-order-item__info">
+                                    <a href="{{ product_path(item.product) }}" class="cabinet-order-item__name">{{ item.product.name }}</a>
+                                    <div class="cabinet-order-item__meta">
+                                        <span>{{ item.quantity }} шт.</span>
+                                        <span>{{ item.price|number_format(2, ',', ' ') }} грн</span>
+                                    </div>
+                                    {% if item.options %}
+                                        <div class="cabinet-order-item__options">{{ item.options }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="cabinet-order-detail__footer">
+                        <a href="{{ path('cabinet') }}" class="button white-button cabinet-order-detail__back">
+                            {{ 'frontend.cabinet.back_to_orders'|trans([], 'AppBundle') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>

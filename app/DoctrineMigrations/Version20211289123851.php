@@ -13,7 +13,7 @@ final class Version20211289123851 extends AbstractMigration
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Order (OrderBundle)';
     }
@@ -23,7 +23,7 @@ final class Version20211289123851 extends AbstractMigration
      *
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $order = $schema->createTable('order_order');
         $order->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
@@ -59,7 +59,7 @@ final class Version20211289123851 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('order_order_has_item');
         $schema->dropTable('order_order');

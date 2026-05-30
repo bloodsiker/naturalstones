@@ -51,7 +51,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse(['success' => true]);
         } else {
-            $url = $this->router->generate('fos_user_profile_show');
+            $url = $this->router->generate('cabinet');
             return new RedirectResponse($url);
         }
     }
@@ -68,7 +68,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
             return new JsonResponse(array('success' => false, 'message' => $exception->getMessage()));
         } else {
             $request->get('session')->set(Security::AUTHENTICATION_ERROR, $exception);
-            return new RedirectResponse($this->router->generate('fos_user_security_login'));
+            return new RedirectResponse($this->router->generate('login'));
         }
     }
 }

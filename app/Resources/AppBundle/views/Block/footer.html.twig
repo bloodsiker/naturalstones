@@ -13,6 +13,11 @@
             <a href="{{ path('constructor') }}">{{ 'frontend.footer.links.constructor'|trans([], 'AppBundle') }}</a>
             <a href="{{ path('article_list') }}">{{ 'frontend.footer.links.articles'|trans([], 'AppBundle') }}</a>
             <a href="{{ path('review_list') }}">{{ 'frontend.footer.links.reviews'|trans([], 'AppBundle') }}</a>
+            {% if app.user %}
+                <a href="{{ path('cabinet') }}">{{ 'frontend.footer.links.cabinet'|trans([], 'AppBundle') }}</a>
+            {% else %}
+                <a href="{{ path('login') }}">{{ 'frontend.footer.links.login'|trans([], 'AppBundle') }}</a>
+            {% endif %}
         </div>
 
         <div class="footer-block">

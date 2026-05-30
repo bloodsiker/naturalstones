@@ -66,7 +66,7 @@ frontend:
         continue: Продолжить покупки
         checkout: Оформить заказ
         empty: Корзина пустая
-        add_to_cart: Добавить в корзину
+        add_to_cart: В корзину
         your_order: Ваш заказ
         edit_order: Редактировать
         total_order: Сумма заказа
@@ -81,6 +81,8 @@ frontend:
             email_2: E-mail
             address: Адрес доставки (Отделение Новой почты)
             address_delivery: Адрес доставки
+            enter_address_manually: Ввести адрес вручную
+            address_manual_placeholder: Укажите адрес доставки вручную
             comment: Комментарий
             btn_cancel: Отменить
             btn_next: Дальше
@@ -237,6 +239,85 @@ frontend:
             constructor: Конструктор браслетов
             articles: Статьи
             reviews: Отзывы
+            cabinet: Кабинет
+            login: Войти
+
+    product:
+        add_to_favorites: В избранное
+        in_favorites: В избранном
+
+    login:
+        title: Вход в кабинет
+        password_label: Пароль
+        submit: Войти
+        no_account: Нет аккаунта?
+        register_link: Зарегистрироваться
+
+    register:
+        title: Регистрация
+        firstname: Имя
+        lastname: Фамилия
+        phone: Телефон
+        password_label: Пароль
+        password_hint: (мин. 6 символов)
+        submit: Зарегистрироваться
+        have_account: Уже есть аккаунт?
+        login_link: Войти
+        error:
+            invalid_csrf: Неверный токен безопасности, попробуйте ещё раз.
+            empty_email: Введите email.
+            invalid_email: Введите корректный email.
+            empty_password: Введите пароль.
+            weak_password: Пароль должен содержать минимум 6 символов.
+            email_exists: Пользователь с таким email уже зарегистрирован.
+
+    cabinet:
+        title: Личный кабинет
+        profile_title: Мой профиль
+        email_label: Email
+        name_label: Имя
+        logout: Выйти из аккаунта
+        orders_title: Мои заказы
+        no_orders: Заказов пока нет.
+        order_id: "№"
+        order_date: Дата
+        order_sum: Сумма
+        order_status: Статус
+        items_count: Количество
+        view_order: Просмотреть заказ
+        back_to_orders: Вернуться к заказам
+        status_new: Новый
+        status_completed: Выполнен
+        status_cancelled: Отменён
+        favorites_title: Избранные товары
+        no_favorites: У вас пока нет избранных товаров.
+        favorites_remove: Удалить из избранного
+        addresses_title: Мои адреса
+        addresses:
+            saved: Сохранённые адреса
+            empty: Сохранённых адресов пока нет.
+            default_badge: Основной
+            no_title: Без названия
+            make_default: Сделать основным
+            delete: Удалить
+            form:
+                title: Название адреса
+                title_placeholder: Например, Дом или Офис
+                address: Адрес доставки
+                address_placeholder: Улица, номер дома, квартира, город
+                default: Сделать основным
+                save: Сохранить адрес
+            error:
+                invalid_csrf: Неверный токен безопасности, попробуйте ещё раз.
+                empty_address: Укажите адрес доставки.
+        profile:
+            firstname: Имя
+            lastname: Фамилия
+            phone: Телефон
+            save: Сохранить изменения
+            saved: Данные успешно сохранены.
+            error:
+                invalid_csrf: Неверный токен безопасности, попробуйте ещё раз.
 
     breadcrumb:
         main: Главная

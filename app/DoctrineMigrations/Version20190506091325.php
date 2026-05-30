@@ -13,7 +13,7 @@ final class Version20190506091325 extends AbstractMigration
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return "Quiz, QuizAnswer, QuizResult (QuizBundle)";
     }
@@ -23,7 +23,7 @@ final class Version20190506091325 extends AbstractMigration
      *
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         // quiz
         $quiz = $schema->createTable('quiz_quiz');
@@ -69,7 +69,7 @@ final class Version20190506091325 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('quiz_quiz_result');
         $schema->dropTable('quiz_quiz_has_answer');

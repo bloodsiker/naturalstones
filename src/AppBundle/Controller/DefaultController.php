@@ -13,6 +13,7 @@ use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use UserBundle\Entity\UserDeliveryAddress;
 
 /**
  * Class DefaultController
@@ -48,6 +49,7 @@ class DefaultController extends BaseController
     {
         $breadcrumb = $this->get('app.breadcrumb');
         $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.cart', [], 'AppBundle')]);
+        $cartViewData = $this->buildCartViewData($request);
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $this->get('translator')->trans('frontend.meta.meta_title_cart', [], 'AppBundle'),
@@ -58,13 +60,17 @@ class DefaultController extends BaseController
             ],
         ]);
 
-        return $this->render('@App/cart/cart.html.twig');
+        return $this->render('@App/cart/cart.html.twig', [
+            'infoCart' => $cartViewData['infoCart'],
+            'savedAddresses' => $cartViewData['savedAddresses'],
+        ]);
     }
 
     public function cartStepOneAction(Request $request)
     {
         $breadcrumb = $this->get('app.breadcrumb');
         $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.step', [], 'AppBundle')]);
+        $cartViewData = $this->buildCartViewData($request);
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $this->get('translator')->trans('frontend.meta.meta_title_cart_step', ['%STEP%' => 1], 'AppBundle'),
@@ -76,7 +82,10 @@ class DefaultController extends BaseController
             ],
         ]);
 
-        return $this->render('@App/cart/step_1.html.twig');
+        return $this->render('@App/cart/step_1.html.twig', [
+            'infoCart' => $cartViewData['infoCart'],
+            'savedAddresses' => $cartViewData['savedAddresses'],
+        ]);
     }
 
     public function cartStepTwoAction(Request $request)
@@ -97,6 +106,47 @@ class DefaultController extends BaseController
         ]);
 
         return $this->render('@App/cart/step_2.html.twig');
+    }
+
+    private function buildCartViewData(Request $request): array
+    {
+        $session = $this->get('session');
+        $infoCart = $session->get('infoCart', []);
+        $user = $this->getUser();
+        $savedAddresses = [];
+
+        if ($user) {
+            $name = trim(sprintf('%s %s', (string) $user->getFirstname(), (string) $user->getLastname()));
+            if ($name !== '' && empty($infoCart['name'])) {
+                $infoCart['name'] = $name;
+            }
+
+            if (!empty($user->getPhone()) && empty($infoCart['phone'])) {
+                $infoCart['phone'] = $user->getPhone();
+            }
+
+            if (!empty($user->getEmail()) && empty($infoCart['email'])) {
+                $infoCart['email'] = $user->getEmail();
+            }
+
+            $savedAddresses = $this->getDoctrine()->getRepository(UserDeliveryAddress::class)->findBy(
+                ['user' => $user],
+                ['isDefault' => 'DESC', 'createdAt' => 'DESC']
+            );
+
+            if (empty($infoCart['saved_address_id']) && !empty($savedAddresses)) {
+                $infoCart['saved_address_id'] = $savedAddresses[0]->getId();
+            }
+
+            if (empty($infoCart['address']) && !empty($savedAddresses)) {
+                $infoCart['address'] = $savedAddresses[0]->getAddress();
+            }
+        }
+
+        return [
+            'infoCart' => $infoCart,
+            'savedAddresses' => $savedAddresses,
+        ];
     }
 
     public function constructorAction(Request $request)

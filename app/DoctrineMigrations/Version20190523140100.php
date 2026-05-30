@@ -13,7 +13,7 @@ final class Version20190523140100 extends AbstractMigration
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'MainImage (MainImageBundle)';
     }
@@ -23,7 +23,7 @@ final class Version20190523140100 extends AbstractMigration
      *
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $mainImage = $schema->createTable('main_image');
         $mainImage->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
@@ -40,7 +40,7 @@ final class Version20190523140100 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('main_image');
     }

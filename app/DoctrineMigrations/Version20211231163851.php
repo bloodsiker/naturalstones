@@ -13,7 +13,7 @@ final class Version20211231163851 extends AbstractMigration
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Set products (ProductBundle)';
     }
@@ -23,7 +23,7 @@ final class Version20211231163851 extends AbstractMigration
      *
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $productHasProducts = $schema->createTable('product_product_has_product');
         $productHasProducts->addColumn('id', 'integer', array('unsigned' => true, 'notnull' => true, 'autoincrement' => true));
@@ -40,7 +40,7 @@ final class Version20211231163851 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('product_product_has_product');
     }

@@ -13,7 +13,7 @@ final class Version202304072030222 extends AbstractMigration
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'WheelSpin (WheelSpinBundle)';
     }

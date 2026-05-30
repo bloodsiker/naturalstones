@@ -13,7 +13,7 @@ final class Version202302232030278 extends AbstractMigration
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Article (ArticleBundle)';
     }

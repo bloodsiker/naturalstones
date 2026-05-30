@@ -13,7 +13,7 @@ final class Version20212189123851 extends AbstractMigration
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Search (ProductBundle)';
     }
@@ -23,7 +23,7 @@ final class Version20212189123851 extends AbstractMigration
      *
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $history = $schema->createTable('product_search_history');
         $history->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
@@ -36,7 +36,7 @@ final class Version20212189123851 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $schema->dropTable('product_search_history');
     }

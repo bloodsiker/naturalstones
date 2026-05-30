@@ -125,7 +125,7 @@ final class Version202207140529556 extends AbstractMigration implements Containe
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
         $colourRepository = $em->getRepository('ShareBundle:Colour');

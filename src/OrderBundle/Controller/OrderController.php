@@ -2,13 +2,16 @@
 
 namespace OrderBundle\Controller;
 
+use AppBundle\Services\Cart;
+use AppBundle\Services\SendTelegramService;
+use Doctrine\ORM\EntityManagerInterface;
 use OrderBundle\Entity\Order;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class OrderController
@@ -16,6 +19,23 @@ use Symfony\Component\Routing\Router;
 class OrderController extends AbstractController
 {
     const ORDER_404 = 'Order doesn\'t exist';
+
+    private RouterInterface $router;
+    private Cart $cartService;
+    private SendTelegramService $telegramService;
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(
+        RouterInterface $router,
+        Cart $cartService,
+        SendTelegramService $telegramService,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->router = $router;
+        $this->cartService = $cartService;
+        $this->telegramService = $telegramService;
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * @param Request $request
@@ -41,11 +61,7 @@ class OrderController extends AbstractController
             ]);
         }
 
-        $router = $this->get('router');
-        $encrypt = $this->get('app.helper.encrypt');
-        $cartService = $this->get('app.cart');
-        $telegramService = $this->get('app.send_telegram');
-        $cart = $cartService->getProductsInfo();
+        $cart = $this->cartService->getProductsInfo();
 
         if (!isset($cart['product']) || !count($cart['product'])) {
             return new JsonResponse([
@@ -54,12 +70,12 @@ class OrderController extends AbstractController
             ]);
         }
 
-        $order = $cartService->orderCart($request);
-        $telegramService->sendMessageFromQuickForm($order);
+        $order = $this->cartService->orderCart($request);
+        $this->telegramService->sendMessageFromQuickForm($order);
 
         return new JsonResponse([
             'type' => 'success',
-            'url' => $router->generate('success_order', ['secret' => $order->getSecret()], Router::ABSOLUTE_URL)
+            'url' => $this->router->generate('success_order', ['secret' => $order->getSecret()], RouterInterface::ABSOLUTE_URL)
         ]);
     }
 
@@ -86,17 +102,12 @@ class OrderController extends AbstractController
             ]);
         }
 
-        $router = $this->get('router');
-        $encrypt = $this->get('app.helper.encrypt');
-        $cartService = $this->get('app.cart');
-        $telegramService = $this->get('app.send_telegram');
-
-        $order = $cartService->orderCart($request);
-        $telegramService->sendMessageFromQuickForm($order);
+        $order = $this->cartService->orderCart($request);
+        $this->telegramService->sendMessageFromQuickForm($order);
 
         return new JsonResponse([
             'type' => 'success',
-            'url' => $router->generate('success_order', ['secret' => $order->getSecret()], Router::ABSOLUTE_URL)
+            'url' => $this->router->generate('success_order', ['secret' => $order->getSecret()], RouterInterface::ABSOLUTE_URL)
         ]);
     }
 
@@ -117,11 +128,7 @@ class OrderController extends AbstractController
             ]);
         }
 
-        $router = $this->get('router');
-//        $encrypt = $this->get('app.helper.encrypt');
-        $cartService = $this->get('app.cart');
-        $telegramService = $this->get('app.send_telegram');
-        $cart = $cartService->getProductsInfo();
+        $cart = $this->cartService->getProductsInfo();
         if (!isset($cart['product']) || !count($cart['product'])) {
             return new JsonResponse([
                 'type' => 'error',
@@ -129,12 +136,12 @@ class OrderController extends AbstractController
             ]);
         }
 
-        $order = $cartService->orderCart($request, Order::TYPE_ORDER_CART);
-        $telegramService->sendMessageFromCart($order);
+        $order = $this->cartService->orderCart($request, Order::TYPE_ORDER_CART);
+        $this->telegramService->sendMessageFromCart($order);
 
         return new JsonResponse([
             'type' => 'success',
-            'url' => $router->generate('success_order', ['secret' => $order->getSecret()], Router::ABSOLUTE_URL)
+            'url' => $this->router->generate('success_order', ['secret' => $order->getSecret()], RouterInterface::ABSOLUTE_URL)
         ]);
     }
 
@@ -142,8 +149,7 @@ class OrderController extends AbstractController
     {
         $secret = $request->get('secret');
 //        $idOrder = $this->get('app.helper.encrypt')->stringDecrypt($hash);
-        $em = $this->get('doctrine.orm.entity_manager');
-        $repo = $em->getRepository(Order::class);
+        $repo = $this->entityManager->getRepository(Order::class);
         $order = $repo->findOneBy(['secret' => $secret]);
         if (!$order) {
             throw $this->createNotFoundException(self::ORDER_404);

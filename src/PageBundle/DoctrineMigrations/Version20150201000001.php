@@ -2,7 +2,7 @@
 
 namespace Application\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
@@ -18,7 +18,7 @@ class Version20150201000001 extends AbstractMigration
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'PageBundle + NotificationBundle schemas';
     }
@@ -39,7 +39,7 @@ class Version20150201000001 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         $this->addSql('ALTER TABLE `page_snapshot` ADD INDEX `idx_snapshot_route_name` (`route_name` (32), `site_id`);');
         $this->addSql('ALTER TABLE `page_snapshot` ADD INDEX `idx_snapshot_page_alias` (`page_alias` (32), `site_id`);');

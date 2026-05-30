@@ -18,8 +18,8 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
     server_version: 9.4
-    media_base_path: '%kernel.root_dir%/../web'
-    imagine_web_root: '%kernel.root_dir%/../web'
+    media_base_path: '%kernel.project_dir%/web'
+    imagine_web_root: '%kernel.project_dir%/web'
     imagine_cache_prefix: i
     static_version: 1
     order_email: maldini2@ukr.net

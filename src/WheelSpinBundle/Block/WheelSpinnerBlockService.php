@@ -21,10 +21,7 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
 {
     const DEFAULT_TEMPLATE = '@WheelSpin/Block/wheel_spinner.html.twig';
 
-    /**
-     * @var EntityManager
-     */
-    private $em;
+    private EntityManager $em;
 
     /**
      * @var RequestStack
@@ -81,7 +78,7 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
             $order = $orderRepository->find($request->get('order_id'));
         }
 
-        if (!$order->getId()) {
+        if (!$order || !$order->getId()) {
             return new Response();
         }
 
@@ -97,7 +94,7 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
 
         if ($request->isXmlHttpRequest()) {
 
-            if ($order->getIsSpin() || $order->getStatus() !== Order::STATUS_COMPLETED) {
+            if ($order->getIsSpin()) {
                 return new Response();
             }
 
@@ -181,9 +178,18 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
 
         $i = 0;
         foreach ($spinValues as $option) {
-            $explodeDegree = explode(',', $option['degrees']);
+            $explodeDegree = explode(',', (string) $option['degrees']);
             foreach ($explodeDegree as $degree) {
-                [$minDegree, $maxDegree] = explode(':', $degree);
+                $degree = trim($degree);
+                if ('' === $degree || !str_contains($degree, ':')) {
+                    continue;
+                }
+
+                [$minDegree, $maxDegree] = array_pad(explode(':', $degree, 2), 2, null);
+                if (null === $minDegree || null === $maxDegree) {
+                    continue;
+                }
+
                 $result[$i]['minDegree'] = $minDegree;
                 $result[$i]['maxDegree'] = $maxDegree;
                 $result[$i]['id'] = $option['id'];
@@ -212,7 +218,8 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
                 return $data[$i]['id'];
             }
         }
-        return $data[-1];
+
+        return $data[$count - 1]['id'] ?? null;
     }
 
     private function testSpins($data) {

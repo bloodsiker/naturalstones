@@ -110,7 +110,7 @@ class ProductInfoViewAdmin extends Admin
                 ->add('viewAt', DateTimePickerType::class, [
                     'label'     => 'product_view.fields.view_at',
                     'required' => false,
-                    'format' => 'dd-MM-YYYY HH:mm',
+                    'format' => 'dd-MM-yyyy HH:mm',
                     'attr' => ['readonly' => true],
                 ])
             ->end()

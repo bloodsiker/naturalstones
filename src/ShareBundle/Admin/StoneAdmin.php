@@ -161,7 +161,7 @@ class StoneAdmin extends Admin
                     ->add('createdAt', DateTimePickerType::class, [
                         'label'     => 'stone.fields.created_at',
                         'required' => true,
-                        'format' => 'YYYY-MM-dd HH:mm',
+                        'format' => 'yyyy-MM-dd HH:mm',
                         'attr' => ['readonly' => true],
                     ])
                 ->end()

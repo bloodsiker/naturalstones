@@ -107,7 +107,7 @@ class BookInfoViewAdmin extends Admin
                 ->add('viewAt', DateTimePickerType::class, [
                     'label'     => 'book_view.fields.view_at',
                     'required' => false,
-                    'format' => 'dd-MM-YYYY HH:mm',
+                    'format' => 'dd-MM-yyyy HH:mm',
                     'attr' => ['readonly' => true],
                 ])
             ->end()

@@ -225,13 +225,13 @@ class MediaVideoAdmin extends Admin
                 ])
                 ->add('updatedAt', DateTimePickerType::class, [
                     'label'  => 'media.fields.updated_at',
-                    'format' => 'YYYY-MM-dd HH:mm',
+                    'format' => 'yyyy-MM-dd HH:mm',
                     'attr'   => ['readonly' => true],
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
                     'label'    => 'media.fields.created_at',
                     'required' => true,
-                    'format'   => 'YYYY-MM-dd HH:mm',
+                    'format'   => 'yyyy-MM-dd HH:mm',
                     'attr'     => ['readonly' => true],
                 ])
             ->end();

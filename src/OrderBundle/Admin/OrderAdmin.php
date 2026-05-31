@@ -169,7 +169,7 @@ class OrderAdmin extends Admin
                     ->add('createdAt', DateTimePickerType::class, [
                         'label'     => 'order.fields.created_at',
                         'required' => true,
-                        'format' => 'YYYY-MM-dd HH:mm',
+                        'format' => 'yyyy-MM-dd HH:mm',
                         'attr' => ['readonly' => true],
                     ])
                 ->end()

@@ -130,7 +130,7 @@ class ZodiacAdmin extends Admin
                 ->add('createdAt', DateTimePickerType::class, [
                     'label'     => 'zodiac.fields.created_at',
                     'required' => true,
-                    'format' => 'YYYY-MM-dd HH:mm',
+                    'format' => 'yyyy-MM-dd HH:mm',
                     'attr' => ['readonly' => true],
                 ])
             ->end();

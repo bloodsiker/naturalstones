@@ -119,7 +119,7 @@ class CommentAdmin extends Admin
                 ->add('createdAt', DateTimePickerType::class, [
                     'label'     => 'comment.fields.created_at',
                     'required' => true,
-                    'format' => 'YYYY-MM-dd HH:mm',
+                    'format' => 'yyyy-MM-dd HH:mm',
                     'attr' => ['readonly' => true],
                 ])
             ->end();

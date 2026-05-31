@@ -1,10 +1,8 @@
 
 <div class="form-content" style="margin-bottom: 50px; margin-top: 70px">
-    {% if order.status != constant('OrderBundle\\Entity\\Order::STATUS_COMPLETED') %}
-        <h4 class="wheel_title">{{ 'frontend.title_1'|trans([], 'WheelSpinBundle') }}</h4>
-    {% elseif order.isSpin %}
+    {% if order.isSpin %}
         <h4 class="wheel_title">{{ 'frontend.title_2'|trans([], 'WheelSpinBundle') }}</h4>
-    {% elseif order.status == constant('OrderBundle\\Entity\\Order::STATUS_COMPLETED') %}
+    {% else %}
         <h4 class="wheel_title">{{ 'frontend.title_3'|trans([], 'WheelSpinBundle') }}</h4>
     {% endif %}
 </div>
@@ -45,7 +43,7 @@
          /* --------------- Spin Wheel  --------------------- */
          const spinWheel = document.getElementById("spinWheel");
          const spinBtn = document.getElementById("spin_btn");
-         spinBtn.disabled = {{ order.isSpin or order.status != constant('OrderBundle\\Entity\\Order::STATUS_COMPLETED') ? 1 : 0 }}
+         spinBtn.disabled = {{ order.isSpin ? 1 : 0 }}
          /* --------------- Minimum And Maximum Angle For A value  --------------------- */
          const spinValues = {{ spinValues|raw }};
          const spinValuesJson = {{ spinValuesJson|raw }};
@@ -149,4 +147,3 @@
          /* --------------- End Spin Wheel  --------------------- */
      </script>
 {% endblock %}
-

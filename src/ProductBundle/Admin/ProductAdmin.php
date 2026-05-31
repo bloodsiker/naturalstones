@@ -483,7 +483,7 @@ class ProductAdmin extends Admin
                     ->add('updatedAt', DateTimePickerType::class, [
                         'label'     => 'product.fields.updated_at',
                         'required' => false,
-                        'format' => 'dd-MM-YYYY HH:mm',
+                        'format' => 'dd-MM-yyyy HH:mm',
                         'attr' => ['readonly' => true],
                     ])
                 ->end()

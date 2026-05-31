@@ -83,7 +83,7 @@ class BookInfoDownloadAdmin extends Admin
                 ->add('downloadAt', DateTimePickerType::class, [
                     'label'     => 'book_download.fields.download_at',
                     'required' => false,
-                    'format' => 'dd-MM-YYYY HH:mm',
+                    'format' => 'dd-MM-yyyy HH:mm',
                     'attr' => ['readonly' => true],
                 ])
             ->end()

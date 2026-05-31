@@ -103,7 +103,7 @@ class ProductSearchHistoryAdmin extends Admin
                 ->add('createdAt', DateTimePickerType::class, [
                     'label'     => 'history_search.fields.created_at',
                     'required' => true,
-                    'format' => 'YYYY-MM-dd HH:mm',
+                    'format' => 'yyyy-MM-dd HH:mm',
                     'attr' => ['readonly' => true],
                 ])
             ->end();

@@ -215,13 +215,13 @@ class ArticleAdmin extends Admin
                 ->add('updatedAt', DateTimePickerType::class, [
                     'label'     => 'article.fields.updated_at',
                     'required' => false,
-                    'format' => 'dd-MM-YYYY HH:mm',
+                    'format' => 'dd-MM-yyyy HH:mm',
                     'attr' => ['readonly' => true],
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
                     'label'     => 'article.fields.created_at',
                     'required' => true,
-                    'format' => 'YYYY-MM-dd HH:mm',
+                    'format' => 'yyyy-MM-dd HH:mm',
                     'attr' => ['readonly' => true],
                 ])
             ->end();

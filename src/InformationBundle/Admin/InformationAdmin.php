@@ -121,17 +121,17 @@ class InformationAdmin extends Admin
                 ->add('startedAt', DateTimePickerType::class, [
                     'label'     => 'information.fields.started_at',
                     'required' => false,
-                    'format' => 'YYYY-MM-dd HH:mm',
+                    'format' => 'yyyy-MM-dd HH:mm',
                 ])
                 ->add('finishedAt', DateTimePickerType::class, [
                     'label'     => 'information.fields.finished_at',
                     'required' => false,
-                    'format' => 'YYYY-MM-dd HH:mm',
+                    'format' => 'yyyy-MM-dd HH:mm',
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
                     'label'     => 'information.fields.created_at',
                     'required' => true,
-                    'format' => 'YYYY-MM-dd HH:mm',
+                    'format' => 'yyyy-MM-dd HH:mm',
                     'attr' => ['readonly' => true],
                 ])
             ->end();

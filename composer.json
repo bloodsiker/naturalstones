@@ -57,16 +57,8 @@
         "symfony/phpunit-bridge": "^5.4"
     },
     "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
-        ]
+        "app:cache-clear": "@php -d memory_limit=512M bin/console cache:clear --env=prod --no-debug --no-warmup",
+        "app:assets-install": "@php bin/console assets:install --symlink --relative web"
     },
     "config": {
         "sort-packages": true,

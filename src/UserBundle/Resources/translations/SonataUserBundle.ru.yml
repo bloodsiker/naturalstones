@@ -2,6 +2,13 @@ gender_male: Мужской
 gender_female: Женский
 gender_unknown: Неизвестный (О_о)
 
+security:
+  login:
+    username: Имя пользователя
+    password: Пароль
+    remember_me: Запомнить меня
+    submit: Войти
+
 link_edit_profile: Профиль
 
 list:

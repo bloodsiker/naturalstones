@@ -4,6 +4,13 @@ Profile: Профіль
 Social: Зв’язок з соціальними мережами
 Security: Безпека
 
+security:
+  login:
+    username: Ім’я користувача
+    password: Пароль
+    remember_me: Запам’ятати мене
+    submit: Увійти
+
 field:
   label_roles_editable: Ролі
 

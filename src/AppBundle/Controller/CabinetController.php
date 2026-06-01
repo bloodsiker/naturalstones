@@ -23,7 +23,7 @@ class CabinetController extends AbstractController
 
     public function indexAction(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $user = $this->getUser();
         $orders = $this->em->getRepository(Order::class)
@@ -44,7 +44,7 @@ class CabinetController extends AbstractController
 
     public function orderAction(string $secret): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         /** @var User $user */
         $user = $this->getUser();
@@ -72,7 +72,7 @@ class CabinetController extends AbstractController
 
     public function profileAction(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         /** @var User $user */
         $user  = $this->getUser();
@@ -105,7 +105,7 @@ class CabinetController extends AbstractController
 
     public function favoritesAction(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         /** @var User $user */
         $user = $this->getUser();
@@ -118,7 +118,7 @@ class CabinetController extends AbstractController
 
     public function toggleFavoriteAction(int $id): JsonResponse
     {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->isGranted('ROLE_USER')) {
             return new JsonResponse(['error' => 'unauthenticated'], 401);
         }
 
@@ -147,7 +147,7 @@ class CabinetController extends AbstractController
 
     public function favoriteIdsAction(): JsonResponse
     {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->isGranted('ROLE_USER')) {
             return new JsonResponse([]);
         }
 
@@ -160,7 +160,7 @@ class CabinetController extends AbstractController
 
     public function addressesAction(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         /** @var User $user */
         $user = $this->getUser();
@@ -191,7 +191,7 @@ class CabinetController extends AbstractController
                     $this->em->persist($deliveryAddress);
                     $this->em->flush();
 
-                    return $this->redirectToRoute('cabinet_addresses');
+                    return $this->redirectToRoute('cabinet_addresses', [], Response::HTTP_SEE_OTHER);
                 }
             }
         }
@@ -210,7 +210,7 @@ class CabinetController extends AbstractController
 
     public function addressDefaultAction(int $id, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         if (!$this->isCsrfTokenValid('cabinet_address_default_' . $id, $request->request->get('_csrf_token'))) {
             throw $this->createAccessDeniedException();
@@ -230,12 +230,12 @@ class CabinetController extends AbstractController
             $this->em->flush();
         }
 
-        return $this->redirectToRoute('cabinet_addresses');
+        return $this->redirectToRoute('cabinet_addresses', [], Response::HTTP_SEE_OTHER);
     }
 
     public function addressDeleteAction(int $id, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         if (!$this->isCsrfTokenValid('cabinet_address_delete_' . $id, $request->request->get('_csrf_token'))) {
             throw $this->createAccessDeniedException();
@@ -267,7 +267,7 @@ class CabinetController extends AbstractController
             }
         }
 
-        return $this->redirectToRoute('cabinet_addresses');
+        return $this->redirectToRoute('cabinet_addresses', [], Response::HTTP_SEE_OTHER);
     }
 
     /**

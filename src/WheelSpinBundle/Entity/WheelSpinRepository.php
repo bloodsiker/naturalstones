@@ -13,6 +13,8 @@ class WheelSpinRepository extends EntityRepository
 {
     public function getWheelSpin($sum)
     {
+        $sum = round((float) $sum, 2);
+
         $qb = $this->createQueryBuilder('ws');
 
         $wheelSpin = $qb
@@ -20,6 +22,24 @@ class WheelSpinRepository extends EntityRepository
             ->andWhere('ws.minSum <= :sum')
             ->andWhere('ws.maxSum >= :sum')
             ->setParameter('sum', $sum)
+            ->orderBy('ws.minSum', 'DESC')
+            ->addOrderBy('ws.maxSum', 'ASC')
+            ->addOrderBy('ws.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if ($wheelSpin) {
+            return $wheelSpin;
+        }
+
+        $wheelSpin = $this->createQueryBuilder('ws')
+            ->where('ws.isActive = 1')
+            ->andWhere('ws.minSum <= :sum')
+            ->setParameter('sum', $sum)
+            ->orderBy('ws.minSum', 'DESC')
+            ->addOrderBy('ws.maxSum', 'ASC')
+            ->addOrderBy('ws.id', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

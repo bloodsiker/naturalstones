@@ -60,6 +60,12 @@
                                 <strong>{{ order.comment }}</strong>
                             </div>
                         {% endif %}
+                        {% if order.spinPrize %}
+                            <div class="cabinet-order-detail__meta cabinet-order-detail__meta--full">
+                                <span>{{ 'frontend.order.spin_prize'|trans([], 'AppBundle') }}</span>
+                                <strong>{{ order.spinPrize }}</strong>
+                            </div>
+                        {% endif %}
                     </div>
 
                     <div class="cabinet-order-items">

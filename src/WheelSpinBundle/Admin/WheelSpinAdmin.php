@@ -44,43 +44,58 @@ class WheelSpinAdmin extends Admin
         return $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param  object  $object
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function postPersist(object $object): void
+    public function prePersist(object $object): void
     {
-        $totalValuation = 0;
-        foreach ($object->getWheelSpinHasOption()->getValues() as $option) {
-            $totalValuation += $option->getValuation();
-        }
-
-        foreach ($object->getWheelSpinHasOption()->getValues() as $option) {
-            $option->setPercent(round($option->getValuation() * 100 / $totalValuation, 2));
-        }
-
-        $this->entityManager->persist($object);
-        $this->entityManager->flush();
+        $this->recalculateOptions($object);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function postUpdate(object $object): void
+    public function preUpdate(object $object): void
     {
-        $totalValuation = 0;
-        foreach ($object->getWheelSpinHasOption()->getValues() as $option) {
-            $totalValuation += $option->getValuation();
+        $this->recalculateOptions($object);
+    }
+
+    private function recalculateOptions(object $object): void
+    {
+        $options = $object->getWheelSpinHasOption()->getValues();
+
+        usort($options, static fn($a, $b) => $a->getOrderNum() <=> $b->getOrderNum());
+
+        $maxValuation = (int) max(array_map(static fn($o) => (int) $o->getValuation(), $options) ?: [0]);
+        $weights = [];
+
+        foreach ($options as $option) {
+            $weights[] = max(1, $maxValuation - (int) $option->getValuation() + 1);
         }
 
-        foreach ($object->getWheelSpinHasOption()->getValues() as $option) {
-            $option->setPercent(round($option->getValuation() * 100 / $totalValuation, 2));
+        $totalWeight = array_sum($weights);
+
+        foreach ($options as $k => $option) {
+            $option->setDegrees($options ? self::computeDegrees($k, count($options)) : '');
+            $option->setPercent(
+                $totalWeight > 0 ? round(($weights[$k] ?? 0) * 100 / $totalWeight, 2) : 0.0
+            );
+        }
+    }
+
+    private static function computeDegrees(int $k, int $N): string
+    {
+        $step = 360.0 / $N;
+        $hi = (int) round(90 - $k * $step);
+        $lo = (int) round(90 - ($k + 1) * $step);
+
+        if ($lo === 0) {
+            return sprintf('1:%d', $hi);
         }
 
-        $this->entityManager->persist($object);
-        $this->entityManager->flush();
+        while ($hi <= 0) { $hi += 360; }
+        while ($lo <= 0) { $lo += 360; }
+        if ($hi >= 360) { $hi = 359; }
+
+        if ($lo < $hi) {
+            return sprintf('%d:%d', $lo, $hi);
+        }
+
+        return sprintf('1:%d,%d:359', $hi, $lo);
     }
 
     /**

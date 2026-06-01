@@ -125,9 +125,24 @@ services:
             - '@product.router.helper'
             - '%full_domain%'
 
+    app.order_email:
+        class: AppBundle\Services\OrderEmailService
+        public: true
+        arguments:
+            - '@twig'
+            - '@logger'
+            - '%mailer_transport%'
+            - '%mailer_host%'
+            - '%mailer_user%'
+            - '%mailer_password%'
+            - '%order_email%'
+            - '%company_name%'
+            - '%full_domain%'
+
     # FQCN aliases needed for AbstractController::getSubscribedServices() type resolution
     AppBundle\Services\SeoUpdater: '@app.seo.updater'
     AppBundle\Services\BreadcrumbService: '@app.breadcrumb'
     AppBundle\Services\SendTelegramService: '@app.send_telegram'
     AppBundle\Services\Cart: '@app.cart'
+    AppBundle\Services\OrderEmailService: '@app.order_email'
     AppBundle\Helper\EncryptHelper: '@app.helper.encrypt'

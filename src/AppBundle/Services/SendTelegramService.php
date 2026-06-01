@@ -63,48 +63,20 @@ class SendTelegramService
 
     public function sendMessageFromQuickForm(Order $order)
     {
-        $adminOrderLink = $this->fullDomain . $this->route->generate('admin_order_order_edit', ['id' => $order->getId()], UrlGeneratorInterface::ABSOLUTE_PATH);
+        $html = $this->orderMessageBuilder->setOrder($order)->getMessageFromQuickForm();
+        $response = $this->sendOrderTelegramMessage($order, $html);
+        $this->storeOrderTelegramMessageData($order, $response);
 
-        $html = $this->orderMessageBuilder
-            ->setOrder($order)
-            ->getMessageFromQuickForm();
-
-        $keyboard['inline_keyboard'] = [
-            [
-                ['text'=> 'Заказ', 'url' => $adminOrderLink]
-            ]
-        ];
-
-        $this->requestTelegram("sendMessage", [
-            'chat_id' => $this->telegramChatId,
-            'text' => urldecode($html),
-            'parse_mode' => 'html',
-            'disable_web_page_preview' => true,
-            'reply_markup' => json_encode($keyboard),
-        ]);
+        return $response;
     }
 
     public function sendMessageFromCart(Order $order)
     {
-        $adminOrderLink = $this->fullDomain . $this->route->generate('admin_order_order_edit', ['id' => $order->getId()], UrlGeneratorInterface::ABSOLUTE_PATH);
+        $html = $this->orderMessageBuilder->setOrder($order)->getMessageFromCart();
+        $response = $this->sendOrderTelegramMessage($order, $html);
+        $this->storeOrderTelegramMessageData($order, $response);
 
-        $html = $this->orderMessageBuilder
-            ->setOrder($order)
-            ->getMessageFromCart();
-
-        $keyboard['inline_keyboard'] = [
-            [
-                ['text'=> 'Заказ', 'url' => $adminOrderLink]
-            ]
-        ];
-
-        $this->requestTelegram("sendMessage", [
-            'chat_id' => $this->telegramChatId,
-            'text' => urldecode($html),
-            'parse_mode' => 'html',
-            'disable_web_page_preview' => true,
-            'reply_markup' => json_encode($keyboard),
-        ]);
+        return $response;
     }
 
     public function sendFeedback(Request $request)
@@ -113,12 +85,39 @@ class SendTelegramService
 
         $this->requestTelegram("sendMessage", [
             'chat_id' => $this->telegramChatId,
-            'text' => urldecode($html),
+            'text' => $html,
             'parse_mode' => 'html',
             'disable_web_page_preview' => true,
         ]);
 
         return true;
+    }
+
+    public function editOrderTelegramMessage(Order $order): array
+    {
+        if (!$order->getTelegramMessageId()) {
+            $message = $order->getType() === Order::TYPE_ORDER_QUICK
+                ? $this->orderMessageBuilder->setOrder($order)->getMessageFromQuickForm()
+                : $this->orderMessageBuilder->setOrder($order)->getMessageFromCart();
+
+            $response = $this->sendOrderTelegramMessage($order, $message);
+            $this->storeOrderTelegramMessageData($order, $response);
+
+            return $response;
+        }
+
+        $message = $order->getType() === Order::TYPE_ORDER_QUICK
+            ? $this->orderMessageBuilder->setOrder($order)->getMessageFromQuickForm()
+            : $this->orderMessageBuilder->setOrder($order)->getMessageFromCart();
+
+        return $this->requestTelegram("editMessageText", [
+            'chat_id' => $order->getTelegramChatId() ?: $this->telegramChatId,
+            'message_id' => $order->getTelegramMessageId(),
+            'text' => $message,
+            'parse_mode' => 'html',
+            'disable_web_page_preview' => true,
+            'reply_markup' => json_encode($this->buildOrderKeyboard($order)),
+        ]);
     }
 
     public function sendProductToChannel(Product $product)
@@ -210,14 +209,17 @@ class SendTelegramService
 
     private function requestTelegram($method, $params = [])
     {
-        $telegramUrlApi = $this->telegramApiUrl . $this->telegramToken . '/';
-        if (!empty($params)) {
-            $url = $telegramUrlApi . $method . "?" . http_build_query($params);
-        } else {
-            $url = $telegramUrlApi . $method;
-        }
+        $telegramUrlApi = $this->telegramApiUrl . $this->telegramToken . '/' . $method;
+        $response = $this->client->request('POST', $telegramUrlApi, [
+            'body' => $params,
+        ]);
 
-        return $this->client->request('GET', $url);
+        $content = $response->getContent(false);
+        $result = json_decode($content, true);
+
+        $this->logger->info('Response telegram bot: ', $result ?? []);
+
+        return $result ?? [];
     }
 
     public function sendTelegramPhoto($method, $params = [])
@@ -286,12 +288,52 @@ class SendTelegramService
 
         if (isset($result['ok']) && $result['ok'] == true) {
 
-            $messageId = $result['result']['message_id'];
-
-            $product->setTelegramMessageId($messageId);
+            $product->setTelegramMessageId($result['result']['message_id']);
 
             $this->entityManager->persist($product);
             $this->entityManager->flush();
         }
+    }
+
+    private function buildOrderKeyboard(Order $order): array
+    {
+        $adminOrderLink = $this->fullDomain . $this->route->generate('admin_order_order_edit', ['id' => $order->getId()], UrlGeneratorInterface::ABSOLUTE_PATH);
+
+        return [
+            'inline_keyboard' => [
+                [
+                    ['text' => 'Заказ', 'url' => $adminOrderLink],
+                ],
+            ],
+        ];
+    }
+
+    private function sendOrderTelegramMessage(Order $order, string $message): array
+    {
+        return $this->requestTelegram("sendMessage", [
+            'chat_id' => $this->telegramChatId,
+            'text' => $message,
+            'parse_mode' => 'html',
+            'disable_web_page_preview' => true,
+            'reply_markup' => json_encode($this->buildOrderKeyboard($order)),
+        ]);
+    }
+
+    private function storeOrderTelegramMessageData(Order $order, array $response): void
+    {
+        if (!isset($response['ok']) || true !== $response['ok']) {
+            return;
+        }
+
+        if (!isset($response['result']['message_id'])) {
+            return;
+        }
+
+        $chatId = $response['result']['chat']['id'] ?? $this->telegramChatId;
+        $order->setTelegramChatId((string) $chatId);
+        $order->setTelegramMessageId((int) $response['result']['message_id']);
+
+        $this->entityManager->persist($order);
+        $this->entityManager->flush();
     }
 }

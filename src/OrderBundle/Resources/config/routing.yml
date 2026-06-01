@@ -18,4 +18,4 @@ success_order:
     defaults:
         _controller: OrderBundle\Controller\OrderController::successAction
     requirements:
-        hash: "([a-zA-Z\\-0-9\\_]+)?"
+        secret: "[a-fA-F0-9]{40}"

@@ -101,6 +101,7 @@ frontend:
         client_phone: Телефон покупателя
         client_delivery: Адрес доставки
         comment: Комментарий
+        spin_prize: Приз колеса
         you_order: Ваш заказ
         callback_text: В ближайшее время с Вами свяжутся наши менеджеры
         order_sum: 'Сумма заказа:'

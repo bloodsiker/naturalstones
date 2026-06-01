@@ -3,6 +3,7 @@
 namespace OrderBundle\Controller;
 
 use AppBundle\Services\Cart;
+use AppBundle\Services\OrderEmailService;
 use AppBundle\Services\SendTelegramService;
 use Doctrine\ORM\EntityManagerInterface;
 use OrderBundle\Entity\Order;
@@ -23,17 +24,20 @@ class OrderController extends AbstractController
     private RouterInterface $router;
     private Cart $cartService;
     private SendTelegramService $telegramService;
+    private OrderEmailService $orderEmailService;
     private EntityManagerInterface $entityManager;
 
     public function __construct(
         RouterInterface $router,
         Cart $cartService,
         SendTelegramService $telegramService,
+        OrderEmailService $orderEmailService,
         EntityManagerInterface $entityManager
     ) {
         $this->router = $router;
         $this->cartService = $cartService;
         $this->telegramService = $telegramService;
+        $this->orderEmailService = $orderEmailService;
         $this->entityManager = $entityManager;
     }
 
@@ -72,6 +76,7 @@ class OrderController extends AbstractController
 
         $order = $this->cartService->orderCart($request);
         $this->telegramService->sendMessageFromQuickForm($order);
+        $this->orderEmailService->sendOrderCreatedEmail($order);
 
         return new JsonResponse([
             'type' => 'success',
@@ -104,6 +109,7 @@ class OrderController extends AbstractController
 
         $order = $this->cartService->orderCart($request);
         $this->telegramService->sendMessageFromQuickForm($order);
+        $this->orderEmailService->sendOrderCreatedEmail($order);
 
         return new JsonResponse([
             'type' => 'success',
@@ -138,6 +144,7 @@ class OrderController extends AbstractController
 
         $order = $this->cartService->orderCart($request, Order::TYPE_ORDER_CART);
         $this->telegramService->sendMessageFromCart($order);
+        $this->orderEmailService->sendOrderCreatedEmail($order);
 
         return new JsonResponse([
             'type' => 'success',

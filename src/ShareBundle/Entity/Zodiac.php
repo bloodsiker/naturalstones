@@ -70,7 +70,7 @@ class Zodiac implements TranslatableInterface
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Stone", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Stone", mappedBy="zodiacs")
      */
     protected $stones;
 

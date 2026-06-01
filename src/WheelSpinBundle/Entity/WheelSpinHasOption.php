@@ -88,6 +88,8 @@ class WheelSpinHasOption
         $this->valuation = 0;
         $this->percent = 0;
         $this->orderNum = 0;
+        $this->label = '';
+        $this->degrees = '';
     }
 
     /**
@@ -215,9 +217,9 @@ class WheelSpinHasOption
      *
      * @return $this
      */
-    public function setDegrees(string $degrees)
+    public function setDegrees(?string $degrees)
     {
-        $this->degrees = $degrees;
+        $this->degrees = $degrees ?? '';
 
         return $this;
     }
@@ -235,9 +237,9 @@ class WheelSpinHasOption
      *
      * @return $this
      */
-    public function setLabel(string $label)
+    public function setLabel(?string $label)
     {
-        $this->label = $label;
+        $this->label = $label ?? '';
 
         return $this;
     }

@@ -70,21 +70,21 @@ class Order
     /**
      * @var float
      *
-     * @ORM\Column(type="float", nullable=false, options={"default": 0,00})
+     * @ORM\Column(type="decimal", precision=12, scale=2, nullable=false, options={"default": 0.00})
      */
     protected $totalSum;
 
     /**
      * @var float
      *
-     * @ORM\Column(type="float", nullable=false, options={"default": 0,00})
+     * @ORM\Column(type="decimal", precision=12, scale=2, nullable=false, options={"default": 0.00})
      */
     protected $orderSum;
 
     /**
      * @var float
      *
-     * @ORM\Column(type="float", nullable=false, options={"default": 0,00})
+     * @ORM\Column(type="decimal", precision=12, scale=2, nullable=false, options={"default": 0.00})
      */
     protected $discountPromo;
 
@@ -161,6 +161,20 @@ class Order
     protected $user;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="telegram_chat_id", type="string", length=100, nullable=true)
+     */
+    protected $telegramChatId;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="telegram_message_id", type="integer", nullable=true)
+     */
+    protected $telegramMessageId;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -182,7 +196,7 @@ class Order
      */
     public function __construct()
     {
-        $this->secret = sha1(time());
+        $this->secret = bin2hex(random_bytes(20));
         $this->totalSum = 0;
         $this->orderSum = 0;
         $this->discountPromo = 0;
@@ -619,6 +633,30 @@ class Order
     public function setSpinPrize(string $spinPrize = null)
     {
         $this->spinPrize = $spinPrize;
+
+        return $this;
+    }
+
+    public function getTelegramChatId(): ?string
+    {
+        return $this->telegramChatId;
+    }
+
+    public function setTelegramChatId(?string $telegramChatId): self
+    {
+        $this->telegramChatId = $telegramChatId;
+
+        return $this;
+    }
+
+    public function getTelegramMessageId(): ?int
+    {
+        return $this->telegramMessageId;
+    }
+
+    public function setTelegramMessageId(?int $telegramMessageId): self
+    {
+        $this->telegramMessageId = $telegramMessageId;
 
         return $this;
     }

@@ -5,5 +5,6 @@ services:
             - '@twig'
             - '@app.entity_manager'
             - '@request_stack'
+            - '@AppBundle\Services\SendTelegramService'
         tags:
             - { name: sonata.block }

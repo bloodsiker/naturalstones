@@ -25,7 +25,7 @@ class ProductHasOption
     /**
      * @var \ProductBundle\Entity\Product
      *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasOptionMetal")
+     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasOption")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
      */
     protected $product;

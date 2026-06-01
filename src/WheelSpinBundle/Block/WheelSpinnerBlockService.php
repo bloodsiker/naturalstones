@@ -3,6 +3,7 @@
 namespace WheelSpinBundle\Block;
 
 use Doctrine\ORM\EntityManager;
+use AppBundle\Services\SendTelegramService;
 use OrderBundle\Entity\Order;
 use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
@@ -22,6 +23,7 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
     const DEFAULT_TEMPLATE = '@WheelSpin/Block/wheel_spinner.html.twig';
 
     private EntityManager $em;
+    private SendTelegramService $telegramService;
 
     /**
      * @var RequestStack
@@ -36,12 +38,13 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
      * @param EntityManager   $em
      * @param RequestStack    $request
      */
-    public function __construct(Environment $twig, EntityManager $em, RequestStack $request)
+    public function __construct(Environment $twig, EntityManager $em, RequestStack $request, SendTelegramService $telegramService)
     {
         parent::__construct($twig);
 
         $this->em = $em;
         $this->request = $request;
+        $this->telegramService = $telegramService;
     }
 
     /**
@@ -50,6 +53,7 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
             'order' => null,
+            'success_page' => false,
             'template' => self::DEFAULT_TEMPLATE,
         ]);
     }
@@ -95,7 +99,7 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
         if ($request->isXmlHttpRequest()) {
 
             if ($order->getIsSpin()) {
-                return new Response();
+                return new JsonResponse(['error' => 'already_spun'], Response::HTTP_CONFLICT);
             }
 
             $data = [];
@@ -103,6 +107,7 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
             $i = 0;
             foreach ($wheelSpin->getWheelSpinHasOption() as $option) {
                 $data[$i]['spin_option'] = $option->getWheelSpinOption();
+                $data[$i]['percent'] = $option->getPercent();
                 $data[$i]['valuation'] = $option->getValuation();
                 $data[$i]['id'] = $option->getId();
                 $i++;
@@ -123,11 +128,35 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
             $spinOptionKey = array_search($id, array_column($data, 'id'));
             $spinOption = $data[$spinOptionKey];
 
-            $order->setIsSpin(true);
-            $order->setWheelSpinOption($spinOption['spin_option']);
-            $order->setSpinPrize($spinOption['spin_option']);
-            $this->em->persist($order);
-            $this->em->flush();
+            $connection = $this->em->getConnection();
+            $connection->beginTransaction();
+
+            try {
+                if (!$this->em->getRepository(Order::class)->claimSpin($order)) {
+                    $connection->rollBack();
+
+                    return new JsonResponse(['error' => 'already_spun'], Response::HTTP_CONFLICT);
+                }
+
+                $order->setIsSpin(true);
+                $order->setWheelSpinOption($spinOption['spin_option']);
+                $order->setSpinPrize($spinOption['spin_option']);
+                $this->em->persist($order);
+                $this->em->flush();
+                $connection->commit();
+            } catch (\Throwable $e) {
+                if ($connection->isTransactionActive()) {
+                    $connection->rollBack();
+                }
+
+                throw $e;
+            }
+
+            try {
+                $this->telegramService->editOrderTelegramMessage($order);
+            } catch (\Throwable $e) {
+                // Telegram update must not block the wheel flow.
+            }
 
             if ($win) {
                 $rand = random_int($win['minDegree'], $win['maxDegree']);
@@ -208,18 +237,44 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
         return $result;
     }
 
-    private function getRandomIndex($data, $column = 'valuation') {
-        $rand = random_int(1, array_sum(array_column($data, $column)));
-        $cur = $prev = 0;
-        for ($i = 0, $count = count($data); $i < $count; ++$i) {
-            $prev += $i !== 0 ? $data[$i-1][$column] : 0;
-            $cur += $data[$i][$column];
-            if ($rand > $prev && $rand <= $cur) {
-                return $data[$i]['id'];
+    private function getRandomIndex($data, $column = 'percent') {
+        if (empty($data)) {
+            return null;
+        }
+
+        $weights = [];
+
+        foreach ($data as $item) {
+            $weight = isset($item[$column]) ? (float) $item[$column] : 0.0;
+            $weights[] = max(0, (int) round($weight * 100));
+        }
+
+        $total = array_sum($weights);
+
+        if ($total <= 0 && 'valuation' !== $column) {
+            return $this->getRandomIndex($data, 'valuation');
+        }
+
+        if ($total <= 0) {
+            $lastIndex = array_key_last($data);
+
+            return $lastIndex !== null ? ($data[$lastIndex]['id'] ?? null) : null;
+        }
+
+        $rand = random_int(1, $total);
+        $current = 0;
+
+        foreach ($data as $index => $item) {
+            $current += $weights[$index] ?? 0;
+
+            if ($rand <= $current) {
+                return $item['id'];
             }
         }
 
-        return $data[$count - 1]['id'] ?? null;
+        $lastIndex = array_key_last($data);
+
+        return $lastIndex !== null ? ($data[$lastIndex]['id'] ?? null) : null;
     }
 
     private function testSpins($data) {

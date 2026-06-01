@@ -9,6 +9,7 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [ OrderBundle ] ]
+            - [ setTelegramService, [ '@AppBundle\Services\SendTelegramService' ] ]
 
     order.admin.order_has_item:
         class: OrderBundle\Admin\OrderHasItemAdmin

@@ -34,6 +34,7 @@ class OrderMessageBuilder implements BuilderMessage
         return $this->getTitleQuickForm()
             ->getMessenger()
             ->getCallMe()
+            ->getSpinPrize()
             ->getTotalSum()
             ->getProducts()
             ->get();
@@ -48,6 +49,7 @@ class OrderMessageBuilder implements BuilderMessage
             ->getEmail()
             ->getAddress()
             ->getComment()
+            ->getSpinPrize()
             ->getTotalSum()
             ->getProducts()
             ->get();
@@ -136,6 +138,15 @@ class OrderMessageBuilder implements BuilderMessage
     {
         if ($this->order->getCallMe()) {
             $this->message .= "<b>Перезвонить:</b> Да" . PHP_EOL;
+        }
+
+        return $this;
+    }
+
+    public function getSpinPrize(): self
+    {
+        if ($this->order->getSpinPrize()) {
+            $this->message .= "<b>Приз колеса:</b> " . $this->escape($this->order->getSpinPrize()) . PHP_EOL;
         }
 
         return $this;

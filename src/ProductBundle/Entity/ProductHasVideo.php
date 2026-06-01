@@ -25,7 +25,7 @@ class ProductHasVideo
     /**
      * @var \ProductBundle\Entity\Product
      *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasImage")
+     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasVideo")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
      */
     protected $product;

@@ -204,7 +204,7 @@ class Product implements TranslatableInterface
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Stone", inversedBy="products")
+     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Stone")
      * @ORM\JoinTable(name="product_product_stones",
      *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="stone_id", referencedColumnName="id", onDelete="CASCADE")}

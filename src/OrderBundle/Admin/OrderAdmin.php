@@ -3,6 +3,7 @@
 namespace OrderBundle\Admin;
 
 use AdminBundle\Admin\BaseAdmin as Admin;
+use AppBundle\Services\SendTelegramService;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -21,6 +22,8 @@ use Symfony\Component\Validator\Constraints\Valid;
  */
 class OrderAdmin extends Admin
 {
+    private ?SendTelegramService $telegramService = null;
+
     /**
      * @var array
      */
@@ -242,6 +245,20 @@ class OrderAdmin extends Admin
                     ])
                 ->end()
             ->end();
+    }
+
+    public function setTelegramService(SendTelegramService $telegramService): void
+    {
+        $this->telegramService = $telegramService;
+    }
+
+    public function postUpdate(object $object): void
+    {
+        parent::postUpdate($object);
+
+        if ($this->telegramService) {
+            $this->telegramService->editOrderTelegramMessage($object);
+        }
     }
 
     /**

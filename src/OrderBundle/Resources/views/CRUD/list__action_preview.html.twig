@@ -1,5 +1,5 @@
 {% set url = null %}
-{% if object is instanceof('OrderBundle\\Entity\\Order') %}
+{% if object is instanceof('OrderBundle\\Entity\\Order') and object.secret %}
     {% set url = path('success_order', {'secret': object.secret}) %}
 {% endif %}
 

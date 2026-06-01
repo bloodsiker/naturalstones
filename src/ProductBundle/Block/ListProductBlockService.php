@@ -71,7 +71,7 @@ class ListProductBlockService extends AbstractEditableBlockService
             'list_type'        => null,
             'items_count'      => 20,
             'page'             => 1,
-            'filter'           => false,
+            'filter'            => false,
             'category'         => null,
             'category_slug'    => null,
             'tag'              => null,

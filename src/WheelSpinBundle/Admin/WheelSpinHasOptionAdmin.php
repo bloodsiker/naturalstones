@@ -82,7 +82,11 @@ class WheelSpinHasOptionAdmin extends Admin
             ])
             ->add('degrees', TextType::class, [
                 'label' => 'wheel_spin_has_option.fields.degrees',
-                'required' => true,
+                'required' => false,
+                'attr' => [
+                    'readonly' => true,
+                    'disabled' => true,
+                ],
             ])
             ->add('valuation', IntegerType::class, [
                 'label' => 'wheel_spin_has_option.fields.valuation',

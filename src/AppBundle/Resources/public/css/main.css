@@ -1286,10 +1286,10 @@ footer {
 #spinnerArrow {
   position: absolute;
   top: -8%;
-  left: 43.1%;
-  font-size: 4rem;
-  color: rgb(45, 252, 26);
-  transform: rotate(-90deg);
+  left: 50%;
+  transform: translateX(-50%) rotate(-90deg);
+  z-index: 2;
+  pointer-events: none;
 }
 #text {
   font-size: 1.5rem;
@@ -1467,7 +1467,8 @@ footer {
   margin: 0 5px;
 }
 
-.pagination a {
+.pagination a,
+.pagination span {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
@@ -1487,9 +1488,16 @@ footer {
   background: #fbdfdf;
 }
 
-.pagination .active a {
+.pagination .active span {
+  background: #fff7f7;
   color: #f08383;
   border-color: #fbdfdf;
+}
+
+.pagination .nav_ext span {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .pagination .arrow {
@@ -5763,7 +5771,9 @@ article.article:hover .img-relative img {
   right: 17px;
 }
 
-.order-form-total {
+.order-form-total,
+.order-success-summary,
+.order-success-wheel {
   flex-shrink: 0;
   background: #fff;
   border: 1px solid #f0d8d8;
@@ -5772,8 +5782,164 @@ article.article:hover .img-relative img {
   margin-left: auto;
   width: 406px;
   overflow: hidden;
+}
+
+.order-form-total {
   position: sticky;
   top: 20px;
+}
+
+.order-success-summary {
+  background: linear-gradient(180deg, #fff 0%, #fff8f8 100%);
+  border-color: #f1d7d7;
+  box-shadow: 0 18px 45px rgba(20, 9, 35, 0.08);
+  overflow: hidden;
+}
+
+.order-success-summary .order-form-items {
+  margin: 10px;
+  padding: 14px 16px;
+  border: 1px solid #f3e0e0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(20, 9, 35, 0.04);
+}
+
+.order-success-summary .order-form-items .item-name a {
+  font-weight: 600;
+  color: #140923;
+}
+
+.order-success-summary .order-form-items .count {
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fff7f7;
+  border: 1px solid #f1d7d7;
+  color: #f08383;
+  font-weight: 700;
+}
+
+.order-success-summary .order-form-calculate {
+  padding: 16px 16px 18px;
+  border-top: 1px solid #f1d7d7;
+  background: #fff7f7;
+}
+
+.order-success-summary .order-form-calculate li:last-child {
+  padding-top: 12px;
+  margin-top: 4px;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid #f1d7d7;
+  border-radius: 14px;
+}
+
+.order-success-summary .order-form-calculate .total-price {
+  font-size: 22px;
+  color: #f08383;
+}
+
+.order-success-wheel.wheel_container {
+  width: 100% !important;
+  max-width: 600px;
+  margin: 24px auto 0;
+  background: linear-gradient(180deg, #fff 0%, #fff8f8 100%);
+  border: 1px solid #f1d7d7;
+  box-shadow: 0 18px 45px rgba(20, 9, 35, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.order-success-wheel .top-block {
+  background: linear-gradient(180deg, #fff7f7 0%, #fff 100%);
+  border-bottom: 1px solid #f1d7d7;
+  padding: 22px 24px 18px;
+}
+
+.order-success-wheel h4 {
+  font-size: 22px;
+}
+
+.order-success-wheel .wheel_prize_container {
+  padding: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.order-success-wheel .wheel_prize {
+  margin-bottom: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #f3e0e0;
+  background: #fff;
+  font-size: 14px;
+  line-height: 1.35;
+  box-shadow: 0 6px 16px rgba(20, 9, 35, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.order-success-wheel .wheel_prize:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(20, 9, 35, 0.06);
+  border-color: #f0baba;
+}
+
+.order-success-wheel .wheel_prize.active {
+  background: linear-gradient(135deg, #f08383 0%, #f4a7a7 100%);
+  border-color: #f08383;
+  color: #fff;
+  box-shadow: 0 12px 26px rgba(240, 131, 131, 0.28);
+}
+
+.wheel-prize-modal {
+  max-width: 460px;
+  text-align: center;
+}
+
+.wheel-prize-modal__content {
+  padding: 36px 34px 32px;
+  background: linear-gradient(180deg, #fff7f7 0%, #fff 100%);
+}
+
+.wheel-prize-modal__eyebrow {
+  margin-bottom: 8px;
+  color: #f08383;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.wheel-prize-modal h4 {
+  margin: 0;
+  color: #140923;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.wheel-prize-modal__value {
+  margin: 20px 0 14px;
+  padding: 16px 18px;
+  border: 1px solid #f0baba;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(240, 131, 131, 0.14);
+  color: #f08383;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.wheel-prize-modal p {
+  margin: 0;
+  color: #6b6b6b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.wheel-prize-modal__action {
+  margin-top: 22px;
+  min-width: 150px;
 }
 
 .order-form-total .top-block {
@@ -5799,6 +5965,36 @@ article.article:hover .img-relative img {
 }
 
 .order-form-total .redact-link:hover {
+  text-decoration: underline;
+}
+
+.order-success-summary .top-block,
+.order-success-wheel .top-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  background: #fff7f7;
+  border-bottom: 1px solid #f0d8d8;
+}
+
+.order-success-summary h4,
+.order-success-wheel h4 {
+  font-weight: 700;
+  font-size: 20px;
+  color: #140923;
+}
+
+.order-success-summary .redact-link,
+.order-success-wheel .redact-link {
+  font-size: 13px;
+  color: #f08383;
+  font-weight: 500;
+  padding-top: 2px;
+}
+
+.order-success-summary .redact-link:hover,
+.order-success-wheel .redact-link:hover {
   text-decoration: underline;
 }
 
@@ -7509,6 +7705,13 @@ select.custom_select option {
     max-width: 600px;
   }
 
+  .order-success-summary,
+  .order-success-wheel {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 600px;
+  }
+
   .order-form-links {
     -ms-flex-pack: center;
     justify-content: center;
@@ -8922,7 +9125,8 @@ select.custom_select option {
     margin: 0 3px;
   }
 
-  .pagination a {
+  .pagination a,
+  .pagination span {
     height: 44px;
     width: 44px;
   }
@@ -9209,6 +9413,22 @@ select.custom_select option {
   }
 
   .order-form-total .redact-link {
+    font-size: 15px;
+  }
+
+  .order-success-summary .top-block,
+  .order-success-wheel .top-block {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .order-success-summary h4,
+  .order-success-wheel h4 {
+    font-size: 22px;
+  }
+
+  .order-success-summary .redact-link,
+  .order-success-wheel .redact-link {
     font-size: 15px;
   }
 

@@ -191,7 +191,7 @@ class CabinetController extends AbstractController
                     $this->em->persist($deliveryAddress);
                     $this->em->flush();
 
-                    return $this->redirectToRoute('cabinet_addresses', [], Response::HTTP_SEE_OTHER);
+                    return $this->redirectToAddresses($request);
                 }
             }
         }
@@ -230,7 +230,7 @@ class CabinetController extends AbstractController
             $this->em->flush();
         }
 
-        return $this->redirectToRoute('cabinet_addresses', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToAddresses($request);
     }
 
     public function addressDeleteAction(int $id, Request $request): Response
@@ -266,6 +266,13 @@ class CabinetController extends AbstractController
                 }
             }
         }
+
+        return $this->redirectToAddresses($request);
+    }
+
+    private function redirectToAddresses(Request $request): Response
+    {
+        $request->attributes->set('_sonata_page_skip', true);
 
         return $this->redirectToRoute('cabinet_addresses', [], Response::HTTP_SEE_OTHER);
     }

@@ -97,17 +97,18 @@ $(document).ready(function() {
 
 	// показываем просмотренные товары
 	let ids = JSON.parse(window.localStorage.getItem('product_ids'));
-	if (ids) {
-		let url = $('#load-viewed-product').data('url');
+	let viewedProducts = $('#load-viewed-product');
+	if (ids && viewedProducts.length) {
+		let url = viewedProducts.data('url');
 		$.ajax({
 			type: 'POST',
 			url: url,
 			data: { ids: ids },
 			success: function (response) {
-				$('#load-viewed-product').html(response);
+				viewedProducts.html(response);
 			}
 		});
-	} else {
+	} else if (viewedProducts.length) {
 		$('#section-viewed').hide();
 	}
 

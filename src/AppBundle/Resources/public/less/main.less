@@ -5447,18 +5447,46 @@ footer{
 }
 
 @media(max-width:767px){
+	.containerFeedback{
+		margin: 28px 0 36px;
+	}
 	.feedback-shell{
 		grid-template-columns: 1fr;
-		padding: 18px;
+		gap: 16px;
+		padding: 14px;
+		border-radius: 14px;
 	}
 	.feedback-copy{
 		padding: 0;
 		h4{
 			font-size: 24px;
+			margin-bottom: 10px;
 		}
 	}
+	.feedback-copy__eyebrow{
+		margin-bottom: 8px;
+		padding: 5px 10px;
+	}
+	.feedback-copy__text{
+		font-size: 14px;
+	}
 	.feedback-card{
-		padding: 18px;
+		padding: 14px;
+		border-radius: 12px;
+		.row{
+			margin-left: 0;
+			margin-right: 0;
+		}
+		.form-group{
+			padding-left: 0;
+			padding-right: 0;
+		}
+		textarea.form-control{
+			min-height: 130px;
+		}
+		.button{
+			margin-top: 14px;
+		}
 	}
 	.successFeedback{
 		padding: 20px 16px 30px;
@@ -5467,6 +5495,18 @@ footer{
 		}
 		h4{
 			font-size: 18px;
+		}
+	}
+}
+
+@media(max-width:480px){
+	.feedback-shell,
+	.feedback-card{
+		padding: 12px;
+	}
+	.feedback-copy{
+		h4{
+			font-size: 22px;
 		}
 	}
 }

@@ -215,6 +215,7 @@ frontend:
         earrings: Сережки
         money: Сума
         validate:
+            colour: Ви не обрали колір товару
             letter: Ви не обрали букву
             insert: Ви не обрали вставку
             pendant: Ви не обрали підвіску

@@ -2813,6 +2813,68 @@ footer {
   text-align: center;
   color: #140923;
 }
+@media (max-width: 767px) {
+  .containerFeedback {
+    margin: 28px 0 36px;
+  }
+  .feedback-shell {
+    -ms-grid-columns: 1fr;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 14px;
+    border-radius: 14px;
+  }
+  .feedback-copy {
+    padding: 0;
+  }
+  .feedback-copy h4 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  .feedback-copy__eyebrow {
+    margin-bottom: 8px;
+    padding: 5px 10px;
+  }
+  .feedback-copy__text {
+    font-size: 14px;
+  }
+  .feedback-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+  .feedback-card .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .feedback-card .form-group {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .feedback-card textarea.form-control {
+    min-height: 130px;
+  }
+  .feedback-card .button {
+    margin-top: 14px;
+  }
+  .successFeedback {
+    padding: 20px 16px 30px;
+  }
+  .successFeedback img {
+    width: 180px;
+  }
+  .successFeedback h4 {
+    font-size: 18px;
+  }
+}
+@media (max-width: 480px) {
+  .feedback-shell,
+  .feedback-card {
+    padding: 12px;
+  }
+  .feedback-copy h4 {
+    font-size: 22px;
+  }
+}
 .input-error {
   border-color: #e74c3c !important;
 }

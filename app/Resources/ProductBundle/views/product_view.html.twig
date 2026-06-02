@@ -119,7 +119,7 @@
                             {% if product.productHasOptionColour|length > 0 %}
                                 <div class="inner-block">
                                     <h5>{{ 'frontend.product.change_colour'|trans([], 'ProductBundle') }}</h5>
-                                    <ul class="product-colours-check">
+                                    <ul class="product-colours-check" data-text-error="{{ 'frontend.product.validate.colour'|trans([], 'ProductBundle') }}">
                                         {% for productImageColour in product.productHasOptionColour %}
                                             {% if productImageColour.colour %}
                                                 <li>

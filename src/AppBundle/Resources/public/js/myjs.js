@@ -596,7 +596,7 @@ $(document).ready(function() {
 
 			$('#colourError').text('').hide();
 			if (!isChecked) {
-				$('#colourError').text('Вы не выбрали цвет товара').show();
+				$('#colourError').text($('.product-colours-check').data('text-error')).show();
 				return false;
 			}
 		}
@@ -731,7 +731,7 @@ $(document).ready(function() {
 
 			$('#colourError').text('').hide();
 			if (!isChecked) {
-				$('#colourError').text('Вы не выбрали цвет товара').show();
+				$('#colourError').text($('.product-colours-check').data('text-error')).show();
 				return false;
 			}
 		}

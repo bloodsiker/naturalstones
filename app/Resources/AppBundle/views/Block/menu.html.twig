@@ -1,162 +1,36 @@
-
-{% if (settings['type'] == 'header') %}
+{% if settings['type'] == 'header' %}
     <div class="header-menu-outer header-menu-desctop">
         <div class="title">{{ 'frontend.menu_title'|trans([], 'AppBundle') }}</div>
-        {% if individual|length %}
+        {% for section in menuSections %}
             <div class="header-menu-block topmenu">
                 <div class="type">
-                    <div class="type-title">{{ 'frontend.menu.individual'|trans([], 'AppBundle') }}</div>
+                    <div class="type-title">{{ section.title }}</div>
                     <ul class="header-menu submenu">
-                        {% for iCategory in individual %}
-                            <li><a href="{{ path('product_list', { 'slug': iCategory.slug }) }}">{{ iCategory.getName()}}</a></li>
+                        {% for item in section.items %}
+                            <li><a href="{{ path('product_list', { 'slug': item.category.slug }) }}">{{ item.category.getName }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
-        {% endif %}
-        {% if gematit|length %}
-            <div class="header-menu-block topmenu">
-                <div class="type">
-                    <div class="type-title">{{ 'frontend.menu.gematit'|trans([], 'AppBundle') }}</div>
-                    <ul class="header-menu submenu">
-                        {% for gCategory in gematit %}
-                            <li><a href="{{ path('product_list', { 'slug': gCategory.slug }) }}">{{ gCategory.getName}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        {% endif %}
-        {% if main|length %}
-            <div class="header-menu-block topmenu">
-                <div class="type">
-                    <div class="type-title">{{ 'frontend.menu.decorations'|trans([], 'AppBundle') }}</div>
-                    <ul class="header-menu submenu">
-                        {% for mCategory in main %}
-                            <li><a href="{{ path('product_list', { 'slug': mCategory.slug }) }}">{{ mCategory.getName}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        {% endif %}
-        {% if secondary|length %}
-            <div class="header-menu-block topmenu">
-                <div class="type">
-                    <div class="type-title">{{ 'frontend.menu.accessories'|trans([], 'AppBundle') }}</div>
-                    <ul class="header-menu submenu">
-                        {% for sCategory in secondary %}
-                            <li><a href="{{ path('product_list', { 'slug': sCategory.slug }) }}">{{ sCategory.getName}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        {% endif %}
-        {% if giftBox|length %}
-            <div class="header-menu-block topmenu">
-                <div class="type">
-                    <div class="type-title">{{ 'frontend.menu.gift_box'|trans([], 'AppBundle') }}</div>
-                    <ul class="header-menu submenu">
-                        {% for gCategory in giftBox %}
-                            <li><a href="{{ path('product_list', { 'slug': gCategory.slug }) }}">{{ gCategory.getName}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        {% endif %}
-        {% if scrapers|length %}
-            <div class="header-menu-block topmenu">
-                <div class="type">
-                    <div class="type-title">{{ 'frontend.menu.scrapers'|trans([], 'AppBundle') }}</div>
-                    <ul class="header-menu submenu">
-                        {% for srCategory in scrapers %}
-                            <li><a href="{{ path('product_list', { 'slug': srCategory.slug }) }}">{{ srCategory.getName}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        {% endif %}
+        {% endfor %}
         <div class="header-menu-close"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt="cross"></div>
     </div>
 
     <div class="header-menu-outer header-menu-mobile">
         <div class="title">{{ 'frontend.menu_title'|trans([], 'AppBundle') }}</div>
-        {% if individual|length %}
+        {% for section in menuSections %}
             <div class="header-menu-block">
-                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-individual">
-                    <span>{{ 'frontend.menu.individual'|trans([], 'AppBundle') }}</span>
+                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-section-{{ section.id }}">
+                    <span>{{ section.title }}</span>
                     <span class="mobile-menu-toggle__icon"></span>
                 </button>
-                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-individual">
-                    {% for iCategory in individual %}
-                        <li><a href="{{ path('product_list', { 'slug': iCategory.slug }) }}">{{ iCategory.getName}}</a></li>
+                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-section-{{ section.id }}">
+                    {% for item in section.items %}
+                        <li><a href="{{ path('product_list', { 'slug': item.category.slug }) }}">{{ item.category.getName }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
-        {% endif %}
-        {% if gematit|length %}
-            <div class="header-menu-block">
-                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-gematit">
-                    <span>{{ 'frontend.menu.gematit'|trans([], 'AppBundle') }}</span>
-                    <span class="mobile-menu-toggle__icon"></span>
-                </button>
-                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-gematit">
-                    {% for gCategory in gematit %}
-                        <li><a href="{{ path('product_list', { 'slug': gCategory.slug }) }}">{{ gCategory.getName}}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-        {% if main|length %}
-            <div class="header-menu-block">
-                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-decorations">
-                    <span>{{ 'frontend.menu.decorations'|trans([], 'AppBundle') }}</span>
-                    <span class="mobile-menu-toggle__icon"></span>
-                </button>
-                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-decorations">
-                    {% for mCategory in main %}
-                        <li><a href="{{ path('product_list', { 'slug': mCategory.slug }) }}">{{ mCategory.getName}}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-        {% if secondary|length %}
-            <div class="header-menu-block">
-                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-accessories">
-                    <span>{{ 'frontend.menu.accessories'|trans([], 'AppBundle') }}</span>
-                    <span class="mobile-menu-toggle__icon"></span>
-                </button>
-                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-accessories">
-                    {% for sCategory in secondary %}
-                        <li><a href="{{ path('product_list', { 'slug': sCategory.slug }) }}">{{ sCategory.getName}}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-        {% if giftBox|length %}
-            <div class="header-menu-block">
-                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-gift-box">
-                    <span>{{ 'frontend.menu.gift_box'|trans([], 'AppBundle') }}</span>
-                    <span class="mobile-menu-toggle__icon"></span>
-                </button>
-                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-gift-box">
-                    {% for gCategory in giftBox %}
-                        <li><a href="{{ path('product_list', { 'slug': gCategory.slug }) }}">{{ gCategory.getName}}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-        {% if scrapers|length %}
-            <div class="header-menu-block">
-                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-scrapers">
-                    <span>{{ 'frontend.menu.scrapers'|trans([], 'AppBundle') }}</span>
-                    <span class="mobile-menu-toggle__icon"></span>
-                </button>
-                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-scrapers">
-                    {% for scCategory in scrapers %}
-                        <li><a href="{{ path('product_list', { 'slug': scCategory.slug }) }}">{{ scCategory.getName}}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
+        {% endfor %}
         <div class="mobile-menu-footer">
             <a class="mobile-menu-cabinet" href="{{ path('cabinet') }}">
                 {{ 'frontend.footer.links.cabinet'|trans([], 'AppBundle') }}
@@ -177,60 +51,23 @@
         </div>
         <div class="header-menu-close"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt="cross"></div>
     </div>
-{% elseif (settings['type'] == 'video') %}
+{% elseif settings['type'] == 'video' %}
     <div class="video-menu-outer">
         <div class="title">{{ 'frontend.menu_title'|trans([], 'AppBundle') }}</div>
         <div class="video-menu-flex">
-            {% if individual|length %}
+            {% for section in menuSections %}
                 <div class="video-menu-block">
-                    <div class="type">{{ 'frontend.menu.individual'|trans([], 'AppBundle') }}</div>
-                    <ul class="video-menu">
-                        {% for iCategory in individual %}
-                            <li><a href="{{ path('product_list', { 'slug': iCategory.slug }) }}">{{ iCategory.getName}}</a></li>
+                    <button class="type video-menu-section-toggle" type="button" aria-expanded="false" aria-controls="video-menu-section-{{ section.id }}">
+                        <span>{{ section.title }}</span>
+                        <span class="video-menu-section-toggle__icon"></span>
+                    </button>
+                    <ul class="video-menu video-menu-submenu" id="video-menu-section-{{ section.id }}">
+                        {% for item in section.items %}
+                            <li><a href="{{ path('product_list', { 'slug': item.category.slug }) }}">{{ item.category.getName }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
-            {% endif %}
-            {% if main|length %}
-                <div class="video-menu-block">
-                    <div class="type">{{ 'frontend.menu.decorations'|trans([], 'AppBundle') }}</div>
-                    <ul class="video-menu">
-                        {% for mCategory in main %}
-                            <li><a href="{{ path('product_list', { 'slug': mCategory.slug }) }}">{{ mCategory.getName}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-            {% if secondary|length %}
-                <div class="video-menu-block">
-                    <div class="type">{{ 'frontend.menu.accessories'|trans([], 'AppBundle') }}</div>
-                    <ul class="video-menu">
-                        {% for sCategory in secondary %}
-                            <li><a href="{{ path('product_list', { 'slug': sCategory.slug }) }}">{{ sCategory.getName}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-            {% if giftBox|length %}
-                <div class="video-menu-block">
-                    <div class="type">{{ 'frontend.menu.gift_box'|trans([], 'AppBundle') }}</div>
-                    <ul class="video-menu">
-                        {% for gCategory in giftBox %}
-                            <li><a href="{{ path('product_list', { 'slug': gCategory.slug }) }}">{{ gCategory.getName}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-            {% if scrapers|length %}
-                <div class="video-menu-block">
-                    <div class="type">{{ 'frontend.menu.scrapers'|trans([], 'AppBundle') }}</div>
-                    <ul class="video-menu">
-                        {% for scCategory in scrapers %}
-                            <li><a href="{{ path('product_list', { 'slug': scCategory.slug }) }}">{{ scCategory.getName}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
+            {% endfor %}
         </div>
         <div class="video-menu-close"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt="cross"></div>
     </div>

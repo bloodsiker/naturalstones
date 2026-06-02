@@ -1325,6 +1325,16 @@ footer{
 	}
 }
 
+.video-menu-section-toggle{
+	display: block;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	font-family: inherit;
+	text-align: left;
+	appearance: none;
+}
+
 .video-menu{
 	font-size: 16px;
 	li{
@@ -4151,22 +4161,96 @@ footer{
 	.video-menu-outer{
 		left: 0;
 		top: 0;
+		width: min(320px, ~"calc(100vw - 24px)");
+		max-height: 100vh;
+		overflow-y: auto;
 		background: #0B0512;
 		border-radius: 0px 0px 20px 0px;
+		box-shadow: 8px 0 28px rgba(0, 0, 0, .24);
 		.title{
 			display: block;
-			font-weight: 600;
+			font-weight: 700;
 			font-size: 20px;
-			padding: 23px 28px;
+			padding: 23px 20px 18px;
 		}
 	}
 	.video-menu-flex{
 		display: block;
-		padding: 0 28px 2px;
+		padding: 0 14px 8px;
 	}
 	.video-menu-block{
 		margin-right: 0;
-		padding-bottom: 14px;
+		margin-bottom: 8px;
+		padding-bottom: 0;
+		overflow: hidden;
+		border: 1px solid rgba(255, 255, 255, .28);
+		border-radius: 11px;
+		background: rgba(255, 255, 255, .045);
+		.type{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			margin-bottom: 0;
+			padding: 12px 13px;
+			border: 0;
+			background: transparent;
+			color: #fff;
+			font-family: inherit;
+			text-align: left;
+			cursor: pointer;
+			appearance: none;
+			transition: @transition;
+			&.is-open{
+				color: #fff;
+				background: rgba(255, 255, 255, .1);
+			}
+		}
+	}
+	.video-menu-section-toggle__icon{
+		position: relative;
+		width: 16px;
+		height: 16px;
+		margin-left: 10px;
+		flex: 0 0 16px;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, .16);
+		&:before,
+		&:after{
+			content: "";
+			position: absolute;
+			left: 4px;
+			top: 7px;
+			width: 8px;
+			height: 2px;
+			border-radius: 2px;
+			background: #fff;
+			transition: @transition;
+		}
+		&:after{
+			transform: rotate(90deg);
+		}
+	}
+	.video-menu-section-toggle.is-open .video-menu-section-toggle__icon:after{
+		transform: rotate(0);
+	}
+	.video-menu-submenu{
+		display: none;
+		padding: 2px 13px 7px;
+		border-top: 1px solid rgba(255, 255, 255, .18);
+		li{
+			margin-bottom: 0;
+			border-bottom: 1px solid rgba(255, 255, 255, .12);
+			&:last-child{
+				border-bottom: 0;
+			}
+		}
+		a{
+			display: block;
+			padding: 9px 1px;
+			font-size: 14px;
+			line-height: 1.35;
+		}
 	}
 	.video-menu-close{
 		display: block;

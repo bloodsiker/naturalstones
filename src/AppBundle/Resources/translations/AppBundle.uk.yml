@@ -1,4 +1,28 @@
 Action: Действия
+Menu Section List: Меню
+Menu Section Create: Додати розділ меню
+
+group:
+    menu: Меню
+    menu_editor: Розділи меню
+    menu_item_editor: Категорії меню
+
+form_group:
+    basic: Основні
+    additional: Додаткові
+
+menu_section:
+    fields:
+        id: ID
+        title: Назва
+        items: Підкатегорії
+        is_active: Активно
+        order_num: Сортування
+
+menu_item:
+    fields:
+        category: Категорія
+        order_num: Сортування
 
 app:
     pager:

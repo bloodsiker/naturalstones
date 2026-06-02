@@ -2,8 +2,8 @@
 
 namespace AppBundle\Block;
 
+use AppBundle\Entity\MenuSection;
 use Doctrine\ORM\EntityManager;
-use ProductBundle\Entity\Category;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -62,26 +62,24 @@ class MenuBlockService extends AbstractEditableBlockService
             return new Response();
         }
 
-        $repository = $this->em->getRepository(Category::class);
-
-        $qb = $repository->baseCategoryQueryBuilder();
-
-        $main = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_MAIN)->orderBy('c.orderNum', 'DESC');
-        $secondary = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_SECONDARY)->orderBy('c.orderNum', 'DESC');
-        $individual = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_INDIVIDUAL)->orderBy('c.orderNum', 'DESC');
-        $giftBox = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_GIFT_BOX)->orderBy('c.orderNum', 'DESC');
-        $scrapers = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_SCRAPERS)->orderBy('c.orderNum', 'DESC');
-        $gematit = clone $qb->andWhere('c.type = :type')->setParameter('type', Category::TYPE_GEMATIT)->orderBy('c.orderNum', 'DESC');
+        $menuSections = $this->em->getRepository(MenuSection::class)
+            ->createQueryBuilder('menuSection')
+            ->innerJoin('menuSection.items', 'item')
+            ->addSelect('item')
+            ->innerJoin('item.category', 'category')
+            ->addSelect('category')
+            ->andWhere('menuSection.isActive = :active')
+            ->andWhere('category.isActive = :active')
+            ->setParameter('active', true)
+            ->orderBy('menuSection.orderNum', 'DESC')
+            ->addOrderBy('item.orderNum', 'DESC')
+            ->getQuery()
+            ->getResult();
 
         return $this->renderResponse($blockContext->getTemplate(), [
             'settings'      => $blockContext->getSettings(),
             'block'         => $blockContext->getBlock(),
-            'main'          => $main->getQuery()->getResult(),
-            'secondary'     => $secondary->getQuery()->getResult(),
-            'individual'    => $individual->getQuery()->getResult(),
-            'giftBox'       => $giftBox->getQuery()->getResult(),
-            'scrapers'      => $scrapers->getQuery()->getResult(),
-            'gematit'       => $gematit->getQuery()->getResult(),
+            'menuSections'  => $menuSections,
             'locales'       => $this->locales,
         ]);
     }

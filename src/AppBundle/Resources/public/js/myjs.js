@@ -891,6 +891,17 @@ $(document).ready(function() {
 	});
 
 	// Открытие меню в видео
+	var closeVideoMenuSections = function () {
+		if ($(window).width() > 767) {
+			return;
+		}
+
+		$('.video-menu-section-toggle')
+			.removeClass('is-open')
+			.attr('aria-expanded', 'false');
+		$('.video-menu-submenu').stop(true, true).slideUp(200);
+	};
+
 	$('.video-menu-toggle').on('click', function(){
 		$(".video-menu-outer").fadeToggle(300);
 		$(".video-options-menu").fadeOut(300);
@@ -899,6 +910,24 @@ $(document).ready(function() {
 
 	$('.video-menu-close').on('click', function(){
 		$(".video-menu-outer").fadeToggle(300);
+		closeVideoMenuSections();
+	});
+
+	$('.video-menu-section-toggle').on('click', function () {
+		if ($(window).width() > 767) {
+			return;
+		}
+
+		var $toggle = $(this);
+		var $submenu = $toggle.next('.video-menu-submenu');
+		var shouldOpen = !$toggle.hasClass('is-open');
+
+		closeVideoMenuSections();
+
+		if (shouldOpen) {
+			$toggle.addClass('is-open').attr('aria-expanded', 'true');
+			$submenu.stop(true, true).slideDown(220);
+		}
 	});
 
 	// Появление языков выбора и валют
@@ -908,6 +937,7 @@ $(document).ready(function() {
 		$(".video-options-menu").not($(this).next(".video-options-menu")).fadeOut(300);
 		$(this).next(".video-options-menu").fadeToggle(300);
 		$(".video-menu-outer").fadeOut(300);
+		closeVideoMenuSections();
 	});
 
 	// Работа смены границ в инпуте

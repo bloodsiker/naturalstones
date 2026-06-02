@@ -1,4 +1,28 @@
 Action: Действия
+Menu Section List: Меню
+Menu Section Create: Добавить раздел меню
+
+group:
+    menu: Меню
+    menu_editor: Разделы меню
+    menu_item_editor: Категории меню
+
+form_group:
+    basic: Основные
+    additional: Дополнительные
+
+menu_section:
+    fields:
+        id: ID
+        title: Название
+        items: Подкатегории
+        is_active: Активно
+        order_num: Сортировка
+
+menu_item:
+    fields:
+        category: Категория
+        order_num: Сортировка
 
 app:
     pager:

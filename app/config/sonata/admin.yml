@@ -38,6 +38,7 @@ sonata_admin:
               settings:
                   groups:
                       - group.main_image
+                      - group.menu
                       - group.media
                       - group.product
                       - group.article
@@ -59,6 +60,10 @@ sonata_admin:
                 label: group.main_image
                 label_catalogue: MainImageBundle
                 icon: <i class="fa fa-picture-o"></i>
+            group.menu:
+                label: group.menu
+                label_catalogue: AppBundle
+                icon: <i class="fa fa-bars"></i>
             group.media:
                 label: group.media
                 label_catalogue: MediaBundle

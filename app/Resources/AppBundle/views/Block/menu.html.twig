@@ -81,8 +81,11 @@
         <div class="title">{{ 'frontend.menu_title'|trans([], 'AppBundle') }}</div>
         {% if individual|length %}
             <div class="header-menu-block">
-                <div class="type">{{ 'frontend.menu.individual'|trans([], 'AppBundle') }}</div>
-                <ul class="header-menu">
+                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-individual">
+                    <span>{{ 'frontend.menu.individual'|trans([], 'AppBundle') }}</span>
+                    <span class="mobile-menu-toggle__icon"></span>
+                </button>
+                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-individual">
                     {% for iCategory in individual %}
                         <li><a href="{{ path('product_list', { 'slug': iCategory.slug }) }}">{{ iCategory.getName}}</a></li>
                     {% endfor %}
@@ -91,8 +94,11 @@
         {% endif %}
         {% if gematit|length %}
             <div class="header-menu-block">
-                <div class="type">{{ 'frontend.menu.gematit'|trans([], 'AppBundle') }}</div>
-                <ul class="header-menu">
+                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-gematit">
+                    <span>{{ 'frontend.menu.gematit'|trans([], 'AppBundle') }}</span>
+                    <span class="mobile-menu-toggle__icon"></span>
+                </button>
+                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-gematit">
                     {% for gCategory in gematit %}
                         <li><a href="{{ path('product_list', { 'slug': gCategory.slug }) }}">{{ gCategory.getName}}</a></li>
                     {% endfor %}
@@ -101,8 +107,11 @@
         {% endif %}
         {% if main|length %}
             <div class="header-menu-block">
-                <div class="type">{{ 'frontend.menu.decorations'|trans([], 'AppBundle') }}</div>
-                <ul class="header-menu">
+                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-decorations">
+                    <span>{{ 'frontend.menu.decorations'|trans([], 'AppBundle') }}</span>
+                    <span class="mobile-menu-toggle__icon"></span>
+                </button>
+                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-decorations">
                     {% for mCategory in main %}
                         <li><a href="{{ path('product_list', { 'slug': mCategory.slug }) }}">{{ mCategory.getName}}</a></li>
                     {% endfor %}
@@ -111,8 +120,11 @@
         {% endif %}
         {% if secondary|length %}
             <div class="header-menu-block">
-                <div class="type">{{ 'frontend.menu.accessories'|trans([], 'AppBundle') }}</div>
-                <ul class="header-menu">
+                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-accessories">
+                    <span>{{ 'frontend.menu.accessories'|trans([], 'AppBundle') }}</span>
+                    <span class="mobile-menu-toggle__icon"></span>
+                </button>
+                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-accessories">
                     {% for sCategory in secondary %}
                         <li><a href="{{ path('product_list', { 'slug': sCategory.slug }) }}">{{ sCategory.getName}}</a></li>
                     {% endfor %}
@@ -121,8 +133,11 @@
         {% endif %}
         {% if giftBox|length %}
             <div class="header-menu-block">
-                <div class="type">{{ 'frontend.menu.gift_box'|trans([], 'AppBundle') }}</div>
-                <ul class="header-menu">
+                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-gift-box">
+                    <span>{{ 'frontend.menu.gift_box'|trans([], 'AppBundle') }}</span>
+                    <span class="mobile-menu-toggle__icon"></span>
+                </button>
+                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-gift-box">
                     {% for gCategory in giftBox %}
                         <li><a href="{{ path('product_list', { 'slug': gCategory.slug }) }}">{{ gCategory.getName}}</a></li>
                     {% endfor %}
@@ -131,14 +146,35 @@
         {% endif %}
         {% if scrapers|length %}
             <div class="header-menu-block">
-                <div class="type">{{ 'frontend.menu.scrapers'|trans([], 'AppBundle') }}</div>
-                <ul class="header-menu">
+                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-scrapers">
+                    <span>{{ 'frontend.menu.scrapers'|trans([], 'AppBundle') }}</span>
+                    <span class="mobile-menu-toggle__icon"></span>
+                </button>
+                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-scrapers">
                     {% for scCategory in scrapers %}
                         <li><a href="{{ path('product_list', { 'slug': scCategory.slug }) }}">{{ scCategory.getName}}</a></li>
                     {% endfor %}
                 </ul>
             </div>
         {% endif %}
+        <div class="mobile-menu-footer">
+            <a class="mobile-menu-cabinet" href="{{ path('cabinet') }}">
+                {{ 'frontend.footer.links.cabinet'|trans([], 'AppBundle') }}
+            </a>
+            <div class="mobile-menu-locales">
+                {% set switcher_route = app.request.attributes.get('_route') == 'page_slug' ? 'index' : app.request.attributes.get('_route') %}
+                {% set route_params = app.request.attributes.get('_route') == 'page_slug' ? {} : app.request.attributes.get('_route_params') %}
+                {% for locale in locales %}
+                    {% set locale_title = locale == 'uk' ? 'ua' : locale %}
+                    <a class="mobile-menu-locale{{ locale == app.request.locale ? ' is-active' : '' }}" href="{{
+                        path(
+                            switcher_route|default('index'),
+                            route_params|default({'_locale': locale})|merge({'_locale': locale})
+                        )
+                    }}">{{ locale_title|upper }}</a>
+                {% endfor %}
+            </div>
+        </div>
         <div class="header-menu-close"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt="cross"></div>
     </div>
 {% elseif (settings['type'] == 'video') %}

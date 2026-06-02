@@ -28,6 +28,7 @@ services:
         arguments:
             - '@twig'
             - '@app.entity_manager'
+            - '%locales%'
         tags:
             - { name: sonata.block }
 

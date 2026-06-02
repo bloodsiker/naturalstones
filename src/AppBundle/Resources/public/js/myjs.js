@@ -850,6 +850,13 @@ $(document).ready(function() {
 
 
     /*работа меню*/
+	var closeMobileMenuSections = function () {
+		$('.header-menu-mobile .mobile-menu-toggle')
+			.removeClass('is-open')
+			.attr('aria-expanded', 'false');
+		$('.header-menu-mobile .mobile-menu-submenu').stop(true, true).slideUp(200);
+	};
+
 	$(".header-buter").on('click', function () {
 		$(".header-menu-outer").addClass("visible");
 		$(".header-overlay").fadeIn(300);
@@ -858,6 +865,20 @@ $(document).ready(function() {
 	$(".header-menu-close, .header-overlay").on('click', function () {
 		 $(".header-menu-outer").removeClass("visible");
 		 $(".header-overlay").fadeOut(300);
+		 closeMobileMenuSections();
+	});
+
+	$('.header-menu-mobile .mobile-menu-toggle').on('click', function () {
+		var $toggle = $(this);
+		var $submenu = $toggle.next('.mobile-menu-submenu');
+		var shouldOpen = !$toggle.hasClass('is-open');
+
+		closeMobileMenuSections();
+
+		if (shouldOpen) {
+			$toggle.addClass('is-open').attr('aria-expanded', 'true');
+			$submenu.stop(true, true).slideDown(220);
+		}
 	});
 
 	// Появление фильтра в мобилке

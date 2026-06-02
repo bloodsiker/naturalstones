@@ -4,7 +4,6 @@ namespace AppBundle\Block;
 
 use Doctrine\ORM\EntityManager;
 use ProductBundle\Entity\Category;
-use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -22,17 +21,24 @@ class MenuBlockService extends AbstractEditableBlockService
     protected $em;
 
     /**
+     * @var array
+     */
+    protected $locales;
+
+    /**
      * HeaderBlockService constructor.
      *
      * @param string          $name
      * @param EngineInterface $templating
      * @param EntityManager   $em
+     * @param array           $locales
      */
-    public function __construct(Environment $twig, EntityManager $em)
+    public function __construct(Environment $twig, EntityManager $em, array $locales)
     {
         parent::__construct($twig);
 
         $this->em = $em;
+        $this->locales = $locales;
     }
 
     /**
@@ -76,6 +82,7 @@ class MenuBlockService extends AbstractEditableBlockService
             'giftBox'       => $giftBox->getQuery()->getResult(),
             'scrapers'      => $scrapers->getQuery()->getResult(),
             'gematit'       => $gematit->getQuery()->getResult(),
+            'locales'       => $this->locales,
         ]);
     }
 }

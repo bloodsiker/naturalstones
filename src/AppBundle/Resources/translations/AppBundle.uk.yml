@@ -264,8 +264,23 @@ frontend:
             constructor: Конструктор браслетів
             articles: Статті
             reviews: Відгуки
+            delivery_payment: Оплата і доставка
             cabinet: Кабінет
             login: Увійти
+
+    delivery_payment_page:
+        title: Оплата і доставка
+        payment_title: Оплата
+        payment_text: Замовлення передається на обробку після оплати. Деталі для оплати уточнюйте під час оформлення замовлення.
+        shipping_title: Доставка
+        shipping_text: Доставляємо замовлення по Україні та до країн Європи. Доступні перевізники:
+        carrier_nova_poshta: Нова пошта
+        carrier_ukrposhta: Укрпошта
+        carrier_meest: Meest
+        dispatch_title: Обробка та відправлення
+        dispatch_text: Обробляємо та відправляємо замовлення протягом одного дня після оплати.
+        price_title: Вартість доставки
+        price_text: Вартість доставки по Україні — 100 грн. Для доставки до країн Європи вартість уточнюється під час оформлення замовлення.
 
     product:
         add_to_favorites: В обране
@@ -358,6 +373,7 @@ frontend:
         woman: Для жінок
         articles: Статті
         constructor: Конструктор браслетів
+        delivery_payment: Оплата і доставка
 
     meta:
         description: Коли хочеться дарувати яскраві емоції та незабутні враження своїм рідним та близьким вибирайте чудові вироби від компанії «Naturalstones Jewerly»
@@ -377,6 +393,9 @@ frontend:
 
         meta_title_constructor: Конструктор браслетів | Naturalstones Jewerly - Прикраси з натурального каміння
         meta_description_constructor: Конструктор дозволяє вибрати каміння з якого ви бажаєте створити браслет, розмір та кількість намистин
+
+        meta_title_delivery_payment: Оплата і доставка | Naturalstones Jewerly
+        meta_description_delivery_payment: Оплата та доставка прикрас Naturalstones Jewerly по Україні й до країн Європи. Відправлення протягом одного дня після оплати.
 
         meta_title_products: Купити %CATEGORY% з натурального каміння — ціни, фото | Naturalstones Jewerly
         meta_description_products: "%CATEGORY% з натуральних каменів ✓ Широкий вибір ✓ Є в наявності ✓ Швидка доставка по Україні. Замовляйте онлайн на Naturalstones Jewerly."

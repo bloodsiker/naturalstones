@@ -112,6 +112,50 @@ button.button{
 	padding: 30px 0 19px;
 }
 
+.delivery-payment-grid{
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 18px;
+}
+
+.delivery-payment-card{
+	padding: 24px;
+	background: #fff;
+	border: 1px solid #E6DEF1;
+	border-radius: 12px;
+	box-shadow: 0 8px 24px rgba(114, 69, 177, .08);
+	h2{
+		margin-bottom: 12px;
+		color: #7245B1;
+		font-size: 21px;
+		line-height: 1.25;
+	}
+	p,
+	li{
+		color: #4F4F4F;
+		font-size: 16px;
+		line-height: 1.6;
+	}
+	ul{
+		margin-top: 10px;
+		padding-left: 18px;
+		list-style: disc;
+	}
+}
+
+@media screen and (max-width: 767px){
+	.delivery-payment-grid{
+		grid-template-columns: 1fr;
+		gap: 12px;
+	}
+	.delivery-payment-card{
+		padding: 18px;
+		h2{
+			font-size: 19px;
+		}
+	}
+}
+
 h1{
 	margin-bottom: 31px;
 	font-weight: bold;

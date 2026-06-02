@@ -19,6 +19,11 @@ constructor:
   defaults:
     _controller: AppBundle\Controller\DefaultController::constructorAction
 
+delivery_payment:
+  path: /delivery-payment
+  defaults:
+    _controller: AppBundle\Controller\DefaultController::deliveryPaymentAction
+
 _sentry-test:
   path: /_sentry-test
   defaults:

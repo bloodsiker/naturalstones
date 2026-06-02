@@ -166,6 +166,23 @@ class DefaultController extends BaseController
         return $this->render('@App/constructor/index.html.twig');
     }
 
+    public function deliveryPaymentAction(Request $request)
+    {
+        $breadcrumb = $this->get('app.breadcrumb');
+        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.delivery_payment', [], 'AppBundle')]);
+
+        $this->get('app.seo.updater')->doMagic(null, [
+            'title' => $this->get('translator')->trans('frontend.meta.meta_title_delivery_payment', [], 'AppBundle'),
+            'description' => $this->get('translator')->trans('frontend.meta.meta_description_delivery_payment', [], 'AppBundle'),
+            'og' => [
+                'og:site_name' => $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
+                'og:url' => $request->getUri(),
+            ],
+        ]);
+
+        return $this->render('@App/delivery_payment/index.html.twig');
+    }
+
     /**
      * @param Request $request
      *
@@ -250,6 +267,15 @@ class DefaultController extends BaseController
                 $urls['constructor'][$local] = $hostname . $router->generate('constructor');
             } else {
                 $urls['constructor'][$local] = sprintf('%s/%s%s', $hostname, $local, $router->generate('constructor'));
+            }
+        }
+
+        $urls['delivery_payment']['loc'] = $hostname . $router->generate('delivery_payment');
+        foreach ($locales as $local) {
+            if ($local === 'uk') {
+                $urls['delivery_payment'][$local] = $hostname . $router->generate('delivery_payment');
+            } else {
+                $urls['delivery_payment'][$local] = sprintf('%s/%s%s', $hostname, $local, $router->generate('delivery_payment'));
             }
         }
 

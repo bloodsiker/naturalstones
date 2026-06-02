@@ -264,8 +264,23 @@ frontend:
             constructor: Конструктор браслетов
             articles: Статьи
             reviews: Отзывы
+            delivery_payment: Оплата и доставка
             cabinet: Кабинет
             login: Войти
+
+    delivery_payment_page:
+        title: Оплата и доставка
+        payment_title: Оплата
+        payment_text: Заказ передается в обработку после оплаты. Детали для оплаты уточняйте при оформлении заказа.
+        shipping_title: Доставка
+        shipping_text: Доставляем заказы по Украине и в страны Европы. Доступные перевозчики:
+        carrier_nova_poshta: Новая почта
+        carrier_ukrposhta: Укрпочта
+        carrier_meest: Meest
+        dispatch_title: Обработка и отправка
+        dispatch_text: Обрабатываем и отправляем заказ в течение одного дня после оплаты.
+        price_title: Стоимость доставки
+        price_text: Стоимость доставки по Украине — 100 грн. Для доставки в страны Европы стоимость уточняется при оформлении заказа.
 
     product:
         add_to_favorites: В избранное
@@ -358,6 +373,7 @@ frontend:
         woman: Для женщин
         articles: Статьи
         constructor: Конструктор браслетов
+        delivery_payment: Оплата и доставка
 
     meta:
         description: Когда хочется дарить яркие эмоции и незабываемые впечатления своим родным и близким выбирайте прекрасные украшения от компании «Naturalstones Jewerly»
@@ -377,6 +393,9 @@ frontend:
 
         meta_title_constructor: Конструктор браслетов | Naturalstones Jewerly - Украшения из натуральных камней
         meta_description_constructor: Конструктор позволяет выбрать камни из которого вы хотите создать браслет, размер и количество бусин
+
+        meta_title_delivery_payment: Оплата и доставка | Naturalstones Jewerly
+        meta_description_delivery_payment: Оплата и доставка украшений Naturalstones Jewerly по Украине и в страны Европы. Отправка в течение одного дня после оплаты.
 
         meta_title_products: Купить %CATEGORY% из натуральных камней — цены, фото | Naturalstones Jewerly
         meta_description_products: "%CATEGORY% из натуральных камней ✓ Широкий выбор ✓ В наличии ✓ Быстрая доставка по Украине. Заказывайте онлайн на Naturalstones Jewerly."

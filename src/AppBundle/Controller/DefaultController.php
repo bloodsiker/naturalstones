@@ -226,7 +226,7 @@ class DefaultController extends BaseController
      */
     public function sitemapAction(Request $request)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $locales = $this->getParameter('locales');
 

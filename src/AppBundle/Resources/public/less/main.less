@@ -115,18 +115,84 @@ button.button{
 .delivery-payment-grid{
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 18px;
+	gap: 20px;
+	max-width: 1040px;
+	margin: 0 auto;
+}
+
+.delivery-payment-hero{
+	position: relative;
+	max-width: 1040px;
+	margin: 0 auto 24px;
+	padding: 30px 34px;
+	overflow: hidden;
+	border-radius: 18px;
+	background: linear-gradient(135deg, #e86b6b 0%, #f08383 100%);
+	box-shadow: 0 14px 32px rgba(240, 131, 131, .24);
+	color: #fff;
+	&:after{
+		content: "";
+		position: absolute;
+		right: -65px;
+		top: -70px;
+		width: 210px;
+		height: 210px;
+		border: 30px solid rgba(255, 255, 255, .1);
+		border-radius: 50%;
+	}
+	h1{
+		position: relative;
+		z-index: 1;
+		margin: 6px 0 10px;
+		color: #fff;
+	}
+	p{
+		position: relative;
+		z-index: 1;
+		max-width: 750px;
+		font-size: 16px;
+		line-height: 1.6;
+	}
+}
+
+.delivery-payment-kicker{
+	position: relative;
+	z-index: 1;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 1.5px;
+	text-transform: uppercase;
+	opacity: .82;
 }
 
 .delivery-payment-card{
+	position: relative;
 	padding: 24px;
+	overflow: hidden;
 	background: #fff;
-	border: 1px solid #E6DEF1;
-	border-radius: 12px;
-	box-shadow: 0 8px 24px rgba(114, 69, 177, .08);
+	border: 1px solid #f4d7d7;
+	border-radius: 16px;
+	box-shadow: 0 8px 24px rgba(240, 131, 131, .1);
+	transition: @transition;
+	&:hover{
+		border-color: #f08383;
+		box-shadow: 0 14px 30px rgba(240, 131, 131, .16);
+		transform: translateY(-3px);
+	}
+	&:before{
+		content: attr(data-step);
+		position: absolute;
+		right: 16px;
+		top: 10px;
+		color: rgba(240, 131, 131, .13);
+		font-size: 48px;
+		font-weight: 700;
+		line-height: 1;
+	}
 	h2{
+		position: relative;
 		margin-bottom: 12px;
-		color: #7245B1;
+		color: #e86b6b;
 		font-size: 21px;
 		line-height: 1.25;
 	}
@@ -136,20 +202,51 @@ button.button{
 		font-size: 16px;
 		line-height: 1.6;
 	}
-	ul{
-		margin-top: 10px;
-		padding-left: 18px;
-		list-style: disc;
+}
+
+.delivery-payment-card--accent{
+	background: #fff7f7;
+	border-color: #f2cccc;
+}
+
+.delivery-payment-carriers{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 15px;
+	li{
+		padding: 7px 12px;
+		border: 1px solid #f4d7d7;
+		border-radius: 99px;
+		background: #fff7f7;
+		color: #e86b6b;
+		font-size: 14px;
+		font-weight: 600;
+		line-height: 1.2;
 	}
 }
 
 @media screen and (max-width: 767px){
+	.delivery-payment-hero{
+		margin-bottom: 14px;
+		padding: 22px 18px;
+		border-radius: 14px;
+		h1{
+			margin-bottom: 8px;
+			font-size: 26px;
+		}
+		p{
+			font-size: 15px;
+			line-height: 1.5;
+		}
+	}
 	.delivery-payment-grid{
 		grid-template-columns: 1fr;
 		gap: 12px;
 	}
 	.delivery-payment-card{
 		padding: 18px;
+		border-radius: 13px;
 		h2{
 			font-size: 19px;
 		}

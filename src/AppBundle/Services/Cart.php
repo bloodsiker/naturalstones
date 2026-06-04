@@ -9,7 +9,7 @@ use ProductBundle\Entity\Product;
 use ShareBundle\Entity\Colour;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 use UserBundle\Entity\User;
 
 /**
@@ -20,32 +20,20 @@ class Cart
     const SESSION_CART  = 'user_cart';
     const TYPE_PRODUCT  = 'product';
 
-    /**
-     * @var Session
-     */
-    private $session;
-
-    /**
-     * @var EntityManager
-     */
+    private RequestStack $requestStack;
     private $entityManager;
+    private TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
-     * Cart constructor.
-     * @param Session       $session
-     * @param EntityManager $entityManager
-     * @param TokenStorageInterface $tokenStorage
-     */
-    public function __construct(Session $session, EntityManager $entityManager, TokenStorageInterface $tokenStorage)
+    public function __construct(RequestStack $requestStack, EntityManager $entityManager, TokenStorageInterface $tokenStorage)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->entityManager = $entityManager;
         $this->tokenStorage = $tokenStorage;
+    }
+
+    private function session()
+    {
+        return $this->requestStack->getSession();
     }
 
     /**
@@ -55,7 +43,7 @@ class Cart
      */
     public function getProductInCart()
     {
-        return $this->session->get(self::SESSION_CART);
+        return $this->session()->get(self::SESSION_CART);
     }
 
     /**
@@ -316,7 +304,7 @@ class Cart
         $this->entityManager->flush();
 
         $this->clear();
-        $this->session->remove('infoCart');
+        $this->session()->remove('infoCart');
 
         return $order;
     }
@@ -387,8 +375,8 @@ class Cart
      */
     public function clear()
     {
-        if ($this->session->has(self::SESSION_CART)) {
-            $this->session->remove(self::SESSION_CART);
+        if ($this->session()->has(self::SESSION_CART)) {
+            $this->session()->remove(self::SESSION_CART);
         }
 
         return true;
@@ -401,6 +389,6 @@ class Cart
      */
     private function setCart($products)
     {
-        $this->session->set(self::SESSION_CART, $products);
+        $this->session()->set(self::SESSION_CART, $products);
     }
 }

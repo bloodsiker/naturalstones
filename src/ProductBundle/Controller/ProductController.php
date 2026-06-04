@@ -3,9 +3,6 @@
 namespace ProductBundle\Controller;
 
 use AppBundle\Helper\AppHelper;
-use BookBundle\Entity\Book;
-use BookBundle\Entity\BookCollection;
-use BookBundle\Entity\BookInfoDownload;
 use GenreBundle\Entity\Genre;
 use MediaBundle\Entity\MediaFile;
 use ProductBundle\Entity\Category;
@@ -16,10 +13,10 @@ use ShareBundle\Entity\Tag;
 use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 
 /**
- * Class BookController
+ * Class ProductController
  */
 class ProductController extends BaseController
 {
@@ -30,8 +27,8 @@ class ProductController extends BaseController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function listAction(Request $request)
     {
         $slug = $request->get('slug');
@@ -73,8 +70,8 @@ class ProductController extends BaseController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function listWhoAction(Request $request)
     {
         $who = $request->get('who');
@@ -102,8 +99,8 @@ class ProductController extends BaseController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function listTagAction(Request $request)
     {
         $slug = $request->get('slug');
@@ -135,8 +132,8 @@ class ProductController extends BaseController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function listColourAction(Request $request)
     {
         $slug = $request->get('slug');
@@ -168,8 +165,8 @@ class ProductController extends BaseController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function listStoneAction(Request $request)
     {
         $slug = $request->get('slug');
@@ -203,8 +200,8 @@ class ProductController extends BaseController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function viewAction(Request $request)
     {
         $repo = $this->getDoctrine()->getManager()->getRepository(Product::class);

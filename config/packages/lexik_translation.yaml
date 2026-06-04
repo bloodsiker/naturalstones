@@ -1,0 +1,18 @@
+lexik_translation:
+    fallback_locale: ['%locale%']
+    managed_locales: '%locales%'
+    base_layout: '@LexikTranslation/layout.html.twig'
+    grid_input_type: text
+    grid_toggle_similar: false
+    storage:
+        type: orm
+        object_manager: ~
+    resources_registration:
+        type: all
+        managed_locales_only: true
+    auto_cache_clean: false
+    auto_cache_clean_interval: 600
+    dev_tools:
+        enable: '%kernel.debug%'
+        create_missing: false
+        file_format: yml

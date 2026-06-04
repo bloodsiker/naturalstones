@@ -15,9 +15,8 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  * @ORM\Entity()
  * @ORM\Table(name="share_metals")
  * @ORM\HasLifecycleCallbacks
- *
- * @UniqueEntity("slug")
  */
+#[UniqueEntity('slug')]
 class Metal implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;

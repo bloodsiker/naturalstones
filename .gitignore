@@ -1,6 +1,10 @@
 /.idea/
 /.web-server-pid
 /app/config/parameters.yml
+/config/parameters.yaml
+/.env.local
+/.env.local.php
+/.env.*.local
 /app/Resources/node/node_modules/
 /build/
 /phpunit.xml

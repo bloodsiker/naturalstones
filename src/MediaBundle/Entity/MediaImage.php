@@ -13,9 +13,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Entity()
  * @ORM\Table(name="media_image")
  * @ORM\HasLifecycleCallbacks
- *
- * @Vich\Uploadable
  */
+#[Vich\Uploadable]
 class MediaImage extends AbstractMedia
 {
     /**
@@ -34,9 +33,8 @@ class MediaImage extends AbstractMedia
 
     /**
      * Unmapped property to handle file uploads
-     *
-     * @Vich\UploadableField(mapping="media_image", fileNameProperty="path")
      */
+    #[Vich\UploadableField(mapping: 'media_image', fileNameProperty: 'path')]
     private $file;
 
     /**

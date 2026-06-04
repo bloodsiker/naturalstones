@@ -2,7 +2,6 @@
 
 namespace CommentBundle\Block;
 
-use BookBundle\Entity\Book;
 use CommentBundle\Entity\Comment;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Block\AbstractEditableBlockService;
@@ -51,7 +50,6 @@ class AddCommentBlockService extends AbstractEditableBlockService
      */
     public function configureSettings(OptionsResolver $resolver): void    {
         $resolver->setDefaults([
-            'book'     => null,
             'template' => self::FORM_TEMPLATE,
         ]);
     }
@@ -74,10 +72,7 @@ class AddCommentBlockService extends AbstractEditableBlockService
         $request = $this->request->getCurrentRequest();
 
         if ($request->isXmlHttpRequest() && $request->getMethod() === 'POST') {
-            $book = $this->em->getRepository(Book::class)->find((int) $request->get('bookId'));
-
             $comment = new Comment();
-            $comment->setBook($book);
             $comment->setUserName($request->get('name'));
             $comment->setUserEmail($request->get('email'));
             $comment->setComment($request->get('comment'));
@@ -88,7 +83,6 @@ class AddCommentBlockService extends AbstractEditableBlockService
 
 
         return $this->renderResponse($request->isXmlHttpRequest() ? self::AJAX_COMMENT_TEMPLATE : $blockContext->getTemplate(), [
-            'book'      => $blockContext->getSetting('book'),
             'comment'   => $comment ?? null,
             'block'     => $block,
             'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),

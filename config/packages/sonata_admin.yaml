@@ -1,0 +1,109 @@
+sonata_admin:
+    title: NaturalStones
+    title_logo: /bundles/admin/images/logo.jpg
+    show_mosaic_button: false
+    security:
+        handler: sonata.admin.security.handler.role
+    default_admin_services:
+        label_translator_strategy: sonata.admin.label.strategy.noop
+
+    templates:
+        short_object_description: '@Media/Helper/short-object-description.html.twig'
+        layout: '@Admin/standard_layout.html.twig'
+        list: '@Admin/Core/list.html.twig'
+
+    assets:
+        extra_javascripts:
+            - bundles/sonatapage/app.js
+            - bundles/admin/js/textcounter.min.js
+            - bundles/admin/js/colorpicker.js
+            - bundles/admin/js/codemirror/codemirror.js
+            - bundles/admin/js/codemirror/autorefresh.js
+            - bundles/admin/js/codemirror/css.js
+            - bundles/admin/js/codemirror/xml.js
+            - bundles/admin/js/codemirror/javascript.js
+            - bundles/admin/js/codemirror/htmlmixed.js
+            - bundles/admin/js/lazysizes.min.js
+        extra_stylesheets:
+            - bundles/sonatapage/app.css
+            - bundles/admin/css/colorpicker.css
+            - bundles/admin/css/codemirror/codemirror.css
+            - bundles/admin/css/style.css
+
+    dashboard:
+        blocks:
+            - position: left
+              type: sonata.admin.block.admin_list
+              settings:
+                  groups:
+                      - group.main_image
+                      - group.menu
+                      - group.media
+                      - group.product
+                      - group.article
+                      - group.wheel_spin
+
+            - position: right
+              type: sonata.admin.block.admin_list
+              settings:
+                  groups:
+                      - group.comment
+                      - group.share
+                      - group.order
+                      - sonata_page
+                      - sonata_user
+        groups:
+            group.main_image:
+                label: group.main_image
+                label_catalogue: MainImageBundle
+                icon: '<i class="fa fa-picture-o"></i>'
+            group.menu:
+                label: group.menu
+                label_catalogue: AppBundle
+                icon: '<i class="fa fa-bars"></i>'
+            group.media:
+                label: group.media
+                label_catalogue: MediaBundle
+                icon: '<i class="fa fa-files-o"></i>'
+            group.product:
+                label: group.product
+                label_catalogue: ProductBundle
+                icon: '<i class="fa fa-paw"></i>'
+            group.comment:
+                label: group.comment
+                label_catalogue: CommentBundle
+                icon: '<i class="fa fa-paw"></i>'
+            group.article:
+                label: group.article
+                label_catalogue: ArticleBundle
+                icon: '<i class="fa fa-newspaper-o"></i>'
+            group.wheel_spin:
+                label: group.wheel_spin
+                label_catalogue: WheelSpinBundle
+                icon: '<i class="fa fa-spinner"></i>'
+            group.share:
+                label: group.share
+                label_catalogue: ShareBundle
+                icon: '<i class="fa fa-text-width"></i>'
+            group.information:
+                label: group.information
+                label_catalogue: InformationBundle
+                icon: '<i class="fa fa-info-circle"></i>'
+            group.order:
+                label: group.order
+                label_catalogue: OrderBundle
+                icon: '<i class="fa fa-bell-o"></i>'
+            sonata_page:
+                label: ~
+                label_catalogue: SonataPageBundle
+                icon: '<i class="fa fa-sitemap"></i>'
+                items:
+                    - sonata.page.admin.page
+                    - sonata.page.admin.page_redirect
+                    - sonata.page.admin.site
+                    - sonata.page.admin.site_variables
+                    - sonata.page.admin.site_variables_placement
+            sonata_user:
+                label: ~
+                label_catalogue: SonataUserBundle
+                icon: '<i class="fa fa-users"></i>'

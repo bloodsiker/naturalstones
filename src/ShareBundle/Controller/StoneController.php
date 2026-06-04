@@ -4,15 +4,16 @@ namespace ShareBundle\Controller;
 
 use AppBundle\Services\BreadcrumbService;
 use AppBundle\Services\SeoUpdater;
+use AppBundle\Controller\BaseController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 
 /**
  * Class StoneController
  */
-class StoneController extends AbstractController
+class StoneController extends BaseController
 {
     /**
      * @var BreadcrumbService
@@ -35,8 +36,8 @@ class StoneController extends AbstractController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function listAction(Request $request)
     {
         $this->breadcrumb->addBreadcrumb(['title' => 'Все камни']);

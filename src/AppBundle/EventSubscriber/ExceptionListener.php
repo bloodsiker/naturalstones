@@ -29,19 +29,18 @@ class ExceptionListener
 
         $request = $event->getRequest();
 
-        preg_match("/^(?:\/?(?:app.php|app_dev.php|app_admin.php)?)\/(ua|uk|ru)[\/a-zA-Z]+$/", $request->getRequestUri(), $result);
+        preg_match("/^\/(uk|ru)(\/|$)/", $request->getRequestUri(), $result);
         $locale = $result[1] ?? $this->defaultLocale;
 
         if ($locale && $locale !== $request->getLocale()) {
-            $resolvedLocale = ('ua' === $locale) ? 'uk' : $locale;
             if ($this->translator) {
-                $this->translator->setLocale($resolvedLocale);
+                $this->translator->setLocale($locale);
             }
-            $request->setLocale($resolvedLocale);
-            $request->attributes->set('_locale', $resolvedLocale);
+            $request->setLocale($locale);
+            $request->attributes->set('_locale', $locale);
             $session = $request->getSession();
             if ($session) {
-                $session->set('_locale', $resolvedLocale);
+                $session->set('_locale', $locale);
             }
         }
     }

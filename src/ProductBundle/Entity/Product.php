@@ -6,7 +6,6 @@ use AppBundle\Traits\TranslatableProxyTrait;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
@@ -16,8 +15,6 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  * @ORM\Entity(repositoryClass="ProductBundle\Entity\ProductRepository")
  * @ORM\Table(name="product_product")
  * @ORM\HasLifecycleCallbacks()
- *
- * @Vich\Uploadable
  */
 class Product implements TranslatableInterface
 {

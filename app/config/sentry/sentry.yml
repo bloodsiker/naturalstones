@@ -1,2 +1,0 @@
-sentry:
-  dsn: "%sentry_dsn%"

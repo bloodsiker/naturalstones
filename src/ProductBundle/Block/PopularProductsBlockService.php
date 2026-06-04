@@ -2,7 +2,6 @@
 
 namespace ProductBundle\Block;
 
-use BookBundle\Entity\BookInfoView;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use ProductBundle\Entity\ProductInfoView;
 use AppBundle\Block\AbstractEditableBlockService;

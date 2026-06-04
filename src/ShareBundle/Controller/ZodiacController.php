@@ -5,15 +5,16 @@ namespace ShareBundle\Controller;
 use AppBundle\Services\BreadcrumbService;
 use AppBundle\Services\SeoUpdater;
 use ShareBundle\Entity\Zodiac;
+use AppBundle\Controller\BaseController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 
 /**
  * Class ZodiacController
  */
-class ZodiacController extends AbstractController
+class ZodiacController extends BaseController
 {
     const ZODIAC_404 = 'Zodiac doesn\'t exist';
 
@@ -38,8 +39,8 @@ class ZodiacController extends AbstractController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function listAction(Request $request)
     {
         $slug = $request->get('slug');

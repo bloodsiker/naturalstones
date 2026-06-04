@@ -13,9 +13,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Entity()
  * @ORM\Table(name="media_video")
  * @ORM\HasLifecycleCallbacks
- *
- * @Vich\Uploadable
  */
+#[Vich\Uploadable]
 class MediaVideo extends AbstractMedia
 {
     /**

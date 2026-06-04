@@ -1,5 +1,0 @@
-sonata_core:
-    form_type: horizontal
-    form:
-        mapping:
-            enabled: false

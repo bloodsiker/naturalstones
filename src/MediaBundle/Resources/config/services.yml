@@ -5,7 +5,9 @@ services:
         arguments:
             - '@Vich\UploaderBundle\Util\Transliterator'
         calls:
-        - [ setPathImage, ["/files/media_file/[YEAR]/[MONTH]/[FILE]"]]
+            - [ setPathImage, ["/files/media_file/[YEAR]/[MONTH]/[FILE]"]]
+        tags:
+            - { name: vich_uploader.namer }
 
     media.upload_namer.image:
         class: "MediaBundle\\Naming\\MediaNamer"
@@ -13,4 +15,6 @@ services:
         arguments:
             - '@Vich\UploaderBundle\Util\Transliterator'
         calls:
-        - [ setPathImage, ["/files/media_image/[YEAR]/[MONTH]/[FILE]"]]
+            - [ setPathImage, ["/files/media_image/[YEAR]/[MONTH]/[FILE]"]]
+        tags:
+            - { name: vich_uploader.namer }

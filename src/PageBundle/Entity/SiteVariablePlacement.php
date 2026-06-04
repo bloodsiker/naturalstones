@@ -10,9 +10,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="page_site_variable_placement")
- *
- * @UniqueEntity("alias")
  */
+#[UniqueEntity('alias')]
 class SiteVariablePlacement
 {
     /**
@@ -70,7 +69,7 @@ class SiteVariablePlacement
      *
      * @return string
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return $this->alias;
     }

@@ -1,0 +1,82 @@
+imports:
+    - { resource: parameters.yaml }
+
+parameters:
+    locale: uk
+    locales: [uk, ru]
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    AppBundle\:
+        resource: '../src/AppBundle/*'
+        exclude: '../src/AppBundle/{Block,Builder,DependencyInjection,Entity,EventSubscriber,Handler,Helper,Repository,Services,Template,Tests,Traits}'
+
+    AppBundle\Controller\:
+        resource: '../src/AppBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+    AdminBundle\Controller\:
+        resource: '../src/AdminBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+    Sonata\BlockBundle\Block\BlockContextManagerInterface: '@sonata.block.context_manager.default'
+    Sonata\BlockBundle\Block\BlockRendererInterface: '@sonata.block.renderer.default'
+
+    ProductBundle\Controller\:
+        resource: '../src/ProductBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+    ArticleBundle\Controller\:
+        resource: '../src/ArticleBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+    CommentBundle\Controller\:
+        resource: '../src/CommentBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+    OrderBundle\Controller\:
+        resource: '../src/OrderBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+    ShareBundle\Controller\:
+        resource: '../src/ShareBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+    AdminBundle\Controller\CRUDController:
+        public: true
+        tags: ['controller.service_arguments']
+
+    ArticleBundle\Controller\ArticleAdminController:
+        public: true
+        tags: ['controller.service_arguments']
+
+    MediaBundle\Controller\MediaAdminController:
+        public: true
+        tags: ['controller.service_arguments']
+
+    ProductBundle\Controller\ProductAdminController:
+        public: true
+        tags: ['controller.service_arguments']
+
+    ShareBundle\Controller\TextAdminController:
+        public: true
+        tags: ['controller.service_arguments']
+
+    app.exception.locale_listener:
+        class: "AppBundle\\EventSubscriber\\ExceptionListener"
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException', priority: -126 }
+        calls:
+            - [ 'setDefaultLocale', [ '%kernel.default_locale%' ] ]
+            - [ 'setTranslator', [ '@translator' ] ]

@@ -4,7 +4,6 @@ namespace ProductBundle\Controller;
 
 use AdminBundle\Controller\CRUDController as Controller;
 
-use BookBundle\Entity\Book;
 use ProductBundle\Entity\ProductHasImage;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -123,35 +122,4 @@ class ProductAdminController extends Controller
         return $this->renderJson($result);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function searchBookAction(Request $request)
-    {
-        $name = trim($request->get('name'));
-        $em = $this->container->get('doctrine')->getManager();
-        $router = $this->container->get('router');
-        $repository = $em->getRepository(Book::class);
-
-        $qb = $repository->createQueryBuilder('b');
-        $books = $qb
-            ->where('b.isActive = 1')
-            ->andWhere('b.name LIKE :search')
-            ->setParameter('search', '%'.$name.'%')
-            ->getQuery()->getResult();
-
-        $result = array_map(
-            function ($item) use ($router) {
-                return [
-                    'name' => $item->getName(),
-                    'url'  => $router->generate('book_view', ['id' => $item->getId(), 'slug' => $item->getSlug()]),
-                ];
-            },
-            $books
-        );
-
-        return $this->renderJson($result);
-    }
 }

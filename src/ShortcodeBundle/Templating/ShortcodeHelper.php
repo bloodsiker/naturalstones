@@ -20,13 +20,10 @@ class ShortcodeHelper extends Helper
      */
     private $twig;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, \Twig\Environment $twig)
     {
         $this->container = $container;
-        $this->twig = $this->container->get('twig');
+        $this->twig = $twig;
     }
 
     /**

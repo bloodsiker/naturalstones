@@ -1,0 +1,7 @@
+sonata_user:
+    security_acl: false
+    manager_type: orm
+    class:
+        user: UserBundle\Entity\User
+    impersonating:
+        route: sonata_admin_dashboard

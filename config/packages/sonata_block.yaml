@@ -1,0 +1,78 @@
+sonata_block:
+    context_manager: sonata.block.context_manager.default
+    default_contexts: [sonata_page_bundle]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts: [admin]
+        sonata.admin.block.search_result:
+            contexts: [admin]
+        sonata.page.block.ajax:
+            contexts: [cms]
+        page.block.site_variable:
+            contexts: [cms, sonata_page_bundle]
+        app.block.service.header:
+            contexts: [cms, sonata_page_bundle]
+        app.block.service.footer:
+            contexts: [cms, sonata_page_bundle]
+        app.block.service.menu:
+            contexts: [cms, sonata_page_bundle]
+        app.block.service.cart:
+            contexts: [cms, sonata_page_bundle]
+        app.block.service.feedback:
+            contexts: [cms, sonata_page_bundle]
+        app.block.service.search:
+            contexts: [cms, sonata_page_bundle]
+        app.block.service.search_category:
+            contexts: [cms, sonata_page_bundle]
+        app.block.service.breadcrumb:
+            contexts: [cms, sonata_page_bundle]
+        main.block.image:
+            contexts: [cms, sonata_page_bundle]
+        information.block.info:
+            contexts: [cms, sonata_page_bundle]
+        book.block.list:
+            contexts: [cms, sonata_page_bundle]
+        book.block.book_voting:
+            contexts: [cms, sonata_page_bundle]
+        book.block.popular:
+            contexts: [cms, sonata_page_bundle]
+        book.block.collection_list:
+            contexts: [cms, sonata_page_bundle]
+        book.block.collection_genre:
+            contexts: [cms, sonata_page_bundle]
+        product.block.list:
+            contexts: [cms, sonata_page_bundle]
+        product.block.popular:
+            contexts: [cms, sonata_page_bundle]
+        product.block.viewed:
+            contexts: [cms, sonata_page_bundle]
+        article.block.list:
+            contexts: [cms, sonata_page_bundle]
+        genre.block.genre_list:
+            contexts: [cms, sonata_page_bundle]
+        series.block.series_list:
+            contexts: [cms, sonata_page_bundle]
+        share.block.tag_list:
+            contexts: [cms, sonata_page_bundle]
+        share.block.author_list:
+            contexts: [cms, sonata_page_bundle]
+        share.block.stones:
+            contexts: [cms, sonata_page_bundle]
+        share.block.stone_constructor:
+            contexts: [cms, sonata_page_bundle]
+        share.block.zodiac:
+            contexts: [cms, sonata_page_bundle]
+        quiz.block.service.quiz:
+            contexts: [cms, sonata_page_bundle]
+        order.block.order_board_list:
+            contexts: [cms, sonata_page_bundle]
+        wheel_spin.block.wheel_spinner:
+            contexts: [cms, sonata_page_bundle]
+        comment.block.list_comments:
+            contexts: [cms, sonata_page_bundle]
+        comment.block.add_comment:
+            contexts: [cms, sonata_page_bundle]
+        comment.block.list_swaps:
+            contexts: [cms, sonata_page_bundle]
+        comment.block.add_swap:
+            contexts: [cms, sonata_page_bundle]

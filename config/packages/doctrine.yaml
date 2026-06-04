@@ -1,0 +1,29 @@
+doctrine:
+    dbal:
+        server_version: '%server_version%'
+        driver: pdo_mysql
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+        charset: UTF8
+
+    orm:
+        default_entity_manager: default
+        auto_generate_proxy_classes: '%kernel.debug%'
+        entity_managers:
+            default:
+                connection: default
+                naming_strategy: doctrine.orm.naming_strategy.underscore
+                auto_mapping: true
+                mappings:
+                    SonataPageBundle: ~
+                    ShareBundle:
+                        is_bundle: true
+                        type: annotation
+                        dir: 'Entity'
+                        prefix: 'ShareBundle\Entity'
+                dql:
+                    numeric_functions:
+                        rand: DoctrineExtensions\Query\Mysql\Rand

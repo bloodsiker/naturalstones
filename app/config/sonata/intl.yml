@@ -1,8 +1,0 @@
-sonata_intl:
-    locale: ~
-    timezone:
-        default: Europe/Kyiv
-        service: ~
-        detectors:
-            - sonata.intl.timezone_detector.user
-            - sonata.intl.timezone_detector.locale

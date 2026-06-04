@@ -22,9 +22,6 @@ services:
         arguments:
             - '@sonata.page.manager.redirect'
             - '@router'
-        calls:
-            - [ 'setLocale', ['%locale%'] ]
-            - [ 'setLocales', ['%locales%'] ]
 
     sonata.redirect_listener:
         class: "PageBundle\\Listener\\RedirectListener"

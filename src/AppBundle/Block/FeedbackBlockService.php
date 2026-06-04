@@ -3,7 +3,6 @@
 namespace AppBundle\Block;
 
 use AppBundle\Services\SendTelegramService;
-use BookBundle\Entity\Book;
 use Doctrine\ORM\EntityManager;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;

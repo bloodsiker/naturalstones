@@ -4,31 +4,23 @@ namespace AppBundle\Controller;
 
 use AppBundle\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
+use AppBundle\Controller\BaseController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use UserBundle\Entity\User;
 
-class SecurityController extends AbstractController
+class SecurityController extends BaseController
 {
-    private EntityManagerInterface $em;
-    private UserPasswordHasherInterface $passwordHasher;
-    private GuardAuthenticatorHandler $guardHandler;
-    private LoginFormAuthenticator $authenticator;
-
     public function __construct(
-        EntityManagerInterface $em,
-        UserPasswordHasherInterface $passwordHasher,
-        GuardAuthenticatorHandler $guardHandler,
-        LoginFormAuthenticator $authenticator
+        private EntityManagerInterface $em,
+        private UserPasswordHasherInterface $passwordHasher,
+        private UserAuthenticatorInterface $userAuthenticator,
+        private LoginFormAuthenticator $authenticator,
     ) {
-        $this->em = $em;
-        $this->passwordHasher = $passwordHasher;
-        $this->guardHandler = $guardHandler;
-        $this->authenticator = $authenticator;
     }
 
     public function loginAction(Request $request, AuthenticationUtils $authUtils): Response
@@ -84,11 +76,10 @@ class SecurityController extends AbstractController
                     $this->em->persist($user);
                     $this->em->flush();
 
-                    return $this->guardHandler->authenticateUserAndHandleSuccess(
+                    return $this->userAuthenticator->authenticateUser(
                         $user,
-                        $request,
                         $this->authenticator,
-                        'main'
+                        $request
                     );
                 }
 

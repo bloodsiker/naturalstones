@@ -512,7 +512,7 @@ class DefaultController extends BaseController
             ]);
         }
 
-        $filePath = $this->getParameter('kernel.project_dir').'/web/feeds/facebook_feed.csv';
+        $filePath = $this->getParameter('kernel.project_dir').'/public/feeds/facebook_feed.csv';
         $this->saveFeedToFile($filePath, $feedData);
 
         $response = new Response();

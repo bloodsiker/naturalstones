@@ -1,0 +1,26 @@
+parameters:
+    database_host: 127.0.0.1
+    database_port: ~
+    database_name: symfony
+    database_user: root
+    database_password: ~
+
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: ~
+    mailer_password: ~
+
+    secret: ThisTokenIsNotSoSecretChangeIt
+    server_version: '9.4'
+    media_base_path: '%kernel.project_dir%/web'
+    imagine_web_root: '%kernel.project_dir%/web'
+    imagine_cache_prefix: i
+    static_version: 1
+    order_email: maldini2@ukr.net
+    telegram_api_url: 'https://api.telegram.org/bot'
+    telegram_token: ~
+    telegram_chat_id: ~
+    telegram_channel_chat_id: ~
+    domain: app.loc
+    full_domain: 'http://localhost:81'
+    company_name: 'Naturalstones Jewerly'

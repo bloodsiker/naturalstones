@@ -9,6 +9,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 use PageBundle\Entity\PageRedirect;
@@ -37,47 +38,15 @@ class RedirectRouter implements ChainedRouterInterface
     protected $router;
 
     /**
-     * @var string
-     */
-    private $locale;
-
-    /**
-     * @var string
-     */
-    private $locales;
-
-    /**
      * @var Request
      */
     private $request;
 
-    /**
-     * RedirectRouter constructor.
-     *
-     * @param RedirectManagerInterface $redirectManager
-     * @param RouterInterface          $router
-     */
     public function __construct(RedirectManagerInterface $redirectManager, RouterInterface $router)
     {
         $this->redirectManager = $redirectManager;
         $this->router = $router;
         $this->context = $this->router->getContext();
-    }
-
-    /**
-     * @param string $locale
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale === 'uk' ? 'ua' : $locale;
-    }
-
-    /**
-     * @param string $locales
-     */
-    public function setLocales($locales)
-    {
-        $this->locales = $locales;
     }
 
     /**
@@ -103,7 +72,7 @@ class RedirectRouter implements ChainedRouterInterface
      *
      * @return string
      */
-    public function getRouteDebugMessage($name, array $parameters = array())
+    public function getRouteDebugMessage(string $name, array $parameters = []): string
     {
         if ($this->router instanceof VersatileGeneratorInterface) {
             return $this->router->getRouteDebugMessage($name, $parameters);
@@ -119,15 +88,12 @@ class RedirectRouter implements ChainedRouterInterface
      *
      * @return string|void
      */
-    public function generate($name, $parameters = array(), $referenceType = self::ABSOLUTE_PATH)
+    public function generate(string $name, array $parameters = [], int $referenceType = self::ABSOLUTE_PATH): string
     {
         throw new RouteNotFoundException('Implement generate() method');
     }
 
-    /**
-     * @param RequestContext $context
-     */
-    public function setContext(RequestContext $context)
+    public function setContext(RequestContext $context): void
     {
         $this->context = $context;
     }
@@ -135,15 +101,12 @@ class RedirectRouter implements ChainedRouterInterface
     /**
      * @return RequestContext|\Symfony\Component\Routing\RequestContext
      */
-    public function getContext()
+    public function getContext(): RequestContext
     {
         return $this->context;
     }
 
-    /**
-     * @return RouteCollection|\Symfony\Component\Routing\RouteCollection
-     */
-    public function getRouteCollection()
+    public function getRouteCollection(): RouteCollection
     {
         return new RouteCollection();
     }
@@ -155,11 +118,16 @@ class RedirectRouter implements ChainedRouterInterface
      *
      * @throws \Exception
      */
-    public function getUrlRedirect(Request $request)
+    public function getUrlRedirect(Request $request): ?string
     {
         $this->request = $request;
 
-        return $this->match($request->getPathInfo());
+        try {
+            $result = $this->match($request->getPathInfo());
+            return $result['path'] ?? null;
+        } catch (ResourceNotFoundException $e) {
+            return null;
+        }
     }
 
     /**
@@ -169,12 +137,12 @@ class RedirectRouter implements ChainedRouterInterface
      *
      * @throws \Exception
      */
-    public function match($pathinfo)
+    public function match(string $pathinfo): array
     {
         $url = null;
         $listRedirect = (array) $this->getRedirectCollection();
         if (false !== stripos($pathinfo, '_profiler')) {
-            return;
+            throw new ResourceNotFoundException();
         }
 
         foreach ($listRedirect as $redirect) {
@@ -208,7 +176,11 @@ class RedirectRouter implements ChainedRouterInterface
             }
         }
 
-        return $url;
+        if (null === $url) {
+            throw new ResourceNotFoundException();
+        }
+
+        return ['_controller' => 'Symfony\Component\HttpKernel\Controller\RedirectController::urlRedirectAction', 'path' => $url, 'permanent' => true];
     }
 
     /**
@@ -246,6 +218,10 @@ class RedirectRouter implements ChainedRouterInterface
             }
         } else {
             $url = $this->decorateUrl($objectRedirect->getToPath(), [], self::ABSOLUTE_PATH);
+        }
+
+        if (null === $url) {
+            throw new ResourceNotFoundException();
         }
 
         return $url;

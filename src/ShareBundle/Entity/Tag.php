@@ -16,9 +16,8 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  * @ORM\Entity(repositoryClass="ShareBundle\Entity\TagRepository")
  * @ORM\Table(name="share_tags")
  * @ORM\HasLifecycleCallbacks
- *
- * @UniqueEntity("slug")
  */
+#[UniqueEntity('slug')]
 class Tag implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;

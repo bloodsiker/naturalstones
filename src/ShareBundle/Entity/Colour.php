@@ -16,9 +16,8 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  * @ORM\Entity()
  * @ORM\Table(name="share_colours")
  * @ORM\HasLifecycleCallbacks
- *
- * @UniqueEntity("slug")
  */
+#[UniqueEntity('slug')]
 class Colour implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;

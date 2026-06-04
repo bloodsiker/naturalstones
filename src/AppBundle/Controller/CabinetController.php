@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use OrderBundle\Entity\Order;
 use ProductBundle\Entity\Product;
+use AppBundle\Controller\BaseController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Entity\User;
 use UserBundle\Entity\UserDeliveryAddress;
 
-class CabinetController extends AbstractController
+class CabinetController extends BaseController
 {
     private EntityManagerInterface $em;
 

@@ -24,11 +24,6 @@ delivery_payment:
   defaults:
     _controller: AppBundle\Controller\DefaultController::deliveryPaymentAction
 
-_sentry-test:
-  path: /_sentry-test
-  defaults:
-    _controller: AppBundle\Controller\SentryTestController::testLogAction
-
 search:
   path: /search
   defaults:

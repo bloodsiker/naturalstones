@@ -3,6 +3,7 @@ services:
     class: "ShortcodeBundle\\Templating\\ShortcodeHelper"
     arguments:
       - '@service_container'
+      - '@twig'
     tags:
       - { name: templating.helper, alias: shortcode }
 

@@ -1,0 +1,5 @@
+vich_uploader:
+    form_label:
+        delete_confirm: Удалить?
+    link:
+        download: Скачать

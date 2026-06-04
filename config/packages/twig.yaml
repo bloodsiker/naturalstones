@@ -1,0 +1,21 @@
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    globals:
+        locales_list: '%locales%'
+        company_name: '%company_name%'
+    paths:
+        '%kernel.project_dir%/app/Resources/AppBundle/views': App
+        '%kernel.project_dir%/app/Resources/ArticleBundle/views': Article
+        '%kernel.project_dir%/app/Resources/CommentBundle/views': Comment
+        '%kernel.project_dir%/app/Resources/InformationBundle/views': Information
+        '%kernel.project_dir%/app/Resources/MainImageBundle/views': MainImage
+        '%kernel.project_dir%/app/Resources/OrderBundle/views': Order
+        '%kernel.project_dir%/app/Resources/ProductBundle/views': Product
+        '%kernel.project_dir%/app/Resources/ShareBundle/views': Share
+        '%kernel.project_dir%/app/Resources/WheelSpinBundle/views': WheelSpin
+        '%kernel.project_dir%/app/Resources/SonataUserBundle/views': SonataUser
+    form_themes:
+        - '@Admin/Form/fields.html.twig'
+        - '@SonataForm/Form/datepicker.html.twig'
+        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'

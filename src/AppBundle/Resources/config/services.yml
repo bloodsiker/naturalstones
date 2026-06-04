@@ -11,8 +11,7 @@ parameters:
 services:
     app.kernel.locale.subscriber:
         class: AppBundle\EventSubscriber\LocaleSubscriber
-        arguments: [ '@cmf_routing.router', '%kernel.default_locale%' ]
-        # redundant if you're using autoconfigure
+        arguments: [ '@router', '%kernel.default_locale%' ]
         tags: [ kernel.event_subscriber ]
 
     app.security.authentication_handler:
@@ -57,7 +56,6 @@ services:
             - '@translator'
             - '@router'
             - '@app.save.state.value'
-            - '%route_locales%'
 #
 #    app.redis.cache:
 #        class: "Doctrine\\Common\\Cache\\RedisCache"
@@ -104,7 +102,7 @@ services:
         class: AppBundle\Services\Cart
         public: true
         arguments:
-            - '@session'
+            - '@request_stack'
             - '@app.entity_manager'
             - '@security.token_storage'
 

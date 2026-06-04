@@ -146,7 +146,7 @@
                     {% if download_uri and image_path is not empty %}
                         <a href="{{ image_path }}" target="_blank" download="" class="btn-sm btn-success pull-right" style="margin-bottom: 5px">
                             <i class="fa fa-download" aria-hidden="true"></i>
-                            {{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}
+                            {{ download_label_translation_domain is same as(false) ? download_label : download_label|trans({}, download_label_translation_domain) }}
                         </a>
                     {% endif %}
 
@@ -258,41 +258,6 @@
         {#{% endfor %}#}
     {#{% endapply %}#}
 {#{% endblock %}#}
-
-{% block sonata_admin_book_name_text_counter_widget %}
-    {{ block('form_widget') }}
-
-    <script>
-        var id = jQuery('#{{ form.vars.id }}');
-        var label = jQuery('label[for={{ id }}]');
-        label.after('<div id="duplicate_book" style="margin-bottom: 5px;max-height: 100px;overflow-y: scroll;"></div>');
-        var container = jQuery('#duplicate_book');
-        jQuery('#{{ id }}').on('input',function() {
-            var name = $(this).val();
-            if (name.length > 3) {
-                jQuery.ajax({
-                    method: "GET",
-                    url: "{{ path('admin_book_book_search_book') }}",
-                    cache: false,
-                    dataType: 'json',
-                    data: { 'name': name },
-                    success: function (response) {
-                        console.log(response);
-                        if (response) {
-                            var message = '';
-                            for (var i in response) {
-                                message += '<a href="'+ response[i].url +'" style="margin-right: 5px" target="_blank">' + response[i].name + '</a><br/>';
-                            }
-                            container.html(message);
-                        }
-                    }
-                });
-            } else {
-                container.html('');
-            }
-        });
-    </script>
-{% endblock %}
 
 {% block share_admin_author_name_text_widget %}
     {{ block('form_widget') }}

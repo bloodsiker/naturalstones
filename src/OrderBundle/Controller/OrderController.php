@@ -7,17 +7,18 @@ use AppBundle\Services\OrderEmailService;
 use AppBundle\Services\SendTelegramService;
 use Doctrine\ORM\EntityManagerInterface;
 use OrderBundle\Entity\Order;
+use AppBundle\Controller\BaseController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class OrderController
  */
-class OrderController extends AbstractController
+class OrderController extends BaseController
 {
     const ORDER_404 = 'Order doesn\'t exist';
 
@@ -46,8 +47,8 @@ class OrderController extends AbstractController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function quickOrderAction(Request $request)
     {
         $phone = $request->get('phone');

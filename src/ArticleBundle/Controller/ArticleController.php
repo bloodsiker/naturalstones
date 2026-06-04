@@ -9,7 +9,7 @@ use ShareBundle\Entity\Tag;
 use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 
 /**
  * Class ArticleController
@@ -23,8 +23,8 @@ class ArticleController extends BaseController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function listAction(Request $request)
     {
         $breadcrumb = $this->get('app.breadcrumb');
@@ -58,8 +58,8 @@ class ArticleController extends BaseController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function listCategoryAction(Request $request, $category)
     {
         $repo = $this->getDoctrine()->getManager()->getRepository(Category::class);
@@ -107,8 +107,8 @@ class ArticleController extends BaseController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function listTagAction(Request $request)
     {
         $repo = $this->getDoctrine()->getManager()->getRepository(Tag::class);

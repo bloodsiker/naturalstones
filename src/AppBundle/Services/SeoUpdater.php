@@ -6,8 +6,8 @@ use Sonata\PageBundle\CmsManager\CmsManagerSelectorInterface;
 use Sonata\PageBundle\Model\PageInterface;
 use Sonata\PageBundle\Model\SiteInterface;
 use Sonata\SeoBundle\Seo\SeoPageInterface;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Cmf\Component\Routing\ChainRouterInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -53,11 +53,6 @@ class SeoUpdater
     private $router;
 
     /**
-     * @var string
-     */
-    private $routeLocales;
-
-    /**
      * @var SaveStateValue
      */
     private $saveStateService;
@@ -67,24 +62,13 @@ class SeoUpdater
      */
     private $defaultOgImageSrc = '/bundles/app/images/logo.jpg';
 
-    /**
-     * SeoUpdater constructor.
-     * @param CmsManagerSelectorInterface $pageSelector
-     * @param SeoPageInterface            $seoPage
-     * @param RequestStack                $requestStack
-     * @param TranslatorInterface         $translator
-     * @param Router                      $router
-     * @param SaveStateValue              $saveStateService
-     * @param string                      $routeLocales
-     */
-    public function __construct(CmsManagerSelectorInterface $pageSelector, SeoPageInterface $seoPage, RequestStack $requestStack, TranslatorInterface $translator, Router $router, SaveStateValue $saveStateService, $routeLocales)
+    public function __construct(CmsManagerSelectorInterface $pageSelector, SeoPageInterface $seoPage, RequestStack $requestStack, TranslatorInterface $translator, RouterInterface $router, SaveStateValue $saveStateService)
     {
         $this->pageSelector = $pageSelector;
         $this->seoPage = $seoPage;
         $this->requestStack = $requestStack;
         $this->translator = $translator;
         $this->router = $router;
-        $this->routeLocales = $routeLocales;
         $this->saveStateService = $saveStateService;
     }
 

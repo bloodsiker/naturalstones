@@ -1,0 +1,6 @@
+oneup_uploader:
+    twig: true
+    mappings:
+        default:
+            frontend: blueimp
+            use_orphanage: true

@@ -8,7 +8,7 @@ use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 
 /**
  * Class CommentController
@@ -20,8 +20,8 @@ class CommentController extends BaseController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function listAction(Request $request)
     {
         $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
@@ -46,8 +46,8 @@ class CommentController extends BaseController
      *
      * @return Response
      *
-     * @Cache(maxage=60, public=true)
      */
+     #[Cache(maxage: 60, public: true)]
     public function swapBookAction(Request $request)
     {
         $page = $request->get('page') ? " | Страница {$request->get('page', 1)}" : null;

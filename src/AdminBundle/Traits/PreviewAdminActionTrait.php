@@ -17,10 +17,9 @@ trait PreviewAdminActionTrait
         $entity = $admin->getObject($id);
 
         if ($entity && $entity->getId()) {
-            [$bundleName] = explode(':', $this->admin->getBaseControllerName());
             $response->setContent(
                 $this->renderView(
-                    $bundleName . ':Preview:preview.html.twig',
+                    $this->getPreviewTemplate(),
                     [
                         'entity' => $entity,
                         'language' => $language,
@@ -35,5 +34,18 @@ trait PreviewAdminActionTrait
         }
 
         return $response;
+    }
+
+    /**
+     * Derives the bundle's Twig namespace from the admin's class
+     * (e.g. `MediaBundle\Admin\MediaImageAdmin` → `@Media/Preview/preview.html.twig`).
+     * Symfony auto-registers `@<ShortName>` where short name strips the "Bundle" suffix.
+     */
+    private function getPreviewTemplate(): string
+    {
+        $bundleName = strstr($this->admin::class, '\\', true);
+        $shortName = preg_replace('/Bundle$/', '', $bundleName);
+
+        return sprintf('@%s/Preview/preview.html.twig', $shortName);
     }
 }

@@ -6,7 +6,7 @@ services:
         arguments:
             - ~
             - MediaBundle\Entity\MediaFile
-            - ~
+            - AdminBundle\Controller\CRUDController
         calls:
             - [ setTranslationDomain, [MediaBundle] ]
             - [ setTokenStorage, ['@security.token_storage'] ]
@@ -31,7 +31,7 @@ services:
         arguments:
             - ~
             - MediaBundle\Entity\MediaVideo
-            - ~
+            - AdminBundle\Controller\CRUDController
         calls:
             - [ setTranslationDomain, [ MediaBundle ] ]
             - [ setTokenStorage, ['@security.token_storage'] ]

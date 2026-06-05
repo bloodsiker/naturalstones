@@ -48,21 +48,6 @@ class MediaVideoAdmin extends Admin
     }
 
     /**
-     * @param string $name
-     *
-     * @return string|void|null
-     */
-    public function getTemplate($name)
-    {
-        $parameters = $this->getPersistentParameters();
-        if (in_array($name, ['list', 'edit']) && !empty($parameters['CKEditor'])) {
-            return '@Admin/Ckeditor/ajax.html.twig';
-        }
-
-        return $this->getTemplateRegistry()->getTemplate($name);
-    }
-
-    /**
      * @param MediaVideo $object
      */
     public function prePersist(object $object): void

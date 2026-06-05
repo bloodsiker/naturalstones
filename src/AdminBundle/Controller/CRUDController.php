@@ -7,7 +7,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectRepository;
 use ShareBundle\Services\TagFinder;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CRUDController extends Controller
@@ -16,6 +19,8 @@ class CRUDController extends Controller
     public const ERROR_MESSAGE = 'Unable to find the object with id : %s';
     public const SUCCESS_MESSAGE = 'Moved successfully';
 
+    private const CKEDITOR_TEMPLATE = '@Admin/Ckeditor/ajax.html.twig';
+
     public static function getSubscribedServices(): array
     {
         return [
@@ -23,6 +28,32 @@ class CRUDController extends Controller
             'doctrine.orm.default_entity_manager' => '?' . EntityManagerInterface::class,
             'share.tag.finder' => '?' . TagFinder::class,
         ] + parent::getSubscribedServices();
+    }
+
+    public function listAction(Request $request): Response
+    {
+        $this->applyCKEditorTemplate($request, 'list');
+
+        return parent::listAction($request);
+    }
+
+    public function editAction(Request $request): Response
+    {
+        $this->applyCKEditorTemplate($request, 'edit');
+
+        return parent::editAction($request);
+    }
+
+    private function applyCKEditorTemplate(Request $request, string $action): void
+    {
+        if (!$request->query->has('CKEditor')) {
+            return;
+        }
+
+        $registry = $this->admin->getTemplateRegistry();
+        if ($registry instanceof MutableTemplateRegistryInterface) {
+            $registry->setTemplate($action, self::CKEDITOR_TEMPLATE);
+        }
     }
 
     /**

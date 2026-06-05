@@ -2,20 +2,23 @@
 
 namespace App\DependencyInjection\Compiler;
 
+use Doctrine\Common\EventManager;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 final class EagerSonataDoctrineMapperPass implements CompilerPassInterface
 {
-    private const EAGER_LISTENERS = [
-        'sonata.doctrine.mapper',
-        'doctrine.orm.default_listeners.attach_entity_listeners',
-    ];
-
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasParameter('doctrine.connections') || !$container->hasDefinition('sonata.doctrine.mapper')) {
+        if ($container->hasDefinition('lexik_translation.translator')) {
+            $translator = $container->getDefinition('lexik_translation.translator');
+            $translator->setMethodCalls(array_filter(
+                $translator->getMethodCalls(),
+                static fn (array $call): bool => 'addDatabaseResources' !== $call[0],
+            ));
+        }
+
+        if (!$container->hasParameter('doctrine.connections')) {
             return;
         }
 
@@ -26,26 +29,9 @@ final class EagerSonataDoctrineMapperPass implements CompilerPassInterface
                 continue;
             }
 
-            $eventManager = $container->getDefinition($eventManagerId);
-            $listeners = $eventManager->getArgument(1);
-
-            if (!is_array($listeners)) {
-                continue;
-            }
-
-            foreach ($listeners as &$listener) {
-                if (!is_array($listener) || !isset($listener[0], $listener[1]) || !is_string($listener[1])) {
-                    continue;
-                }
-
-                if (!in_array($listener[1], self::EAGER_LISTENERS, true)) {
-                    continue;
-                }
-
-                $listener[1] = new Reference($listener[1]);
-            }
-
-            $eventManager->replaceArgument(1, $listeners);
+            $container->getDefinition($eventManagerId)
+                ->setClass(EventManager::class)
+                ->setArguments([]);
         }
     }
 }

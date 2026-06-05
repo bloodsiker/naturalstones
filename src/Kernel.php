@@ -16,6 +16,6 @@ class Kernel extends BaseKernel
     {
         parent::build($container);
 
-        $container->addCompilerPass(new EagerSonataDoctrineMapperPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
+        $container->addCompilerPass(new EagerSonataDoctrineMapperPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
     }
 }

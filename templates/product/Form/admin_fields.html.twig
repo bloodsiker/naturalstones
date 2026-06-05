@@ -1,5 +1,67 @@
 {% extends '@SonataAdmin/Form/form_admin_fields.html.twig' %}
 
+{% block sonata_type_model_autocomplete_widget %}
+    {{ parent() }}
+
+    {% if multiple %}
+        <script>
+            jQuery(function ($) {
+                var autocompleteInput = $('#{{ id }}_autocomplete_input');
+                var select2Utils = $.fn.select2 && $.fn.select2.amd ? $.fn.select2.amd.require('select2/utils') : null;
+                var observer = null;
+
+                function selectedAutocompleteIds() {
+                    return (autocompleteInput.val() || []).map(function (id) {
+                        return String(id);
+                    });
+                }
+
+                function hideSelectedAutocompleteResults() {
+                    var selectedIds = selectedAutocompleteIds();
+
+                    if (!selectedIds.length) {
+                        return;
+                    }
+
+                    $('.select2-container--open .select2-results__option').each(function () {
+                        var item = select2Utils ? select2Utils.GetData(this, 'data') : $(this).data('data');
+
+                        if (item && selectedIds.indexOf(String(item.id)) !== -1) {
+                            $(this).hide();
+                        }
+                    });
+                }
+
+                function observeAutocompleteResults() {
+                    if (observer) {
+                        observer.disconnect();
+                    }
+
+                    var results = document.querySelector('.select2-container--open .select2-results__options');
+
+                    if (!results) {
+                        return;
+                    }
+
+                    observer = new MutationObserver(hideSelectedAutocompleteResults);
+                    observer.observe(results, { childList: true, subtree: true });
+                    hideSelectedAutocompleteResults();
+                }
+
+                autocompleteInput.on('select2:open select2:select select2:unselect change', function () {
+                    setTimeout(observeAutocompleteResults, 0);
+                });
+
+                autocompleteInput.on('select2:close', function () {
+                    if (observer) {
+                        observer.disconnect();
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
 {#{% block sonata_admin_articles_content_text_widget %}#}
     {#{{ block('hidden_widget') }}#}
     {#{% set articleObject = sonata_admin.admin.subject %}#}

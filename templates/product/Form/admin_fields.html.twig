@@ -1,5 +1,40 @@
 {% extends '@SonataAdmin/Form/form_admin_fields.html.twig' %}
 
+{% block form_end %}
+    {{ parent() }}
+
+    <script>
+        jQuery(function ($) {
+            $('input[type="text"][name$="[translations][uk][name]"], input[type="text"][name$="[translations][ru][name]"]').each(function () {
+                var input = $(this);
+                var originalName = input.attr('name');
+                var localeMatch = originalName.match(/\[translations]\[([^\]]+)]\[name]$/);
+                var locale = localeMatch ? localeMatch[1] : 'default';
+                var browserName = 'sonata_product_translation_' + locale + '_name';
+                var hidden = $('<input>', {
+                    type: 'hidden',
+                    name: originalName,
+                    value: input.val()
+                });
+
+                input.after(hidden);
+                input.attr({
+                    name: browserName,
+                    autocomplete: 'on'
+                });
+
+                input.on('input change', function () {
+                    hidden.val(input.val());
+                });
+
+                input.closest('form').on('submit', function () {
+                    hidden.val(input.val());
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block sonata_type_model_autocomplete_widget %}
     {{ parent() }}
 
@@ -32,6 +67,27 @@
                     });
                 }
 
+                function selectFirstVisibleAutocompleteResult() {
+                    var firstVisible = $('.select2-container--open .select2-results__option:visible').not('.select2-results__option--disabled').first();
+
+                    if (!firstVisible.length) {
+                        return null;
+                    }
+
+                    return firstVisible;
+                }
+
+                function activateFirstVisibleAutocompleteResult() {
+                    var firstVisible = selectFirstVisibleAutocompleteResult();
+
+                    if (!firstVisible) {
+                        return;
+                    }
+
+                    $('.select2-container--open .select2-results__option').removeClass('select2-results__option--highlighted');
+                    firstVisible.addClass('select2-results__option--highlighted');
+                }
+
                 function observeAutocompleteResults() {
                     if (observer) {
                         observer.disconnect();
@@ -46,10 +102,34 @@
                     observer = new MutationObserver(hideSelectedAutocompleteResults);
                     observer.observe(results, { childList: true, subtree: true });
                     hideSelectedAutocompleteResults();
+                    activateFirstVisibleAutocompleteResult();
                 }
 
                 autocompleteInput.on('select2:open select2:select select2:unselect change', function () {
                     setTimeout(observeAutocompleteResults, 0);
+                });
+
+                autocompleteInput.on('select2:results:all', function () {
+                    setTimeout(activateFirstVisibleAutocompleteResult, 0);
+                });
+
+                autocompleteInput.on('keydown', function (event) {
+                    if (event.key !== 'Enter' || !$('.select2-container--open').length) {
+                        return;
+                    }
+
+                    var highlighted = $('.select2-container--open .select2-results__option--highlighted:visible').first();
+                    if (highlighted.length) {
+                        return;
+                    }
+
+                    var firstVisible = selectFirstVisibleAutocompleteResult();
+                    if (!firstVisible) {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    firstVisible.trigger('mouseup');
                 });
 
                 autocompleteInput.on('select2:close', function () {

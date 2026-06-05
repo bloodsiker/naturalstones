@@ -8,6 +8,11 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class EagerSonataDoctrineMapperPass implements CompilerPassInterface
 {
+    private const EAGER_LISTENERS = [
+        'sonata.doctrine.mapper',
+        'doctrine.orm.default_listeners.attach_entity_listeners',
+    ];
+
     public function process(ContainerBuilder $container): void
     {
         if (!$container->hasParameter('doctrine.connections') || !$container->hasDefinition('sonata.doctrine.mapper')) {
@@ -29,13 +34,15 @@ final class EagerSonataDoctrineMapperPass implements CompilerPassInterface
             }
 
             foreach ($listeners as &$listener) {
-                if (
-                    is_array($listener)
-                    && isset($listener[1])
-                    && 'sonata.doctrine.mapper' === $listener[1]
-                ) {
-                    $listener[1] = new Reference('sonata.doctrine.mapper');
+                if (!is_array($listener) || !isset($listener[0], $listener[1]) || !is_string($listener[1])) {
+                    continue;
                 }
+
+                if (!in_array($listener[1], self::EAGER_LISTENERS, true)) {
+                    continue;
+                }
+
+                $listener[1] = new Reference($listener[1]);
             }
 
             $eventManager->replaceArgument(1, $listeners);

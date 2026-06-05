@@ -10,6 +10,9 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+            $locales: '%locales%'
+            $companyName: '%company_name%'
 
     AppBundle\:
         resource: '../src/AppBundle/*'

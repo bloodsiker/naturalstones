@@ -151,7 +151,7 @@ class CRUDController extends Controller
 
     private function objectTransform(\Closure $action): RedirectResponse
     {
-        $translator = $this->get('translator');
+        $translator = $this->container->get('translator');
         $id = $this->getRequest()->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 

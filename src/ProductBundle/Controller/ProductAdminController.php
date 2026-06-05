@@ -12,8 +12,8 @@ class ProductAdminController extends Controller
 {
     public function cloneAction(): RedirectResponse
     {
-        $translator = $this->get('translator');
-        $em = $this->get('doctrine.orm.default_entity_manager');
+        $translator = $this->container->get('translator');
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
         $id = $this->getRequest()->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);

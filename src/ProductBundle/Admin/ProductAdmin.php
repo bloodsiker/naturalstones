@@ -340,18 +340,7 @@ class ProductAdmin extends Admin
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
                         'callback' => function ($admin, $property, $value) {
-                            $datagrid = $admin->getDatagrid();
-                            if (!$datagrid->hasFilter($property)) {
-                                throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, \get_class($admin)));
-                            }
-                            $filter = $datagrid->getFilter($property);
-                            $filter->setCondition(FilterInterface::CONDITION_AND);
-
-                            $datagrid->setValue($filter->getFormName(), null, $value);
-                            $filterActive = $datagrid->getFilter('isActive');
-                            $filterActive->setCondition(FilterInterface::CONDITION_AND);
-                            $datagrid->setValue($filterActive->getFormName(), null, true);
-                            $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
+                            $this->applyAutocompleteProductFilters($admin, $property, $value);
                         },
                         'btn_translation_domain' => $this->getTranslationDomain(),
                         'btn_add' => 'product.buttons.link_add',
@@ -364,18 +353,7 @@ class ProductAdmin extends Admin
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
                         'callback' => function ($admin, $property, $value) {
-                            $datagrid = $admin->getDatagrid();
-                            if (!$datagrid->hasFilter($property)) {
-                                throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, \get_class($admin)));
-                            }
-                            $filter = $datagrid->getFilter($property);
-                            $filter->setCondition(FilterInterface::CONDITION_AND);
-
-                            $datagrid->setValue($filter->getFormName(), null, $value);
-                            $filterActive = $datagrid->getFilter('isActive');
-                            $filterActive->setCondition(FilterInterface::CONDITION_AND);
-                            $datagrid->setValue($filterActive->getFormName(), null, true);
-                            $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
+                            $this->applyAutocompleteProductFilters($admin, $property, $value);
                         },
                         'btn_translation_domain' => $this->getTranslationDomain(),
                         'btn_add' => 'product.buttons.link_add',
@@ -388,18 +366,7 @@ class ProductAdmin extends Admin
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
                         'callback' => function ($admin, $property, $value) {
-                            $datagrid = $admin->getDatagrid();
-                            if (!$datagrid->hasFilter($property)) {
-                                throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, \get_class($admin)));
-                            }
-                            $filter = $datagrid->getFilter($property);
-                            $filter->setCondition(FilterInterface::CONDITION_AND);
-
-                            $datagrid->setValue($filter->getFormName(), null, $value);
-                            $filterActive = $datagrid->getFilter('isActive');
-                            $filterActive->setCondition(FilterInterface::CONDITION_AND);
-                            $datagrid->setValue($filterActive->getFormName(), null, true);
-                            $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
+                            $this->applyAutocompleteProductFilters($admin, $property, $value);
                         },
                         'btn_translation_domain' => $this->getTranslationDomain(),
                         'btn_add' => 'product.buttons.link_add',
@@ -412,18 +379,7 @@ class ProductAdmin extends Admin
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
                         'callback' => function ($admin, $property, $value) {
-                            $datagrid = $admin->getDatagrid();
-                            if (!$datagrid->hasFilter($property)) {
-                                throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, \get_class($admin)));
-                            }
-                            $filter = $datagrid->getFilter($property);
-                            $filter->setCondition(FilterInterface::CONDITION_AND);
-
-                            $datagrid->setValue($filter->getFormName(), null, $value);
-                            $filterActive = $datagrid->getFilter('isActive');
-                            $filterActive->setCondition(FilterInterface::CONDITION_AND);
-                            $datagrid->setValue($filterActive->getFormName(), null, true);
-                            $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
+                            $this->applyAutocompleteProductFilters($admin, $property, $value);
                         },
                         'btn_translation_domain' => $this->getTranslationDomain(),
                         'btn_add' => 'product.buttons.link_add',
@@ -555,5 +511,68 @@ class ProductAdmin extends Admin
         }
 
         return $typesChoice;
+    }
+
+    private function applyAutocompleteProductFilters($admin, string $property, string $value): void
+    {
+        $datagrid = $admin->getDatagrid();
+        if (!$datagrid->hasFilter($property)) {
+            throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, \get_class($admin)));
+        }
+
+        $filter = $datagrid->getFilter($property);
+        $filter->setCondition(FilterInterface::CONDITION_AND);
+        $datagrid->setValue($filter->getFormName(), null, $value);
+
+        if ($datagrid->hasFilter('isActive')) {
+            $filterActive = $datagrid->getFilter('isActive');
+            $filterActive->setCondition(FilterInterface::CONDITION_AND);
+            $datagrid->setValue($filterActive->getFormName(), null, true);
+        }
+
+        $selectedIds = $this->getSelectedAutocompleteIds();
+        if ([] === $selectedIds) {
+            return;
+        }
+
+        $queryBuilder = $datagrid->getQuery()->getQueryBuilder();
+        $rootAlias = current($queryBuilder->getRootAliases());
+        if (false === $rootAlias) {
+            return;
+        }
+
+        $queryBuilder
+            ->andWhere(sprintf('%s.id NOT IN (:selected_ids)', $rootAlias))
+            ->setParameter('selected_ids', $selectedIds);
+    }
+
+    /**
+     * @return int[]
+     */
+    private function getSelectedAutocompleteIds(): array
+    {
+        if (!$this->hasRequest()) {
+            return [];
+        }
+
+        $selectedIds = (string) $this->getRequest()->query->get('selected_ids', '');
+        if ('' === $selectedIds) {
+            return [];
+        }
+
+        $ids = [];
+        foreach (explode(',', $selectedIds) as $selectedId) {
+            $selectedId = trim($selectedId);
+            if ('' === $selectedId) {
+                continue;
+            }
+
+            $selectedId = (int) $selectedId;
+            if ($selectedId > 0) {
+                $ids[] = $selectedId;
+            }
+        }
+
+        return $ids;
     }
 }

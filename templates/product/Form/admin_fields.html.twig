@@ -36,125 +36,52 @@
 {% endblock %}
 
 {% block sonata_type_model_autocomplete_widget %}
-    {{ parent() }}
+    {% embed '@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig' %}
+        {% block sonata_type_model_autocomplete_ajax_request_parameters %}
+            return {
+                    //search term
+                    '{{ req_param_name_search }}': params.term,
 
-    {% if multiple %}
-        <script>
-            jQuery(function ($) {
-                var autocompleteInput = $('#{{ id }}_autocomplete_input');
-                var select2Utils = $.fn.select2 && $.fn.select2.amd ? $.fn.select2.amd.require('select2/utils') : null;
-                var observer = null;
-                var searchFieldBound = false;
-                var searchFieldTimer = null;
+                    // page size
+                    '{{ req_param_name_items_per_page }}': {{ items_per_page }},
 
-                function selectedAutocompleteIds() {
-                    return (autocompleteInput.val() || []).map(function (id) {
-                        return String(id);
-                    });
-                }
+                    // page number
+                    '{{ req_param_name_page_number }}': (params.page !== 'undefined' ? params.page : 1),
 
-                function hideSelectedAutocompleteResults() {
-                    var selectedIds = selectedAutocompleteIds();
+                    // admin
+                    {% if sonata_admin.admin %}
+                        'uniqid': '{{ sonata_admin.admin.uniqid }}',
+                        '_sonata_admin': '{{ sonata_admin.admin.baseCodeRoute|e('js') }}',
+                    {% elseif admin_code %}
+                        '_sonata_admin': '{{ admin_code|e('js') }}',
+                    {% endif %}
 
-                    if (!selectedIds.length) {
-                        return;
-                    }
+                    {% if context == 'filter' %}
+                        'field':  '{{ full_name|replace({'filter[': '', '][value]': '', '__':'.'}) }}',
+                        '_context': 'filter'
+                    {% else %}
+                        'field':  '{{ name }}'
+                    {% endif %}
 
-                    $('.select2-container--open .select2-results__option').each(function () {
-                        var item = select2Utils ? select2Utils.GetData(this, 'data') : $(this).data('data');
+                    // selected ids
+                    {% if multiple %},
+                        'selected_ids': (function () {
+                            return $('#{{ id }}_hidden_inputs_wrap input:hidden').map(function () {
+                                return $(this).val();
+                            }).get().join(',');
+                        })()
+                    {% endif %}
 
-                        if (item && selectedIds.indexOf(String(item.id)) !== -1) {
-                            $(this).hide();
-                        }
-                    });
-                }
-
-                function selectFirstVisibleAutocompleteResult() {
-                    var firstVisible = $('.select2-container--open .select2-results__option:visible').not('.select2-results__option--disabled').first();
-
-                    if (!firstVisible.length) {
-                        return null;
-                    }
-
-                    return firstVisible;
-                }
-
-                function activateFirstVisibleAutocompleteResult() {
-                    var firstVisible = selectFirstVisibleAutocompleteResult();
-
-                    if (!firstVisible) {
-                        return;
-                    }
-
-                    $('.select2-container--open .select2-results__option')
-                        .removeClass('select2-results__option--highlighted')
-                        .attr('aria-selected', 'false');
-
-                    firstVisible
-                        .addClass('select2-results__option--highlighted')
-                        .attr('aria-selected', 'true')
-                        .trigger('mouseenter')
-                        .trigger('mousemove');
-
-                    if (firstVisible[0] && firstVisible[0].scrollIntoView) {
-                        firstVisible[0].scrollIntoView({ block: 'nearest' });
-                    }
-                }
-
-                function bindSearchFieldHandlers() {
-                    var searchField = $('.select2-container--open .select2-search__field').first();
-
-                    if (!searchField.length || searchFieldBound) {
-                        return;
-                    }
-
-                    searchFieldBound = true;
-
-                    searchField.off('.sonataAutocompleteFix');
-                    searchField.on('input.sonataAutocompleteFix keyup.sonataAutocompleteFix', function () {
-                        clearTimeout(searchFieldTimer);
-                        searchFieldTimer = setTimeout(function () {
-                            observeAutocompleteResults();
-                        }, 0);
-                    });
-                }
-
-                function observeAutocompleteResults() {
-                    if (observer) {
-                        observer.disconnect();
-                    }
-
-                    var results = document.querySelector('.select2-container--open .select2-results__options');
-
-                    if (!results) {
-                        return;
-                    }
-
-                    observer = new MutationObserver(hideSelectedAutocompleteResults);
-                    observer.observe(results, { childList: true, subtree: true });
-                    hideSelectedAutocompleteResults();
-                    activateFirstVisibleAutocompleteResult();
-                    bindSearchFieldHandlers();
-                }
-
-                autocompleteInput.on('select2:open select2:select select2:unselect change', function () {
-                    setTimeout(observeAutocompleteResults, 0);
-                });
-
-                autocompleteInput.on('select2:results:all', function () {
-                    setTimeout(activateFirstVisibleAutocompleteResult, 0);
-                });
-
-                autocompleteInput.on('select2:close', function () {
-                    if (observer) {
-                        observer.disconnect();
-                    }
-                    searchFieldBound = false;
-                    clearTimeout(searchFieldTimer);
-                });
-            });
-        </script>
-    {% endif %}
+                    // other parameters
+                    {% if req_params is not empty %},
+                        {%- for key, value in req_params -%}
+                            '{{- key -}}': '{{- value -}}'
+                            {%- if not loop.last -%}, {% endif -%}
+                        {%- endfor -%}
+                    {% endif %}
+            };
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 
 {#{% block sonata_admin_articles_content_text_widget %}#}

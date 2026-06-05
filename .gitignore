@@ -1,11 +1,9 @@
 /.idea/
 /.web-server-pid
-/app/config/parameters.yml
 /config/parameters.yaml
 /.env.local
 /.env.local.php
 /.env.*.local
-/app/Resources/node/node_modules/
 /build/
 /phpunit.xml
 /var/*
@@ -19,9 +17,12 @@
 /var/sessions/*
 !var/sessions/.gitkeep
 /vendor/
-/web/bundles/
-/web/files/
-/web/images/
-/web/public/
-/web/feeds/*
+
+# Public (generated/uploaded — not tracked in git)
+/public/bundles/
+/public/files/
+/public/feeds/*
+!/public/feeds/.gitkeep
+
 phpunit.xml.dist
+.DS_Store

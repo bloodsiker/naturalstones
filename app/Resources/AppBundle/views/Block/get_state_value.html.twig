@@ -1,7 +1,0 @@
-{% if value %}
-	{% if value is iterable %}
-		{% for val in value %}{{ val|raw }}{% endfor %}
-	{% else %}
-		{{ value|raw }}
-	{% endif %}
-{% endif %}

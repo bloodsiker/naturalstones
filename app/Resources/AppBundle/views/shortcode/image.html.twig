@@ -1,5 +1,0 @@
-{% if shortcode_data.image and shortcode_data.image.getPath() %}
-	<div class="main-description-img">
-		<img src="{{ asset(shortcode_data.image.path) }}" alt="{{ shortcode_data.title ? shortcode_data.title: shortcode_data.image.description }}">
-	</div>
-{% endif %}

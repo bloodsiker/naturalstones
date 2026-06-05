@@ -11,7 +11,6 @@ use Doctrine\ORM\EntityManager;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use ProductBundle\Entity\ProductHasProduct;
 use ProductBundle\Entity\ProductLog;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -57,14 +56,6 @@ class ProductAdmin extends Admin
         '_sort_by' => 'createdAt',
         '_sort_order' => 'DESC',
     ];
-
-    protected function configureDefaultSortValues(array &$sortValues): void
-    {
-        $sortValues[DatagridInterface::PAGE] = $this->datagridValues[DatagridInterface::PAGE];
-        $sortValues[DatagridInterface::PER_PAGE] = $this->datagridValues[DatagridInterface::PER_PAGE];
-        $sortValues[DatagridInterface::SORT_BY] = $this->datagridValues[DatagridInterface::SORT_BY];
-        $sortValues[DatagridInterface::SORT_ORDER] = $this->datagridValues[DatagridInterface::SORT_ORDER];
-    }
 
     /**
      * @return EntityManager

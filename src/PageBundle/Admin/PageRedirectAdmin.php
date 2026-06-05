@@ -2,6 +2,7 @@
 
 namespace PageBundle\Admin;
 
+use AdminBundle\Admin\DatagridValuesTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -17,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class PageRedirectAdmin extends AbstractAdmin
 {
+    use DatagridValuesTrait;
+
     /**
      * @var array
      */

@@ -2,6 +2,7 @@
 
 namespace ProductBundle\Admin;
 
+use AdminBundle\Admin\DatagridValuesTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -17,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
  */
 class ProductInfoViewAdmin extends Admin
 {
+    use DatagridValuesTrait;
+
     /**
      * @var array
      */

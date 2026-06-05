@@ -3,6 +3,7 @@
 namespace WheelSpinBundle\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
+use AdminBundle\Admin\DatagridValuesTrait;
 use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -20,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class WheelSpinOptionAdmin extends Admin
 {
     use FixAdminFormTranslationDomainTrait;
+    use DatagridValuesTrait;
 
     /**
      * @var array

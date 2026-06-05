@@ -7,6 +7,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class BaseAdmin extends AbstractAdmin
 {
+    use DatagridValuesTrait;
+
     private ?object $searchSynchronization = null;
     private bool $searchSphinxEnabled = false;
     private ?TokenStorageInterface $tokenStorage = null;

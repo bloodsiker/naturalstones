@@ -3,6 +3,7 @@
 namespace ShareBundle\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
+use AdminBundle\Admin\DatagridValuesTrait;
 use AdminBundle\Form\Type\ColorPickerType;
 use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
@@ -20,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class ColourAdmin extends Admin
 {
     use FixAdminFormTranslationDomainTrait;
+    use DatagridValuesTrait;
 
     /**
      * @var array

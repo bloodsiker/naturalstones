@@ -3,6 +3,7 @@
 namespace ShareBundle\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
+use AdminBundle\Admin\DatagridValuesTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -17,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class TagAdmin extends Admin
 {
+    use DatagridValuesTrait;
+
     /**
      * @var array
      */

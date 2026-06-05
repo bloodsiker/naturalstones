@@ -1,0 +1,74 @@
+{% if settings['type'] == 'header' %}
+    <div class="header-menu-outer header-menu-desctop">
+        <div class="title">{{ 'frontend.menu_title'|trans([], 'AppBundle') }}</div>
+        {% for section in menuSections %}
+            <div class="header-menu-block topmenu">
+                <div class="type">
+                    <div class="type-title">{{ section.title }}</div>
+                    <ul class="header-menu submenu">
+                        {% for item in section.items %}
+                            <li><a href="{{ path('product_list', { 'slug': item.category.slug }) }}">{{ item.category.getName }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="header-menu-close"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt="cross"></div>
+    </div>
+
+    <div class="header-menu-outer header-menu-mobile">
+        <div class="title">{{ 'frontend.menu_title'|trans([], 'AppBundle') }}</div>
+        {% for section in menuSections %}
+            <div class="header-menu-block">
+                <button class="type mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu-section-{{ section.id }}">
+                    <span>{{ section.title }}</span>
+                    <span class="mobile-menu-toggle__icon"></span>
+                </button>
+                <ul class="header-menu mobile-menu-submenu" id="mobile-menu-section-{{ section.id }}">
+                    {% for item in section.items %}
+                        <li><a href="{{ path('product_list', { 'slug': item.category.slug }) }}">{{ item.category.getName }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+        <div class="mobile-menu-footer">
+            <a class="mobile-menu-cabinet" href="{{ path('cabinet') }}">
+                {{ 'frontend.footer.links.cabinet'|trans([], 'AppBundle') }}
+            </a>
+            <div class="mobile-menu-locales">
+                {% set switcher_route = app.request.attributes.get('_route') == 'page_slug' ? 'index' : app.request.attributes.get('_route') %}
+                {% set route_params = app.request.attributes.get('_route') == 'page_slug' ? {} : app.request.attributes.get('_route_params') %}
+                {% for locale in locales %}
+                    {% set locale_title = locale == 'uk' ? 'ua' : locale %}
+                    <a class="mobile-menu-locale{{ locale == app.request.locale ? ' is-active' : '' }}" href="{{
+                        path(
+                            switcher_route|default('index'),
+                            route_params|default({'_locale': locale})|merge({'_locale': locale})
+                        )
+                    }}">{{ locale_title|upper }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="header-menu-close"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt="cross"></div>
+    </div>
+{% elseif settings['type'] == 'video' %}
+    <div class="video-menu-outer">
+        <div class="title">{{ 'frontend.menu_title'|trans([], 'AppBundle') }}</div>
+        <div class="video-menu-flex">
+            {% for section in menuSections %}
+                <div class="video-menu-block">
+                    <button class="type video-menu-section-toggle" type="button" aria-expanded="false" aria-controls="video-menu-section-{{ section.id }}">
+                        <span>{{ section.title }}</span>
+                        <span class="video-menu-section-toggle__icon"></span>
+                    </button>
+                    <ul class="video-menu video-menu-submenu" id="video-menu-section-{{ section.id }}">
+                        {% for item in section.items %}
+                            <li><a href="{{ path('product_list', { 'slug': item.category.slug }) }}">{{ item.category.getName }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="video-menu-close"><img src="{{ asset('bundles/app/images/cross.svg') }}" alt="cross"></div>
+    </div>
+{% endif %}

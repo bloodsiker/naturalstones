@@ -1,0 +1,629 @@
+<!-- product-section -->
+<section class="simple-section">
+    <div class="container">
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
+
+        {% if app.user %}
+            <h1><a href="{{ path('admin_product_product_edit', { 'id': product.id }) }}" target="_blank">{{ product.name }} {{ product.size }}</a></h1>
+        {% else %}
+            <h1>{{ product.name }} {{ product.size }}</h1>
+        {% endif %}
+
+        {% set renderedProductDescription = product.description|shortcode %}
+        {% set productSchemaDescription = renderedProductDescription|striptags|trim %}
+        <div class="product-section-detail" itemtype="https://schema.org/Product" itemscope>
+            <meta itemprop="name" content="{{ product.name }}" />
+            <meta itemprop="identifier" content="{{ product.id }}"/>
+            {% if productSchemaDescription|length %}
+                <meta itemprop="description" content="{{ productSchemaDescription|slice(0, 5000) }}" />
+            {% endif %}
+            <div class="product-gallery">
+                <div class="product-big-slider js-slick">
+                    <div class="product-big-item" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                        {% if product.instagramLink %}
+                            <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
+                        {% endif %}
+                        <img src="{{ asset(product.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
+                    </div>
+                    {% for productImage in product.productHasImage %}
+                        <div class="product-big-item" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                            {% if product.instagramLink %}
+                                <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
+                            {% endif %}
+                            <img src="{{ asset(productImage.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
+                        </div>
+                    {% endfor %}
+
+                    {% for productImageColour in product.productHasOptionColour %}
+                        {% if productImageColour.image %}
+                            <div class="product-big-item" data-option-colour="{{ productImageColour.id }}" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                                {% if product.instagramLink %}
+                                    <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
+                                {% endif %}
+                                <img src="{{ asset(productImageColour.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% for productOption in product.productHasOption %}
+                        {% if productOption.image %}
+                            <div class="product-big-item" data-option="{{ productOption.id }}" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                                {% if product.instagramLink %}
+                                    <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
+                                {% endif %}
+                                <img src="{{ asset(productOption.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% for productImageMetal in product.productHasOptionMetal %}
+                        {% if productImageMetal.image %}
+                            <div class="product-big-item" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                                {% if product.instagramLink %}
+                                    <a href="{{ product.instagramLink }}" target="_blank"><img src="{{ asset('bundles/app/images/instagram.png') }}" class="insta_link" alt="instagram"></a>
+                                {% endif %}
+                                <img src="{{ asset(productImageMetal.image.path) }}" class="big-slider-img" alt="{{ product.name }}" itemprop="contentUrl">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="context-constructor">
+                    <p>{{ 'frontend.product.constructor_text'|trans([], 'ProductBundle') }}</p>
+                    <a href="{{ path('constructor') }}" class="button">{{ 'frontend.product.constructor_btn'|trans([], 'ProductBundle') }}</a>
+                </div>
+            </div>
+
+            <div itemprop="brand" itemtype="https://schema.org/Brand" itemscope>
+                <meta itemprop="name" content="{{ company_name }}" />
+            </div>
+
+            <div class="product-information">
+                <div class="product-info-top clearfix">
+                    <form action="#" method="post" class="product-add-form">
+                        <div class="bottom-block">
+                            <div class="total-price" itemprop="offers" itemtype="https://schema.org/Offer" itemscope>
+                                <link itemprop="url" href="{{ product_path(product, true) }}" />
+                                {% if product.discount %}
+                                    <div class="price">
+                                        <span class="old-price">{{ product.price}} грн</span><br>
+                                        <span>{{ product.discount}} грн</span>
+                                        <meta itemprop="availability" content="https://schema.org/InStock" />
+                                        <meta itemprop="priceCurrency" content="UAH" />
+                                        <meta itemprop="price" content="{{ product.price}}" />
+                                    </div>
+                                {% else %}
+                                    <div class="price"><span>{{ product.price}} грн</span></div>
+                                    <meta itemprop="availability" content="https://schema.org/InStock" />
+                                    <meta itemprop="priceCurrency" content="UAH" />
+                                    <meta itemprop="price" content="{{ product.price}}" />
+                                {% endif %}
+                                <div itemprop="shippingDetails" itemtype="https://schema.org/OfferShippingDetails" itemscope>
+                                    <div itemprop="shippingDestination" itemtype="https://schema.org/DefinedRegion" itemscope>
+                                        <meta itemprop="addressCountry" content="UA" />
+                                    </div>
+                                    <div itemprop="shippingRate" itemtype="https://schema.org/MonetaryAmount" itemscope>
+                                        <meta itemprop="value" content="100" />
+                                        <meta itemprop="currency" content="UAH" />
+                                    </div>
+                                    <div itemprop="deliveryTime" itemtype="https://schema.org/ShippingDeliveryTime" itemscope>
+                                        <div itemprop="handlingTime" itemtype="https://schema.org/QuantitativeValue" itemscope>
+                                            <meta itemprop="minValue" content="0" />
+                                            <meta itemprop="maxValue" content="1" />
+                                            <meta itemprop="unitCode" content="DAY" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{
+                                sonata_block_render(
+                                    { 'type': 'app.block.service.cart' },
+                                    {
+                                        'product': product,
+                                        'template': constant('AppBundle\\Block\\CartBlockService::TEMPLATE_BUTTON_IN_PRODUCT')
+                                    }
+                                )
+                            }}
+                            <button class="product-favorite product-favorite--detail" data-id="{{ product.id }}" type="button" title="{{ 'frontend.product.add_to_favorites'|trans([], 'AppBundle') }}">
+                                <svg width="22" height="22" viewBox="0 0 24 24">
+                                    <path class="fav-heart" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="top-block">
+                            {% if product.productHasOptionColour|length > 0 %}
+                                <div class="inner-block">
+                                    <h5>{{ 'frontend.product.change_colour'|trans([], 'ProductBundle') }}</h5>
+                                    <ul class="product-colours-check" data-text-error="{{ 'frontend.product.validate.colour'|trans([], 'ProductBundle') }}">
+                                        {% for productImageColour in product.productHasOptionColour %}
+                                            {% if productImageColour.colour %}
+                                                <li>
+                                                    <div class="colour-radiobox">
+                                                        <label class="radiobox">
+                                                            <input type="radio" name="colour_id" value="{{ productImageColour.colour.id }}">
+                                                            <i class="switch-colour"
+                                                               data-price="{{ productImageColour.price > 0 ? productImageColour.price : (product.discount ?: product.price) }}"
+                                                               data-option-colour="{{ productImageColour.id }}"
+                                                               title="{{ productImageColour.colour.name }}"
+                                                               style="background-color: #{{ productImageColour.colour.colour }}"></i>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                    <span id="colourError" class="text-red"></span>
+                                </div>
+                            {% endif %}
+
+                            {% if sizes|length > 0 %}
+                                <div class="inner-block">
+                                    <h5>{{ 'frontend.product.change_size'|trans([], 'ProductBundle') }}</h5>
+                                    <ul class="product-sizes-check">
+                                        {% for productSize in sizes %}
+                                            {% if productSize.size %}
+                                                <li>
+                                                    <div class="size-radiobox">
+                                                        <a href="{{ product_path(productSize) }}">
+                                                            <i class="{% if productSize.id == product.id %}product-sizes-active{% endif %}" itemprop="size">{{ productSize.size }}</i>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                    <div class="select-block mobile-select">
+                                        <select class="custom-select change-size" data-placeholder="{{ 'frontend.product.size'|trans([], 'ProductBundle') }}">
+                                            <option></option>
+                                            {% for productSize in sizes %}
+                                                {% if productSize.size %}
+                                                    <option data-url="{{ product_path(productSize, true) }}" {% if productSize.id == product.id %}selected{% endif %} value="{{ productSize.id }}">{{ productSize.size }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if product.productHasOption|length > 0 %}
+                                <div class="inner-block">
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_LETTERS') %}
+                                        <h5>{{ 'frontend.product.change_letter'|trans([], 'ProductBundle') }}</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-letters" data-text-error="{{ 'frontend.product.validate.letter'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.letter'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_INSERTS') %}
+                                        <h5>{{ 'frontend.product.change_insert'|trans([], 'ProductBundle') }}</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="insert" data-text-error="{{ 'frontend.product.validate.insert'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.insert'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_PENDANTS') %}
+                                        <h5>{{ 'frontend.product.change_pendant'|trans([], 'ProductBundle') }}</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="pendant" data-text-error="{{ 'frontend.product.validate.pendant'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.pendant'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_BRACELET') %}
+                                        <h5>{{ 'frontend.product.change_bracelet'|trans([], 'ProductBundle') }}</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="bracelet" data-text-error="{{ 'frontend.product.validate.bracelet'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.bracelet'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_RINGS') %}
+                                        <h5>{{ 'frontend.product.change_ring'|trans([], 'ProductBundle') }}</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="ring" data-text-error="{{ 'frontend.product.validate.ring'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.ring'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_NECKLACE') %}
+                                        <h5>{{ 'frontend.product.change_necklaces'|trans([], 'ProductBundle') }}</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="necklace" data-text-error="{{ 'frontend.product.validate.necklace'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.necklace'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_EARRING') %}
+                                        <h5>{{ 'frontend.product.change_earring'|trans([], 'ProductBundle') }}</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="earring" data-text-error="{{ 'frontend.product.validate.earrings'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.earrings'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                    {% if product.optionType == constant('ProductBundle\\Entity\\Product::TYPE_MONEY') %}
+                                        <h5>{{ 'frontend.product.change_money'|trans([], 'ProductBundle') }}</h5>
+                                        <div class="select-block">
+                                            <select class="custom-select select-option" data-option="money" data-text-error="{{ 'frontend.product.validate.money'|trans([], 'ProductBundle') }}" data-placeholder="{{ 'frontend.product.money'|trans([], 'ProductBundle') }}">
+                                                <option></option>
+                                                {% for productOption in product.productHasOption %}
+                                                    {% if productOption.value %}
+                                                        <option value="{{ productOption.value }}" data-id="{{ productOption.id }}">{{ productOption.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="text-red optionError"></span>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            <div class="inner-block">
+                                <h5>{{ 'frontend.product.change_count'|trans([], 'ProductBundle') }}</h5>
+                                <div class="cart-product-amount">
+                                    <span class="qtyminus">−</span>
+                                    <input type="text" id="quantity" value="1" class="qty" onkeypress="return event.charCode &gt;= 48 &amp;&amp; event.charCode &lt;= 57" placeholder="">
+                                    <span class="qtyplus" data-max="100">+</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% if product.productHasProduct|length %}
+                            <div class="middle-block">
+                                <h5>{{ product.optionLabel ? product.optionLabel.name : 'frontend.product.included'|trans([], 'ProductBundle') }}</h5>
+
+                                {% for prodSet in product.productHasProduct %}
+                                    <div class="relations_products" itemprop="isRelatedTo" itemtype="https://schema.org/Product" itemscope>
+                                        <div class="relations_products_img" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                                            <a href="{{ product_path(prodSet.productSet) }}">
+                                                <img class="lazyload" data-src="{{ asset(prodSet.productSet.image.path) }}" src="{{ prodSet.productSet.name }}" itemprop="contentUrl" alt="{{ prodSet.productSet.name }}">
+                                            </a>
+                                        </div>
+                                        <div class="relations_products_desc">
+                                            <a href="{{ product_path(prodSet.productSet) }}" class="link" itemprop="url"><span itemprop="name">{{ prodSet.productSet.name }}</span></a>
+                                            <div class="relations_products_meta">
+                                                <span class="relations_products_price">{{ prodSet.productSet.price }} грн</span>
+                                                <span class="relations_products_quantity">{{ prodSet.quantity }} шт.</span>
+                                            </div>
+                                            {% if prodSet.productSet.size %}
+                                                <span class="relations_products_size">{{ prodSet.productSet.size }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </form>
+
+                    <div class="product-quick">
+                        <div class="product-quick-toggle button">{{ 'frontend.product.quick_order'|trans([], 'ProductBundle') }} <img src="{{ asset('bundles/app/images/arrow-right-purple.svg') }}" alt=""></div>
+                        <div class="product-quick-block">
+                            <div class="top">
+                                <h5>{{ 'frontend.quic_order.title'|trans([], 'AppBundle') }}</h5>
+                                <div class="messengers-input">
+                                    <input class="telegram phone-input" name="phone" type="text" placeholder="+38 (___) ___-__-__" autocomplete="off">
+                                    <input class="" name="instagram" type="text" placeholder="https://instagram.com" style="display: none" autocomplete="off">
+                                    <input type="hidden" name="product" value="{{ product.id }}">
+                                    <span class="error-message text-red"></span>
+                                </div>
+                            </div>
+                            <div class="middle">
+                                <div class="note">{{ 'frontend.quic_order.messenger'|trans([], 'AppBundle') }}:</div>
+                                <ul class="messengers-list">
+                                    <li>
+                                        <label class="messengers-radio telegram">
+                                            <input type="radio" name="messenger" value="telegram" checked>
+                                            <span>
+                                                <img src="{{ asset('bundles/app/images/telegram.svg') }}" alt="telegram">
+                                            </span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="messengers-radio viber">
+                                            <input type="radio" name="messenger" value="viber">
+                                            <span>
+                                                <img src="{{ asset('bundles/app/images/viber.svg') }}" alt="viber">
+                                            </span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="messengers-radio instagram">
+                                            <input type="radio" name="messenger" value="instagram">
+                                            <span>
+                                                <img src="{{ asset('bundles/app/images/inst.png') }}" width="39px" alt="instagram">
+                                            </span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="call-me" style="margin-bottom: 15px">
+                                <label class="call-me-checkbox">
+                                    <input type="checkbox" id="call-me" name="call_me" value="1">
+                                    <i></i>
+                                    <span>{{ 'frontend.cart.call_me'|trans([], 'AppBundle') }}</span>
+                                </label>
+                            </div>
+                            <div class="bottom">
+                                <a href="#" data-url="{{ path('product_quick_order') }}" class="button product-quick-cart">{{ 'frontend.quic_order.btn_order'|trans([], 'AppBundle') }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-description">
+                    <ul class="product-description-list">
+                        <li>
+                            <a href="#prod-desc-2" class="active-tab"><img src="{{ asset('bundles/app/images/info.svg') }}" alt="">{{ 'frontend.product.tab.description'|trans([], 'ProductBundle') }}</a>
+                        </li>
+                        <li>
+                            <a href="#prod-desc-3"><img src="{{ asset('bundles/app/images/list.svg') }}" alt="">{{ 'frontend.product.tab.info'|trans([], 'ProductBundle') }}</a>
+                        </li>
+                        {% if product.productHasVideo|length %}
+                            <li>
+                                <a href="#prod-desc-4"><img src="{{ asset('bundles/app/images/video.svg') }}" alt="">{{ 'frontend.product.tab.video'|trans([], 'ProductBundle') }}</a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a href="#prod-desc-1"><img src="{{ asset('bundles/app/images/delivery.svg') }}" alt="">{{ 'frontend.product.tab.delivery'|trans([], 'ProductBundle') }}</a>
+                        </li>
+                    </ul>
+                    <div class="product-description-inner">
+                        <!-- Таб-1 -->
+                        <div id="prod-desc-2" class="product-description-content visible">
+                            <div class="product-description-trigger">
+                                <a href="">
+                                    <span class="pic"><img src="{{ asset('bundles/app/images/info.svg') }}" alt=""></span>
+                                    {{ 'frontend.product.tab.description'|trans([], 'ProductBundle') }}
+                                    <img src="{{ asset('bundles/app/images/select-arrow.svg') }}" class="arrow" alt="">
+                                </a>
+                            </div>
+                            <div class="product-description-tab">
+                                <div class="product-desc-text">
+                                    {{ renderedProductDescription|raw }}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Таб-2 -->
+                        <div id="prod-desc-3" class="product-description-content">
+                            <div class="product-description-trigger">
+                                <a href="">
+                                    <span class="pic"><img src="{{ asset('bundles/app/images/list.svg') }}" alt=""></span>
+                                    {{ 'frontend.product.tab.info'|trans([], 'ProductBundle') }}
+                                    <img src="{{ asset('bundles/app/images/select-arrow.svg') }}" class="arrow" alt="">
+                                </a>
+                            </div>
+                            <div class="product-description-tab">
+                                {% set productMaterials = [] %}
+                                {% for metal in product.metals %}
+                                    {% set productMaterials = productMaterials|merge([metal.name]) %}
+                                {% endfor %}
+                                {% for stone in product.stones %}
+                                    {% set productMaterials = productMaterials|merge([stone.name]) %}
+                                {% endfor %}
+                                {% if productMaterials|length %}
+                                    <meta itemprop="material" content="{{ productMaterials|join(', ') }}">
+                                {% endif %}
+                                <table class="product-char-table">
+                                    {% if product.metals|length %}
+                                        <tr>
+                                            <td>
+                                                <div class="name">{{ 'frontend.product.material'|trans([], 'ProductBundle') }}</div>
+                                            </td>
+                                            <td>
+                                                {% for metal in product.metals %}
+                                                    <em>{{ metal.name }}</em>
+                                                    {{ loop.last ? '' : ' , ' }}
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if product.colours|length %}
+                                        {% set productColours = [] %}
+                                        {% for colour in product.colours %}
+                                            {% set productColours = productColours|merge([colour.name]) %}
+                                        {% endfor %}
+                                        <tr>
+                                            <td>
+                                                <div class="name">{{ 'frontend.product.colour'|trans([], 'ProductBundle') }}</div>
+                                            </td>
+                                            <td>
+                                                <meta itemprop="color" content="{{ productColours|join(', ') }}">
+                                                {% for colour in product.colours %}
+                                                    <a href="{{ path('product_colour_list', { 'slug': colour.slug }) }}" class="colours">
+                                                        <em style="background: {{ '#'~(colour.colour) }}"></em>
+                                                        <span>{{ colour.name }}</span>
+                                                    </a>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td>
+                                            <div class="name">{{ 'frontend.product.who'|trans([], 'ProductBundle') }}</div>
+                                        </td>
+                                        <td>
+                                            {% if product.isMan %}
+                                                <a href="{{ path('product_who_list', {'who' : 'man'}) }}" class="link">{{ 'frontend.product.man'|trans([], 'ProductBundle') }}</a>{% if product.isWoman %}, {% endif %}
+                                            {% endif %}
+
+                                            {% if product.isWoman %}
+                                                <a href="{{ path('product_who_list', {'who' : 'woman'}) }}" class="link">{{ 'frontend.product.woman'|trans([], 'ProductBundle') }}</a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% if product.stones|length %}
+                                        <tr>
+                                            <td>
+                                                <div class="name">{{ 'frontend.product.stone'|trans([], 'ProductBundle') }}</div>
+                                            </td>
+                                            <td>
+                                                {% for stone in product.stones %}
+                                                    <a href="{{ path('product_stone_list', { 'slug': stone.slug }) }}" class="link">
+                                                        <em>{{ stone.name }}</em>
+                                                    </a>
+                                                    {{ loop.last ? '' : ' , ' }}
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Таб-3 -->
+                        {% if product.productHasVideo|length %}
+                            <div id="prod-desc-4" class="product-description-content">
+                                <div class="product-description-trigger">
+                                    <a href="">
+                                        <span class="pic"><img src="{{ asset('bundles/app/images/video.svg') }}" alt=""></span>
+                                        {{ 'frontend.product.tab.video'|trans([], 'ProductBundle') }}
+                                        <img src="{{ asset('bundles/app/images/select-arrow.svg') }}" class="arrow" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-description-tab">
+                                    <div class="product-desc-text">
+                                        {% for video in product.productHasVideo %}
+                                            <div class="responsive-iframe">
+                                                <iframe src="{{ video.video.path|video_url }}"
+                                                        frameborder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                        allowfullscreen
+                                                        title="{{ video.video.description }}">
+                                                </iframe>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <!-- Таб-4 -->
+                        <div id="prod-desc-1" class="product-description-content">
+                            <div class="product-description-trigger">
+                                <a href="">
+                                    <span class="pic"><img src="{{ asset('bundles/app/images/delivery.svg') }}" alt=""></span>
+                                    {{ 'frontend.product.tab.delivery'|trans([], 'ProductBundle') }}
+                                    <img src="{{ asset('bundles/app/images/select-arrow.svg') }}" class="arrow" alt="">
+                                </a>
+                            </div>
+                            <div class="product-description-tab">
+                                <div class="product-desc-text">
+                                    <ul>
+                                        <li>{{ 'frontend.product.delivery_payment_1'|trans([], 'ProductBundle') }} <strong>{{ 'frontend.product.delivery_payment_2'|trans([], 'ProductBundle') }}</strong> {{ 'frontend.product.delivery_payment_3'|trans([], 'ProductBundle') }} <strong>Monobank</strong>;</li>
+                                        <li>{{ 'frontend.product.delivery_payment_4'|trans([], 'ProductBundle') }};</li>
+                                        <li>{{ 'frontend.product.delivery_payment_5'|trans([], 'ProductBundle') }} <strong>{{ 'frontend.product.delivery_payment_6'|trans([], 'ProductBundle') }}</strong>.</li>
+                                    </ul>
+                                </div>
+                                <div class="product-pay-list">
+                                    <div class="product-pay-block">
+                                        <div class="pay-title">{{ 'frontend.product.delivery_payment_7'|trans([], 'ProductBundle') }}</div>
+                                        <ul class="product-pay-country">
+                                            <li>
+                                                <img src="{{ asset('bundles/app/images/pay-systems/pay-system-8.png') }}" alt="">
+                                                <img src="{{ asset('bundles/app/images/pay-systems/pay-system-9.png') }}" alt="">
+                                                <span>{{ 'frontend.product.delivery_payment_8'|trans([], 'ProductBundle') }}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if product.tags|length > 0 %}
+                        <div class="product-tags">
+                            <span>{{ 'frontend.product.tags'|trans([], 'ProductBundle') }}:</span>
+                            {% for tag in product.tags %}
+                                <a href="{{ path('product_tags_list', {'slug' : tag.slug}) }}" class="link">#{{ tag.name }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        {{
+            sonata_block_render(
+                { 'type': 'product.block.list' },
+                {
+                    'title' : 'frontend.related_products'|trans([], 'ProductBundle'),
+                    'items_count' : 10,
+                    'exclude_ids' : product.id,
+                    'category_slug' : app.request.get('category'),
+                    'page': app.request.get('page') ? app.request.get('page') : 1,
+                    'list_type': constant('ProductBundle\\Block\\ListProductBlockService::SIMILAR_LIST')
+                }
+            )
+        }}
+    </div>
+</section>
+
+<script>
+    let ids = JSON.parse(window.localStorage.getItem('product_ids'));
+    if (ids) {
+        let productId = '{{ product.id }}';
+
+        ids = ids.filter(function(value, key) {
+           if (key > 18) {
+               return false;
+           }
+           return value !== productId;
+        });
+        ids.unshift(productId);
+        localStorage.setItem('product_ids', JSON.stringify(ids))
+    } else {
+        localStorage.setItem('product_ids', JSON.stringify(['{{ product.id }}']))
+    }
+</script>

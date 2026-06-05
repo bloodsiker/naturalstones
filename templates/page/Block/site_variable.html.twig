@@ -1,0 +1,11 @@
+{% for variable in variables %}
+    {% if app.environment != 'prod' %}
+        <!-- variable, id: {{ variable.id }}, name: {{ variable.name }}} -->
+    {% endif %}
+
+    {{ variable.value|raw }}
+
+    {% if app.environment != 'prod' %}
+        <!-- end variable, id: {{ variable.id }}, name: {{ variable.name }} -->
+    {% endif %}
+{% endfor %}

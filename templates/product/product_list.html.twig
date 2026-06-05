@@ -1,0 +1,177 @@
+
+<!-- catalog-section -->
+<section class="simple-section">
+    <div class="container">
+
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
+
+        {% if categorySeo.intro is defined %}
+            <div class="product-description-container category-description category-commercial-intro">
+                {{ categorySeo.intro|raw }}
+            </div>
+        {% endif %}
+
+        {% if category.description %}
+            <div class="product-description-container category-description">
+                {{ category.description|raw }}
+            </div>
+        {% endif %}
+
+
+        {{
+            sonata_block_render(
+                { 'type': 'product.block.list' },
+                {
+                    'items_count' : 20,
+                    'page': app.request.get('page') ? app.request.get('page') : 1,
+                    'filter': true,
+                    'title': categorySeo.h1|default(category.name),
+                    'category': category,
+                    'show_paginator': true,
+                    'ajax_paginator': true
+                }
+            )
+        }}
+
+        {% if categorySeo.bottom is defined %}
+            <div class="product-description-container category-description category-seo-bottom">
+                <h2>{{ categorySeo.bottom_title }}</h2>
+                <p>{{ categorySeo.bottom|raw }}</p>
+
+                {% if categorySeo.faq is defined %}
+                    <div class="category-faq">
+                        <h3>{{ categorySeo.faq_title }}</h3>
+                        {% for item in categorySeo.faq %}
+                            <details>
+                                <summary>{{ item.question }}</summary>
+                                <p>{{ item.answer|raw }}</p>
+                            </details>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <style>
+            .category-commercial-intro,
+            .category-seo-bottom {
+                position: relative;
+                overflow: hidden;
+                max-width: 1060px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 28px 34px;
+                color: #3F3F3F;
+                font-size: 17px;
+                line-height: 1.58;
+                background: linear-gradient(135deg, #fff 0%, #fff7f7 52%, #fbdfdf 100%);
+                border: 1px solid #f4d4d4;
+                border-radius: 8px;
+                box-shadow: 0 10px 30px rgba(20, 9, 35, 0.07);
+            }
+
+            .category-commercial-intro {
+                margin-bottom: 34px;
+                text-align: center;
+            }
+
+            .category-seo-bottom {
+                margin-top: 34px;
+            }
+
+            .category-commercial-intro:before,
+            .category-seo-bottom:before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 4px;
+                background: linear-gradient(90deg, #f08383, #fbdfdf);
+            }
+
+            .category-commercial-intro p,
+            .category-seo-bottom p {
+                max-width: 920px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .category-commercial-intro p {
+                margin-bottom: 0;
+            }
+
+            .category-seo-bottom h2,
+            .category-faq h3 {
+                color: #140923;
+                font-weight: 600;
+                line-height: 1.25;
+                text-align: center;
+            }
+
+            .category-seo-bottom h2 {
+                font-size: 24px;
+                margin-bottom: 14px;
+            }
+
+            .category-faq {
+                max-width: 920px;
+                margin: 26px auto 0;
+            }
+
+            .category-faq h3 {
+                font-size: 20px;
+                margin-bottom: 14px;
+            }
+
+            .category-faq details {
+                border: 1px solid #f4d4d4;
+                border-radius: 8px;
+                margin-bottom: 10px;
+                background: rgba(255, 255, 255, 0.78);
+                box-shadow: 0 4px 14px rgba(240, 131, 131, 0.1);
+            }
+
+            .category-faq summary {
+                cursor: pointer;
+                padding: 15px 18px;
+                color: #140923;
+                font-weight: 600;
+            }
+
+            .category-faq details p {
+                margin: 0;
+                padding: 0 18px 16px;
+            }
+
+            @media (max-width: 767px) {
+                .category-commercial-intro,
+                .category-seo-bottom {
+                    padding: 22px 18px;
+                    font-size: 15px;
+                }
+
+                .category-commercial-intro {
+                    text-align: left;
+                }
+            }
+        </style>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        {{
+            sonata_block_render(
+                { 'type': 'share.block.zodiac' },
+                {
+                    'title' : 'frontend.zodiac_stones'|trans([], 'ProductBundle'),
+                }
+            )
+        }}
+    </div>
+</section>

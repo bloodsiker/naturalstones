@@ -1,0 +1,15 @@
+{% if settings.show_paginator and products.maxPerPage is defined and products.count > products.maxPerPage %}
+
+    {% if _route is defined and _route_params is defined  %}
+{#        {% set queryParams = _route_params|merge({'page': '~'}) %}#}
+
+        {{ pagerfanta(products, {
+            'omitFirstPage': true,
+            'routeName': _route,
+            'routeParams': _route_params
+        }) }}
+
+    {% else %}
+        {{ pagerfanta(products, { 'omitFirstPage': true}) }}
+    {% endif %}
+{% endif %}

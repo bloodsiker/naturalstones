@@ -1,0 +1,167 @@
+{#
+
+This code manage the many-to-[one|many] association field popup
+
+#}
+
+{% autoescape false %}
+
+{% set associationadmin = sonata_admin.field_description.associationadmin %}
+
+<!-- edit many association -->
+
+<script type="text/javascript">
+    function start_field_dialog_form_list_with_add_{{ id }}(link) {
+
+        link.onclick = null;
+
+        initialize_popup_{{ id }}();
+
+        // add the jQuery event to the a element
+        jQuery(link)
+                .click(field_dialog_form_list_with_add_{{ id }})
+                .trigger('click')
+        ;
+
+        return false;
+    }
+
+    // handle the list link
+    var field_dialog_form_list_with_add_{{ id }} = function(event) {
+
+        initialize_popup_{{ id }}();
+
+        event.preventDefault();
+//        event.stopPropagation();
+
+        Admin.log('[{{ id }}|field_dialog_form_list] open the list modal');
+
+        var a = jQuery(this);
+
+        field_dialog_content_{{ id }}.html('');
+
+        // retrieve the form element from the related admin generator
+        jQuery.ajax({
+            url: a.attr('href'),
+            dataType: 'html',
+            success: function(html) {
+
+                Admin.log('[{{ id }}|field_dialog_form_list] retrieving the list content');
+
+                // populate the popup container
+                field_dialog_content_{{ id }}.html(html);
+
+                field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
+
+                Admin.shared_setup(field_dialog_{{ id }});
+
+                field_dialog_form_list_handle_action_with_add_{{ id }}();
+
+                // open the dialog in modal mode
+                field_dialog_{{ id }}.modal();
+
+                Admin.setup_list_modal(field_dialog_{{ id }});
+            }
+        });
+    };
+    // this function handle action on the modal list when inside a selected list
+    var field_dialog_form_list_handle_action_with_add_{{ id }}  =  function() {
+        Admin.log('[{{ id }}|field_dialog_form_list_handle_action] media attaching valid js event');
+
+        // capture the submit event to make an ajax call, ie : POST data to the
+        // related create admin
+        jQuery('a', field_dialog_{{ id }}).on('click', field_dialog_form_list_link_with_add_{{ id }});
+        jQuery('form', field_dialog_{{ id }}).on('submit', function(event) {
+            event.preventDefault();
+
+            var form = jQuery(this);
+
+            Admin.log('[{{ id }}|field_dialog_form_list_handle_action] media catching submit event, sending ajax request');
+
+            jQuery(form).ajaxSubmit({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                dataType: form.hasClass('sonata-filter-form') ? 'html' : 'json',
+                data: {_xml_http_request: true},
+                success: function(html) {
+                    console.log(html, typeof html);
+                    if (typeof html != 'string' && html.result == 'ok' && html.objectId !== undefined) {
+                        field_dialog_{{ id }}.modal('hide');
+                        gui_global_observer.execute('{{ id }}' , html);
+                        jQuery('#{{ id }}').val(html.objectId);
+                        jQuery('#{{ id }}').change();
+                        return;
+                    }
+
+                    Admin.log('[{{ id }}|field_dialog_form_list_handle_action] media form submit success, restoring event');
+
+                    field_dialog_content_{{ id }}.html(html);
+                    field_dialog_form_list_handle_action_with_add_{{ id }}();
+
+                    Admin.shared_setup(field_dialog_{{ id }});
+                }
+            });
+        });
+    };
+
+    var field_dialog_form_list_link_with_add_{{ id }} = function(event) {
+        initialize_popup_{{ id }}();
+
+        var target = jQuery(this);
+
+        if ((target.hasClass('sonata-ba-action') || target.attr('href').length === 0 || target.attr('href').substr(0,1) === '#') && !target.hasClass('selector')) {
+            return;
+        }
+
+        event.preventDefault();
+//        event.stopPropagation();
+
+        Admin.log('[{{ id }}|field_dialog_form_list_link] handle link click in a list');
+
+        var element = jQuery(this).parents('#field_dialog_{{ id }} .sonata-ba-list-field');
+
+        // the user does not click on a row column
+        if (element.length == 0) {
+            Admin.log('[{{ id }}|field_dialog_form_list_link] the user does not click on a row column, make ajax call to retrieve inner html');
+            // make a recursive call (ie: reset the filter)
+            jQuery.ajax({
+                type: 'GET',
+                url: jQuery(this).attr('href'),
+                dataType: 'html',
+                success: function(html) {
+                    Admin.log('[{{ id }}|field_dialog_form_list_link] callback success, attach valid js event');
+
+                    field_dialog_content_{{ id }}.html(html);
+                    field_dialog_form_list_handle_action_with_add_{{ id }}();
+
+                    Admin.shared_setup(field_dialog_{{ id }});
+                }
+            });
+
+            return;
+        }
+
+        Admin.log('[{{ id }}|field_dialog_form_list_link] the user select one element, update input and hide the modal');
+
+        jQuery('#{{ id }}').val(element.attr('objectId'));
+        jQuery('#{{ id }}').trigger('change');
+
+        field_dialog_{{ id }}.modal('hide');
+    };
+
+    function field_remove_element_{{ id }}(event) {
+        event.preventDefault();
+
+        if (jQuery('#{{ id }} option').get(0)) {
+            jQuery('#{{ id }}').attr('selectedIndex', '-1').children("option:selected").attr("selected", false);
+        }
+
+        jQuery('#{{ id }}').val('');
+        jQuery('#{{ id }}').trigger('change');
+
+        jQuery('#field_container_{{ id }}').find('.imageContainer').remove();
+        return false;
+    }
+
+</script>
+{% endautoescape %}

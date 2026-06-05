@@ -1,0 +1,56 @@
+{#
+    variables:
+        - settings       : array  : block settings
+        - locales        : array  : list of available locales
+        - current_locale : string : current locale
+#}
+
+{% if settings.type == constant('AppBundle\\Block\\LanguageSwitcherBlockService::TYPE_MAIN') %}
+
+    <div class="video-options">
+        <div class="video-options-block">
+            <div class="video-options-toggle">
+                <span>{{ (current_locale == 'uk' ? 'ua' : current_locale)|upper }}</span>
+                <i></i>
+            </div>
+            <ul class="video-options-menu">
+                {% for locale in locales %}
+                    {% set locale_title = locale == 'uk' ? 'ua' : locale %}
+                    <li class="{{ locale == current_locale ? 'selected' : ''}}">
+                        {% set switcher_route = app.request.attributes.get('_route') == 'page_slug' ? 'index' : app.request.attributes.get('_route') %}
+                        {% set route_params = app.request.attributes.get('_route') == 'page_slug' ? {} : app.request.attributes.get('_route_params') %}
+
+                        <a href="{{
+                        path(
+                            switcher_route|default('index'),
+                            route_params|default({'_locale': locale})|merge({'_locale': locale})
+                        )
+                        }}">{{ locale_title|capitalize }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% elseif settings.type == constant('AppBundle\\Block\\LanguageSwitcherBlockService::TYPE_FOOTER') %}
+
+    <div class="footer-lang">
+        <ul>
+            {% for locale in locales %}
+                {% set locale_title = locale == 'uk' ? 'ua' : locale %}
+                <li>
+                    {% set switcher_route = app.request.attributes.get('_route') == 'page_slug' ? 'index' : app.request.attributes.get('_route') %}
+                    {% set route_params = app.request.attributes.get('_route') == 'page_slug' ? {} : app.request.attributes.get('_route_params') %}
+
+                    <a href="{{
+                    path(
+                        switcher_route|default('index'),
+                        route_params|default({'_locale': locale})|merge({'_locale': locale})
+                    )
+                    }}" class="{{ locale == current_locale ? 'active' : ''}}">{{ locale_title|upper }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endif %}

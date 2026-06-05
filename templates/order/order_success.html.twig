@@ -1,0 +1,103 @@
+<section class="section" style="min-height: calc(var(--vh, 1vh) * 80);">
+    <div class="container">
+        <div class="form-content">
+            <h4>{{ 'frontend.order.thanks'|trans([], 'AppBundle') }}</h4>
+        </div>
+        <div class="order-form">
+            <div class="order-form-content">
+                <div class="order-check-block" >
+                    <h2><strong>{{ 'frontend.order.info'|trans([], 'AppBundle') }}</strong></h2>
+                    <br><br>
+                    <ul class="order-check-list">
+                        <li>
+                            <div class="name">{{ 'frontend.order.status'|trans([], 'AppBundle') }}</div>
+                            <div class="value">{{ order.getNameStatus(order.status)|trans({}, 'OrderBundle') }}</div>
+                        </li>
+                        {% if order.fio %}
+                            <li>
+                                <div class="name">{{ 'frontend.order.client_name'|trans([], 'AppBundle') }}</div>
+                                <div class="value">{{ order.fio }}</div>
+                            </li>
+                        {% endif %}
+                        {% if order.phone %}
+                            <li>
+                                <div class="name">{{ 'frontend.order.client_phone'|trans([], 'AppBundle') }}</div>
+                                <div class="value">{{ order.phone }}</div>
+                            </li>
+                        {% endif %}
+                        {% if order.email %}
+                            <li>
+                                <div class="name">E-mail</div>
+                                <div class="value">{{ order.email }}</div>
+                            </li>
+                        {% endif %}
+                        {% if order.address %}
+                            <li>
+                                <div class="name">{{ 'frontend.order.client_delivery'|trans([], 'AppBundle') }}</div>
+                                <div class="value">{{ order.address }}</div>
+                            </li>
+                        {% endif %}
+                        {% if order.comment %}
+                            <li>
+                                <div class="name">{{ 'frontend.order.comment'|trans([], 'AppBundle') }}</div>
+                                <div class="value">{{ order.comment }}</div>
+                            </li>
+                        {% endif %}
+                    </ul>
+
+                    <br>
+                    <br>
+                    <p>{{ 'frontend.order.callback_text'|trans([], 'AppBundle') }}</p>
+                </div>
+                <div class="order-form-links">
+                    <a class="button white-button" href="{{ path('index') }}">{{ 'frontend.cart.continue'|trans([], 'AppBundle') }}</a>
+                </div>
+            </div>
+
+
+            <div class="order-success-summary">
+                <div class="top-block">
+                    <h4>{{ 'frontend.order.you_order'|trans([], 'AppBundle') }}</h4>
+                </div>
+                {% for oProduct in order.orderHasItems %}
+                    <div class="order-form-items">
+                        <a class="item-image" href="{{ product_path(oProduct.product) }}">
+                            <img alt="{{ oProduct.product.name }}" class="lazyload" data-src="{{ asset(oProduct.product.image.getPath()) }}" src="{{ oProduct.product.name }}">
+                        </a>
+                        <div class="inner">
+                            <div class="item-name">
+                                <a href="{{ product_path(oProduct.product) }}">{{ oProduct.product.name }} {% if oProduct.product.size %}({{ oProduct.product.size }}){% endif %} </a>
+                                {% if oProduct.colour %}
+                                    <br>
+                                    <span style="font-size: 14px;">{{ 'frontend.order.colour'|trans([], 'AppBundle') }} </span><i style="display: inline-block; padding: 2px 8px; border: 1px solid #E6E6E6; background: #{{ oProduct.colour.colour }};border-radius: 10px;font-size: 11px;">{{ oProduct.colour.name }}</i>
+                                {% endif %}
+                                {% if oProduct.options %}
+                                    <br>
+                                    <span style="font-size: 14px;">{{ oProduct.options }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="count">{{ oProduct.quantity }} шт.</div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <ul class="order-form-calculate">
+                    <li>
+                        <span>{{ 'frontend.order.order_sum'|trans([], 'AppBundle') }}</span>
+                        <span class="total-price">{{ order.totalSum|number_format(2, ',') }} грн</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        {{
+        sonata_block_render(
+            { 'type': 'wheel_spin.block.wheel_spinner' },
+            {
+                'order' : order,
+                'success_page': true,
+            }
+        )
+        }}
+
+    </div>
+</section>

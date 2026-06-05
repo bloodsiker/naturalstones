@@ -1,0 +1,6 @@
+<section class="{{ settings.class }}" id="section-viewed">
+    <div class="container">
+        {% set block_ajax_path = block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block) %}
+        <div class="viewed-products-block" id="load-viewed-product" data-url="{{ block_ajax_path }}"></div>
+    </div>
+</section>

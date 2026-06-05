@@ -1,0 +1,8 @@
+<figure class="op-slideshow">
+    {%- for item in images -%}
+        <figure>
+            {% set src = item.path|imagine_filter('inline_620x') %}
+            <img src="{{ src }}" />{% if item.getTitle() %}<figcaption><h1>{{ item.getTitle() }}</h1></figcaption>{% endif %}
+        </figure>
+    {%- endfor -%}
+</figure>

@@ -1,0 +1,20 @@
+{% if admin.isGranted('CREATE')%}
+    {% if admin.hasRoute('ajaxUpload')%}
+        {% if admin.subClasses is empty %}
+            <a class="sonata-action-element" href="{{ admin.generateUrl('create', {'mode': 'multiple'}) }}">
+                <i class="fa fa-plus-circle"></i>
+                {{ 'image.btn.link_action_multi'|trans({}, 'AppBundle') }}</a>
+        {% else %}
+            <li class="divider" role="presentation"></li>
+            {% for subclass in admin.subclasses|keys %}
+                <li>
+                    <a href="{{ admin.generateUrl('create', {'mode': 'multiple', 'subclass': subclass}) }}">
+                        <i class="fa fa-plus-circle"></i>
+                        {{ 'image.btn.link_action_multi'|trans({}, 'AppBundle') }} {{ subclass|trans({}, admin.translationdomain) }}
+                    </a>
+                </li>
+            {% endfor %}
+            <li class="divider" role="presentation"></li>
+        {% endif %}
+    {% endif %}
+{% endif %}

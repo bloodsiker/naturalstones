@@ -1,0 +1,42 @@
+<section class="simple-section delivery-payment-page">
+    <div class="container">
+        {{
+            sonata_block_render(
+                { 'type': 'app.block.service.breadcrumb' }
+            )
+        }}
+
+        <div class="delivery-payment-hero">
+            <span class="delivery-payment-kicker">{{ 'frontend.delivery_payment_page.kicker'|trans([], 'AppBundle') }}</span>
+            <h1>{{ 'frontend.delivery_payment_page.title'|trans([], 'AppBundle') }}</h1>
+            <p>{{ 'frontend.delivery_payment_page.intro'|trans([], 'AppBundle') }}</p>
+        </div>
+
+        <div class="delivery-payment-grid">
+            <section class="delivery-payment-card" data-step="01">
+                <h2>{{ 'frontend.delivery_payment_page.payment_title'|trans([], 'AppBundle') }}</h2>
+                <p>{{ 'frontend.delivery_payment_page.payment_text'|trans([], 'AppBundle') }}</p>
+            </section>
+
+            <section class="delivery-payment-card delivery-payment-card--shipping" data-step="02">
+                <h2>{{ 'frontend.delivery_payment_page.shipping_title'|trans([], 'AppBundle') }}</h2>
+                <p>{{ 'frontend.delivery_payment_page.shipping_text'|trans([], 'AppBundle') }}</p>
+                <ul class="delivery-payment-carriers">
+                    <li>{{ 'frontend.delivery_payment_page.carrier_nova_poshta'|trans([], 'AppBundle') }}</li>
+                    <li>{{ 'frontend.delivery_payment_page.carrier_ukrposhta'|trans([], 'AppBundle') }}</li>
+                    <li>{{ 'frontend.delivery_payment_page.carrier_meest'|trans([], 'AppBundle') }}</li>
+                </ul>
+            </section>
+
+            <section class="delivery-payment-card" data-step="03">
+                <h2>{{ 'frontend.delivery_payment_page.dispatch_title'|trans([], 'AppBundle') }}</h2>
+                <p>{{ 'frontend.delivery_payment_page.dispatch_text'|trans([], 'AppBundle') }}</p>
+            </section>
+
+            <section class="delivery-payment-card delivery-payment-card--accent" data-step="04">
+                <h2>{{ 'frontend.delivery_payment_page.price_title'|trans([], 'AppBundle') }}</h2>
+                <p>{{ 'frontend.delivery_payment_page.price_text'|trans([], 'AppBundle') }}</p>
+            </section>
+        </div>
+    </div>
+</section>

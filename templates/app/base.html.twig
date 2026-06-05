@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}" {{ sonata_seo_html_attributes() }}>
+    <head {{ sonata_seo_head_attributes() }}>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <base href="{{ app.request.schemeAndHttpHost }}" />
+        <meta name="google-site-verification" content="izK6QK5vV3tMUcDNRdkzcaM4vVvmjZ766ykgN1lU5ZQ" />
+        {{ sonata_seo_title() }}
+        {{ sonata_seo_metadatas() }}
+
+        {{ sonata_seo_oembed_links() }}
+        {{ sonata_seo_lang_alternates() }}
+        {{ sonata_seo_link_canonical() }}
+
+        {{ sonata_block_include_stylesheets('screen', app.request.basePath) }}
+        {{ sonata_block_include_javascripts('screen', app.request.basePath) }}
+
+        {% if app.request.attributes.get('_route') %}
+            {% for locale in locales_list %}
+                <link rel="alternate" href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': locale})) }}" hreflang="{{ locale == 'ua' ? 'uk' : locale }}" />
+            {% endfor %}
+        {% endif %}
+
+        {% block favicon %}
+            <link rel="icon" href="{{ asset('bundles/app/images/favicons/favicon.ico') }}" type="image/x-icon" />
+        {% endblock %}
+        <link rel="search" type="application/opensearchdescription+xml" href="{{ url('opensearch') }}" title="" />
+
+        {% block stylesheets %}
+            {% if page.stylesheet is defined and page.stylesheet is not empty %}
+                <style type="text/css">
+                    {{ page.stylesheet|raw }}
+                </style>
+            {% endif %}
+        {% endblock %}
+
+        <!--[if IE]>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/fonts.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/slick.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/select2.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/magnific-popup.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/ion.rangeSlider.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/main.css') }}" />
+
+        {% block head_javascripts %}
+
+        {% endblock %}
+
+        {% block javascripts %}{% endblock %}
+
+        {% block head_variables %}
+            {{
+                sonata_block_render(
+                    { 'type': 'page.block.site_variable' },
+                    {
+                        'placement': 'head'
+                    }
+                )
+            }}
+		{% endblock %}
+    </head>
+    <body {% block body_attrs %}{% endblock %} itemscope itemtype="http://schema.org/WebPage">
+	    {% block body_begin %}
+            {{
+                sonata_block_render(
+                    { 'type': 'page.block.site_variable' },
+                    {
+                        'placement': 'body-begin'
+                    }
+                )
+            }}
+        {% endblock %}
+
+        <div class="page">
+
+            {% block body %}
+                {% block header %}{% endblock %}
+                {% block content %}
+                    {% block content_main %}{% endblock %}
+                    {% block content_bottom %}{% endblock %}
+                    {% block footer %}{% endblock %}
+                {% endblock %}
+            {% endblock %}
+
+
+            {% block body_end %}
+                {{
+                sonata_block_render(
+                    { 'type': 'page.block.site_variable' },
+                    {
+                        'placement': 'body-end'
+                    }
+                )
+                }}
+
+            {% endblock %}
+
+            {% include '@App/Block/modal.html.twig' %}
+
+        </div>
+
+
+        <div class="container-search" style="display: none">
+            <div class="absolute">
+                <button title="Закрыть" class="btn btn-close" type="button">
+                    <img src="{{ asset('bundles/app/images/close.png') }}" alt="">
+                </button>
+            </div>
+            <div class="container-form-search">
+                <meta itemprop="url" content="{{ app.request.schemeAndHttpHost }}"/>
+                <form method="get" name="search-overlay" action="{{ path('search_category') }}" itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
+                    <div class="border-b">
+                        <div class="flex">
+                            <input type="search" placeholder="{{ 'frontend.search.title'|trans([], 'AppBundle') }}"
+                                   class="input input-transparent"
+                                   name="search" value="" autocomplete="off">
+                            <button title="Найти"
+                                    class="btn btn-search-modal"
+                                    type="input">
+                                <img src="{{ asset('bundles/app/images/search-modal.png') }}" alt="">
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% block footer_javascripts %}
+            <script src="{{ asset('bundles/app/js/jquery-1.12.4.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/html2canvas.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/jquery.inputmask.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/lazysizes.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/slick.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/select2.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/jquery.magnific-popup.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/ion.rangeSlider.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/myjs.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/constructor.js') }}"></script>
+        {% endblock %}
+
+        <script>
+
+            // $('.type').on('click', function () {
+            //     $('.submenu').removeClass('submenu-visible');
+            //     $(this).find('.submenu').addClass('submenu-visible');
+            // });
+            //
+            // $(document).mouseup( function(e){
+            //     let div = $(".topmenu");
+            //     if ( !div.is(e.target) && div.has(e.target).length === 0 ) {
+            //         $('.submenu').removeClass('submenu-visible');
+            //     }
+            // });
+        </script>
+    </body>
+</html>

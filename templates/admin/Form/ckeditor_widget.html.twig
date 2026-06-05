@@ -1,0 +1,83 @@
+{% extends '@FOSCKEditor/Form/ckeditor_widget.html.twig' %}
+
+{% block ckeditor_widget %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var editor_{{ id }} = CKEDITOR.instances["{{ id }}"];
+        editor_{{ id }}.image_previewText = CKEDITOR.tools.repeat( '___ ', 100 );
+        editor_{{ id }}.oembed_ShowIframePreview = true;
+    </script>
+
+    <div class="help-block sonata-ba-field-error-messages" style="display: none">
+        <ul class="list-unstyled">
+            <li><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ 'admin.validation.field.required'|trans({}, 'SonataAdminBundle') }}</li>
+        </ul>
+    </div>
+
+    {% if required %}
+        <script type="text/javascript">
+            var container_{{ id }} = jQuery('#sonata-ba-field-container-{{ id }}'),
+                field_{{ id }} = container_{{ id }}.find('.sonata-ba-field'),
+                message_{{ id }} = container_{{ id }}.find('.sonata-ba-field-error-messages');
+
+            // Set errors if not valid
+            editor_{{ id }}.on('required', function() {
+                var box = container_{{ id }}.closest('.box-body');
+                var tabs = box.find(".nav.nav-tabs li a");
+
+                message_{{ id }}.show();
+
+                container_{{ id }}.addClass('has-error');
+                field_{{ id }}.addClass('sonata-ba-field-error');
+
+                var index = box.find('.tab-pane').index(container_{{ id }}.closest('.tab-pane'));
+                if (index !== -1) {
+
+                    setTimeout(function() {
+                        var tab = jQuery(tabs[index]);
+                        tab.find('i.has-errors').removeClass('hide');
+
+                        showSubTabErrors(box, tab);
+                    }, 300);
+                }
+
+                return false;
+            });
+
+            // Clear errors before validation
+            editor_{{ id }}.on('getData', function() {
+                jQuery('.sonata-ba-form-actions.form-actions button:disabled').removeAttr('disabled');
+
+                var box = container_{{ id }}.closest('.box-body');
+                var tabs = box.find(".nav.nav-tabs li a");
+
+                message_{{ id }}.hide();
+
+                var index = box.find('.tab-pane').index(container_{{ id }}.closest('.tab-pane'));
+                if (index !== -1) {
+                    var tab = jQuery(box.find('.nav.nav-tabs li a')[index]);
+                    tab.find('i.has-errors').addClass('hide');
+
+                    showSubTabErrors(box, tab);
+                }
+
+                container_{{ id }}.removeClass('has-error');
+                field_{{ id }}.removeClass('sonata-ba-field-error');
+            });
+
+            // Show errors if exists parent tab
+            function showSubTabErrors(box, tab) {
+                var sub_tab = tab.closest('.tab-pane');
+
+                if(sub_tab.length > 0) {
+                    if(box.find('.nav.nav-tabs a :not(i.hide)').length || sub_tab.find('.sonata-ba-field-error').length) {
+                        jQuery('a[href="#' + sub_tab.attr('id') + '"] i.hide').removeClass('hide');
+                    } else {
+                        jQuery('a[href="#' + sub_tab.attr('id') + '"] i').addClass('hide');
+                    }
+                }
+            }
+        </script>
+    {% endif %}
+{% endblock %}

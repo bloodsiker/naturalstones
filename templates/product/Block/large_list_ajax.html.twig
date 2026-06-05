@@ -1,0 +1,37 @@
+{% if products %}
+    {% for product in products %}
+        <div class="catalog-block">
+            {% if product.discount %}
+                {% set diff = product.price - product.discount %}
+                <div class="ribbon discount"><div>{{ (diff * 100 / product.price)|round }}%</div></div>
+            {% endif %}
+            <button class="product-favorite" data-id="{{ product.id }}" type="button">
+                <svg width="17" height="17" viewBox="0 0 24 24">
+                    <path class="fav-heart" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </button>
+            <a href="{{ product_path(product) }}" class="image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                {% set hoverImg = null %}
+                {% if product.productHasImage|length > 0 %}
+                    {% set hoverImg = asset(product.productHasImage.first().getImage().path) %}
+                {% endif %}
+                <img class="lazyload" data-src="{{ asset(product.image.path) }}" src="" data-hover-img="{{ hoverImg }}" alt="{{ product.name }}" itemprop="contentUrl">
+            </a>
+            <div class="product-category"><a href="{{ path('product_list', {'slug': product.category.slug}) }}">{{ product.category.getName }}</a></div>
+            <div class="name"><a href="{{ product_path(product) }}">{{ product.name }}</a></div>
+            {% if product.discount %}
+                <div class="price">
+                    <span class="old-price">{{ product.price}} грн</span>
+                    <span>{{ product.discount}} грн</span>
+                </div>
+            {% else %}
+                <div class="price"><span>{{ product.price}} грн</span></div>
+            {% endif %}
+            <a href="{{ product_path(product) }}" class="button">Купить</a>
+
+            {% if app.user %}
+                <a href="{{ path('admin_product_product_edit', { 'id': product.id }) }}" class="product_link_edit" target="_blank">Edit</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endif %}

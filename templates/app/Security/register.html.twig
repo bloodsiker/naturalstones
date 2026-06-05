@@ -1,0 +1,118 @@
+<section class="simple-section">
+    <div class="container">
+        <div class="auth-wrap">
+            <div class="auth-card">
+                <h1 class="auth-card__title">{{ 'frontend.register.title'|trans([], 'AppBundle') }}</h1>
+
+                {% if error %}
+                    <div class="auth-card__error">{{ error|trans([], 'AppBundle') }}</div>
+                {% endif %}
+
+                <form method="post" action="{{ path('register') }}" class="auth-form">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}">
+
+                    <div class="auth-form__row">
+                        <div class="auth-form__field">
+                            <label class="auth-form__label" for="reg_firstname">{{ 'frontend.register.firstname'|trans([], 'AppBundle') }}</label>
+                            <input class="auth-form__input" id="reg_firstname" type="text" name="firstname"
+                                   value="{{ last_firstname|default('') }}" autocomplete="given-name">
+                        </div>
+                        <div class="auth-form__field">
+                            <label class="auth-form__label" for="reg_lastname">{{ 'frontend.register.lastname'|trans([], 'AppBundle') }}</label>
+                            <input class="auth-form__input" id="reg_lastname" type="text" name="lastname"
+                                   value="{{ last_lastname|default('') }}" autocomplete="family-name">
+                        </div>
+                    </div>
+
+                    <div class="auth-form__field">
+                        <label class="auth-form__label" for="reg_phone">{{ 'frontend.register.phone'|trans([], 'AppBundle') }}</label>
+                        <input class="auth-form__input phone-input" id="reg_phone" type="tel" name="phone"
+                               value="{{ last_phone|default('') }}" autocomplete="tel">
+                    </div>
+
+                    <div class="auth-form__field">
+                        <label class="auth-form__label" for="reg_email">Email</label>
+                        <input class="auth-form__input" id="reg_email" type="text" name="email"
+                               value="{{ last_email }}" autocomplete="email" placeholder="your@email.com">
+                    </div>
+
+                    <div class="auth-form__field">
+                        <label class="auth-form__label" for="reg_password">
+                            {{ 'frontend.register.password_label'|trans([], 'AppBundle') }}
+                            <span class="auth-form__hint">{{ 'frontend.register.password_hint'|trans([], 'AppBundle') }}</span>
+                        </label>
+                        <input class="auth-form__input" id="reg_password" type="password" name="password"
+                               autocomplete="new-password" placeholder="••••••">
+                    </div>
+
+                    <button class="button auth-form__submit" type="submit">{{ 'frontend.register.submit'|trans([], 'AppBundle') }}</button>
+                </form>
+
+                <div class="auth-card__footer">
+                    {{ 'frontend.register.have_account'|trans([], 'AppBundle') }}&nbsp;<a href="{{ path('login') }}">{{ 'frontend.register.login_link'|trans([], 'AppBundle') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+(function () {
+    var form     = document.querySelector('.auth-form');
+    var emailEl  = document.getElementById('reg_email');
+    var passEl   = document.getElementById('reg_password');
+
+    function setError(input, msg) {
+        input.classList.add('auth-form__input--error');
+        var existing = input.parentNode.querySelector('.auth-form__error-msg');
+        if (!existing) {
+            var span = document.createElement('span');
+            span.className = 'auth-form__error-msg';
+            input.parentNode.appendChild(span);
+            existing = span;
+        }
+        existing.textContent = msg;
+    }
+
+    function clearError(input) {
+        input.classList.remove('auth-form__input--error');
+        var msg = input.parentNode.querySelector('.auth-form__error-msg');
+        if (msg) msg.remove();
+    }
+
+    function isValidEmail(val) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim());
+    }
+
+    [emailEl, passEl].forEach(function (el) {
+        el.addEventListener('input', function () { clearError(el); });
+    });
+
+    form.addEventListener('submit', function (e) {
+        var ok = true;
+
+        clearError(emailEl);
+        clearError(passEl);
+
+        var emailVal = emailEl.value.trim();
+        if (!emailVal) {
+            setError(emailEl, '{{ 'frontend.register.error.empty_email'|trans([], 'AppBundle') }}');
+            ok = false;
+        } else if (!isValidEmail(emailVal)) {
+            setError(emailEl, '{{ 'frontend.register.error.invalid_email'|trans([], 'AppBundle') }}');
+            ok = false;
+        }
+
+        var passVal = passEl.value;
+        if (!passVal) {
+            setError(passEl, '{{ 'frontend.register.error.empty_password'|trans([], 'AppBundle') }}');
+            ok = false;
+        } else if (passVal.length < 6) {
+            setError(passEl, '{{ 'frontend.register.error.weak_password'|trans([], 'AppBundle') }}');
+            ok = false;
+        }
+
+        if (!ok) e.preventDefault();
+    });
+}());
+</script>

@@ -44,6 +44,8 @@
                 var autocompleteInput = $('#{{ id }}_autocomplete_input');
                 var select2Utils = $.fn.select2 && $.fn.select2.amd ? $.fn.select2.amd.require('select2/utils') : null;
                 var observer = null;
+                var searchFieldBound = false;
+                var searchFieldTimer = null;
 
                 function selectedAutocompleteIds() {
                     return (autocompleteInput.val() || []).map(function (id) {
@@ -84,8 +86,37 @@
                         return;
                     }
 
-                    $('.select2-container--open .select2-results__option').removeClass('select2-results__option--highlighted');
-                    firstVisible.addClass('select2-results__option--highlighted');
+                    $('.select2-container--open .select2-results__option')
+                        .removeClass('select2-results__option--highlighted')
+                        .attr('aria-selected', 'false');
+
+                    firstVisible
+                        .addClass('select2-results__option--highlighted')
+                        .attr('aria-selected', 'true')
+                        .trigger('mouseenter')
+                        .trigger('mousemove');
+
+                    if (firstVisible[0] && firstVisible[0].scrollIntoView) {
+                        firstVisible[0].scrollIntoView({ block: 'nearest' });
+                    }
+                }
+
+                function bindSearchFieldHandlers() {
+                    var searchField = $('.select2-container--open .select2-search__field').first();
+
+                    if (!searchField.length || searchFieldBound) {
+                        return;
+                    }
+
+                    searchFieldBound = true;
+
+                    searchField.off('.sonataAutocompleteFix');
+                    searchField.on('input.sonataAutocompleteFix keyup.sonataAutocompleteFix', function () {
+                        clearTimeout(searchFieldTimer);
+                        searchFieldTimer = setTimeout(function () {
+                            observeAutocompleteResults();
+                        }, 0);
+                    });
                 }
 
                 function observeAutocompleteResults() {
@@ -103,6 +134,7 @@
                     observer.observe(results, { childList: true, subtree: true });
                     hideSelectedAutocompleteResults();
                     activateFirstVisibleAutocompleteResult();
+                    bindSearchFieldHandlers();
                 }
 
                 autocompleteInput.on('select2:open select2:select select2:unselect change', function () {
@@ -113,29 +145,12 @@
                     setTimeout(activateFirstVisibleAutocompleteResult, 0);
                 });
 
-                autocompleteInput.on('keydown', function (event) {
-                    if (event.key !== 'Enter' || !$('.select2-container--open').length) {
-                        return;
-                    }
-
-                    var highlighted = $('.select2-container--open .select2-results__option--highlighted:visible').first();
-                    if (highlighted.length) {
-                        return;
-                    }
-
-                    var firstVisible = selectFirstVisibleAutocompleteResult();
-                    if (!firstVisible) {
-                        return;
-                    }
-
-                    event.preventDefault();
-                    firstVisible.trigger('mouseup');
-                });
-
                 autocompleteInput.on('select2:close', function () {
                     if (observer) {
                         observer.disconnect();
                     }
+                    searchFieldBound = false;
+                    clearTimeout(searchFieldTimer);
                 });
             });
         </script>

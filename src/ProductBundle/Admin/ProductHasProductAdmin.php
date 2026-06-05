@@ -3,7 +3,6 @@
 namespace ProductBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
-
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
@@ -18,10 +17,8 @@ class ProductHasProductAdmin extends Admin
 {
     protected $parentAssociationMapping = 'product';
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('product', null, [
                 'label' => 'product_has_product.fields.product',
@@ -37,10 +34,8 @@ class ProductHasProductAdmin extends Admin
         ;
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $linkParameters = [];
 
         if ($this->hasParentFieldDescription()) {
@@ -64,8 +59,8 @@ class ProductHasProductAdmin extends Admin
         $formMapper
             ->add('productSet', ModelListType::class, [
                 'label' => 'product_has_product.fields.product_set',
-                'required'      => true,
-                'btn_delete'    => false,
+                'required' => true,
+                'btn_delete' => false,
             ], ['link_parameters' => $linkParameters])
             ->add('quantity', IntegerType::class, [
                 'label' => 'product_has_product.fields.quantity',

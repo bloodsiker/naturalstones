@@ -3,12 +3,12 @@
 namespace ShareBundle\Entity;
 
 use AppBundle\Traits\TranslatableProxyTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Colour
@@ -94,7 +94,7 @@ class Colour implements TranslatableInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -124,8 +124,6 @@ class Colour implements TranslatableInterface
     /**
      * Set colour
      *
-     * @param  string  $colour
-     *
      * @return $this
      */
     public function setColour(string $colour)
@@ -138,7 +136,7 @@ class Colour implements TranslatableInterface
     /**
      * Set isActive
      *
-     * @param boolean $isActive
+     * @param bool $isActive
      *
      * @return $this
      */
@@ -152,7 +150,7 @@ class Colour implements TranslatableInterface
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {
@@ -199,8 +197,6 @@ class Colour implements TranslatableInterface
 
     /**
      * Remove products
-     *
-     * @param \ProductBundle\Entity\Product $product
      */
     public function removeProduct(\ProductBundle\Entity\Product $product)
     {

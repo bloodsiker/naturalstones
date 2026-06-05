@@ -14,38 +14,34 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class UploadListener
 {
-    private EntityManagerInterface $em;
-    private TokenStorageInterface $tokenStorage;
-    private MediaImageService $imageService;
-    private MediaVideoService $videoService;
+    private const SUPPORTED_LOCALES = ['uk', 'ru'];
 
     public function __construct(
-        EntityManagerInterface $em,
-        TokenStorageInterface $tokenStorage,
-        MediaImageService $imageService,
-        MediaVideoService $videoService
+        private readonly EntityManagerInterface $em,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly MediaImageService $imageService,
+        private readonly MediaVideoService $videoService,
     ) {
-        $this->em = $em;
-        $this->tokenStorage = $tokenStorage;
-        $this->imageService = $imageService;
-        $this->videoService = $videoService;
     }
 
-    public function onPostUploadFile(PostUploadEvent $event)
+    /**
+     * @return array<string, mixed>
+     */
+    public function onPostUploadFile(PostUploadEvent $event): array
     {
         $response = $event->getResponse();
         $request = $event->getRequest();
 
         $response['success'] = true;
-        $response['files'] = $this->getFileUploadMetadata(
-            $event->getFile(),
-            $request->get('storage')
-        );
+        $response['files'] = $this->getFileUploadMetadata($event->getFile(), $request->get('storage'));
 
         return $response;
     }
 
-    public function onPostUploadImageFile(PostUploadEvent $event)
+    /**
+     * @return array<string, mixed>
+     */
+    public function onPostUploadImageFile(PostUploadEvent $event): array
     {
         $request = $event->getRequest();
         $response = $event->getResponse();
@@ -53,100 +49,113 @@ class UploadListener
         $metadata = $this->getFileUploadMetadata(
             $event->getFile(),
             $request->get('storage'),
-            true
+            findImageDuplicate: true
         );
 
-        if (!$metadata['object'] instanceof MediaImage) {
-            $image = new MediaImage();
-
-            $image->setSize($metadata['size']);
-            $image->setHash($metadata['hash']);
-            $image->setWidth($metadata['width']);
-            $image->setHeight($metadata['height']);
-            $image->setMimeType($metadata['mimeType']);
-            $image->setTempPath($metadata['tempPath']);
-            $image->setCreatedBy(
-                $this->tokenStorage->getToken()->getUser()
-            );
-
-            $file = $request->files->get($request->get('field'));
-            $origFileName = $file->getClientOriginalName();
-
-            $path = $this->imageService->moveUploadedFile($image);
-            $image->setPath($path);
-
-            $imageUK = new MediaImageTranslation();
-            $imageUK->setLocale('uk');
-            $imageUK->setTitle($origFileName);
-            $imageUK->setTranslatable($imageUK);
-
-            $imageRU = new MediaImageTranslation();
-            $imageRU->setLocale('ru');
-            $imageRU->setTitle($origFileName);
-            $imageRU->setTranslatable($imageRU);
-
-            $image->addTranslation($imageUK);
-            $image->addTranslation($imageRU);
-
-            $this->em->persist($image);
-            $this->em->flush();
-        } else {
-            $image = $metadata['object'];
-        }
+        $image = $metadata['object'] instanceof MediaImage
+            ? $metadata['object']
+            : $this->createImageFromMetadata($metadata, $request->files->get($request->get('field')));
 
         $response['success'] = true;
-        $response['files']   = $metadata;
-        $response['image']   = $image->getId();
+        $response['files'] = $metadata;
+        $response['image'] = $image->getId();
 
         return $response;
     }
 
-    private function getFileUploadMetadata($file, $storage, $findImageDuplicate = false): array
+    /**
+     * @param array<string, mixed> $metadata
+     */
+    private function createImageFromMetadata(array $metadata, ?File $file): MediaImage
     {
-        $data = ['tempPath' => null];
+        $image = new MediaImage();
+        $image->setSize($metadata['size']);
+        $image->setHash($metadata['hash']);
+        $image->setWidth($metadata['width']);
+        $image->setHeight($metadata['height']);
+        $image->setMimeType($metadata['mimeType']);
+        $image->setTempPath($metadata['tempPath']);
+        $image->setCreatedBy($this->tokenStorage->getToken()->getUser());
 
-        if ($file instanceof File) {
-            $filePath = $file->getRealPath();
-        } elseif ($file instanceof GaufretteFile) {
-            $filePath = $file->getKey();
-        } else {
-            $filePath = null;
+        $image->setPath($this->imageService->moveUploadedFile($image));
+
+        $origFileName = $file?->getClientOriginalName() ?? '';
+        foreach (self::SUPPORTED_LOCALES as $locale) {
+            $translation = new MediaImageTranslation();
+            $translation->setLocale($locale);
+            $translation->setTitle($origFileName);
+            $translation->setTranslatable($translation);
+            $image->addTranslation($translation);
         }
 
-        if ($filePath) {
-            $md5File = md5_file($filePath);
+        $this->em->persist($image);
+        $this->em->flush();
 
-            $data = [
-                'tempPath' => $storage . '|' . $filePath,
-                'mimeType' => $file->getMimeType(),
-                'name'     => $file->getBaseName(),
-                'size'     => $file->getSize(),
-                'hash'     => $md5File,
-                'object'   => null,
-            ];
+        return $image;
+    }
 
-            if (true === $findImageDuplicate) {
-                $data['object'] = $this->em->getRepository(MediaImage::class)
-                    ->findOneBy(['hash' => $md5File], ['createdAt' => 'DESC']);
-            }
+    /**
+     * @return array<string, mixed>
+     */
+    private function getFileUploadMetadata(
+        File|GaufretteFile|null $file,
+        ?string $storage,
+        bool $findImageDuplicate = false,
+    ): array {
+        $filePath = match (true) {
+            $file instanceof File => $file->getRealPath(),
+            $file instanceof GaufretteFile => $file->getKey(),
+            default => null,
+        };
 
-            if (false !== strpos($file->getMimeType(), 'image/')) {
-                [$data['width'], $data['height']] = getimagesize($filePath);
-            } elseif (false !== strpos($file->getMimeType(), 'video/')) {
-                $metadata = $this->videoService->getVideoMetadata($filePath);
+        if (!$filePath || null === $file) {
+            return ['tempPath' => null];
+        }
 
-                if (!empty($metadata->format->bit_rate)) {
-                    $data['bitrate'] = (int) $metadata->format->bit_rate;
-                }
+        $md5File = md5_file($filePath);
+        $mimeType = $file->getMimeType();
 
-                if (!empty($metadata->streams[0]) && $metadata->streams[0]->codec_type === 'video') {
-                    $data['width']    = (int) $metadata->streams[0]->width;
-                    $data['height']   = (int) $metadata->streams[0]->height;
-                    $data['duration'] = (int) $metadata->streams[0]->duration;
-                }
-            }
+        $data = [
+            'tempPath' => $storage . '|' . $filePath,
+            'mimeType' => $mimeType,
+            'name' => $file->getBaseName(),
+            'size' => $file->getSize(),
+            'hash' => $md5File,
+            'object' => null,
+        ];
+
+        if ($findImageDuplicate) {
+            $data['object'] = $this->em->getRepository(MediaImage::class)
+                ->findOneBy(['hash' => $md5File], ['createdAt' => 'DESC']);
+        }
+
+        if (false !== strpos($mimeType, 'image/')) {
+            [$data['width'], $data['height']] = getimagesize($filePath);
+        } elseif (false !== strpos($mimeType, 'video/')) {
+            $data += $this->extractVideoMetadata($filePath);
         }
 
         return $data;
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    private function extractVideoMetadata(string $filePath): array
+    {
+        $metadata = $this->videoService->getVideoMetadata($filePath);
+        $extracted = [];
+
+        if (!empty($metadata->format->bit_rate)) {
+            $extracted['bitrate'] = (int) $metadata->format->bit_rate;
+        }
+
+        if (!empty($metadata->streams[0]) && 'video' === $metadata->streams[0]->codec_type) {
+            $extracted['width'] = (int) $metadata->streams[0]->width;
+            $extracted['height'] = (int) $metadata->streams[0]->height;
+            $extracted['duration'] = (int) $metadata->streams[0]->duration;
+        }
+
+        return $extracted;
     }
 }

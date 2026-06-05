@@ -7,11 +7,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ProductBundle\Entity\Product;
 use Sonata\IntlBundle\Timezone\TimezoneAwareInterface;
-use Sonata\UserBundle\Entity\BaseUser as BaseUser;
+use Sonata\UserBundle\Entity\BaseUser;
 
 /**
  * Class User
- * @package UserBundle\Entity
  *
  * @ORM\Entity
  * @ORM\Table(name="user_users")
@@ -19,7 +18,7 @@ use Sonata\UserBundle\Entity\BaseUser as BaseUser;
 class User extends BaseUser implements TimezoneAwareInterface
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned"=true})
@@ -61,9 +60,6 @@ class User extends BaseUser implements TimezoneAwareInterface
         $this->favorites = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
@@ -77,6 +73,7 @@ class User extends BaseUser implements TimezoneAwareInterface
     public function setFirstname(?string $firstname): self
     {
         $this->firstname = $firstname;
+
         return $this;
     }
 
@@ -88,6 +85,7 @@ class User extends BaseUser implements TimezoneAwareInterface
     public function setLastname(?string $lastname): self
     {
         $this->lastname = $lastname;
+
         return $this;
     }
 
@@ -99,6 +97,7 @@ class User extends BaseUser implements TimezoneAwareInterface
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
+
         return $this;
     }
 
@@ -112,12 +111,14 @@ class User extends BaseUser implements TimezoneAwareInterface
         if (!$this->favorites->contains($product)) {
             $this->favorites->add($product);
         }
+
         return $this;
     }
 
     public function removeFavorite(Product $product): self
     {
         $this->favorites->removeElement($product);
+
         return $this;
     }
 

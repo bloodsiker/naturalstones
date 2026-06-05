@@ -9,11 +9,8 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelListType;
-use Sonata\AdminBundle\Route\RouteCollectionInterface;
-use Sonata\Form\Type\DateTimePickerType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -27,16 +24,14 @@ class InformationAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'id',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
         '_sort_order' => 'DESC',
     ];
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'information.fields.id',
@@ -52,19 +47,17 @@ class InformationAdmin extends Admin
             ])
             ->add('isActive', null, [
                 'label' => 'information.fields.is_active',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'edit'      => [],
+                    'edit' => [],
                 ],
             ]);
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
 //            ->add('title', null, [
 //                'label' => 'information.fields.title',
@@ -73,21 +66,19 @@ class InformationAdmin extends Admin
                 'label' => 'information.fields.is_active',
             ])
             ->add('startedAt', DateFilter::class, [
-                'label'         => 'information.fields.started_at',
-                'field_type'    => DateTimePickerType::class,
+                'label' => 'information.fields.started_at',
+                'field_type' => DateTimePickerType::class,
                 'field_options' => ['format' => 'dd.MM.yyyy'],
             ])
             ->add('finishedAt', DateFilter::class, [
-                'label'         => 'information.fields.finished_at',
-                'field_type'    => DateTimePickerType::class,
+                'label' => 'information.fields.finished_at',
+                'field_type' => DateTimePickerType::class,
                 'field_options' => ['format' => 'dd.MM.yyyy'],
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('translations', TranslationsType::class, [
@@ -119,17 +110,17 @@ class InformationAdmin extends Admin
                     'required' => false,
                 ])
                 ->add('startedAt', DateTimePickerType::class, [
-                    'label'     => 'information.fields.started_at',
+                    'label' => 'information.fields.started_at',
                     'required' => false,
                     'format' => 'yyyy-MM-dd HH:mm',
                 ])
                 ->add('finishedAt', DateTimePickerType::class, [
-                    'label'     => 'information.fields.finished_at',
+                    'label' => 'information.fields.finished_at',
                     'required' => false,
                     'format' => 'yyyy-MM-dd HH:mm',
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
-                    'label'     => 'information.fields.created_at',
+                    'label' => 'information.fields.created_at',
                     'required' => true,
                     'format' => 'yyyy-MM-dd HH:mm',
                     'attr' => ['readonly' => true],

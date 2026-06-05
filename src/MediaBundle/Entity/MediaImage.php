@@ -40,11 +40,9 @@ class MediaImage extends AbstractMedia
     /**
      * Sets file
      *
-     * @param File|null $file
-     *
      * @throws \Exception
      */
-    public function setFile(File $file = null)
+    public function setFile(?File $file = null)
     {
         $this->file = $file;
         if (null !== $file) {
@@ -71,11 +69,9 @@ class MediaImage extends AbstractMedia
     }
 
     /**
-     * @param string $width
-     *
      * @return $this
      */
-    public function setWidth(string $width = null)
+    public function setWidth(?string $width = null)
     {
         $this->width = $width;
 
@@ -91,11 +87,9 @@ class MediaImage extends AbstractMedia
     }
 
     /**
-     * @param string $height
-     *
      * @return $this
      */
-    public function setHeight(string $height = null)
+    public function setHeight(?string $height = null)
     {
         $this->height = $height;
 

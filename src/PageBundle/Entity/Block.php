@@ -2,8 +2,8 @@
 
 namespace PageBundle\Entity;
 
-use Sonata\PageBundle\Entity\BaseBlock as BaseBlock;
 use Doctrine\ORM\Mapping as ORM;
+use Sonata\PageBundle\Entity\BaseBlock;
 
 /**
  * Class Block

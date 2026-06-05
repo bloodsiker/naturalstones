@@ -6,7 +6,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
-
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -20,14 +19,13 @@ class SiteVariablePlacementAdmin extends AbstractAdmin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
     }
 
-    /**
-     * @param ListMapper $list
-     */
-    protected function configureListFields(ListMapper $list): void    {
+    protected function configureListFields(ListMapper $list): void
+    {
         $list
             ->add('id', null, [
                 'label' => 'list.label_id',
@@ -37,27 +35,25 @@ class SiteVariablePlacementAdmin extends AbstractAdmin
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'edit'      => [],
+                    'edit' => [],
                 ],
             ])
         ;
     }
 
-    /**
-     * @param FormMapper $form
-     */
-    protected function configureFormFields(FormMapper $form): void    {
+    protected function configureFormFields(FormMapper $form): void
+    {
         $form
             ->add('alias', TextType::class, [
-                'label'         => 'form.label_alias',
-                'required'      => true,
-                'attr'          => ['style' => 'width:300px'],
-                'help'          => $this->getTranslator()->trans(
+                'label' => 'form.label_alias',
+                'required' => true,
+                'attr' => ['style' => 'width:300px'],
+                'help' => $this->getTranslator()->trans(
                     'form.validation.regexp',
                     ['%rule%' => 'a-z 0-9 -'],
                     $this->getTranslationDomain()
                 ),
-                'constraints'   => [
+                'constraints' => [
                     new NotBlank(),
                     new Length(['min' => 3, 'max' => 32]),
                     new Regex('/^[a-z0-9\-]+$/'),

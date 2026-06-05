@@ -3,7 +3,6 @@
 namespace WheelSpinBundle\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
-use AdminBundle\Form\Type\ColorPickerType;
 use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -13,7 +12,6 @@ use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -27,21 +25,20 @@ class WheelSpinOptionAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_sort_by'      => 'id',
-        '_sort_order'   => 'DESC',
+        '_sort_by' => 'id',
+        '_sort_order' => 'DESC',
     ];
 
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('share.form_group.basic', ['class' => 'col-md-8', 'label' => false])
                 ->add('translations', TranslationsType::class, [
@@ -74,10 +71,8 @@ class WheelSpinOptionAdmin extends Admin
         ;
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('id', null, [
                 'label' => 'wheel_spin_option.fields.id',
@@ -91,17 +86,15 @@ class WheelSpinOptionAdmin extends Admin
         ;
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'wheel_spin_option.fields.id',
             ])
             ->add('image', null, [
                 'label' => 'wheel_spin_option.fields.image',
-                'template'  => '@WheelSpin/Admin/list_fields.html.twig',
+                'template' => '@WheelSpin/Admin/list_fields.html.twig',
             ])
             ->add('product', null, [
                 'label' => 'wheel_spin_option.fields.product',
@@ -121,10 +114,8 @@ class WheelSpinOptionAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param ShowMapper $showMapper
-     */
-    protected function configureShowFields(ShowMapper $showMapper): void    {
+    protected function configureShowFields(ShowMapper $showMapper): void
+    {
         $showMapper
             ->add('id')
             ->add('name')

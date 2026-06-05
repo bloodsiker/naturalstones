@@ -2,87 +2,58 @@
 
 namespace AdminBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectRepository;
 use ShareBundle\Services\TagFinder;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * Class CRUDController
- */
 class CRUDController extends Controller
 {
-    //TODO: add translations for string values
-    const ERROR_MESSAGE = 'Unable to find the object with id : %s';//'Unable to find the object with id : %s';
-    const SUCCESS_MESSAGE = 'Moved successfully';//'Moved successfully';
+    // TODO: add translations for string values
+    public const ERROR_MESSAGE = 'Unable to find the object with id : %s';
+    public const SUCCESS_MESSAGE = 'Moved successfully';
 
     public static function getSubscribedServices(): array
     {
         return [
             'doctrine' => ManagerRegistry::class,
-            'doctrine.orm.default_entity_manager' => '?' . \Doctrine\ORM\EntityManagerInterface::class,
+            'doctrine.orm.default_entity_manager' => '?' . EntityManagerInterface::class,
             'share.tag.finder' => '?' . TagFinder::class,
         ] + parent::getSubscribedServices();
     }
 
     /**
-     * Move item up by decrementing order_num value
-     *
-     * @return RedirectResponse
+     * Move item up by decrementing order_num value.
      */
-    public function moveUpAction()
+    public function moveUpAction(): RedirectResponse
     {
-        $repository = $this->getRepository();
-        return $this->objectTransform(function ($object, $admin) use ($repository) {
-            if (method_exists($repository, 'getHighestPropertyByPosition')) {
-                $secondObject = $repository->getHighestPropertyByPosition('orderNum', $object, 'DESC');
-                if ($secondObject) {
-                    if ($secondObject->getOrderNum() === $object->getOrderNum()) {
-                        $secondObject->setOrderNum($object->getOrderNum() + 1);
-                    } else {
-                        $objectNum = $object->getOrderNum();
-                        $object->setOrderNum($secondObject->getOrderNum());
-                        $secondObject->setOrderNum($objectNum);
-                    }
-                }
+        return $this->moveByPosition('DESC', static function (object $object, object $neighbour): void {
+            if ($neighbour->getOrderNum() === $object->getOrderNum()) {
+                $neighbour->setOrderNum($object->getOrderNum() + 1);
             } else {
-                $object->setOrderNum($object->getOrderNum() - 1);
+                self::swapOrderNum($object, $neighbour);
             }
-        });
+        }, static fn (object $object) => $object->setOrderNum($object->getOrderNum() - 1));
     }
 
     /**
-     * Move item down by incrementing order_num value
-     *
-     * @return RedirectResponse
+     * Move item down by incrementing order_num value.
      */
-    public function moveDownAction()
+    public function moveDownAction(): RedirectResponse
     {
-        $repository = $this->getRepository();
-
-        return $this->objectTransform(function ($object, $admin) use ($repository) {
-            if (method_exists($repository, 'getHighestPropertyByPosition')) {
-                $secondObject = $repository->getHighestPropertyByPosition('orderNum', $object, 'ASC');
-                if ($secondObject) {
-                    if ($secondObject->getOrderNum() === $object->getOrderNum()) {
-                        $object->setOrderNum($object->getOrderNum() + 1);
-                    } else {
-                        $objectNum = $object->getOrderNum();
-                        $object->setOrderNum($secondObject->getOrderNum());
-                        $secondObject->setOrderNum($objectNum);
-                    }
-                }
-            } else {
+        return $this->moveByPosition('ASC', static function (object $object, object $neighbour): void {
+            if ($neighbour->getOrderNum() === $object->getOrderNum()) {
                 $object->setOrderNum($object->getOrderNum() + 1);
+            } else {
+                self::swapOrderNum($object, $neighbour);
             }
-        });
+        }, static fn (object $object) => $object->setOrderNum($object->getOrderNum() + 1));
     }
 
-    /**
-     * @return RedirectResponse
-     */
-    public function recalculateOrderNumAction()
+    public function recalculateOrderNumAction(): RedirectResponse
     {
         $repository = $this->getRepository();
         if (method_exists($repository, 'getHighestPropertyByPosition')) {
@@ -93,59 +64,64 @@ class CRUDController extends Controller
     }
 
     /**
-     * Move item to last position in list
-     *
-     * @return RedirectResponse
+     * Move item to first position in list.
      */
-    public function doFirstAction()
+    public function doFirstAction(): RedirectResponse
     {
-        $repository = $this->getRepository();
-
-        if (method_exists($repository, 'getHighestPropertyByOrder')) {
-            $firstPosition = $repository->getHighestPropertyByOrder('orderNum', 'ASC');
-
-            return $this->objectTransform(function ($object) use ($firstPosition) {
-                if ($firstPosition !== $object->getOrderNum()) {
-                    $object->setOrderNum($firstPosition - 1);
-                }
-            });
-        }
-
-        return new RedirectResponse($this->admin->generateUrl($this->getListOrTreeUrlName()));
+        return $this->moveToBoundary('ASC', static fn (int $first) => $first - 1);
     }
 
     /**
-     * Move item to last position in list
-     *
-     * @return RedirectResponse
+     * Move item to last position in list.
      */
-    public function doLastAction()
+    public function doLastAction(): RedirectResponse
+    {
+        return $this->moveToBoundary('DESC', static fn (int $last) => $last + 1);
+    }
+
+    protected function getRepository(): ObjectRepository
+    {
+        return $this->container->get('doctrine')->getRepository($this->admin->getClass());
+    }
+
+    private function moveByPosition(string $direction, \Closure $whenNeighbourFound, \Closure $fallback): RedirectResponse
     {
         $repository = $this->getRepository();
 
-        if (method_exists($repository, 'getHighestPropertyByOrder')) {
-            $lastPosition = $repository->getHighestPropertyByOrder('orderNum', 'DESC');
+        return $this->objectTransform(function (object $object) use ($repository, $direction, $whenNeighbourFound, $fallback): void {
+            if (!method_exists($repository, 'getHighestPropertyByPosition')) {
+                $fallback($object);
 
-            return $this->objectTransform(function ($object) use ($lastPosition) {
-                if ($lastPosition !== $object->getOrderNum()) {
-                    $object->setOrderNum($lastPosition + 1);
-                }
-            });
-        }
+                return;
+            }
 
-        return new RedirectResponse($this->admin->generateUrl($this->getListOrTreeUrlName()));
+            $neighbour = $repository->getHighestPropertyByPosition('orderNum', $object, $direction);
+            if ($neighbour) {
+                $whenNeighbourFound($object, $neighbour);
+            }
+        });
     }
 
-    /**
-     * @param $action \Closure
-     *
-     * @return RedirectResponse
-     */
-    private function objectTransform($action)
+    private function moveToBoundary(string $direction, \Closure $computeNewOrder): RedirectResponse
+    {
+        $repository = $this->getRepository();
+        if (!method_exists($repository, 'getHighestPropertyByOrder')) {
+            return new RedirectResponse($this->admin->generateUrl($this->getListOrTreeUrlName()));
+        }
+
+        $boundary = $repository->getHighestPropertyByOrder('orderNum', $direction);
+
+        return $this->objectTransform(static function (object $object) use ($boundary, $computeNewOrder): void {
+            if ($boundary !== $object->getOrderNum()) {
+                $object->setOrderNum($computeNewOrder($boundary));
+            }
+        });
+    }
+
+    private function objectTransform(\Closure $action): RedirectResponse
     {
         $translator = $this->get('translator');
         $id = $this->getRequest()->get($this->admin->getIdParameter());
-
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -157,18 +133,12 @@ class CRUDController extends Controller
         $action($object, $this->admin);
 
         $this->admin->update($object);
-        $this->addFlash(
-            'sonata_flash_success',
-            $translator->trans(self::SUCCESS_MESSAGE, [], 'SonataAdminBundle')
-        );
+        $this->addFlash('sonata_flash_success', $translator->trans(self::SUCCESS_MESSAGE, [], 'SonataAdminBundle'));
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
 
-    /**
-     * @return string
-     */
-    private function getListOrTreeUrlName()
+    private function getListOrTreeUrlName(): string
     {
         $mappings = $this->admin->getAccessMapping();
         if ($mappings && array_key_exists('tree', $mappings)) {
@@ -183,11 +153,10 @@ class CRUDController extends Controller
         return 'list';
     }
 
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getRepository()
+    private static function swapOrderNum(object $a, object $b): void
     {
-        return $this->container->get('doctrine')->getRepository($this->admin->getClass());
+        $aOrder = $a->getOrderNum();
+        $a->setOrderNum($b->getOrderNum());
+        $b->setOrderNum($aOrder);
     }
 }

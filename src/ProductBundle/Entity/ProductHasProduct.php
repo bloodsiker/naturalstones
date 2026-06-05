@@ -23,7 +23,7 @@ class ProductHasProduct
     protected $id;
 
     /**
-     * @var \ProductBundle\Entity\Product
+     * @var Product
      *
      * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasProduct")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
@@ -31,7 +31,7 @@ class ProductHasProduct
     protected $product;
 
     /**
-     * @var \ProductBundle\Entity\Product
+     * @var Product
      *
      * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", fetch="EAGER")
      * @ORM\JoinColumn(name="product_set_id", referencedColumnName="id", nullable=false)
@@ -52,19 +52,10 @@ class ProductHasProduct
      */
     protected $orderNum;
 
-    /**
-     * @var
-     */
     protected $size;
 
-    /**
-     * @var
-     */
     protected $price;
 
-    /**
-     * @var
-     */
     protected $discount;
 
     /**
@@ -83,13 +74,13 @@ class ProductHasProduct
      */
     public function __toString()
     {
-        return (string) $this->product ;
+        return (string) $this->product;
     }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -123,11 +114,9 @@ class ProductHasProduct
     /**
      * Set product.
      *
-     * @param \ProductBundle\Entity\Product $product
-     *
      * @return ProductHasProduct
      */
-    public function setProduct(\ProductBundle\Entity\Product $product)
+    public function setProduct(Product $product)
     {
         $this->product = $product;
 
@@ -137,7 +126,7 @@ class ProductHasProduct
     /**
      * Get product.
      *
-     * @return \ProductBundle\Entity\Product
+     * @return Product
      */
     public function getProduct()
     {
@@ -147,11 +136,9 @@ class ProductHasProduct
     /**
      * Set productSet.
      *
-     * @param \ProductBundle\Entity\Product $productSet
-     *
      * @return ProductHasProduct
      */
-    public function setProductSet(\ProductBundle\Entity\Product $productSet = null)
+    public function setProductSet(?Product $productSet = null)
     {
         $this->productSet = $productSet;
 
@@ -161,7 +148,7 @@ class ProductHasProduct
     /**
      * Get productSet.
      *
-     * @return \ProductBundle\Entity\Product
+     * @return Product
      */
     public function getProductSet()
     {
@@ -192,17 +179,12 @@ class ProductHasProduct
         return $this->quantity;
     }
 
-    /**
-     * @return mixed
-     */
     public function getSize()
     {
         return $this->size;
     }
 
     /**
-     * @param $size
-     *
      * @return $this
      */
     public function setSize($size)
@@ -212,17 +194,12 @@ class ProductHasProduct
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPrice()
     {
         return $this->price;
     }
 
     /**
-     * @param $price
-     *
      * @return $this
      */
     public function setPrice($price)
@@ -232,17 +209,12 @@ class ProductHasProduct
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDiscount()
     {
         return $this->discount;
     }
 
     /**
-     * @param $discount
-     *
      * @return $this
      */
     public function setDiscount($discount)

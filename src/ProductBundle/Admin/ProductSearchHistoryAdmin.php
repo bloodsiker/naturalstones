@@ -6,9 +6,8 @@ use AdminBundle\Admin\BaseAdmin as Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\Form\Type\DateTimePickerType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -17,9 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class ProductSearchHistoryAdmin extends Admin
 {
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'id',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
         '_sort_order' => 'DESC',
     ];
 
@@ -41,10 +40,8 @@ class ProductSearchHistoryAdmin extends Admin
         ];
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'history_search.fields.id',
@@ -65,10 +62,8 @@ class ProductSearchHistoryAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('search', null, [
                 'label' => 'history_search.fields.search',
@@ -77,17 +72,15 @@ class ProductSearchHistoryAdmin extends Admin
                 'label' => 'history_search.fields.ip',
             ])
             ->add('createdAt', DateFilter::class, [
-                'label'         => 'history_search.fields.created_at',
-                'field_type'    => DateTimePickerType::class,
-                'field_options' => array('format' => 'dd.MM.yyyy'),
-                'show_filter'   => true,
+                'label' => 'history_search.fields.created_at',
+                'field_type' => DateTimePickerType::class,
+                'field_options' => ['format' => 'dd.MM.yyyy'],
+                'show_filter' => true,
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('search', TextType::class, [
@@ -101,7 +94,7 @@ class ProductSearchHistoryAdmin extends Admin
                     'attr' => ['readonly' => !$this->getSubject()->getId() ? false : true],
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
-                    'label'     => 'history_search.fields.created_at',
+                    'label' => 'history_search.fields.created_at',
                     'required' => true,
                     'format' => 'yyyy-MM-dd HH:mm',
                     'attr' => ['readonly' => true],

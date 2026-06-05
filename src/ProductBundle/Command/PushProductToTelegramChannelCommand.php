@@ -5,29 +5,21 @@ namespace ProductBundle\Command;
 use AppBundle\Services\SendTelegramService;
 use Doctrine\ORM\EntityManagerInterface;
 use ProductBundle\Entity\Product;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'product:push-to-telegram', description: 'Push products to telegram channel')]
 class PushProductToTelegramChannelCommand extends Command
 {
-    protected static $defaultName = 'product:push-to-telegram';
-
-    private EntityManagerInterface $em;
-    private SendTelegramService $telegramService;
+    private const BATCH_SIZE = 20;
 
     public function __construct(
-        EntityManagerInterface $em,
-        SendTelegramService $telegramService
+        private readonly EntityManagerInterface $em,
+        private readonly SendTelegramService $telegramService,
     ) {
         parent::__construct();
-        $this->em = $em;
-        $this->telegramService = $telegramService;
-    }
-
-    protected function configure(): void
-    {
-        $this->setDescription('Push products to telegram channel');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -39,7 +31,7 @@ class PushProductToTelegramChannelCommand extends Command
             ->leftJoin('p.translations', 'pt')
             ->addSelect('pt')
             ->addOrderBy('p.id', 'ASC')
-            ->setMaxResults(20)
+            ->setMaxResults(self::BATCH_SIZE)
             ->getQuery()
             ->getResult();
 

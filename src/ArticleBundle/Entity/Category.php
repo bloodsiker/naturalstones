@@ -4,7 +4,6 @@ namespace ArticleBundle\Entity;
 
 use AppBundle\Traits\TranslatableProxyTrait;
 use Cocur\Slugify\Slugify;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
@@ -101,7 +100,7 @@ class Category implements TranslatableInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -155,8 +154,6 @@ class Category implements TranslatableInterface
     /**
      * Set isActive
      *
-     * @param boolean $isActive
-     *
      * @return Category
      */
     public function setIsActive(bool $isActive)
@@ -169,7 +166,7 @@ class Category implements TranslatableInterface
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {

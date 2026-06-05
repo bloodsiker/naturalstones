@@ -23,7 +23,7 @@ class CommentVotesResult
     protected $id;
 
     /**
-     * @var \CommentBundle\Entity\Comment
+     * @var Comment
      *
      * @ORM\ManyToOne(targetEntity="CommentBundle\Entity\Comment")
      * @ORM\JoinColumn(name="comment_id", referencedColumnName="id", nullable=true, onDelete="cascade")
@@ -62,7 +62,7 @@ class CommentVotesResult
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -72,11 +72,9 @@ class CommentVotesResult
     /**
      * Set comment
      *
-     * @param \CommentBundle\Entity\Comment $comment
-     *
      * @return $this
      */
-    public function setComment(\CommentBundle\Entity\Comment $comment = null)
+    public function setComment(?Comment $comment = null)
     {
         $this->comment = $comment;
 
@@ -86,7 +84,7 @@ class CommentVotesResult
     /**
      * Get comment
      *
-     * @return \CommentBundle\Entity\Comment
+     * @return Comment
      */
     public function getComment()
     {
@@ -129,8 +127,6 @@ class CommentVotesResult
 
     /**
      * Set resultVote
-     *
-     * @param bool $resultVote
      *
      * @return $this
      */

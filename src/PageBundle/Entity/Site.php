@@ -2,8 +2,8 @@
 
 namespace PageBundle\Entity;
 
-use Sonata\PageBundle\Entity\BaseSite as BaseSite;
 use Doctrine\ORM\Mapping as ORM;
+use Sonata\PageBundle\Entity\BaseSite;
 
 /**
  * Class Site

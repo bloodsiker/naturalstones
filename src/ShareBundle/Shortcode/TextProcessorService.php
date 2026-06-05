@@ -3,43 +3,30 @@
 namespace ShareBundle\Shortcode;
 
 use Doctrine\ORM\EntityManagerInterface;
+use ShareBundle\Entity\Text;
 use ShortcodeBundle\Processor\ProcessorInterface;
 
-/**
- * Class TextProcessorService
- */
 class TextProcessorService implements ProcessorInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * ImageProcessorService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+    ) {
     }
 
     /**
-     * @param array $data
+     * @param array<string, mixed> $data
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function process(array $data)
+    public function process(array $data): array
     {
-        if (!(is_array($data) && array_key_exists('id', $data))) {
+        if (!array_key_exists('id', $data)) {
             return $data;
         }
 
         $text = $this->entityManager
-            ->getRepository('ShareBundle:Text')
-            ->findOneBy(['id' => intval($data['id']), 'isActive' => true])
-        ;
+            ->getRepository(Text::class)
+            ->findOneBy(['id' => (int) $data['id'], 'isActive' => true]);
 
         return array_merge($data, ['text' => $text]);
     }

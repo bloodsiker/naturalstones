@@ -2,10 +2,9 @@
 
 namespace AppBundle\EventSubscriber;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class LocaleSubscriber implements EventSubscriberInterface

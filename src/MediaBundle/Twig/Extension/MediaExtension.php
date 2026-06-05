@@ -3,92 +3,60 @@
 namespace MediaBundle\Twig\Extension;
 
 use MediaBundle\Helper\MimeTypeHelper;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigTest;
 
-/**
- * Class MediaExtension
- */
-class MediaExtension extends \Twig\Extension\AbstractExtension
+class MediaExtension extends AbstractExtension
 {
     /**
-     * {@inheritdoc}
+     * @return list<TwigTest>
      */
-    public function getTests()
-    {
-        return array(
-            new \Twig\TwigTest('mediainstanceof', array($this, 'isMediaInstanceOf')),
-        );
-    }
-
-    /**
-     * @return array|\Twig_Filter[]
-     */
-    public function getFilters()
+    public function getTests(): array
     {
         return [
-            new \Twig\TwigFilter('set_frame_size', array($this, 'setFrameSize')),
-            new \Twig\TwigFilter('file_extension', array($this, 'getFileExtension')),
-            new \Twig\TwigFilter('file_mime_icon_class', array($this, 'getFileMimeIconClass')),
+            new TwigTest('mediainstanceof', $this->isMediaInstanceOf(...)),
         ];
     }
 
     /**
-     * @param string     $code
-     * @param string|int $width
-     * @param string|int $height
-     *
-     * @return string
+     * @return list<TwigFilter>
      */
-    public function setFrameSize($code, $width = '100%', $height = '100%')
+    public function getFilters(): array
     {
-        $newWidth   = is_numeric($width) ? $width.'px' : $width;
-        $newHeight  = is_numeric($height) ? $height.'px' : $height;
-
-        $code = preg_replace('/width="(.*?)"/i', 'width="'.$newWidth.'"', $code);
-        $code = preg_replace('/height="(.*?)"/i', 'height="'.$newHeight.'"', $code);
-
-        return $code;
+        return [
+            new TwigFilter('set_frame_size', $this->setFrameSize(...)),
+            new TwigFilter('file_extension', $this->getFileExtension(...)),
+            new TwigFilter('file_mime_icon_class', $this->getFileMimeIconClass(...)),
+        ];
     }
 
-    /**
-     * @param string $path
-     *
-     * @return string
-     */
-    public function getFileExtension($path)
+    public function setFrameSize(string $code, string|int $width = '100%', string|int $height = '100%'): string
     {
-        return strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        $newWidth = is_numeric($width) ? $width . 'px' : $width;
+        $newHeight = is_numeric($height) ? $height . 'px' : $height;
+
+        $code = preg_replace('/width="(.*?)"/i', 'width="' . $newWidth . '"', $code);
+
+        return preg_replace('/height="(.*?)"/i', 'height="' . $newHeight . '"', $code);
     }
 
-    /**
-     * @param string $path
-     *
-     * @return string
-     */
-    public static function getExtensionFile($path)
+    public function getFileExtension(string $path): string
+    {
+        return self::getExtensionFile($path);
+    }
+
+    public static function getExtensionFile(string $path): string
     {
         return strtolower(pathinfo($path, PATHINFO_EXTENSION));
     }
 
-    /**
-     * @param string $path
-     * @param bool   $fixedWidth
-     *
-     * @return string
-     */
-    public function getFileMimeIconClass($path, $fixedWidth = false)
+    public function getFileMimeIconClass(string $path, bool $fixedWidth = false): string
     {
         return MimeTypeHelper::getFontAwesomeIcon($path, $fixedWidth);
     }
 
-    /**
-     * Checks if $var is instance of $instance for media
-     *
-     * @param mixed $var
-     * @param mixed $instance
-     *
-     * @return bool
-     */
-    public function isMediaInstanceOf($var, $instance)
+    public function isMediaInstanceOf(mixed $var, string $instance): bool
     {
         return $var instanceof $instance;
     }

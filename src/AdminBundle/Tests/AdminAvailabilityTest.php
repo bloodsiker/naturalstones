@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class AdminAvailabilityTest
- * @package AdminBundle\Tests
  */
 class AdminAvailabilityTest extends WebTestCase
 {
@@ -15,9 +14,6 @@ class AdminAvailabilityTest extends WebTestCase
      */
     private $client;
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUp()
     {
         $this->client = self::createClient();
@@ -35,7 +31,7 @@ class AdminAvailabilityTest extends WebTestCase
     {
         $this->client->request('GET', $url);
 
-        $this->assertTrue($this->client->getResponse()->isRedirect('http://'.$this->client->getRequest()->getHost().$redirectTo));
+        $this->assertTrue($this->client->getResponse()->isRedirect('http://' . $this->client->getRequest()->getHost() . $redirectTo));
     }
 
     /**
@@ -43,13 +39,13 @@ class AdminAvailabilityTest extends WebTestCase
      */
     public function adminUrlProvider()
     {
-        return array(
-            array('/admin', '/ru/admin/dashboard?parmanent=1'),
-            array('/ru/admin/dashboard', '/ru/admin/login'),
-            array('/uk/admin/dashboard', '/uk/admin/login'),
-            array('/en/admin/dashboard', '/en/admin/login'),
-            array('/ru/admin/user/user/list', '/ru/admin/login'),
-            array('/uk/admin/user/user/create', '/uk/admin/login'),
-        );
+        return [
+            ['/admin', '/ru/admin/dashboard?parmanent=1'],
+            ['/ru/admin/dashboard', '/ru/admin/login'],
+            ['/uk/admin/dashboard', '/uk/admin/login'],
+            ['/en/admin/dashboard', '/en/admin/login'],
+            ['/ru/admin/user/user/list', '/ru/admin/login'],
+            ['/uk/admin/user/user/create', '/uk/admin/login'],
+        ];
     }
 }

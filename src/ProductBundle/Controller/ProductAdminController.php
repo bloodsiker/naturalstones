@@ -3,24 +3,14 @@
 namespace ProductBundle\Controller;
 
 use AdminBundle\Controller\CRUDController as Controller;
-
 use ProductBundle\Entity\ProductHasImage;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Class ProductAdminController
- */
 class ProductAdminController extends Controller
 {
-
-    /**
-     * Move item up by decrementing order_num value
-     *
-     * @return RedirectResponse
-     */
-    public function cloneAction()
+    public function cloneAction(): RedirectResponse
     {
         $translator = $this->get('translator');
         $em = $this->get('doctrine.orm.default_entity_manager');
@@ -32,9 +22,9 @@ class ProductAdminController extends Controller
         $em->persist($clone);
         $em->flush();
 
-        foreach ($object->getProductHasImage() as $object) {
+        foreach ($object->getProductHasImage() as $image) {
             $productHasImage = new ProductHasImage();
-            $productHasImage->setImage($object->getImage());
+            $productHasImage->setImage($image->getImage());
             $productHasImage->setProduct($clone);
             $clone->addProductHasImage($productHasImage);
             $em->persist($clone);
@@ -49,46 +39,28 @@ class ProductAdminController extends Controller
         return new RedirectResponse($this->admin->generateUrl('edit', ['id' => $clone->getId()]));
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function relatedByTagsAction(Request $request)
+    public function relatedByTagsAction(Request $request): Response
     {
-        $excludeIds = array_map(function ($value) {
-            return (int) $value;
-            }, $request->request->get('exclude', []));
-
-        $tags = array_map(function ($value) {
-            return (int) $value;
-            }, $request->request->get('tags', []));
+        $excludeIds = array_map('intval', $request->request->get('exclude', []));
+        $tags = array_map('intval', $request->request->get('tags', []));
 
         $em = $this->container->get('doctrine')->getManager();
         $repository = $em->getRepository($this->admin->getClass());
-        $relatedNews = $repository->getRelatedByTagsBooks($tags, $excludeIds, 100);
+        $related = $repository->getRelatedByTagsBooks($tags, $excludeIds, 100);
 
-        $result = array_map(
-            function ($item) {
-                $authors = [];
-                array_map(function ($value) use (&$authors) {
-                    $authors[] = $value->getName();
+        $result = array_map(static function ($item) {
+            $authors = array_map(static fn ($author) => $author->getName(), $item->getAuthors()->getValues());
 
-                    return $value;
-                }, $item->getAuthors()->getValues());
-
-                return [
-                    'id'        => $item->getId(),
-                    'name'      => $item->getName(),
-                    'author'    => implode(', ', $authors),
-                    'views'     => $item->getViews(),
-                    'download'  => $item->getDownload(),
-                    'rate'      => $item->getRatePlus() - $item->getRateMinus(),
-                    'date'      => $item->getCreatedAt()->format('d.m.Y H:i:s'),
-                ];
-            },
-            $relatedNews
-        );
+            return [
+                'id' => $item->getId(),
+                'name' => $item->getName(),
+                'author' => implode(', ', $authors),
+                'views' => $item->getViews(),
+                'download' => $item->getDownload(),
+                'rate' => $item->getRatePlus() - $item->getRateMinus(),
+                'date' => $item->getCreatedAt()->format('d.m.Y H:i:s'),
+            ];
+        }, $related);
 
         shuffle($result);
 
@@ -96,30 +68,16 @@ class ProductAdminController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
-     * @return Response
-     *
      * @throws \Exception
      */
-    public function findTagsInTextAction(Request $request)
+    public function findTagsInTextAction(Request $request): Response
     {
-        $excludeTags = array_map(
-            function ($value) { return (int) $value; },
-            $request->request->get('tags', [])
-        );
-
-        $bookFile = array_map(function ($value) {
-            return (int) $value;
-        }, $request->request->get('bookFile', []));
-
+        $excludeTags = array_map('intval', $request->request->get('tags', []));
+        $bookFile = array_map('intval', $request->request->get('bookFile', []));
         $text = $request->request->get('textContent', '');
 
-
         $tagFinder = $this->container->get('share.tag.finder');
-        $result = $tagFinder->findTagsInText($text, $excludeTags, $bookFile);
 
-        return $this->renderJson($result);
+        return $this->renderJson($tagFinder->findTagsInText($text, $excludeTags, $bookFile));
     }
-
 }

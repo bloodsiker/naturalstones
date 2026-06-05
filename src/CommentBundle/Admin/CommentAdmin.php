@@ -21,16 +21,14 @@ class CommentAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'id',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
         '_sort_order' => 'DESC',
     ];
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'comment.fields.id',
@@ -49,7 +47,7 @@ class CommentAdmin extends Admin
             ])
             ->add('isActive', null, [
                 'label' => 'comment.fields.is_active',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('createdAt', null, [
                 'label' => 'comment.fields.created_at',
@@ -61,10 +59,8 @@ class CommentAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('product', null, [
                 'label' => 'comment.fields.product',
@@ -77,10 +73,8 @@ class CommentAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('userName', TextType::class, [
@@ -117,7 +111,7 @@ class CommentAdmin extends Admin
                     'required' => true,
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
-                    'label'     => 'comment.fields.created_at',
+                    'label' => 'comment.fields.created_at',
                     'required' => true,
                     'format' => 'yyyy-MM-dd HH:mm',
                     'attr' => ['readonly' => true],

@@ -21,12 +21,12 @@ class Category implements TranslatableInterface
     use ORMBehaviors\Translatable\TranslatableTrait;
     use TranslatableProxyTrait;
 
-    const TYPE_MAIN      = 1;
-    const TYPE_SECONDARY = 2;
-    const TYPE_INDIVIDUAL = 3;
-    const TYPE_GIFT_BOX = 4;
-    const TYPE_SCRAPERS = 5;
-    const TYPE_GEMATIT = 6;
+    public const TYPE_MAIN = 1;
+    public const TYPE_SECONDARY = 2;
+    public const TYPE_INDIVIDUAL = 3;
+    public const TYPE_GIFT_BOX = 4;
+    public const TYPE_SCRAPERS = 5;
+    public const TYPE_GEMATIT = 6;
 
     /**
      * @var int
@@ -126,7 +126,7 @@ class Category implements TranslatableInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -146,11 +146,9 @@ class Category implements TranslatableInterface
     /**
      * Set image
      *
-     * @param \MediaBundle\Entity\MediaImage $image
-     *
      * @return $this
      */
-    public function setImage(\MediaBundle\Entity\MediaImage $image = null)
+    public function setImage(?\MediaBundle\Entity\MediaImage $image = null)
     {
         $this->image = $image;
 
@@ -204,8 +202,6 @@ class Category implements TranslatableInterface
     /**
      * Set type
      *
-     * @param int $type
-     *
      * @return Category
      */
     public function setType(int $type)
@@ -228,8 +224,6 @@ class Category implements TranslatableInterface
     /**
      * Set isActive
      *
-     * @param boolean $isActive
-     *
      * @return Category
      */
     public function setIsActive(bool $isActive)
@@ -242,7 +236,7 @@ class Category implements TranslatableInterface
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {
@@ -252,11 +246,9 @@ class Category implements TranslatableInterface
     /**
      * Add products
      *
-     * @param \ProductBundle\Entity\Product $product
-     *
      * @return $this
      */
-    public function addProduct(\ProductBundle\Entity\Product $product)
+    public function addProduct(Product $product)
     {
         $this->products[] = $product;
 
@@ -265,10 +257,8 @@ class Category implements TranslatableInterface
 
     /**
      * Remove products
-     *
-     * @param \ProductBundle\Entity\Product $product
      */
-    public function removeProduct(\ProductBundle\Entity\Product $product)
+    public function removeProduct(Product $product)
     {
         $this->products->removeElement($product);
     }

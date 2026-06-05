@@ -6,114 +6,57 @@ use Sonata\PageBundle\CmsManager\CmsManagerSelectorInterface;
 use Sonata\PageBundle\Model\PageInterface;
 use Sonata\PageBundle\Model\SiteInterface;
 use Sonata\SeoBundle\Seo\SeoPageInterface;
-use Symfony\Cmf\Component\Routing\ChainRouterInterface;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class SeoUpdater
- */
 class SeoUpdater
 {
-    /**
-     * @var CmsManagerSelectorInterface
-     */
-    private $pageSelector;
+    private const DEFAULT_OG_IMAGE_SRC = '/bundles/app/images/logo.jpg';
 
-    /**
-     * @var PageInterface
-     */
-    private $currentPage;
+    private ?PageInterface $currentPage = null;
+    private ?string $siteTitle = null;
 
-    /**
-     * @var SeoPageInterface
-     */
-    private $seoPage;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var string
-     */
-    private $siteTitle;
-
-    /**
-     * @var ChainRouterInterface
-     */
-    private $router;
-
-    /**
-     * @var SaveStateValue
-     */
-    private $saveStateService;
-
-    /**
-     * @var string
-     */
-    private $defaultOgImageSrc = '/bundles/app/images/logo.jpg';
-
-    public function __construct(CmsManagerSelectorInterface $pageSelector, SeoPageInterface $seoPage, RequestStack $requestStack, TranslatorInterface $translator, RouterInterface $router, SaveStateValue $saveStateService)
-    {
-        $this->pageSelector = $pageSelector;
-        $this->seoPage = $seoPage;
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
-        $this->router = $router;
-        $this->saveStateService = $saveStateService;
+    public function __construct(
+        private readonly CmsManagerSelectorInterface $pageSelector,
+        private readonly SeoPageInterface $seoPage,
+        private readonly RequestStack $requestStack,
+        private readonly TranslatorInterface $translator,
+        private readonly RouterInterface $router,
+        private readonly SaveStateValue $saveStateService,
+    ) {
     }
 
     /**
-     * @param null  $object
-     * @param array $params
-     *
-     * @throws \Throwable
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @param array<string, mixed> $params
      */
-    public function doMagic($object = null, array $params = [])
+    public function doMagic(mixed $object = null, array $params = []): void
     {
         $this->currentPage = $this->pageSelector->retrieve()->getCurrentPage();
-
         if (!$this->currentPage) {
             return;
         }
 
-        $customRouteParams = $params['custom_route_params'] ?? [];
-        switch (true) {
-            /** @var Article $object */
-            case ($object instanceof Article):
-                $this->updateArticleMetadata($object, $params);
-                break;
-            default:
-                $this->updateGeneralMetadata($params);
-        }
+        $this->updateGeneralMetadata($params);
 
         $request = $this->requestStack->getCurrentRequest();
-        $defaultOgImage = $request->getSchemeAndHttpHost().$this->defaultOgImageSrc;
+        $defaultOgImage = $request->getSchemeAndHttpHost() . self::DEFAULT_OG_IMAGE_SRC;
 
         $this->setOpenGraph($params, $defaultOgImage);
-        $this->setCanonicalUrl($params, $customRouteParams);
+        $this->setCanonicalUrl($params, $params['custom_route_params'] ?? []);
         $this->setOtherMeta($params);
     }
 
     /**
-     * @param array $params
+     * @param array<string, mixed> $params
      */
-    public function setOtherMeta($params = [])
+    public function setOtherMeta(array $params = []): void
     {
         $metaData = $this->seoPage->getMetas();
-        if (isset($metaData['name']) && isset($metaData['name']['keywords'])) {
+
+        if (isset($metaData['name']['keywords'])) {
             foreach ($metaData['name']['keywords'] as $keywords) {
                 if ($keywords) {
                     $this->seoPage->addMeta('name', 'product_keywords', $keywords);
@@ -131,302 +74,127 @@ class SeoUpdater
             }
         }
 
-        if (isset($params['page_number']) && $params['page_number']) {
-            $this->seoPage->addMeta('name', 'ROBOTS', 'NOINDEX, FOLLOW');
-        } else {
-            $this->seoPage->addMeta('name', 'ROBOTS', 'INDEX, FOLLOW, ALL');
-        }
+        $robots = !empty($params['page_number']) ? 'NOINDEX, FOLLOW' : 'INDEX, FOLLOW, ALL';
+        $this->seoPage->addMeta('name', 'ROBOTS', $robots);
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getAllMeta()
+    public function getAllMeta(): array
     {
         return $this->seoPage->getMetas();
     }
 
-    /**
-     * @return string
-     */
-    public function getSiteTitle()
+    public function getSiteTitle(): string
     {
         return $this->siteTitle ?: $this->translator->trans('app.frontend.title', [], 'AppBundle');
     }
 
     /**
-     * @param array $params
-     *
-     * @throws \Throwable
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @param array<string, mixed> $params
      */
-    private function updateGeneralMetadata(array &$params = [])
+    private function updateGeneralMetadata(array &$params = []): void
     {
         /** @var SiteInterface $site */
         $site = $this->currentPage->getSite();
 
-        if (isset($params['title'])) {
-            $this->seoPage->setTitle($params['title']);
-        } else {
-            $this->seoPage->setTitle($this->currentPage->getTitle() ?: ($site->getTitle() ?: $site->getName()));
+        $this->seoPage->setTitle(
+            $params['title']
+                ?? ($this->currentPage->getTitle() ?: ($site->getTitle() ?: $site->getName()))
+        );
+
+        $this->seoPage->addMeta(
+            'name',
+            'description',
+            $params['description']
+                ?? ($this->currentPage->getMetaDescription() ?: ($site->getMetaDescription() ?: $this->translator->trans('frontend.meta.description', [], 'AppBundle')))
+        );
+
+        $this->seoPage->addMeta(
+            'name',
+            'keywords',
+            $params['keywords']
+                ?? ($this->currentPage->getMetaKeyword() ?: ($site->getMetaKeywords() ?: $this->translator->trans('frontend.meta.keywords', [], 'AppBundle')))
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $params
+     */
+    private function setOpenGraph(array $params, string $defaultOgImage): void
+    {
+        if (!isset($params['og']) || !is_array($params['og'])) {
+            return;
         }
 
-        if (isset($params['description'])) {
-            $this->seoPage->addMeta('name', 'description', $params['description']);
-        } else {
-            $this->seoPage->addMeta('name', 'description', $this->currentPage->getMetaDescription() ?: ($site->getMetaDescription() ?: $this->translator->trans('frontend.meta.description', [], 'AppBundle')));
+        $ogParams = $params['og'];
+        if (empty($ogParams['og:image'])) {
+            $ogParams['og:image'] = $defaultOgImage;
         }
 
-        if (isset($params['keywords'])) {
-            $this->seoPage->addMeta('name', 'keywords', $params['keywords']);
-        } else {
-            $this->seoPage->addMeta('name', 'keywords', $this->currentPage->getMetaKeyword() ?: ($site->getMetaKeywords() ?: $this->translator->trans('frontend.meta.keywords', [], 'AppBundle')));
+        foreach ($ogParams as $name => $value) {
+            $this->seoPage->addMeta('property', $name, $value);
         }
     }
 
     /**
-     * @param Article $article
-     * @param array   $params
-     *
-     * @throws \Throwable
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @param array<string, mixed> $params
+     * @param array<string, mixed> $customRouteParams
      */
-    private function updateArticleMetadata(Article $article, array &$params = [])
+    private function setCanonicalUrl(array $params, array $customRouteParams = []): void
     {
-        // если Title задан из админки: выводим то что задано
-        if ($title = $article->getMetaTitle()) {
-            $title = $this->prepareShortcdeStr($title);
-            $title .= ' | '.$this->translator->trans('frontend.meta.sitename', [], 'AppBundle');
-
-            $this->seoPage->setTitle($title);
-        } elseif ($title = $article->getTitle()) {
-            if ($article->getCategory() && $article->getCategory()->getTitleHead()) {
-                $title .= ' - '.$article->getCategory()->getTitleHead();
-            }
-            if ($article->getHeader()) {
-                $title .= ' - '.$article->getHeader();
-            }
-            $title .= ' | '.$this->translator->trans('app.frontend.meta.sitename', [], 'AppBundle');
-
-            $this->seoPage->setTitle($title);
-        } elseif (isset($params['title'])) {
-            $title = '';
-            if ($article->getCategory() && $article->getCategory()->getTitle()) {
-                $title .= $article->getCategory()->getTitle().' | ';
-            }
-            $title .= $this->translator->trans('app.frontend.meta.sitename', [], 'AppBundle');
-
-            $this->seoPage->setTitle($title);
-        }
-
-        if ($description = $article->getMetaDescription()) {
-            $description = $this->prepareShortcdeStr($description);
-            $description .= ' | '.$this->translator->trans('app.frontend.meta.sitename', [], 'AppBundle');
-            $this->seoPage->addMeta('name', 'description', $description);
-        } elseif (isset($params['description'])) {
-            $this->seoPage->addMeta('name', 'description', $params['description']);
-        } else {
-            $description = $this->cleanMetaString(mb_substr(strip_tags($article->getDescription()), 0, 150)).'...';
-            $this->seoPage->addMeta('name', 'description', $description);
-        }
-
-        $keywords = '';
-        if ($article->getBlogger()) {
-            $keywords .= $article->getBlogger()->getName().', ';
-        }
-
-        if ($keywordsMeta = $article->getMetaKeywords()) {
-            $keywordsMeta = $this->prepareShortcdeStr($keywordsMeta);
-            $keywords .= $keywordsMeta;
-            $this->seoPage->addMeta('name', 'keywords', $keywords);
-        } elseif (isset($params['keywords'])) {
-            $this->seoPage->addMeta('name', 'keywords', $keywords.$params['keywords']);
-        } elseif ($article->getTags()) {
-            foreach ($article->getTags() as $tag) {
-                $keywords .= $tag->getName().', ';
-            }
-            $keywords = mb_substr($keywords, 0, -2);
-            $this->seoPage->addMeta('name', 'keywords', $keywords);
-        } else {
-            $this->seoPage->addMeta('name', 'keywords', $keywords.$this->translator->trans('app.frontend.meta.keywords', [], 'AppBundle'));
-        }
-
-        $ogImage = null;
-        if ($article->getOgImage()) {
-            $path = $article->getOgImage()->getPath();
-            if ($this->getRequest()->get('skin') === 'lifestyle') {
-                $ogImage = $this->imagineHelper->getFilterImage($path, 'image_650x434');
-                $params['og']['og:image:width'] = 650;
-                $params['og']['og:image:height'] = 434;
-            } else {
-                $ogImage = $this->imagineHelper->getFilterImage($path, 'image_610x343');
-                $params['og']['og:image:width'] = 610;
-                $params['og']['og:image:height'] = 343;
-            }
-
-            $customMetaTags = $this->saveStateService->getValue('custom_meta_tags') ?: [];
-            $customMetaTags[] = '<link rel="image_src" href="'.$ogImage.'" />';
-            $this->saveStateService->setValue('custom_meta_tags', $customMetaTags);
-
-        } elseif ($article->getImage()) {
-            $path = $article->getImage()->getPath();
-            if ($this->getRequest()->get('skin') === 'lifestyle') {
-                $ogImage = $this->imagineHelper->getActualImage($path, 'image_650x434', ['ls', 'main_new', 'main']);
-            } else {
-                $ogImage = $this->imagineHelper->getActualImage($path, 'image_610x343', ['main_new', 'main']);
-            }
-            if ($ogImage) {
-                $ogImageSize = @getimagesize($ogImage);
-                $params['og']['og:image:width'] = $ogImageSize[0];
-                $params['og']['og:image:height'] = $ogImageSize[1];
-
-                $customMetaTags = $this->saveStateService->getValue('custom_meta_tags') ?: [];
-                $customMetaTags[] = '<link rel="image_src" href="'.$ogImage.'" />';
-                $this->saveStateService->setValue('custom_meta_tags', $customMetaTags);
-            }
-        }
-        if (!$ogImage) {
-            $ogImage = $this->defaultOgImageSrc;
-            $params['og']['og:image:width'] = 200;
-            $params['og']['og:image:height'] = 200;
-        }
-
-        $params['og']['og:image'] = $ogImage;
-
-        $this->seoPage->addMeta('name', 'twitter:image', $ogImage);
-
-        if ($article->getArticleHasSpectopics()) {
-            $customMetaTags = $this->saveStateService->getValue('custom_meta_tags') ?: [];
-            $specTopicsJS = '<script>';
-            $specTopicsJS .= 'var specialTopics = [];';
-            foreach ($article->getArticleHasSpectopics() as $specTopic) {
-                $specTopicsJS .= "specialTopics.push('".$this->articleRouterHelper->getSpectopicPath($specTopic->getSpectopic())."');";
-            }
-            $specTopicsJS .= '</script>';
-            $customMetaTags[] = $specTopicsJS;
-            $this->saveStateService->setValue('custom_meta_tags', $customMetaTags);
-        }
-    }
-
-    /**
-     * @param array  $params
-     * @param string $defaultOgImage
-     */
-    private function setOpenGraph(array $params, $defaultOgImage)
-    {
-        if (isset($params['og']) && is_array($params['og'])) {
-            $ogParams = $params['og'];
-            if (!isset($ogParams['og:image']) || empty($ogParams['og:image'])) {
-                $ogParams['og:image'] = $defaultOgImage;
-            }
-
-            foreach ($ogParams as $name => $value) {
-                $this->seoPage->addMeta('property', $name, $value);
-            }
-        }
-    }
-
-    /**
-     * @param array $params
-     * @param array $customRouteParams
-     */
-    private function setCanonicalUrl(array $params, $customRouteParams = [])
-    {
-        $showCanonicalUrl = !isset($params['showCanonicalUrl']) ? true : ((isset($params['showCanonicalUrl']) && $params['showCanonicalUrl']) ? true : false);
+        $showCanonicalUrl = $params['showCanonicalUrl'] ?? true;
 
         if (isset($params['canonicalUrl'])) {
             if ($showCanonicalUrl) {
                 $this->seoPage->setLinkCanonical($params['canonicalUrl']);
             }
             $this->seoPage->addMeta('property', 'og:url', $params['canonicalUrl']);
-        } else {
-            $request = $this->getRequest();
-            $routeParams = $this->prepareRouteParams($request->attributes->all());
-            $routeParams = array_merge($routeParams, $customRouteParams);
-            if (isset($routeParams['page'])) {
-                $routeParams['page'] = null;
-            }
-            if ($route = $request->attributes->get('_route')) {
-                $url = $this->generateUrlByRoute($route, $routeParams);
-                if ($showCanonicalUrl) {
-                    $this->seoPage->setLinkCanonical($url);
-                }
-                $this->seoPage->addMeta('property', 'og:url', $url);
-            }
+
+            return;
         }
+
+        $request = $this->getRequest();
+        $routeParams = array_merge(
+            $this->prepareRouteParams($request->attributes->all()),
+            $customRouteParams
+        );
+
+        if (isset($routeParams['page'])) {
+            $routeParams['page'] = null;
+        }
+
+        if (!$route = $request->attributes->get('_route')) {
+            return;
+        }
+
+        $url = $this->router->generate($route, $routeParams, UrlGenerator::ABSOLUTE_URL);
+        if ($showCanonicalUrl) {
+            $this->seoPage->setLinkCanonical($url);
+        }
+        $this->seoPage->addMeta('property', 'og:url', $url);
     }
 
-    /**
-     * @return null|\Symfony\Component\HttpFoundation\Request
-     */
-    private function getRequest()
+    private function getRequest(): ?Request
     {
         return $this->requestStack->getCurrentRequest();
     }
 
     /**
-     * @param string      $subject
-     * @param string|null $spectopicName
+     * @param array<string, mixed> $routeParams
      *
-     * @return string
+     * @return array<string, mixed>
      */
-    private function prepareShortcdeStr($subject, $spectopicName = null)
+    private function prepareRouteParams(array $routeParams): array
     {
-        foreach ($this->shortcodeVariable as $k => $param) {
-            $param = stripslashes($param);
-            switch (true) {
-                case $k === 'site':
-                    $subject = str_replace($param, sprintf('%s[%s]', $param, $this->getSiteTitle()), $subject);
-                    break;
-                case $k === 'spectopic':
-                    $subject = str_replace($param, sprintf('%s[%s]', $param, $spectopicName), $subject);
-                    break;
-            }
-        }
-
-        return $subject;
-    }
-
-    /**
-     * @param array $routeParams
-     *
-     * @return array
-     */
-    private function prepareRouteParams(array $routeParams)
-    {
-        $request = $this->getRequest();
-        $resultParams = (array) $request->query->all();
+        $resultParams = (array) $this->getRequest()->query->all();
         foreach ($routeParams as $k => $param) {
-            if (is_string($param) && preg_match('/^[^_].*$/', $k)) {
+            if (is_string($param) && preg_match('/^[^_].*$/', (string) $k)) {
                 $resultParams[$k] = $param;
             }
         }
 
         return $resultParams;
-    }
-
-    /**
-     * @param string $route
-     * @param array  $routeParams
-     *
-     * @return string
-     */
-    private function generateUrlByRoute($route, array $routeParams)
-    {
-        return $this->router->generate($route, $routeParams, UrlGenerator::ABSOLUTE_URL);
-    }
-
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
-    private function cleanMetaString($string)
-    {
-        return preg_replace(['/(\[[^\]]+\])/Sui', '/[\n\r]/'], ['', ''], $string);
     }
 }

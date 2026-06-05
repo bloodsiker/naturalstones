@@ -23,7 +23,7 @@ class ProductHasOptionMetal
     protected $id;
 
     /**
-     * @var \ProductBundle\Entity\Product
+     * @var Product
      *
      * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasOptionMetal")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
@@ -82,7 +82,7 @@ class ProductHasOptionMetal
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -116,11 +116,9 @@ class ProductHasOptionMetal
     /**
      * Set product.
      *
-     * @param \ProductBundle\Entity\Product $product
-     *
      * @return $this
      */
-    public function setProduct(\ProductBundle\Entity\Product $product)
+    public function setProduct(Product $product)
     {
         $this->product = $product;
 
@@ -130,7 +128,7 @@ class ProductHasOptionMetal
     /**
      * Get product.
      *
-     * @return \ProductBundle\Entity\Product
+     * @return Product
      */
     public function getProduct()
     {
@@ -140,11 +138,9 @@ class ProductHasOptionMetal
     /**
      * Set image.
      *
-     * @param \MediaBundle\Entity\MediaImage $image
-     *
      * @return $this
      */
-    public function setImage(\MediaBundle\Entity\MediaImage $image = null)
+    public function setImage(?\MediaBundle\Entity\MediaImage $image = null)
     {
         $this->image = $image;
 
@@ -164,11 +160,9 @@ class ProductHasOptionMetal
     /**
      * Set metal.
      *
-     * @param \ShareBundle\Entity\Metal $metal
-     *
      * @return $this
      */
-    public function setMetal(\ShareBundle\Entity\Metal $metal = null)
+    public function setMetal(?\ShareBundle\Entity\Metal $metal = null)
     {
         $this->metal = $metal;
 
@@ -197,8 +191,6 @@ class ProductHasOptionMetal
 
     /**
      * Set price
-     *
-     * @param  float  $price
      *
      * @return $this
      */

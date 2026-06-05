@@ -105,7 +105,7 @@ class WheelSpinHasOption
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -121,8 +121,6 @@ class WheelSpinHasOption
     }
 
     /**
-     * @param  WheelSpin  $wheelSpin
-     *
      * @return $this
      */
     public function setWheelSpin(WheelSpin $wheelSpin)
@@ -144,9 +142,6 @@ class WheelSpinHasOption
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getValuation(): float
     {
         return $this->valuation;
@@ -193,8 +188,6 @@ class WheelSpinHasOption
     }
 
     /**
-     * @param  string  $colour
-     *
      * @return $this
      */
     public function setColour(string $colour)
@@ -213,8 +206,6 @@ class WheelSpinHasOption
     }
 
     /**
-     * @param  string  $degrees
-     *
      * @return $this
      */
     public function setDegrees(?string $degrees)
@@ -233,8 +224,6 @@ class WheelSpinHasOption
     }
 
     /**
-     * @param  string  $label
-     *
      * @return $this
      */
     public function setLabel(?string $label)

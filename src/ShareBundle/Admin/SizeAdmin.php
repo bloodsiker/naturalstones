@@ -21,21 +21,20 @@ class SizeAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_sort_by'      => 'id',
-        '_sort_order'   => 'DESC',
+        '_sort_by' => 'id',
+        '_sort_order' => 'DESC',
     ];
 
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('share.form_group.basic', ['class' => 'col-md-8', 'label' => false])
                 ->add('name', TextType::class, [
@@ -57,10 +56,8 @@ class SizeAdmin extends Admin
         ;
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('id', null, [
                 'label' => 'size.fields.id',
@@ -84,10 +81,8 @@ class SizeAdmin extends Admin
         ;
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'size.fields.id',
@@ -103,7 +98,7 @@ class SizeAdmin extends Admin
                 'label' => 'size.fields.type',
                 'choices' => $this->getTypes(),
                 'catalogue' => $this->getTranslationDomain(),
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('_action', 'actions', [
                 'actions' => ['edit' => []],
@@ -111,10 +106,8 @@ class SizeAdmin extends Admin
         ;
     }
 
-    /**
-     * @param ShowMapper $showMapper
-     */
-    protected function configureShowFields(ShowMapper $showMapper): void    {
+    protected function configureShowFields(ShowMapper $showMapper): void
+    {
         $showMapper
             ->add('id')
             ->add('name')

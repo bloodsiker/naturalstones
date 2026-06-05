@@ -2,219 +2,120 @@
 
 namespace AppBundle\Twig;
 
-use OrderBundle\Entity\OrderBoard;
+use Sonata\BlockBundle\Model\Block;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Sonata\BlockBundle\Model\Block;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+use Twig\TwigTest;
 
-/**
- * Class AppExtension
- */
-class AppExtension extends \Twig\Extension\AbstractExtension
+class AppExtension extends AbstractExtension
 {
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * AppExtension constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param RouterInterface     $router
-     */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router)
-    {
-        $this->router       = $router;
-        $this->translator   = $translator;
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly RouterInterface $router,
+    ) {
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'app_extension';
     }
 
     /**
-     * {@inheritdoc}
+     * @return list<TwigFunction>
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
-        return array(
-            new \Twig\TwigFunction('block_ajax_url', array($this, 'blockAjaxUrl')),
-            new \Twig\TwigFunction('replace_highlight', array($this, 'replaceHighlight')),
-            new \Twig\TwigFunction('book_change_end', array($this, 'countBookChangeEnd')),
-            new \Twig\TwigFunction('icon_order_status', array($this, 'iconOrderStatus')),
-            new \Twig\TwigFunction('is_constrain', array($this, 'isConstrain')),
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTests()
-    {
-        return array(
-            new \Twig\TwigTest('instanceof', array($this, 'isInstanceOf')),
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
-    {
-        return array(
-            new \Twig\TwigFilter('file_size_humanize', array($this, 'fileSizeHumanize')),
-            new \Twig\TwigFilter('date_humanize', array($this, 'dateHumanize')),
-            new \Twig\TwigFilter('date_time_humanize', array($this, 'dateTimeHumanize')),
-            new \Twig\TwigFilter('url_decode', array($this, 'urlDecode')),
-        );
-    }
-
-    /**
-     * @param string $value
-     * @param string $replace
-     *
-     * @return string
-     */
-    public function replaceHighlight($value, $replace) : string
-    {
-        return preg_replace("/$replace/iu", '<span class="highlight">'.$replace.'</span>', $value);
-    }
-
-    /**
-     * @param int $count
-     *
-     * @return string
-     */
-    public function countBookChangeEnd($count) : string
-    {
-        $titles = ['книга', 'книги', 'книг'];
-
-        $cases = [2, 0, 1, 1, 1, 2];
-        $key = ($count % 100 > 4 && $count % 100 < 20) ? 2 : $cases[min($count % 10, 5)];
-
-        return $titles[$key];
-    }
-
-    /**
-     * @param int $status
-     *
-     * @return string
-     */
-    public function iconOrderStatus(int $status) : string
-    {
-        $statuses = [
-            OrderBoard::STATUS_NEW => 'fa fa-exclamation',
-            OrderBoard::STATUS_COMPLETED => 'fa fa-check',
-            OrderBoard::STATUS_CANCEL => 'fa fa-times',
+        return [
+            new TwigFunction('block_ajax_url', $this->blockAjaxUrl(...)),
+            new TwigFunction('replace_highlight', $this->replaceHighlight(...)),
+            new TwigFunction('is_constrain', $this->isConstrain(...)),
         ];
-
-        return $statuses[$status];
     }
 
+    /**
+     * @return list<TwigTest>
+     */
+    public function getTests(): array
+    {
+        return [
+            new TwigTest('instanceof', $this->isInstanceOf(...)),
+        ];
+    }
 
     /**
-     * Generate ajax block route without page
-     *
-     * @param Block $block
-     * @param array $parameters
-     *
-     * @return string
+     * @return list<TwigFilter>
      */
-    public function blockAjaxUrl(Block $block, $parameters = [])
+    public function getFilters(): array
+    {
+        return [
+            new TwigFilter('file_size_humanize', $this->fileSizeHumanize(...)),
+            new TwigFilter('date_humanize', $this->dateHumanize(...)),
+            new TwigFilter('date_time_humanize', $this->dateTimeHumanize(...)),
+            new TwigFilter('url_decode', $this->urlDecode(...)),
+        ];
+    }
+
+    public function replaceHighlight(string $value, string $replace): string
+    {
+        return preg_replace("/$replace/iu", '<span class="highlight">' . $replace . '</span>', $value);
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    public function blockAjaxUrl(Block $block, array $parameters = []): string
     {
         $parameters = array_merge($parameters, [
-            'blockId'   => $block->getId(),
+            'blockId' => $block->getId(),
             'blockType' => $block->getType(),
         ]);
 
         return $this->router->generate('block__ajax', $parameters);
     }
 
-    /**
-     * Checks if $var is instance of $instance
-     *
-     * @param mixed $var
-     * @param mixed $instance
-     *
-     * @return bool
-     */
-    public function isInstanceOf($var, $instance)
+    public function isInstanceOf(mixed $var, string $instance): bool
     {
         return $var instanceof $instance;
     }
 
-    /**
-     * @param $id
-     * @param $string
-     *
-     * @return string|null
-     */
-    public function isConstrain($id, $string)
+    public function isConstrain(int|string|null $id, ?string $string): ?string
     {
-        $explode = explode(',', $string);
+        if (null === $id || null === $string) {
+            return null;
+        }
 
-        return in_array($id, $explode) ? 'checked' : null;
+        return in_array($id, explode(',', $string), false) ? 'checked' : null;
     }
 
-    /**
-     * Returns a file size in human readable format.
-     *
-     * @param integer $size
-     * @param string  $delimiter
-     *
-     * @return string
-     */
-    public function fileSizeHumanize($size, $delimiter = '')
+    public function fileSizeHumanize(int $size, string $delimiter = ''): string
     {
-        $prefix = array('b', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb', 'Eb', 'Zb', 'Yb');
+        $prefix = ['b', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb', 'Eb', 'Zb', 'Yb'];
 
         $counter = 0;
-
         while (($size / 1024) > 1) {
-            $size = $size / 1024;
-            $counter += 1;
+            $size /= 1024;
+            ++$counter;
         }
 
         return sprintf('%.2f%s%s', $size, $delimiter, $prefix[$counter]);
     }
 
-    /**
-     * URL Decode a string
-     *
-     * @param string $url
-     *
-     * @return string The decoded URL
-     */
-    public function urlDecode($url)
+    public function urlDecode(string $url): string
     {
         return urldecode($url);
     }
 
     /**
-     * Convert DateTime value for news format
-     *
-     * @param \DateTime $datetime
-     * @param string    $formatDay
-     * @param bool      $hideYearIfCurrent
-     *
-     * @return string
-     *
      * @throws \Exception
      */
-    public function dateHumanize(\DateTime $datetime, $formatDay = 'd MMMM', $hideYearIfCurrent = true)
+    public function dateHumanize(\DateTime $datetime, string $formatDay = 'd MMMM'): string
     {
         $now = self::getNow();
         $date = $datetime->format('d.m.Y');
+
         if ($date === $now->format('d.m.Y')) {
             return $this->translator->trans('app.datetime.today', [], 'AppBundle');
         }
@@ -223,42 +124,27 @@ class AppExtension extends \Twig\Extension\AbstractExtension
             return $this->translator->trans('app.datetime.yesterday', [], 'AppBundle');
         }
 
-//        if (true === $hideYearIfCurrent && $now->format('Y') !== $datetime->format('Y')) {
-//            $formatDay .= ' y';
-//        }
-
         return datefmt_format_object($datetime, $formatDay);
     }
 
     /**
-     * Convert DateTime value for news format (with time)
-     *
-     * @param \DateTime $datetime
-     * @param string    $formatDay
-     * @param string    $formatTime
-     * @param bool      $hideYearIfCurrent
-     *
-     * @return string
-     *
      * @throws \Exception
      */
-    public function dateTimeHumanize(\DateTime $datetime, $formatDay = 'd MMMM', $formatTime = ', HH:mm', $hideYearIfCurrent = true)
-    {
-        return $this->dateHumanize($datetime, $formatDay, $hideYearIfCurrent).datefmt_format_object($datetime, $formatTime);
+    public function dateTimeHumanize(
+        \DateTime $datetime,
+        string $formatDay = 'd MMMM',
+        string $formatTime = ', HH:mm',
+    ): string {
+        return $this->dateHumanize($datetime, $formatDay) . datefmt_format_object($datetime, $formatTime);
     }
 
     /**
-     * Returns current date and time, rounded to nearest minute
-     *
-     * @return \DateTime
-     *
      * @throws \Exception
      */
-    private static function getNow()
+    private static function getNow(): \DateTime
     {
         $now = new \DateTime('now');
-        $second = $now->format('s');
-        $now->add(new \DateInterval('PT'.(60-$second).'S'));
+        $now->add(new \DateInterval('PT' . (60 - (int) $now->format('s')) . 'S'));
 
         return $now;
     }

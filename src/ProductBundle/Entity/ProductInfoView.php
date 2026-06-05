@@ -23,7 +23,7 @@ class ProductInfoView
     protected $id;
 
     /**
-     * @var \ProductBundle\Entity\Product
+     * @var Product
      *
      * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=true, onDelete="cascade")
@@ -49,14 +49,14 @@ class ProductInfoView
      */
     public function __construct()
     {
-        $this->views     = 0;
-        $this->viewAt    = new \DateTime('now');
+        $this->views = 0;
+        $this->viewAt = new \DateTime('now');
     }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -66,11 +66,9 @@ class ProductInfoView
     /**
      * Set product
      *
-     * @param \ProductBundle\Entity\Product $product
-     *
      * @return $this
      */
-    public function setProduct(\ProductBundle\Entity\Product $product = null)
+    public function setProduct(?Product $product = null)
     {
         $this->product = $product;
 
@@ -80,7 +78,7 @@ class ProductInfoView
     /**
      * Get product
      *
-     * @return \ProductBundle\Entity\Product
+     * @return Product
      */
     public function getProduct()
     {
@@ -123,8 +121,6 @@ class ProductInfoView
 
     /**
      * Set views
-     *
-     * @param int $views
      *
      * @return $this
      */

@@ -12,9 +12,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
-use Sonata\Form\Type\DateTimePickerType;
 use Sonata\DatagridBundle\Filter\FilterInterface;
-use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -30,24 +29,22 @@ class ArticleAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'id',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
         '_sort_order' => 'DESC',
     ];
 
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
 
         $collection->add('preview', 'preview');
     }
 
-    /**
-     * @return array
-     */
     protected function configurePersistentParameters(): array
     {
         if (!$this->hasRequest()) {
@@ -64,7 +61,7 @@ class ArticleAdmin extends Admin
     /**
      * @param string $name
      *
-     * @return null|string|void
+     * @return string|void|null
      */
     public function getTemplate($name)
     {
@@ -76,16 +73,14 @@ class ArticleAdmin extends Admin
         return $this->getTemplateRegistry()->getTemplate($name);
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'article.fields.id',
             ])
             ->add('image', null, [
-                'label'    => 'article.fields.image',
+                'label' => 'article.fields.image',
                 'template' => '@Article/Admin/list_fields.html.twig',
             ])
             ->addIdentifier('title', null, [
@@ -102,20 +97,18 @@ class ArticleAdmin extends Admin
             ])
             ->add('isActive', null, [
                 'label' => 'article.fields.is_active',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('_action', 'actions', [
                 'template' => isset($this->getPersistentParameters()['CKEditor']) ? '@Admin/Ckeditor/select.html.twig' : null,
                 'actions' => [
-                    'edit'      => [],
+                    'edit' => [],
                 ],
             ]);
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('translations.title', null, [
                 'label' => 'article.fields.title',
@@ -128,10 +121,8 @@ class ArticleAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('translations', TranslationsType::class, [
@@ -186,15 +177,10 @@ class ArticleAdmin extends Admin
                     'property' => 'translations.name',
                     'multiple' => true,
                     'attr' => ['class' => 'form-control'],
-                    'callback' => function($admin, $property, $value) {
+                    'callback' => function ($admin, $property, $value) {
                         $datagrid = $admin->getDatagrid();
                         if (!$datagrid->hasFilter($property)) {
-                            throw new \RuntimeException(sprintf(
-                                'To retrieve autocomplete items,'
-                                .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
-                                $property,
-                                \get_class($admin)
-                            ));
+                            throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, \get_class($admin)));
                         }
                         $filter = $datagrid->getFilter($property);
                         $filter->setCondition(FilterInterface::CONDITION_AND);
@@ -213,13 +199,13 @@ class ArticleAdmin extends Admin
                     'attr' => ['readonly' => true],
                 ])
                 ->add('updatedAt', DateTimePickerType::class, [
-                    'label'     => 'article.fields.updated_at',
+                    'label' => 'article.fields.updated_at',
                     'required' => false,
                     'format' => 'dd-MM-yyyy HH:mm',
                     'attr' => ['readonly' => true],
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
-                    'label'     => 'article.fields.created_at',
+                    'label' => 'article.fields.created_at',
                     'required' => true,
                     'format' => 'yyyy-MM-dd HH:mm',
                     'attr' => ['readonly' => true],

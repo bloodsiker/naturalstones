@@ -1,37 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ovsiichuk
- * Date: 28.12.18
- * Time: 18:04
- */
 
 namespace AppBundle\Services;
 
-/**
- * Class BreadcrumbService
- */
 class BreadcrumbService
 {
-    /**
-     * @var array $breadcrumb
-     */
-    private $breadcrumb;
+    /** @var array<int, array<string, mixed>> */
+    private array $breadcrumb = [];
 
     /**
-     * BreadcrumbService constructor.
+     * @param array<string, mixed> $array
      */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * @param array $array
-     *
-     * @return $this
-     */
-    public function addBreadcrumb($array)
+    public function addBreadcrumb(array $array): self
     {
         $this->breadcrumb[] = $array;
 
@@ -39,9 +18,9 @@ class BreadcrumbService
     }
 
     /**
-     * @return array
+     * @return array<int, array<string, mixed>>
      */
-    public function getBreadcrumb()
+    public function getBreadcrumb(): array
     {
         return $this->breadcrumb;
     }

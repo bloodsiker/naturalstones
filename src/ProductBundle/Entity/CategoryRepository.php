@@ -10,9 +10,6 @@ use Doctrine\ORM\QueryBuilder;
  */
 class CategoryRepository extends EntityRepository
 {
-    /**
-     * @return QueryBuilder
-     */
     public function baseCategoryQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c');

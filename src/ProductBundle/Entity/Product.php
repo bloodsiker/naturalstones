@@ -21,17 +21,17 @@ class Product implements TranslatableInterface
     use ORMBehaviors\Translatable\TranslatableTrait;
     use TranslatableProxyTrait;
 
-    const WHO_MAN = 'man';
-    const WHO_WOMAN = 'woman';
+    public const WHO_MAN = 'man';
+    public const WHO_WOMAN = 'woman';
 
-    const TYPE_LETTERS = 1;
-    const TYPE_INSERTS = 2;
-    const TYPE_PENDANTS = 3;
-    const TYPE_BRACELET = 4;
-    const TYPE_RINGS = 5;
-    const TYPE_NECKLACE = 6;
-    const TYPE_EARRING = 7;
-    const TYPE_MONEY = 8;
+    public const TYPE_LETTERS = 1;
+    public const TYPE_INSERTS = 2;
+    public const TYPE_PENDANTS = 3;
+    public const TYPE_BRACELET = 4;
+    public const TYPE_RINGS = 5;
+    public const TYPE_NECKLACE = 6;
+    public const TYPE_EARRING = 7;
+    public const TYPE_MONEY = 8;
 
     /**
      * @var int
@@ -51,7 +51,7 @@ class Product implements TranslatableInterface
     protected $image;
 
     /**
-     * @var \ProductBundle\Entity\Category
+     * @var Category
      *
      * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Category", inversedBy="products")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
@@ -59,7 +59,7 @@ class Product implements TranslatableInterface
     protected $category;
 
     /**
-     * @var \ProductBundle\Entity\ProductOptionLabel
+     * @var ProductOptionLabel
      *
      * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\ProductOptionLabel")
      * @ORM\JoinColumn(name="option_label_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
@@ -312,29 +312,29 @@ class Product implements TranslatableInterface
      */
     public function __construct()
     {
-        $this->size          = null;
-        $this->isActive      = true;
-        $this->isAvailable   = true;
-        $this->isMan         = false;
-        $this->isWoman       = true;
+        $this->size = null;
+        $this->isActive = true;
+        $this->isAvailable = true;
+        $this->isMan = false;
+        $this->isWoman = true;
         $this->isMainProduct = true;
-        $this->views      = 0;
-        $this->price      = 0;
-        $this->discount   = 0;
-        $this->percent    = 0;
+        $this->views = 0;
+        $this->price = 0;
+        $this->discount = 0;
+        $this->percent = 0;
         $this->finalPrice = 0;
-        $this->orderNum   = 1;
-        $this->createdAt  = new \DateTime('now');
+        $this->orderNum = 1;
+        $this->createdAt = new \DateTime('now');
 
-        $this->colours           = new ArrayCollection();
-        $this->metals            = new ArrayCollection();
-        $this->tags              = new ArrayCollection();
-        $this->stones            = new ArrayCollection();
-        $this->productHasImage   = new ArrayCollection();
-        $this->productHasVideo   = new ArrayCollection();
+        $this->colours = new ArrayCollection();
+        $this->metals = new ArrayCollection();
+        $this->tags = new ArrayCollection();
+        $this->stones = new ArrayCollection();
+        $this->productHasImage = new ArrayCollection();
+        $this->productHasVideo = new ArrayCollection();
         $this->productHasProduct = new ArrayCollection();
-        $this->productHasOption       = new ArrayCollection();
-        $this->productHasOptionMetal  = new ArrayCollection();
+        $this->productHasOption = new ArrayCollection();
+        $this->productHasOptionMetal = new ArrayCollection();
         $this->productHasOptionColour = new ArrayCollection();
     }
 
@@ -398,8 +398,6 @@ class Product implements TranslatableInterface
     }
 
     /**
-     * @param $id
-     *
      * @return $this
      */
     public function setId($id)
@@ -412,7 +410,7 @@ class Product implements TranslatableInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -456,11 +454,9 @@ class Product implements TranslatableInterface
     /**
      * Set image
      *
-     * @param \MediaBundle\Entity\MediaImage $image
-     *
      * @return Product
      */
-    public function setImage(\MediaBundle\Entity\MediaImage $image = null)
+    public function setImage(?\MediaBundle\Entity\MediaImage $image = null)
     {
         $this->image = $image;
 
@@ -480,11 +476,9 @@ class Product implements TranslatableInterface
     /**
      * Set category
      *
-     * @param \ProductBundle\Entity\Category $category
-     *
      * @return Product
      */
-    public function setCategory(\ProductBundle\Entity\Category $category = null)
+    public function setCategory(?Category $category = null)
     {
         $this->category = $category;
 
@@ -494,7 +488,7 @@ class Product implements TranslatableInterface
     /**
      * Get category
      *
-     * @return \ProductBundle\Entity\Category
+     * @return Category
      */
     public function getCategory()
     {
@@ -504,11 +498,9 @@ class Product implements TranslatableInterface
     /**
      * Set optionLabel
      *
-     * @param \ProductBundle\Entity\ProductOptionLabel $optionLabel
-     *
      * @return Product
      */
-    public function setOptionLabel(\ProductBundle\Entity\ProductOptionLabel $optionLabel = null)
+    public function setOptionLabel(?ProductOptionLabel $optionLabel = null)
     {
         $this->optionLabel = $optionLabel;
 
@@ -518,7 +510,7 @@ class Product implements TranslatableInterface
     /**
      * Get optionLabel
      *
-     * @return \ProductBundle\Entity\ProductOptionLabel
+     * @return ProductOptionLabel
      */
     public function getOptionLabel()
     {
@@ -528,11 +520,9 @@ class Product implements TranslatableInterface
     /**
      * Set size
      *
-     * @param \ShareBundle\Entity\Size $size
-     *
      * @return Product
      */
-    public function setSize(\ShareBundle\Entity\Size $size = null)
+    public function setSize(?\ShareBundle\Entity\Size $size = null)
     {
         $this->size = $size;
 
@@ -586,7 +576,7 @@ class Product implements TranslatableInterface
     /**
      * Set isActive
      *
-     * @param boolean $isActive
+     * @param bool $isActive
      *
      * @return Product
      */
@@ -600,7 +590,7 @@ class Product implements TranslatableInterface
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {
@@ -610,7 +600,7 @@ class Product implements TranslatableInterface
     /**
      * Set isAvailable
      *
-     * @param boolean $isAvailable
+     * @param bool $isAvailable
      *
      * @return Product
      */
@@ -624,7 +614,7 @@ class Product implements TranslatableInterface
     /**
      * Get isAvailable
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsAvailable()
     {
@@ -634,7 +624,7 @@ class Product implements TranslatableInterface
     /**
      * Set isMan
      *
-     * @param boolean $isMan
+     * @param bool $isMan
      *
      * @return Product
      */
@@ -648,7 +638,7 @@ class Product implements TranslatableInterface
     /**
      * Get isMan
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsMan()
     {
@@ -657,8 +647,6 @@ class Product implements TranslatableInterface
 
     /**
      * Set isWoman
-     *
-     * @param  boolean  $isWoman
      *
      * @return Product
      */
@@ -672,7 +660,7 @@ class Product implements TranslatableInterface
     /**
      * Get isWoman
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsWoman()
     {
@@ -681,8 +669,6 @@ class Product implements TranslatableInterface
 
     /**
      * Set isMainProduct
-     *
-     * @param  boolean  $isMainProduct
      *
      * @return Product
      */
@@ -696,7 +682,7 @@ class Product implements TranslatableInterface
     /**
      * Get isMainProduct
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsMainProduct()
     {
@@ -705,8 +691,6 @@ class Product implements TranslatableInterface
 
     /**
      * Set views
-     *
-     * @param  boolean  $views
      *
      * @return Product
      */
@@ -720,7 +704,7 @@ class Product implements TranslatableInterface
     /**
      * Get views
      *
-     * @return integer
+     * @return int
      */
     public function getViews()
     {
@@ -730,11 +714,9 @@ class Product implements TranslatableInterface
     /**
      * Set productGroup
      *
-     * @param  int|null  $productGroup
-     *
      * @return Product
      */
-    public function setProductGroup(int $productGroup = null)
+    public function setProductGroup(?int $productGroup = null)
     {
         $this->productGroup = $productGroup;
 
@@ -744,7 +726,7 @@ class Product implements TranslatableInterface
     /**
      * Get productGroup
      *
-     * @return integer
+     * @return int
      */
     public function getProductGroup()
     {
@@ -753,8 +735,6 @@ class Product implements TranslatableInterface
 
     /**
      * Add colours
-     *
-     * @param \ShareBundle\Entity\Colour $colour
      *
      * @return Product
      */
@@ -767,8 +747,6 @@ class Product implements TranslatableInterface
 
     /**
      * Remove colours
-     *
-     * @param \ShareBundle\Entity\Colour $colour
      */
     public function removeColour(\ShareBundle\Entity\Colour $colour)
     {
@@ -788,8 +766,6 @@ class Product implements TranslatableInterface
     /**
      * Add metals
      *
-     * @param \ShareBundle\Entity\Metal $metal
-     *
      * @return Product
      */
     public function addMetal(\ShareBundle\Entity\Metal $metal)
@@ -801,8 +777,6 @@ class Product implements TranslatableInterface
 
     /**
      * Remove colours
-     *
-     * @param \ShareBundle\Entity\Metal $metal
      */
     public function removeMetal(\ShareBundle\Entity\Metal $metal)
     {
@@ -822,8 +796,6 @@ class Product implements TranslatableInterface
     /**
      * Add tags
      *
-     * @param \ShareBundle\Entity\Tag $tags
-     *
      * @return Product
      */
     public function addTag(\ShareBundle\Entity\Tag $tags)
@@ -835,8 +807,6 @@ class Product implements TranslatableInterface
 
     /**
      * Remove tags
-     *
-     * @param \ShareBundle\Entity\Tag $tags
      */
     public function removeTag(\ShareBundle\Entity\Tag $tags)
     {
@@ -856,8 +826,6 @@ class Product implements TranslatableInterface
     /**
      * Add stones
      *
-     * @param \ShareBundle\Entity\Stone $stone
-     *
      * @return Product
      */
     public function addStone(\ShareBundle\Entity\Stone $stone)
@@ -869,8 +837,6 @@ class Product implements TranslatableInterface
 
     /**
      * Remove stones
-     *
-     * @param \ShareBundle\Entity\Stone $stone
      */
     public function removeStone(\ShareBundle\Entity\Stone $stone)
     {
@@ -1014,8 +980,6 @@ class Product implements TranslatableInterface
     /**
      * Set optionType
      *
-     * @param int $optionType
-     *
      * @return $this
      */
     public function setOptionType(int $optionType)
@@ -1068,8 +1032,6 @@ class Product implements TranslatableInterface
     }
 
     /**
-     * @param $telegramMessageId
-     *
      * @return $this
      */
     public function setTelegramMessageId($telegramMessageId)
@@ -1082,11 +1044,9 @@ class Product implements TranslatableInterface
     /**
      * Add ProductHasImage.
      *
-     * @param \ProductBundle\Entity\ProductHasImage $productHasImage
-     *
      * @return Product
      */
-    public function addProductHasImage(\ProductBundle\Entity\ProductHasImage $productHasImage)
+    public function addProductHasImage(ProductHasImage $productHasImage)
     {
         $productHasImage->setProduct($this);
         $this->productHasImage[] = $productHasImage;
@@ -1097,11 +1057,9 @@ class Product implements TranslatableInterface
     /**
      * Remove ProductHasImage.
      *
-     * @param \ProductBundle\Entity\ProductHasImage $productHasImage
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise
      */
-    public function removeProductHasImage(\ProductBundle\Entity\ProductHasImage $productHasImage)
+    public function removeProductHasImage(ProductHasImage $productHasImage)
     {
         return $this->productHasImage->removeElement($productHasImage);
     }
@@ -1119,11 +1077,9 @@ class Product implements TranslatableInterface
     /**
      * Add ProductHasVideo.
      *
-     * @param \ProductBundle\Entity\ProductHasVideo $productHasVideo
-     *
      * @return Product
      */
-    public function addProductHasVideo(\ProductBundle\Entity\ProductHasVideo $productHasVideo)
+    public function addProductHasVideo(ProductHasVideo $productHasVideo)
     {
         $productHasVideo->setProduct($this);
         $this->productHasVideo[] = $productHasVideo;
@@ -1134,11 +1090,9 @@ class Product implements TranslatableInterface
     /**
      * Remove ProductHasVideo.
      *
-     * @param \ProductBundle\Entity\ProductHasVideo $productHasVideo
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise
      */
-    public function removeProductHasVideo(\ProductBundle\Entity\ProductHasVideo $productHasVideo)
+    public function removeProductHasVideo(ProductHasVideo $productHasVideo)
     {
         return $this->productHasVideo->removeElement($productHasVideo);
     }
@@ -1156,11 +1110,9 @@ class Product implements TranslatableInterface
     /**
      * Add productHasProduct.
      *
-     * @param \ProductBundle\Entity\ProductHasProduct $productHasProduct
-     *
      * @return Product
      */
-    public function addProductHasProduct(\ProductBundle\Entity\ProductHasProduct $productHasProduct)
+    public function addProductHasProduct(ProductHasProduct $productHasProduct)
     {
         $productHasProduct->setProduct($this);
         $this->productHasProduct[] = $productHasProduct;
@@ -1171,11 +1123,9 @@ class Product implements TranslatableInterface
     /**
      * Remove productHasProduct.
      *
-     * @param \ProductBundle\Entity\ProductHasProduct $productHasProduct
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise
      */
-    public function removeProductHasProduct(\ProductBundle\Entity\ProductHasProduct $productHasProduct)
+    public function removeProductHasProduct(ProductHasProduct $productHasProduct)
     {
         return $this->productHasProduct->removeElement($productHasProduct);
     }
@@ -1193,11 +1143,9 @@ class Product implements TranslatableInterface
     /**
      * Add productHasOption.
      *
-     * @param \ProductBundle\Entity\ProductHasOption $productHasOption
-     *
      * @return Product
      */
-    public function addProductHasOption(\ProductBundle\Entity\ProductHasOption $productHasOption)
+    public function addProductHasOption(ProductHasOption $productHasOption)
     {
         $productHasOption->setProduct($this);
         $this->productHasOption[] = $productHasOption;
@@ -1208,11 +1156,9 @@ class Product implements TranslatableInterface
     /**
      * Remove productHasOption.
      *
-     * @param \ProductBundle\Entity\ProductHasOption $productHasOption
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise
      */
-    public function removeProductHasOption(\ProductBundle\Entity\ProductHasOption $productHasOption)
+    public function removeProductHasOption(ProductHasOption $productHasOption)
     {
         return $this->productHasOption->removeElement($productHasOption);
     }
@@ -1230,11 +1176,9 @@ class Product implements TranslatableInterface
     /**
      * Add productHasOptionMetal.
      *
-     * @param \ProductBundle\Entity\ProductHasOptionMetal $productHasOptionMetal
-     *
      * @return Product
      */
-    public function addProductHasOptionMetal(\ProductBundle\Entity\ProductHasOptionMetal $productHasOptionMetal)
+    public function addProductHasOptionMetal(ProductHasOptionMetal $productHasOptionMetal)
     {
         $productHasOptionMetal->setProduct($this);
         $this->productHasOptionMetal[] = $productHasOptionMetal;
@@ -1245,11 +1189,9 @@ class Product implements TranslatableInterface
     /**
      * Remove productHasOptionMetal.
      *
-     * @param \ProductBundle\Entity\ProductHasOptionMetal $productHasOptionMetal
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise
      */
-    public function removeProductHasOptionMetal(\ProductBundle\Entity\ProductHasOptionMetal $productHasOptionMetal)
+    public function removeProductHasOptionMetal(ProductHasOptionMetal $productHasOptionMetal)
     {
         return $this->productHasOptionMetal->removeElement($productHasOptionMetal);
     }
@@ -1267,11 +1209,9 @@ class Product implements TranslatableInterface
     /**
      * Add productHasOptionColour.
      *
-     * @param \ProductBundle\Entity\ProductHasOptionColour $productHasOptionColour
-     *
      * @return Product
      */
-    public function addProductHasOptionColour(\ProductBundle\Entity\ProductHasOptionColour $productHasOptionColour)
+    public function addProductHasOptionColour(ProductHasOptionColour $productHasOptionColour)
     {
         $productHasOptionColour->setProduct($this);
         $this->productHasOptionColour[] = $productHasOptionColour;
@@ -1282,11 +1222,9 @@ class Product implements TranslatableInterface
     /**
      * Remove productHasOptionColour.
      *
-     * @param \ProductBundle\Entity\ProductHasOptionColour $productHasOptionColour
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise
      */
-    public function removeProductHasOptionColour(\ProductBundle\Entity\ProductHasOptionColour $productHasOptionColour)
+    public function removeProductHasOptionColour(ProductHasOptionColour $productHasOptionColour)
     {
         return $this->productHasOptionColour->removeElement($productHasOptionColour);
     }

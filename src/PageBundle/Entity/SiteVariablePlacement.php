@@ -43,7 +43,7 @@ class SiteVariablePlacement
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -66,8 +66,6 @@ class SiteVariablePlacement
 
     /**
      * Get alias
-     *
-     * @return string
      */
     public function getAlias(): string
     {

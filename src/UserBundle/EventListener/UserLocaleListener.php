@@ -7,7 +7,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class UserLocaleListener
 {
-    public function __construct(private RequestStack $requestStack)
+    public function __construct(private readonly RequestStack $requestStack)
     {
     }
 

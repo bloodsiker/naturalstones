@@ -4,7 +4,6 @@ namespace WheelSpinBundle\Admin;
 
 use AdminBundle\Form\Type\ColorPickerType;
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
-
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
@@ -19,10 +18,8 @@ class WheelSpinHasOptionAdmin extends Admin
 {
     protected $parentAssociationMapping = 'wheelSpin';
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('wheelSpinOption', null, [
                 'label' => 'wheel_spin_has_option.fields.option',
@@ -47,10 +44,8 @@ class WheelSpinHasOptionAdmin extends Admin
         ;
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $linkParameters = [];
 
         if ($this->hasParentFieldDescription()) {
@@ -68,9 +63,9 @@ class WheelSpinHasOptionAdmin extends Admin
         $formMapper
             ->add('wheelSpinOption', ModelListType::class, [
                 'label' => 'wheel_spin_has_option.fields.option',
-                'required'      => true,
-                'btn_delete'    => false,
-                'btn_edit'      => 'btn_edit',
+                'required' => true,
+                'btn_delete' => false,
+                'btn_edit' => 'btn_edit',
             ], ['link_parameters' => $linkParameters])
             ->add('label', TextType::class, [
                 'label' => 'wheel_spin_has_option.fields.label',

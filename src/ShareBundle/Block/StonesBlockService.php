@@ -2,105 +2,73 @@
 
 namespace ShareBundle\Block;
 
+use AppBundle\Block\AbstractEditableBlockService;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use ShareBundle\Entity\Stone;
-use AppBundle\Block\AbstractEditableBlockService;
+use ShareBundle\Entity\StoneRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Twig\Environment;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
-/**
- * Class StonesBlockService
- */
 class StonesBlockService extends AbstractEditableBlockService
 {
-    /**
-     * @var Registry $doctrine
-     */
-    protected $doctrine;
-
-    /**
-     * @var RequestStack
-     */
-    private $request;
-
-    /**
-     * ListGenreBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param Registry        $doctrine
-     */
-    public function __construct(Environment $twig, Registry $doctrine, RequestStack $request)
-    {
+    public function __construct(
+        Environment $twig,
+        protected readonly Registry $doctrine,
+        private readonly RequestStack $request,
+    ) {
         parent::__construct($twig);
-
-        $this->doctrine = $doctrine;
-        $this->request = $request;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
-            'items_count'  => 200,
-            'is_main'      => false,
+            'items_count' => 200,
+            'is_main' => false,
             'show_letters' => false,
-            'letter'       => null,
-            'zodiac'       => null,
-            'view_all'     => false,
-            'title'        => null,
-            'template'     => '@Share/Block/stones.html.twig',
+            'letter' => null,
+            'zodiac' => null,
+            'view_all' => false,
+            'title' => null,
+            'template' => '@Share/Block/stones.html.twig',
         ]);
     }
 
-    /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         $block = $blockContext->getBlock();
-
         if (!$block->getEnabled()) {
             return new Response();
         }
 
         $request = $this->request->getCurrentRequest();
-
+        /** @var StoneRepository $repository */
         $repository = $this->doctrine->getRepository(Stone::class);
-
-        $limit = $blockContext->getSetting('items_count');
 
         $qb = $repository->baseStoneQueryBuilder();
 
         if ($blockContext->getSetting('is_main')) {
             $repository->filterByShowMain($qb);
         }
-
-        if ($blockContext->getSetting('zodiac')) {
-            $repository->filterByZodiac($qb, $blockContext->getSetting('zodiac'));
+        if ($zodiac = $blockContext->getSetting('zodiac')) {
+            $repository->filterByZodiac($qb, $zodiac);
         }
-
-        if ($blockContext->getSetting('letter')) {
-            $repository->filterByLetter($qb, $blockContext->getSetting('letter'));
+        if ($letter = $blockContext->getSetting('letter')) {
+            $repository->filterByLetter($qb, $letter);
         }
 
         $stones = $qb->setFirstResult(0)
-            ->setMaxResults($limit)
+            ->setMaxResults((int) $blockContext->getSetting('items_count'))
             ->getQuery()
             ->getResult();
 
+        $letterStones = [];
         if ($blockContext->getSetting('show_letters')) {
-            $letterStones = [];
             foreach ($repository->uniqLetterByStone($request->getLocale()) as $value) {
                 $letterStones[$value[1]] = [];
             }
-
             foreach ($stones as $stone) {
                 $first = mb_substr($stone->getName(), 0, 1);
                 if (array_key_exists($first, $letterStones)) {
@@ -110,9 +78,9 @@ class StonesBlockService extends AbstractEditableBlockService
         }
 
         return $this->renderResponse($blockContext->getTemplate(), [
-            'letters'  => $letterStones ?? [],
-            'stones'   => $stones,
-            'block'    => $block,
+            'letters' => $letterStones,
+            'stones' => $stones,
+            'block' => $block,
             'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
         ], $response);
     }

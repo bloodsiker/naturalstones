@@ -6,8 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use PageBundle\Model\RedirectInterface;
 
 /**
- * Class PageRedirect
- *
  * @ORM\Entity
  * @ORM\Table(name="page_page_redirect", uniqueConstraints={
  *      @ORM\UniqueConstraint(name="idx_unique_from_path", columns={"from_path"})
@@ -15,227 +13,127 @@ use PageBundle\Model\RedirectInterface;
  */
 class PageRedirect implements RedirectInterface
 {
-    const TYPE_FULL         = 1;
-    const TYPE_SEGMENT      = 2;
-    const TYPE_REGEX        = 3;
-    const TYPE_STARTS_WITH  = 4;
+    public const TYPE_FULL = 1;
+    public const TYPE_SEGMENT = 2;
+    public const TYPE_REGEX = 3;
+    public const TYPE_STARTS_WITH = 4;
 
     /**
-     * @var int $id
-     *
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned"=true})
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      */
-    protected $fromPath;
+    protected ?string $fromPath = null;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $toPath;
+    protected ?string $toPath = null;
 
     /**
-     * @var \PageBundle\Entity\Page
-     *
      * @ORM\ManyToOne(targetEntity="\PageBundle\Entity\Page")
      * @ORM\JoinColumn(name="to_page_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
-    protected $toPage;
+    protected ?Page $toPage = null;
 
     /**
-     * @var bool
-     *
      * @ORM\Column(name="is_active", type="boolean", nullable=false)
      */
-    protected $isActive;
+    protected bool $isActive = true;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="smallint", columnDefinition="TINYINT(1) UNSIGNED DEFAULT 1 NOT NULL")
      */
-    public $type;
+    public ?int $type = null;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $help;
+    protected ?string $help = null;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->isActive = true;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->getFromPath();
     }
 
-    /**
-     * Get id
-     *
-     * @return integer $id
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set fromPath
-     *
-     * @param string $fromPath
-     *
-     * @return PageRedirect
-     */
-    public function setFromPath($fromPath)
+    public function setFromPath(?string $fromPath): self
     {
         $this->fromPath = $fromPath;
 
         return $this;
     }
 
-    /**
-     * Get fromPath
-     *
-     * @return string
-     */
-    public function getFromPath()
+    public function getFromPath(): ?string
     {
         return $this->fromPath;
     }
 
-    /**
-     * Set toPath
-     *
-     * @param string $toPath
-     *
-     * @return PageRedirect
-     */
-    public function setToPath($toPath)
+    public function setToPath(?string $toPath): self
     {
         $this->toPath = $toPath;
 
         return $this;
     }
 
-    /**
-     * Get redirectTo
-     *
-     * @return string
-     */
-    public function getToPath()
+    public function getToPath(): ?string
     {
         return $this->toPath;
     }
 
-    /**
-     * Set toPage
-     *
-     * @param \PageBundle\Entity\Page $toPage
-     *
-     * @return PageRedirect
-     */
-    public function setToPage(\PageBundle\Entity\Page $toPage = null)
+    public function setToPage(?Page $toPage = null): self
     {
         $this->toPage = $toPage;
 
         return $this;
     }
 
-    /**
-     * Get redirectToPage
-     *
-     * @return Page
-     */
-    public function getToPage()
+    public function getToPage(): ?Page
     {
         return $this->toPage;
     }
 
-    /**
-     * Set isActive
-     *
-     * @param bool $isActive
-     *
-     * @return PageRedirect
-     */
-    public function setIsActive(bool $isActive)
+    public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function getIsActive()
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
 
-    /**
-     * Get type
-     *
-     * @return int
-     */
-    public function getType()
+    public function getType(): ?int
     {
         return $this->type;
     }
 
-    /**
-     * Set type
-     *
-     * @param int $type
-     *
-     * @return PageRedirect
-     */
-    public function setType($type)
+    public function setType(?int $type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    /**
-     * Set help
-     *
-     * @param string $help
-     *
-     * @return PageRedirect
-     */
-    public function setHelp($help)
+    public function setHelp(?string $help): self
     {
         $this->help = $help;
 
         return $this;
     }
 
-    /**
-     * Get help
-     *
-     * @return string
-     */
-    public function getHelp()
+    public function getHelp(): ?string
     {
         return $this->help;
     }
@@ -250,15 +148,15 @@ class PageRedirect implements RedirectInterface
     }
 
     /**
-     * @return array
+     * @return array<int, string>
      */
-    public static function getTypeList()
+    public static function getTypeList(): array
     {
         return [
-            self::TYPE_FULL         => 'full',
-            self::TYPE_SEGMENT      => 'segment',
-            self::TYPE_REGEX        => 'regex',
-            self::TYPE_STARTS_WITH  => 'starts_with',
+            self::TYPE_FULL => 'full',
+            self::TYPE_SEGMENT => 'segment',
+            self::TYPE_REGEX => 'regex',
+            self::TYPE_STARTS_WITH => 'starts_with',
         ];
     }
 }

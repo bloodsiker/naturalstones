@@ -25,56 +25,53 @@ class MainImageAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'orderNum',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'orderNum',
         '_sort_order' => 'ASC',
     ];
 
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
-        $collection->add('moveup', $this->getRouterIdParameter().'/move-up');
-        $collection->add('movedown', $this->getRouterIdParameter().'/move-down');
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection->add('moveup', $this->getRouterIdParameter() . '/move-up');
+        $collection->add('movedown', $this->getRouterIdParameter() . '/move-down');
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'main_image.fields.id',
             ])
             ->add('image', null, [
-                'label'     => 'main_image.fields.image',
-                'template'  => '@MainImage/Admin/list_fields.html.twig',
+                'label' => 'main_image.fields.image',
+                'template' => '@MainImage/Admin/list_fields.html.twig',
             ])
             ->addIdentifier('title', null, [
                 'label' => 'main_image.fields.title',
             ])
             ->add('isActive', null, [
                 'label' => 'main_image.fields.is_active',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('createdAt', null, [
                 'label' => 'main_image.fields.created_at',
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'move_up'   => ['template' => '@Admin/CRUD/list__action_move_up.html.twig'],
+                    'move_up' => ['template' => '@Admin/CRUD/list__action_move_up.html.twig'],
                     'order_num' => ['template' => '@Admin/CRUD/list__action_order_num.html.twig'],
                     'move_down' => ['template' => '@Admin/CRUD/list__action_move_down.html.twig'],
-                    'edit'      => [],
+                    'edit' => [],
                 ],
             ]);
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('isActive', null, [
                 'label' => 'main_image.fields.is_active',
@@ -84,10 +81,8 @@ class MainImageAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('translations', TranslationsType::class, [
@@ -124,7 +119,7 @@ class MainImageAdmin extends Admin
                     'required' => false,
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
-                    'label'     => 'main_image.fields.created_at',
+                    'label' => 'main_image.fields.created_at',
                     'required' => true,
                     'format' => 'yyyy-MM-dd HH:mm',
                     'attr' => ['readonly' => true],

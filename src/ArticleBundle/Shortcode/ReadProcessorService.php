@@ -2,43 +2,29 @@
 
 namespace ArticleBundle\Shortcode;
 
+use ArticleBundle\Entity\Article;
 use Doctrine\ORM\EntityManagerInterface;
 use ShortcodeBundle\Processor\ProcessorInterface;
 
-/**
- * Class ReadProcessorService
- */
 class ReadProcessorService implements ProcessorInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * ReadProcessorService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+    ) {
     }
 
     /**
-     * @param array $data
+     * @param array<string, mixed> $data
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function process(array $data)
+    public function process(array $data): array
     {
-        if (!(is_array($data) && array_key_exists('id', $data))) {
+        if (!array_key_exists('id', $data)) {
             return $data;
         }
 
-        $articleId = intval($data['id']);
-
-        $article = $this->entityManager->getRepository('ArticleBundle:Article')->find($articleId);
+        $article = $this->entityManager->getRepository(Article::class)->find((int) $data['id']);
 
         return array_merge($data, ['article' => $article]);
     }

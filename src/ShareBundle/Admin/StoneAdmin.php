@@ -12,8 +12,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
-use Sonata\Form\Type\DateTimePickerType;
 use Sonata\Form\Type\CollectionType;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\Valid;
 
@@ -25,45 +25,44 @@ class StoneAdmin extends Admin
     use FixAdminFormTranslationDomainTrait;
 
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'id',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
         '_sort_order' => 'DESC',
     ];
 
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'stone.fields.id',
             ])
             ->add('image', null, [
-                'label'     => 'stone.fields.image',
-                'template'  => '@Share/Admin/list_fields.html.twig',
+                'label' => 'stone.fields.image',
+                'template' => '@Share/Admin/list_fields.html.twig',
             ])
             ->addIdentifier('name', null, [
                 'label' => 'stone.fields.name',
             ])
             ->add('isActive', null, [
                 'label' => 'stone.fields.is_active',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('isShowMain', null, [
                 'label' => 'stone.fields.is_show_main',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('isShowConstructor', null, [
                 'label' => 'stone.fields.is_show_constructor',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('slug', null, [
                 'label' => 'stone.fields.slug',
@@ -76,10 +75,8 @@ class StoneAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('translations.name', null, [
                 'label' => 'stone.fields.name',
@@ -98,10 +95,8 @@ class StoneAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $context = $this->getPersistentParameter('context');
 
         $formMapper
@@ -159,7 +154,7 @@ class StoneAdmin extends Admin
                         'minimum_input_length' => 2,
                     ])
                     ->add('createdAt', DateTimePickerType::class, [
-                        'label'     => 'stone.fields.created_at',
+                        'label' => 'stone.fields.created_at',
                         'required' => true,
                         'format' => 'yyyy-MM-dd HH:mm',
                         'attr' => ['readonly' => true],

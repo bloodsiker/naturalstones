@@ -2,76 +2,49 @@
 
 namespace CommentBundle\Block;
 
-use CommentBundle\Entity\Comment;
-use Doctrine\ORM\EntityManager;
 use AppBundle\Block\AbstractEditableBlockService;
+use CommentBundle\Entity\Comment;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Twig\Environment;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
-/**
- * Class AddCommentBlockService
- */
 class AddCommentBlockService extends AbstractEditableBlockService
 {
-    const FORM_TEMPLATE = '@Comment/Block/comment_form.html.twig';
-    const AJAX_COMMENT_TEMPLATE = '@Comment/Block/ajax_comment.html.twig';
+    public const FORM_TEMPLATE = '@Comment/Block/comment_form.html.twig';
+    public const AJAX_COMMENT_TEMPLATE = '@Comment/Block/ajax_comment.html.twig';
 
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
-     * @var RequestStack
-     */
-    private $request;
-
-    /**
-     * ListGenreBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param EntityManager   $em
-     * @param RequestStack    $request
-     */
-    public function __construct(Environment $twig, EntityManager $em, RequestStack $request)
-    {
+    public function __construct(
+        Environment $twig,
+        private readonly EntityManagerInterface $em,
+        private readonly RequestStack $request,
+    ) {
         parent::__construct($twig);
-
-        $this->em = $em;
-        $this->request = $request;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
             'template' => self::FORM_TEMPLATE,
         ]);
     }
 
     /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         $block = $blockContext->getBlock();
-
         if (!$block->getEnabled()) {
             return new Response();
         }
 
         $request = $this->request->getCurrentRequest();
+        $comment = null;
 
-        if ($request->isXmlHttpRequest() && $request->getMethod() === 'POST') {
+        if ($request->isXmlHttpRequest() && 'POST' === $request->getMethod()) {
             $comment = new Comment();
             $comment->setUserName($request->get('name'));
             $comment->setUserEmail($request->get('email'));
@@ -81,11 +54,14 @@ class AddCommentBlockService extends AbstractEditableBlockService
             $this->em->flush();
         }
 
-
-        return $this->renderResponse($request->isXmlHttpRequest() ? self::AJAX_COMMENT_TEMPLATE : $blockContext->getTemplate(), [
-            'comment'   => $comment ?? null,
-            'block'     => $block,
-            'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
-        ], $response);
+        return $this->renderResponse(
+            $request->isXmlHttpRequest() ? self::AJAX_COMMENT_TEMPLATE : $blockContext->getTemplate(),
+            [
+                'comment' => $comment,
+                'block' => $block,
+                'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
+            ],
+            $response
+        );
     }
 }

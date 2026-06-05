@@ -139,8 +139,6 @@ class Comment
     /**
      * Set product
      *
-     * @param Product $product
-     *
      * @return Comment
      */
     public function setProduct(Product $product)
@@ -163,11 +161,9 @@ class Comment
     /**
      * Set user
      *
-     * @param User|null $user
-     *
      * @return Comment
      */
-    public function setUser(User $user = null)
+    public function setUser(?User $user = null)
     {
         $this->user = $user;
 
@@ -197,8 +193,6 @@ class Comment
     /**
      * Set userName
      *
-     * @param string $userName
-     *
      * @return $this
      */
     public function setUserName(string $userName)
@@ -221,11 +215,9 @@ class Comment
     /**
      * Set userEmail
      *
-     * @param string $userEmail
-     *
      * @return $this
      */
-    public function setUserEmail(string $userEmail = null)
+    public function setUserEmail(?string $userEmail = null)
     {
         $this->userEmail = $userEmail;
 
@@ -279,7 +271,6 @@ class Comment
     {
         return $this->isActive;
     }
-
 
     /**
      * Set createdAt

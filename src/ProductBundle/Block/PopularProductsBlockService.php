@@ -2,82 +2,57 @@
 
 namespace ProductBundle\Block;
 
+use AppBundle\Block\AbstractEditableBlockService;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use ProductBundle\Entity\ProductInfoView;
-use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
-/**
- * Class PopularProductsBlockService
- */
 class PopularProductsBlockService extends AbstractEditableBlockService
 {
-    const POPULAR_LIST = '@Product/Block/popular_list.html.twig';
+    public const POPULAR_LIST = '@Product/Block/popular_list.html.twig';
 
-    /**
-     * @var Registry $doctrine
-     */
-    protected $doctrine;
-
-    /**
-     * ListGenreBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param Registry        $doctrine
-     */
-    public function __construct(Environment $twig, Registry $doctrine)
-    {
+    public function __construct(
+        Environment $twig,
+        protected readonly Registry $doctrine,
+    ) {
         parent::__construct($twig);
-
-        $this->doctrine = $doctrine;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
-            'list_type'        => null,
-            'items_count'      => 20,
+            'list_type' => null,
+            'items_count' => 20,
             'popular_days_ago' => 0,
-            'top_book'         => false,
-            'by_month'         => false,
-            'title'            => null,
-            'template'         => self::POPULAR_LIST,
+            'top_book' => false,
+            'by_month' => false,
+            'title' => null,
+            'template' => self::POPULAR_LIST,
         ]);
     }
 
     /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         $block = $blockContext->getBlock();
-
         if (!$block->getEnabled()) {
             return new Response();
         }
 
         $limit = (int) $blockContext->getSetting('items_count');
-
         $repository = $this->doctrine->getRepository(ProductInfoView::class);
-
         $qb = $repository->baseProductInfoViewQueryBuilder();
 
-        if ($blockContext->getSetting('popular_days_ago')) {
-            $repository->filterPopularByDaysAgo($qb, (int) $blockContext->getSetting('popular_days_ago'));
+        if ($daysAgo = (int) $blockContext->getSetting('popular_days_ago')) {
+            $repository->filterPopularByDaysAgo($qb, $daysAgo);
         }
-
         if ($blockContext->getSetting('by_month')) {
-            $repository->filterPopularByMonth($qb, (int) 0);
+            $repository->filterPopularByMonth($qb, 0);
         }
 
         $result = $qb->setFirstResult(0)
@@ -85,13 +60,12 @@ class PopularProductsBlockService extends AbstractEditableBlockService
             ->getQuery()
             ->getResult();
 
-        $template = !is_null($blockContext->getSetting('list_type'))
-            ? $blockContext->getSetting('list_type') : $blockContext->getTemplate();
+        $template = $blockContext->getSetting('list_type') ?? $blockContext->getTemplate();
 
         return $this->renderResponse($template, [
-            'products'  => $result,
-            'block'     => $block,
-            'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
+            'products' => $result,
+            'block' => $block,
+            'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
         ], $response);
     }
 }

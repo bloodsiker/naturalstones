@@ -23,7 +23,7 @@ class ProductLog
     protected $id;
 
     /**
-     * @var \ProductBundle\Entity\Product
+     * @var Product
      *
      * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="cascade")
@@ -62,7 +62,7 @@ class ProductLog
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -72,11 +72,9 @@ class ProductLog
     /**
      * Set product
      *
-     * @param \ProductBundle\Entity\Product $product
-     *
      * @return $this
      */
-    public function setProduct(\ProductBundle\Entity\Product $product = null)
+    public function setProduct(?Product $product = null)
     {
         $this->product = $product;
 
@@ -86,7 +84,7 @@ class ProductLog
     /**
      * Get product
      *
-     * @return \ProductBundle\Entity\Product
+     * @return Product
      */
     public function getProduct()
     {

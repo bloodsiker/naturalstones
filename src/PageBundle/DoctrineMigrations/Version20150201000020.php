@@ -2,8 +2,8 @@
 
 namespace Application\Migrations;
 
-use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -13,16 +13,12 @@ class Version20150201000020 extends AbstractMigration
     /** @var array */
     private $metadata = [];
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return 'Alter table page_site delete columns (title, meta_keywords, meta_description), and create table page_site_translations';
     }
 
     /**
-     * @param Schema $schema
      * @throws \PDOException
      */
     public function preUp(Schema $schema)
@@ -42,9 +38,6 @@ class Version20150201000020 extends AbstractMigration
         $this->metadata = $stmt->fetchAll();
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $siteTrans = $schema->createTable('page_site_translation');
@@ -79,9 +72,6 @@ class Version20150201000020 extends AbstractMigration
         $pageSite->dropColumn('bottom_counter');
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function postUp(Schema $schema): void
     {
         $stmt = $this->connection->prepare('
@@ -111,9 +101,6 @@ class Version20150201000020 extends AbstractMigration
         }
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function preDown(Schema $schema)
     {
         $stmt = $this->connection->prepare('
@@ -131,9 +118,6 @@ class Version20150201000020 extends AbstractMigration
         $this->metadata = $stmt->fetchAll();
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema)
     {
         $table = $schema->getTable('page_site_translation');
@@ -150,9 +134,6 @@ class Version20150201000020 extends AbstractMigration
         $pageSite->addColumn('meta_description', 'string', ['length' => 255, 'notnull' => false]);
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function postDown(Schema $schema): void
     {
         $stmt = $this->connection->prepare('

@@ -2,124 +2,77 @@
 
 namespace ShortcodeBundle\Templating;
 
+use ShortcodeBundle\Processor\ProcessorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Templating\Helper\Helper;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\TemplateWrapper;
 
-/**
- * Class ShortcodeHelper
- */
 class ShortcodeHelper extends Helper
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var \Twig\Environment
-     */
-    private $twig;
-
-    public function __construct(ContainerInterface $container, \Twig\Environment $twig)
-    {
-        $this->container = $container;
-        $this->twig = $twig;
+    public function __construct(
+        private readonly ContainerInterface $container,
+        private readonly Environment $twig,
+    ) {
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'shortcode';
     }
 
     /**
-     * @param string          $content
-     * @param array|bool|true $enabled
-     * @param string          $mode
-     *
-     * @return string
+     * @param bool|list<string> $enabled
      *
      * @throws \Throwable
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
-    public function renderShortcodes($content, $enabled = true, $mode = '')
+    public function renderShortcodes(string $content, bool|array $enabled = true, string $mode = ''): string
     {
         $needWrapping = false;
-
         $definitions = $this->container->getParameter('shortcode.definitions');
 
         foreach ($definitions as $name => $definition) {
-            if (isset($definition['exclude_mode']) && in_array($mode, $definition['exclude_mode'])) {
+            if (isset($definition['exclude_mode']) && in_array($mode, $definition['exclude_mode'], true)) {
                 return $content;
             }
 
             $template = $this->getShortcodeTemplate($definition, $mode);
 
-            $content = preg_replace_callback($definition['pattern'], function ($matches) use ($template, &$needWrapping, $definition, $enabled, $name) {
-                if (!$enabled || is_array($enabled) && !in_array($name, $enabled)) {
-                    return '';
-                }
+            $content = preg_replace_callback(
+                $definition['pattern'],
+                function (array $matches) use ($template, &$needWrapping, $definition, $enabled, $name): string {
+                    if (!$enabled || (is_array($enabled) && !in_array($name, $enabled, true))) {
+                        return '';
+                    }
 
-                if ($definition['wrap']) {
-                    $needWrapping = true;
-                }
+                    if ($definition['wrap']) {
+                        $needWrapping = true;
+                    }
 
-                if ($definition['processor']) {
-                    /** @var \ShortcodeBundle\Processor\ProcessorInterface $processor */
-                    $processor = $this->container->get($definition['processor']);
-                    $data = $processor->process($matches);
-                } else {
-                    $data = $matches;
-                }
+                    $data = $this->applyProcessor($definition, $matches);
 
-                if ($template instanceof \Twig\TemplateWrapper) {
-                    return $template->render(['shortcode_data' => $data]);
-                } else {
-                    return $this->vksprintf($template, $data);
-                }
-            }, $content);
+                    return $template instanceof TemplateWrapper
+                        ? $template->render(['shortcode_data' => $data])
+                        : $this->vksprintf($template, $data);
+                },
+                $content
+            );
         }
 
-        if ($this->container->getParameter('shortcode.wrapper.template') !== null) {
-            $wrapperTemplate = $this->twig->load($this->container->getParameter('shortcode.wrapper.template'));
-
-            $content = $wrapperTemplate->render(array(
-                'wrap' => $needWrapping,
-                'content' => $content,
-            ));
-        }
-
-        return $content;
+        return $this->maybeWrap($content, $needWrapping);
     }
 
     /**
-     * @param string $content
-     * @param array  $names
-     * @param string $mode
-     *
-     * @return string
+     * @param list<string> $names
      *
      * @throws \Throwable
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
-    public function renderShortcodesOnly($content, $names = [], $mode = '')
+    public function renderShortcodesOnly(string $content, array $names = [], string $mode = ''): string
     {
-        $definitions = $this->container->getParameter('shortcode.definitions');
-
-        foreach ($definitions as $name => $definition) {
-            if (!in_array($name, $names)) {
-                continue;
-            }
-
+        foreach ($this->iterateNamedDefinitions($names) as $definition) {
             $template = $this->getShortcodeTemplate($definition, $mode);
-            $definitionMatches = $this->getDefinitionMatches($content, $definition, $template);
-            foreach ($definitionMatches as $match => $replace) {
+            foreach ($this->getDefinitionMatches($content, $definition, $template) as $match => $replace) {
                 $content = str_replace($match, $replace, $content);
             }
         }
@@ -128,30 +81,16 @@ class ShortcodeHelper extends Helper
     }
 
     /**
-     * @param string $content
-     * @param array  $names
-     * @param string $mode
-     *
-     * @return string
+     * @param list<string> $names
      *
      * @throws \Throwable
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
-    public function renderShortcodesPure($content, $names = [], $mode = '')
+    public function renderShortcodesPure(string $content, array $names = [], string $mode = ''): string
     {
-        $definitions = $this->container->getParameter('shortcode.definitions');
-
         $finalContent = '';
-        foreach ($definitions as $name => $definition) {
-            if (!in_array($name, $names)) {
-                continue;
-            }
-
+        foreach ($this->iterateNamedDefinitions($names) as $definition) {
             $template = $this->getShortcodeTemplate($definition, $mode);
-            $definitionMatches = $this->getDefinitionMatches($content, $definition, $template);
-            foreach ($definitionMatches as $match => $replace) {
+            foreach ($this->getDefinitionMatches($content, $definition, $template) as $replace) {
                 $finalContent .= $replace;
             }
         }
@@ -160,83 +99,68 @@ class ShortcodeHelper extends Helper
     }
 
     /**
-     * @param array  $definition
-     * @param string $mode
+     * @param list<string> $names
      *
-     * @return \Twig\TemplateWrapper|string
+     * @return iterable<string, array<string, mixed>>
      */
-    private function getShortcodeTemplate($definition, $mode)
+    private function iterateNamedDefinitions(array $names): iterable
     {
-        try {
-            $template = $this->twig->load($definition['template'.($mode?'_'.$mode:'')]);
-        } catch (\Twig\Error\LoaderError $e) {
-            try {
-                $template = $this->twig->load($definition['template']);
-            } catch (\Twig\Error\LoaderError $e) {
-                $template = $definition['template'];
+        foreach ($this->container->getParameter('shortcode.definitions') as $name => $definition) {
+            if (in_array($name, $names, true)) {
+                yield $name => $definition;
             }
         }
-
-        return $template;
     }
 
     /**
-     * @param string $content
-     * @param array  $definition
-     * @param string $template
+     * @param array<string, mixed> $definition
+     */
+    private function getShortcodeTemplate(array $definition, string $mode): TemplateWrapper|string
+    {
+        $modeKey = $mode ? 'template_' . $mode : 'template';
+
+        try {
+            return $this->twig->load($definition[$modeKey] ?? $definition['template']);
+        } catch (LoaderError) {
+            try {
+                return $this->twig->load($definition['template']);
+            } catch (LoaderError) {
+                return $definition['template'];
+            }
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $definition
      *
-     * @return array
+     * @return array<string, string>
      *
      * @throws \Throwable
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
-    private function getDefinitionMatches($content, $definition, $template)
+    private function getDefinitionMatches(string $content, array $definition, TemplateWrapper|string $template): array
     {
         $needWrapping = false;
-
         $finalMatches = [];
+
         foreach ($definition['pattern'] as $pattern) {
             preg_match_all($pattern, $content, $matchesAll);
-            if (count($matchesAll[0]) > 0) {
-                if ($definition['wrap']) {
-                    $needWrapping = true;
-                }
+            if (0 === count($matchesAll[0])) {
+                continue;
+            }
 
-                $matchesAllAdapted = [];
-                foreach ($matchesAll[0] as $ind => $vals) {
-                    foreach ($matchesAll as $k => $v) {
-                        $matchesAllAdapted[$ind][$k] = $v[$ind];
-                    }
-                }
+            if ($definition['wrap']) {
+                $needWrapping = true;
+            }
 
-                foreach ($matchesAllAdapted as $ind => $matches) {
-                    if ($definition['processor']) {
-                        /** @var \ShortcodeBundle\Processor\ProcessorInterface $processor */
-                        $processor = $this->container->get($definition['processor']);
-                        $data = $processor->process($matches);
-                    } else {
-                        $data = $matches;
-                    }
+            foreach ($this->transposeMatches($matchesAll) as $ind => $matches) {
+                $data = $this->applyProcessor($definition, $matches);
 
-                    if ($template instanceof \Twig\TemplateWrapper) {
-                        $finalContent = $template->render(['shortcode_data' => $data]);
-                    } else {
-                        $finalContent = $this->vksprintf($template, $data);
-                    }
+                $finalContent = $template instanceof TemplateWrapper
+                    ? $template->render(['shortcode_data' => $data])
+                    : $this->vksprintf($template, $data);
 
-                    if ($this->container->getParameter('shortcode.wrapper.template') !== null) {
-                        $wrapperTemplate = $this->twig->load($this->container->getParameter('shortcode.wrapper.template'));
-
-                        $finalContent = $wrapperTemplate->render(array(
-                            'wrap' => $needWrapping,
-                            'content' => $finalContent,
-                        ));
-                    }
-
-                    $finalMatches[$matchesAll[0][$ind]] = $finalContent;
-                }
+                $finalContent = $this->maybeWrap($finalContent, $needWrapping);
+                $finalMatches[$matchesAll[0][$ind]] = $finalContent;
             }
         }
 
@@ -244,27 +168,67 @@ class ShortcodeHelper extends Helper
     }
 
     /**
+     * Convert preg_match_all's column-oriented results to row-oriented arrays.
+     *
+     * @param array<int|string, list<string>> $matchesAll
+     *
+     * @return list<array<int|string, string>>
+     */
+    private function transposeMatches(array $matchesAll): array
+    {
+        $rows = [];
+        foreach ($matchesAll[0] as $ind => $_) {
+            foreach ($matchesAll as $k => $v) {
+                $rows[$ind][$k] = $v[$ind];
+            }
+        }
+
+        return $rows;
+    }
+
+    /**
+     * @param array<string, mixed>          $definition
+     * @param array<int|string, mixed>      $matches
+     *
+     * @return array<int|string, mixed>
+     */
+    private function applyProcessor(array $definition, array $matches): array
+    {
+        if (!$definition['processor']) {
+            return $matches;
+        }
+
+        /** @var ProcessorInterface $processor */
+        $processor = $this->container->get($definition['processor']);
+
+        return $processor->process($matches);
+    }
+
+    private function maybeWrap(string $content, bool $needWrapping): string
+    {
+        $wrapperTemplate = $this->container->getParameter('shortcode.wrapper.template');
+        if (null === $wrapperTemplate) {
+            return $content;
+        }
+
+        return $this->twig->load($wrapperTemplate)->render([
+            'wrap' => $needWrapping,
+            'content' => $content,
+        ]);
+    }
+
+    /**
      * Like vsprintf, but accepts $args keys instead of order index.
      * Both numeric and strings matching /[a-zA-Z0-9_-]+/ are allowed.
      *
-     * Example: vskprintf('y = %y$d, x = %x$1.1f', array('x' => 1, 'y' => 2))
+     * Example: vksprintf('y = %y$d, x = %x$1.1f', array('x' => 1, 'y' => 2))
      * Result:  'y = 2, x = 1.0'
-     * $args also can be object, then it's properties are retrieved
-     * using get_object_vars().
      *
-     * '%s' without argument name works fine too. Everything vsprintf() can do
-     * is supported.
+     * @param array<string, mixed>|object $args
      *
-     * @author Josef Kufner <jkufner(at)gmail.com>
-     *
-     * @link http://php.net/manual/en/function.vsprintf.php#110666
-     *
-     * @param string $str
-     * @param mixed  $args
-     *
-     * @return string
+     * @see http://php.net/manual/en/function.vsprintf.php#110666
      */
-    private function vksprintf($str, $args)
+    private function vksprintf(string $str, array|object $args): string
     {
         if (is_object($args)) {
             $args = get_object_vars($args);
@@ -272,9 +236,11 @@ class ShortcodeHelper extends Helper
 
         $map = array_flip(array_keys($args));
 
-        $newStr = preg_replace_callback('/(^|[^%])%([a-zA-Z0-9_-]+)\$/', function ($m) use ($map) {
-            return $m[1].'%'.($map[$m[2]] + 1).'$';
-        }, $str);
+        $newStr = preg_replace_callback(
+            '/(^|[^%])%([a-zA-Z0-9_-]+)\$/',
+            static fn ($m): string => $m[1] . '%' . ($map[$m[2]] + 1) . '$',
+            $str
+        );
 
         return vsprintf($newStr, $args);
     }

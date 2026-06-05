@@ -52,7 +52,6 @@ class Zodiac implements TranslatableInterface
      */
     protected $isActive;
 
-
     /**
      * @var bool
      *
@@ -118,7 +117,7 @@ class Zodiac implements TranslatableInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -128,11 +127,9 @@ class Zodiac implements TranslatableInterface
     /**
      * Set image
      *
-     * @param \MediaBundle\Entity\MediaImage $image
-     *
      * @return Zodiac
      */
-    public function setImage(\MediaBundle\Entity\MediaImage $image = null)
+    public function setImage(?\MediaBundle\Entity\MediaImage $image = null)
     {
         $this->image = $image;
 
@@ -186,7 +183,7 @@ class Zodiac implements TranslatableInterface
     /**
      * Set isActive
      *
-     * @param boolean $isActive
+     * @param bool $isActive
      *
      * @return Zodiac
      */
@@ -200,7 +197,7 @@ class Zodiac implements TranslatableInterface
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {
@@ -210,7 +207,7 @@ class Zodiac implements TranslatableInterface
     /**
      * Set isShowMain
      *
-     * @param boolean $isShowMain
+     * @param bool $isShowMain
      *
      * @return Zodiac
      */
@@ -224,7 +221,7 @@ class Zodiac implements TranslatableInterface
     /**
      * Get isShowMain
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsShowMain()
     {
@@ -258,11 +255,9 @@ class Zodiac implements TranslatableInterface
     /**
      * Add product
      *
-     * @param \ShareBundle\Entity\Stone $product
-     *
      * @return $this
      */
-    public function addStone(\ShareBundle\Entity\Stone $stone)
+    public function addStone(Stone $stone)
     {
         $this->stones[] = $stone;
 
@@ -271,10 +266,8 @@ class Zodiac implements TranslatableInterface
 
     /**
      * Remove stone
-     *
-     * @param \ShareBundle\Entity\Stone $stone
      */
-    public function removeStone(\ShareBundle\Entity\Stone $stone)
+    public function removeStone(Stone $stone)
     {
         $this->stones->removeElement($stone);
     }

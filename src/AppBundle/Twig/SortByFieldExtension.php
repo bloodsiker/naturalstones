@@ -3,112 +3,83 @@
 namespace AppBundle\Twig;
 
 use Doctrine\Common\Collections\Collection;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-/**
- * Class SortByFieldExtension
- */
-class SortByFieldExtension extends \Twig\Extension\AbstractExtension
+class SortByFieldExtension extends AbstractExtension
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'sortbyfield';
     }
 
     /**
-     * {@inheritdoc}
+     * @return list<TwigFilter>
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig\TwigFilter('sortbyfield', [$this, 'sortByFieldFilter']),
+            new TwigFilter('sortbyfield', $this->sortByFieldFilter(...)),
         ];
     }
 
     /**
      * Usage: {% for entry in master.entries|sortbyfield('orderNum', 'desc') %}
      *
-     * @param Collection  $content
-     * @param null|string $sortBy
-     * @param string      $direction
+     * @param Collection<int, mixed>|array<int, mixed> $content
      *
-     * @return array
-     *
-     * @throws \Exception
+     * @return array<int, mixed>
      */
-    public function sortByFieldFilter($content, $sortBy = null, $direction = 'asc')
-    {
-        if (is_a($content, Collection::class)) {
+    public function sortByFieldFilter(
+        Collection|array $content,
+        ?string $sortBy = null,
+        string $direction = 'asc',
+    ): array {
+        if ($content instanceof Collection) {
             $content = $content->toArray();
         }
 
-        if (!is_array($content)) {
-            throw new \InvalidArgumentException('Variable passed to the sortByField filter is not an array');
-        } elseif (count($content) < 1) {
+        if (count($content) < 1) {
             return $content;
-        } elseif (null === $sortBy) {
-            throw new \Exception('No sort by parameter passed to the sortByField filter');
-        } elseif (!self::isSortable(current($content), $sortBy)) {
-            throw new \Exception('Entries passed to the sortByField filter do not have the field "' . $sortBy . '"');
-        } else {
-            usort($content, function ($a, $b) use ($sortBy, $direction) {
-                $flip = (mb_strtolower($direction) === 'desc') ? -1 : 1;
-
-                $aSortValue = $this->getSortValue($a, $sortBy);
-                $bSortValue = $this->getSortValue($b, $sortBy);
-
-                if ($aSortValue === $bSortValue) {
-                    $result = 0;
-                } elseif ($aSortValue > $bSortValue) {
-                    $result = (1 * $flip);
-                } else {
-                    $result = (-1 * $flip);
-                }
-
-                return $result;
-            });
         }
+        if (null === $sortBy) {
+            throw new \InvalidArgumentException('No sort by parameter passed to the sortByField filter');
+        }
+        if (!self::isSortable(current($content), $sortBy)) {
+            throw new \InvalidArgumentException(sprintf('Entries passed to the sortByField filter do not have the field "%s"', $sortBy));
+        }
+
+        $flip = 'desc' === mb_strtolower($direction) ? -1 : 1;
+        usort($content, function ($a, $b) use ($sortBy, $flip) {
+            return $flip * ($this->getSortValue($a, $sortBy) <=> $this->getSortValue($b, $sortBy));
+        });
 
         return $content;
     }
 
-    /**
-     * @param mixed  $value
-     * @param string $sortBy
-     *
-     * @return mixed
-     */
-    private function getSortValue($value, $sortBy)
+    private function getSortValue(mixed $value, string $sortBy): mixed
     {
         if (is_array($value)) {
-            $sortValue = $value[$sortBy];
-        } elseif (method_exists($value, 'get'.ucfirst($sortBy))) {
-            $sortValue = $value->{'get'.ucfirst($sortBy)}();
-        } else {
-            $sortValue = $value->$sortBy;
+            return $value[$sortBy];
         }
 
-        return $sortValue;
+        $getter = 'get' . ucfirst($sortBy);
+        if (method_exists($value, $getter)) {
+            return $value->$getter();
+        }
+
+        return $value->$sortBy;
     }
 
-    /**
-     * Validate the passed $item to check if it can be sorted
-     *
-     * @param mixed  $item Collection item to be sorted
-     * @param string $field
-     *
-     * @return bool If collection item can be sorted
-     */
-    private static function isSortable($item, $field)
+    private static function isSortable(mixed $item, string $field): bool
     {
         if (is_array($item)) {
             return array_key_exists($field, $item);
-        } elseif (is_object($item)) {
-            return isset($item->$field) || property_exists($item, $field);
-        } else {
-            return false;
         }
+        if (is_object($item)) {
+            return isset($item->$field) || property_exists($item, $field);
+        }
+
+        return false;
     }
 }

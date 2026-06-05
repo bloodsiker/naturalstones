@@ -59,7 +59,6 @@ class Stone implements TranslatableInterface
      */
     protected $isShowConstructor;
 
-
     /**
      * @var bool
      *
@@ -140,7 +139,7 @@ class Stone implements TranslatableInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -150,11 +149,9 @@ class Stone implements TranslatableInterface
     /**
      * Set image
      *
-     * @param \MediaBundle\Entity\MediaImage $image
-     *
      * @return Stone
      */
-    public function setImage(\MediaBundle\Entity\MediaImage $image = null)
+    public function setImage(?\MediaBundle\Entity\MediaImage $image = null)
     {
         $this->image = $image;
 
@@ -208,7 +205,7 @@ class Stone implements TranslatableInterface
     /**
      * Set isActive
      *
-     * @param boolean $isActive
+     * @param bool $isActive
      *
      * @return Stone
      */
@@ -222,7 +219,7 @@ class Stone implements TranslatableInterface
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {
@@ -232,7 +229,7 @@ class Stone implements TranslatableInterface
     /**
      * Get isShowConstructor
      *
-     * @return boolean
+     * @return bool
      */
     public function isShowConstructor()
     {
@@ -241,8 +238,6 @@ class Stone implements TranslatableInterface
 
     /**
      * Set isShowConstructor
-     *
-     * @param boolean $isShowConstructor
      *
      * @return Stone
      */
@@ -256,7 +251,7 @@ class Stone implements TranslatableInterface
     /**
      * Set isShowMain
      *
-     * @param boolean $isShowMain
+     * @param bool $isShowMain
      *
      * @return Stone
      */
@@ -270,7 +265,7 @@ class Stone implements TranslatableInterface
     /**
      * Get isShowMain
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsShowMain()
     {
@@ -314,11 +309,9 @@ class Stone implements TranslatableInterface
     /**
      * Add zodiac
      *
-     * @param \ShareBundle\Entity\Zodiac $zodiac
-     *
      * @return Stone
      */
-    public function addZodiac(\ShareBundle\Entity\Zodiac $zodiac)
+    public function addZodiac(Zodiac $zodiac)
     {
         $this->zodiacs[] = $zodiac;
 
@@ -327,10 +320,8 @@ class Stone implements TranslatableInterface
 
     /**
      * Remove zodiac
-     *
-     * @param \ShareBundle\Entity\Zodiac $zodiac
      */
-    public function removeZodiac(\ShareBundle\Entity\Zodiac $zodiac)
+    public function removeZodiac(Zodiac $zodiac)
     {
         $this->zodiacs->removeElement($zodiac);
     }
@@ -348,8 +339,6 @@ class Stone implements TranslatableInterface
     /**
      * Add stoneHasConstructor.
      *
-     * @param StoneHasConstructor $stoneHasConstructor
-     *
      * @return Stone
      */
     public function addStoneHasConstructor(StoneHasConstructor $stoneHasConstructor)
@@ -363,9 +352,7 @@ class Stone implements TranslatableInterface
     /**
      * Remove stoneHasConstructor.
      *
-     * @param StoneHasConstructor $stoneHasConstructor
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise
      */
     public function removeStoneHasConstructor(StoneHasConstructor $stoneHasConstructor)
     {

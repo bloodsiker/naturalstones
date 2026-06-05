@@ -2,8 +2,8 @@
 
 namespace PageBundle\Entity;
 
-use Sonata\Doctrine\Entity\BaseEntityManager;
 use PageBundle\Model\RedirectManagerInterface;
+use Sonata\Doctrine\Entity\BaseEntityManager;
 
 /**
  * Class RedirectManager

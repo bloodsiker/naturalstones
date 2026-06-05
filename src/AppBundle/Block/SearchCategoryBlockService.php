@@ -2,85 +2,55 @@
 
 namespace AppBundle\Block;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use ProductBundle\Entity\Product;
-use ProductBundle\Entity\ProductSearchHistory;
-use AppBundle\Block\AbstractEditableBlockService;
+use ProductBundle\Entity\ProductRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
-/**
- * Class SearchCategoryBlockService
- */
 class SearchCategoryBlockService extends AbstractEditableBlockService
 {
-    const DEFAULT_TEMPLATE = '@App/search_category/Block/large_list.html.twig';
+    use SearchHistoryTrait;
 
-    /**
-     * @var EntityManager
-     */
-    protected $em;
+    public const DEFAULT_TEMPLATE = '@App/search_category/Block/large_list.html.twig';
 
-    /**
-     * @var RequestStack
-     */
-    private $request;
-
-    /**
-     * HeaderBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param EntityManager   $em
-     * @param RequestStack    $request
-     */
-    public function __construct(Environment $twig, EntityManager $em, RequestStack $request)
-    {
+    public function __construct(
+        Environment $twig,
+        protected readonly EntityManagerInterface $em,
+        private readonly RequestStack $request,
+    ) {
         parent::__construct($twig);
-
-        $this->em = $em;
-        $this->request = $request;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
-            'list_type'      => null,
-            'search'         => null,
-            'items_count'    => 40,
-            'template'       => self::DEFAULT_TEMPLATE,
+            'list_type' => null,
+            'search' => null,
+            'items_count' => 40,
+            'template' => self::DEFAULT_TEMPLATE,
         ]);
     }
 
-    /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         $block = $blockContext->getBlock();
         if (!$block->getEnabled()) {
             return new Response();
         }
 
         $request = $this->request->getCurrentRequest();
-
         $search = trim((string) ($blockContext->getSetting('search') ?: $request->get('search')));
         $resultDetails = [];
 
         if ($search) {
+            /** @var ProductRepository $repository */
             $repository = $this->em->getRepository(Product::class);
 
-            $categories = $this->getMatchedCategoryStats($repository, $search);
-
-            foreach ($categories as $category) {
+            foreach ($this->getMatchedCategoryStats($repository, $search) as $category) {
                 $products = $this->getCategoryProducts($repository, $search, $category['categoryId'], 4);
 
                 if (!$products) {
@@ -88,9 +58,9 @@ class SearchCategoryBlockService extends AbstractEditableBlockService
                 }
 
                 $resultDetails[] = [
-                    'sort'     => $category['sort'],
+                    'sort' => $category['sort'],
                     'category' => $products[0]->getCategory(),
-                    'count'    => (int) $category['productCount'],
+                    'count' => (int) $category['productCount'],
                     'products' => $products,
                 ];
             }
@@ -98,18 +68,20 @@ class SearchCategoryBlockService extends AbstractEditableBlockService
             $this->saveSearchHistory($search, $request->server->get('REMOTE_ADDR'));
         }
 
-        $template = !is_null($blockContext->getSetting('list_type'))
-            ? $blockContext->getSetting('list_type') : $blockContext->getTemplate();
+        $template = $blockContext->getSetting('list_type') ?? $blockContext->getTemplate();
 
         return $this->renderResponse($template, [
-            'result'      => $resultDetails,
-            'search'      => $search,
-            'block'       => $block,
-            'settings'    => array_merge($blockContext->getSettings(), $block->getSettings()),
+            'result' => $resultDetails,
+            'search' => $search,
+            'block' => $block,
+            'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
         ]);
     }
 
-    private function getMatchedCategoryStats($repository, $search)
+    /**
+     * @return array<int, array{categoryId: int, productCount: int, sort: int}>
+     */
+    private function getMatchedCategoryStats(ProductRepository $repository, string $search): array
     {
         $qb = $repository->createQueryBuilder('p');
         $qb
@@ -129,7 +101,10 @@ class SearchCategoryBlockService extends AbstractEditableBlockService
         return $qb->getQuery()->getArrayResult();
     }
 
-    private function getCategoryProducts($repository, $search, $categoryId, $limit)
+    /**
+     * @return list<Product>
+     */
+    private function getCategoryProducts(ProductRepository $repository, string $search, int $categoryId, int $limit): array
     {
         $idsQb = $repository->createQueryBuilder('p');
         $idsQb
@@ -161,39 +136,8 @@ class SearchCategoryBlockService extends AbstractEditableBlockService
         return $qb->getQuery()->getResult();
     }
 
-    private function saveSearchHistory($search, $ip)
+    protected function getEntityManager(): EntityManagerInterface
     {
-        if (strlen($search) < 2) {
-            return;
-        }
-
-        $ip = $ip ? substr($ip, 0, 20) : null;
-
-        $qb = $this->em->getRepository(ProductSearchHistory::class)
-            ->createQueryBuilder('history')
-            ->where('history.search = :search')
-            ->andWhere('history.createdAt >= :createdAt')
-            ->setParameter('search', $search)
-            ->setParameter('createdAt', new \DateTime('-15 minutes'))
-            ->setMaxResults(1);
-
-        if ($ip) {
-            $qb->andWhere('history.ip = :ip')->setParameter('ip', $ip);
-        } else {
-            $qb->andWhere('history.ip IS NULL');
-        }
-
-        $recentSearch = $qb->getQuery()->getOneOrNullResult();
-
-        if ($recentSearch) {
-            return;
-        }
-
-        $history = new ProductSearchHistory();
-        $history->setSearch($search);
-        $history->setIp($ip);
-
-        $this->em->persist($history);
-        $this->em->flush();
+        return $this->em;
     }
 }

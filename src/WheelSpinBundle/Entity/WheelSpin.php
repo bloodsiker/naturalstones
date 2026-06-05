@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class WheelSpin
 {
-
     /**
      * @var int
      *
@@ -94,8 +93,6 @@ class WheelSpin
     }
 
     /**
-     * @param  float  $minSum
-     *
      * @return $this
      */
     public function setMinSum(float $minSum)
@@ -114,8 +111,6 @@ class WheelSpin
     }
 
     /**
-     * @param  float  $maxSum
-     *
      * @return $this
      */
     public function setMaxSum(float $maxSum)
@@ -152,8 +147,6 @@ class WheelSpin
     /**
      * Add wheelSpinHasOption.
      *
-     * @param WheelSpinHasOption $wheelSpinHasOption
-     *
      * @return $this
      */
     public function addWheelSpinHasOption(WheelSpinHasOption $wheelSpinHasOption)
@@ -167,9 +160,7 @@ class WheelSpin
     /**
      * Remove wheelSpinHasOption.
      *
-     * @param WheelSpinHasOption $wheelSpinHasOption
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise
      */
     public function removeWheelSpinHasOption(WheelSpinHasOption $wheelSpinHasOption)
     {

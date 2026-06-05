@@ -2,39 +2,35 @@
 
 namespace AppBundle\Helper;
 
-/**
- * Class EncryptHelper
- */
 class EncryptHelper
 {
-    /**
-     * @param $string
-     *
-     * @return string
-     */
-    public function stringEncrypt($string)
+    private const SECRET_KEY = 'AA74CDCC2BBRT935136HH7B63C27';
+    private const SECRET_IV = '5fgf5HJ5g27';
+    private const CIPHER = 'AES-256-CBC';
+
+    public function stringEncrypt(string $string): string
     {
-        $secret_key = 'AA74CDCC2BBRT935136HH7B63C27';
-        $secret_iv = '5fgf5HJ5g27';
-        $key = hash('sha256', $secret_key);
-        $iv = substr(hash('sha256', $secret_iv), 0, 16);
-        $output = openssl_encrypt($string, "AES-256-CBC", $key, 0, $iv);
+        [$key, $iv] = $this->deriveKeyAndIv();
+        $output = openssl_encrypt($string, self::CIPHER, $key, 0, $iv);
 
         return base64_encode($output);
     }
 
-    /**
-     * @param $string
-     *
-     * @return false|string
-     */
-    public function stringDecrypt($string)
+    public function stringDecrypt(string $string): string|false
     {
-        $secret_key = 'AA74CDCC2BBRT935136HH7B63C27';
-        $secret_iv = '5fgf5HJ5g27';
-        $key = hash('sha256', $secret_key);
-        $iv = substr(hash('sha256', $secret_iv), 0, 16);
+        [$key, $iv] = $this->deriveKeyAndIv();
 
-        return openssl_decrypt(base64_decode($string), "AES-256-CBC", $key, 0, $iv);
+        return openssl_decrypt(base64_decode($string), self::CIPHER, $key, 0, $iv);
+    }
+
+    /**
+     * @return array{0: string, 1: string}
+     */
+    private function deriveKeyAndIv(): array
+    {
+        return [
+            hash('sha256', self::SECRET_KEY),
+            substr(hash('sha256', self::SECRET_IV), 0, 16),
+        ];
     }
 }

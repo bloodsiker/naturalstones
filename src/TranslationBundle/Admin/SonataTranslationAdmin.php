@@ -2,21 +2,19 @@
 
 namespace TranslationBundle\Admin;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-
+use Doctrine\Persistence\ManagerRegistry;
+use Lexik\Bundle\TranslationBundle\Manager\TransUnitManagerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-
-use Lexik\Bundle\TranslationBundle\Manager\TransUnitManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Class SonataTranslationAdmin
@@ -40,12 +38,12 @@ class SonataTranslationAdmin extends AbstractAdmin
     /**
      * @var array
      */
-    protected $defaultSelections = array();
+    protected $defaultSelections = [];
 
     /**
      * @var array
      */
-    protected $emptyFieldPrefixes = array();
+    protected $emptyFieldPrefixes = [];
 
     public function setDoctrine(ManagerRegistry $doctrine): void
     {
@@ -60,12 +58,12 @@ class SonataTranslationAdmin extends AbstractAdmin
     /**
      * @var array
      */
-    protected $filterLocales = array();
+    protected $filterLocales = [];
 
     /**
      * @var array
      */
-    protected $managedLocales = array();
+    protected $managedLocales = [];
 
     /**
      * @return array
@@ -76,34 +74,25 @@ class SonataTranslationAdmin extends AbstractAdmin
             ->getLabel('download', 'batch', $this->getTranslationDomain());
 
         $actions = parent::getBatchActions();
-        $actions['download'] = array(
-            'label'                 => $label,
-            'ask_confirmation'      => false,
-            'translation_domain'    => $this->getTranslationDomain(),
-        );
+        $actions['download'] = [
+            'label' => $label,
+            'ask_confirmation' => false,
+            'translation_domain' => $this->getTranslationDomain(),
+        ];
 
         return $actions;
     }
 
-    /**
-     * @param array $options
-     */
     public function setEditableOptions(array $options)
     {
         $this->editableOptions = $options;
     }
 
-    /**
-     * @param TransUnitManagerInterface $translationManager
-     */
     public function setTransUnitManager(TransUnitManagerInterface $translationManager)
     {
         $this->transUnitManager = $translationManager;
     }
 
-    /**
-     * @param array $managedLocales
-     */
     public function setManagedLocales(array $managedLocales)
     {
         $this->managedLocales = $managedLocales;
@@ -125,7 +114,6 @@ class SonataTranslationAdmin extends AbstractAdmin
         return $this->defaultSelections;
     }
 
-
     /**
      * @return bool
      */
@@ -135,17 +123,11 @@ class SonataTranslationAdmin extends AbstractAdmin
             && (bool) $this->defaultSelections['nonTranslatedOnly'];
     }
 
-    /**
-     * @param array $selections
-     */
     public function setDefaultSelections(array $selections)
     {
         $this->defaultSelections = $selections;
     }
 
-    /**
-     * @param array $prefixes
-     */
     public function setEmptyPrefixes(array $prefixes)
     {
         $this->emptyFieldPrefixes = $prefixes;
@@ -157,11 +139,11 @@ class SonataTranslationAdmin extends AbstractAdmin
     public function getFilterParameters()
     {
         $this->datagridValues = array_merge(
-            array(
-                'domain' => array(
+            [
+                'domain' => [
                     'value' => $this->getDefaultDomain(),
-                ),
-            ),
+                ],
+            ],
             $this->datagridValues
 
         );
@@ -189,17 +171,12 @@ class SonataTranslationAdmin extends AbstractAdmin
 
     /**
      * @param string $name
-     *
-     * @return mixed
      */
     public function getOriginalTemplate($name)
     {
         return $this->getTemplateRegistry()->getTemplate($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildDatagrid()
     {
         if ($this->datagrid) {
@@ -217,16 +194,14 @@ class SonataTranslationAdmin extends AbstractAdmin
         parent::buildDatagrid();
     }
 
-    /**
-     * @param DatagridMapper $filter
-     */
-    protected function configureDatagridFilters(DatagridMapper $filter): void    {
+    protected function configureDatagridFilters(DatagridMapper $filter): void
+    {
         $filter
             ->add(
                 'locale',
                 'doctrine_orm_callback',
-                array(
-                    'callback'      => function (ProxyQuery $queryBuilder, $alias, $field, $options) {
+                [
+                    'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $options) {
                         /* @var $queryBuilder \Doctrine\ORM\QueryBuilder */
                         if (!isset($options['value']) || empty($options['value'])) {
                             return;
@@ -234,14 +209,14 @@ class SonataTranslationAdmin extends AbstractAdmin
                         // use on to filter locales
                         $this->joinTranslations($queryBuilder, $alias, $options['value']);
                     },
-                    'field_options' => array(
-                        'choices'  => $this->formatLocales($this->managedLocales),
+                    'field_options' => [
+                        'choices' => $this->formatLocales($this->managedLocales),
                         'required' => false,
                         'multiple' => true,
                         'expanded' => false,
-                    ),
-                    'field_type'    => ChoiceType::class,
-                )
+                    ],
+                    'field_type' => ChoiceType::class,
+                ]
             )
 //            ->add(
 //                'show_non_translated_only',
@@ -278,22 +253,22 @@ class SonataTranslationAdmin extends AbstractAdmin
             ->add(
                 'domain',
                 'doctrine_orm_choice',
-                array(
-                    'field_options' => array(
-                        'choices'     => $this->getDomains(),
-                        'required'    => true,
-                        'multiple'    => false,
-                        'expanded'    => false,
-                    ),
-                    'field_type'    => ChoiceType::class,
-                )
+                [
+                    'field_options' => [
+                        'choices' => $this->getDomains(),
+                        'required' => true,
+                        'multiple' => false,
+                        'expanded' => false,
+                    ],
+                    'field_type' => ChoiceType::class,
+                ]
             )
             ->add(
                 'content',
                 'doctrine_orm_callback',
-                array
-                (
-                    'callback'   => function (ProxyQuery $queryBuilder, $alias, $field, $options) {
+
+                [
+                    'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $options) {
                         /* @var $queryBuilder \Doctrine\ORM\QueryBuilder */
                         if (!isset($options['value']) || empty($options['value'])) {
                             return;
@@ -301,28 +276,27 @@ class SonataTranslationAdmin extends AbstractAdmin
                         $this->joinTranslations($queryBuilder, $alias);
                         $queryBuilder->andWhere('translations.content LIKE :content')->setParameter(
                             'content',
-                            '%'.$options['value'].'%'
+                            '%' . $options['value'] . '%'
                         );
                     },
                     'field_type' => TextType::class,
-                    'label'      => 'content',
-                )
+                    'label' => 'content',
+                ]
             );
     }
 
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection
             ->add('clear_cache')
             ->add('create_trans_unit');
     }
 
-    /**
-     * @param ListMapper $list
-     */
-    protected function configureListFields(ListMapper $list): void    {
+    protected function configureListFields(ListMapper $list): void
+    {
         $list
             ->add('id', 'integer')
             ->add('key', 'string')
@@ -341,10 +315,8 @@ class SonataTranslationAdmin extends AbstractAdmin
         }
     }
 
-    /**
-     * @param FormMapper $form
-     */
-    protected function configureFormFields(FormMapper $form): void    {
+    protected function configureFormFields(FormMapper $form): void
+    {
         $subject = $this->getSubject();
 
         if (null === $subject->getId()) {
@@ -354,10 +326,10 @@ class SonataTranslationAdmin extends AbstractAdmin
         $form
             ->add('key', TextType::class)
             ->add('domain', ChoiceType::class, [
-                'expanded'          => false,
-                'multiple'          => false,
-                'required'          => true,
-                'choices'           => $this->getDomains(),
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'choices' => $this->getDomains(),
                 'choices_as_values' => true,
             ]);
     }
@@ -380,7 +352,7 @@ class SonataTranslationAdmin extends AbstractAdmin
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $this->doctrine->getManagerForClass('Lexik\Bundle\TranslationBundle\Entity\File');
 
-        $domains = array();
+        $domains = [];
         $domainsQueryResult = $em->createQueryBuilder()
             ->select('DISTINCT t.domain')->from('\Lexik\Bundle\TranslationBundle\Entity\File', 't')
             ->getQuery()
@@ -399,11 +371,9 @@ class SonataTranslationAdmin extends AbstractAdmin
     }
 
     /**
-     * @param ProxyQuery $queryBuilder
      * @param string     $alias
-     * @param array|null $locales
      */
-    private function joinTranslations(ProxyQuery $queryBuilder, $alias, array $locales = null)
+    private function joinTranslations(ProxyQuery $queryBuilder, $alias, ?array $locales = null)
     {
         $alreadyJoined = false;
         $joins = $queryBuilder->getDQLPart('join');
@@ -416,7 +386,7 @@ class SonataTranslationAdmin extends AbstractAdmin
             }
         }
         if (!$alreadyJoined) {
-            /** @var QueryBuilder $queryBuilder */
+            /* @var QueryBuilder $queryBuilder */
             if ($locales) {
                 $queryBuilder->leftJoin(sprintf('%s.translations', $alias), 'translations', 'WITH', 'translations.locale = :locales');
                 $queryBuilder->setParameter('locales', $locales);
@@ -427,13 +397,11 @@ class SonataTranslationAdmin extends AbstractAdmin
     }
 
     /**
-     * @param array $locales
-     *
      * @return array
      */
     private function formatLocales(array $locales)
     {
-        $formattedLocales = array();
+        $formattedLocales = [];
         array_walk_recursive(
             $locales,
             function ($language) use (&$formattedLocales) {

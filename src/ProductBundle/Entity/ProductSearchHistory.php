@@ -64,7 +64,7 @@ class ProductSearchHistory
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -108,11 +108,9 @@ class ProductSearchHistory
     /**
      * Set ip
      *
-     * @param string|null $ip
-     *
      * @return $this
      */
-    public function setIp(string $ip = null)
+    public function setIp(?string $ip = null)
     {
         $this->ip = $ip;
 
@@ -132,11 +130,9 @@ class ProductSearchHistory
     /**
      * set search
      *
-     * @param  string|null  $search
-     *
      * @return $this
      */
-    public function setSearch(string $search = null)
+    public function setSearch(?string $search = null)
     {
         $this->search = $search;
 

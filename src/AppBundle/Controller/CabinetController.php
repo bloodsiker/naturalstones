@@ -5,8 +5,6 @@ namespace AppBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use OrderBundle\Entity\Order;
 use ProductBundle\Entity\Product;
-use AppBundle\Controller\BaseController;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,30 +13,30 @@ use UserBundle\Entity\UserDeliveryAddress;
 
 class CabinetController extends BaseController
 {
-    private EntityManagerInterface $em;
+    private const RECENT_ORDERS_LIMIT = 20;
 
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+    ) {
     }
 
     public function indexAction(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $user = $this->getUser();
+        $user = $this->getCurrentUser();
         $orders = $this->em->getRepository(Order::class)
             ->createQueryBuilder('o')
             ->andWhere('o.user = :user OR o.email = :email')
             ->setParameter('user', $user)
             ->setParameter('email', $user->getEmail())
             ->orderBy('o.createdAt', 'DESC')
-            ->setMaxResults(20)
+            ->setMaxResults(self::RECENT_ORDERS_LIMIT)
             ->getQuery()
             ->getResult();
 
         return $this->render('@App/Cabinet/index.html.twig', [
-            'user'   => $user,
+            'user' => $user,
             'orders' => $orders,
         ]);
     }
@@ -47,26 +45,15 @@ class CabinetController extends BaseController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        /** @var User $user */
-        $user = $this->getUser();
-
+        $user = $this->getCurrentUser();
         $order = $this->em->getRepository(Order::class)->findOneBy(['secret' => $secret]);
-        if (
-            !$order
-            || (
-                $order->getUser() !== null
-                && $order->getUser()->getId() !== $user->getId()
-            )
-            || (
-                $order->getUser() === null
-                && strcasecmp((string) $order->getEmail(), (string) $user->getEmail()) !== 0
-            )
-        ) {
+
+        if (!$order || !$this->orderBelongsToUser($order, $user)) {
             throw $this->createNotFoundException();
         }
 
         return $this->render('@App/Cabinet/order.html.twig', [
-            'user'  => $user,
+            'user' => $user,
             'order' => $order,
         ]);
     }
@@ -75,8 +62,7 @@ class CabinetController extends BaseController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        /** @var User $user */
-        $user  = $this->getUser();
+        $user = $this->getCurrentUser();
         $error = null;
         $saved = false;
 
@@ -84,13 +70,9 @@ class CabinetController extends BaseController
             if (!$this->isCsrfTokenValid('profile', $request->request->get('_csrf_token'))) {
                 $error = 'frontend.cabinet.profile.error.invalid_csrf';
             } else {
-                $firstname = trim($request->request->get('firstname', ''));
-                $lastname  = trim($request->request->get('lastname', ''));
-                $phone     = trim($request->request->get('phone', ''));
-
-                $user->setFirstname($firstname ?: null);
-                $user->setLastname($lastname ?: null);
-                $user->setPhone($phone ?: null);
+                $user->setFirstname(trim($request->request->get('firstname', '')) ?: null);
+                $user->setLastname(trim($request->request->get('lastname', '')) ?: null);
+                $user->setPhone(trim($request->request->get('phone', '')) ?: null);
 
                 $this->em->flush();
                 $saved = true;
@@ -98,7 +80,7 @@ class CabinetController extends BaseController
         }
 
         return $this->render('@App/Cabinet/profile.html.twig', [
-            'user'  => $user,
+            'user' => $user,
             'error' => $error,
             'saved' => $saved,
         ]);
@@ -108,11 +90,10 @@ class CabinetController extends BaseController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->getCurrentUser();
 
         return $this->render('@App/Cabinet/favorites.html.twig', [
-            'user'      => $user,
+            'user' => $user,
             'favorites' => $user->getFavorites(),
         ]);
     }
@@ -128,8 +109,7 @@ class CabinetController extends BaseController
             return new JsonResponse(['error' => 'not_found'], 404);
         }
 
-        /** @var User $user */
-        $user      = $this->getUser();
+        $user = $this->getCurrentUser();
         $favorited = $user->hasFavorite($product);
 
         if ($favorited) {
@@ -142,7 +122,7 @@ class CabinetController extends BaseController
 
         return new JsonResponse([
             'favorited' => !$favorited,
-            'count'     => $user->getFavorites()->count(),
+            'count' => $user->getFavorites()->count(),
         ]);
     }
 
@@ -152,9 +132,9 @@ class CabinetController extends BaseController
             return new JsonResponse([]);
         }
 
-        /** @var User $user */
-        $user = $this->getUser();
-        $ids  = $user->getFavorites()->map(fn(Product $p) => $p->getId())->toArray();
+        $ids = $this->getCurrentUser()->getFavorites()
+            ->map(fn (Product $p) => $p->getId())
+            ->toArray();
 
         return new JsonResponse(array_values($ids));
     }
@@ -163,37 +143,15 @@ class CabinetController extends BaseController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->getCurrentUser();
         $repo = $this->em->getRepository(UserDeliveryAddress::class);
         $error = null;
 
         if ($request->isMethod('POST')) {
-            if (!$this->isCsrfTokenValid('cabinet_addresses', $request->request->get('_csrf_token'))) {
-                $error = 'frontend.cabinet.addresses.error.invalid_csrf';
-            } else {
-                $address = trim((string) $request->request->get('address', ''));
-                $title = trim((string) $request->request->get('title', ''));
-                $isDefault = (bool) $request->request->get('is_default');
+            $error = $this->handleAddressCreate($request, $user, $repo->findBy(['user' => $user]));
 
-                if ($address === '') {
-                    $error = 'frontend.cabinet.addresses.error.empty_address';
-                } else {
-                    if ($isDefault) {
-                        $this->syncSingleDefaultAddress($repo->findBy(['user' => $user]));
-                    }
-
-                    $deliveryAddress = new UserDeliveryAddress();
-                    $deliveryAddress->setUser($user);
-                    $deliveryAddress->setAddress($address);
-                    $deliveryAddress->setTitle($title ?: null);
-                    $deliveryAddress->setIsDefault($isDefault);
-
-                    $this->em->persist($deliveryAddress);
-                    $this->em->flush();
-
-                    return $this->redirectToAddresses($request);
-                }
+            if (null === $error) {
+                return $this->redirectToAddresses($request);
             }
         }
 
@@ -217,17 +175,10 @@ class CabinetController extends BaseController
             throw $this->createAccessDeniedException();
         }
 
-        /** @var User $user */
-        $user = $this->getUser();
-        /** @var UserDeliveryAddress|null $address */
-        $address = $this->em->getRepository(UserDeliveryAddress::class)->find($id);
+        $user = $this->getCurrentUser();
+        $address = $this->findOwnedAddressOrThrow($id, $user);
 
-        if (!$address || $address->getUser()->getId() !== $user->getId()) {
-            throw $this->createNotFoundException();
-        }
-
-        $addressesToReset = $this->em->getRepository(UserDeliveryAddress::class)->findBy(['user' => $user]);
-        if ($this->syncSingleDefaultAddress($addressesToReset, $address)) {
+        if ($this->syncSingleDefaultAddress($this->findAddressesForUser($user), $address)) {
             $this->em->flush();
         }
 
@@ -242,33 +193,91 @@ class CabinetController extends BaseController
             throw $this->createAccessDeniedException();
         }
 
-        /** @var User $user */
-        $user = $this->getUser();
-        /** @var UserDeliveryAddress|null $address */
-        $address = $this->em->getRepository(UserDeliveryAddress::class)->find($id);
-
-        if (!$address || $address->getUser()->getId() !== $user->getId()) {
-            throw $this->createNotFoundException();
-        }
+        $user = $this->getCurrentUser();
+        $address = $this->findOwnedAddressOrThrow($id, $user);
 
         $wasDefault = $address->getIsDefault();
         $this->em->remove($address);
         $this->em->flush();
 
         if ($wasDefault) {
-            $firstAddress = $this->em->getRepository(UserDeliveryAddress::class)->findOneBy(
-                ['user' => $user],
-                ['createdAt' => 'DESC']
-            );
-            if ($firstAddress) {
-                $addressesToReset = $this->em->getRepository(UserDeliveryAddress::class)->findBy(['user' => $user]);
-                if ($this->syncSingleDefaultAddress($addressesToReset, $firstAddress)) {
-                    $this->em->flush();
-                }
+            $repo = $this->em->getRepository(UserDeliveryAddress::class);
+            $firstAddress = $repo->findOneBy(['user' => $user], ['createdAt' => 'DESC']);
+            if ($firstAddress && $this->syncSingleDefaultAddress($repo->findBy(['user' => $user]), $firstAddress)) {
+                $this->em->flush();
             }
         }
 
         return $this->redirectToAddresses($request);
+    }
+
+    /**
+     * @param list<UserDeliveryAddress> $existingAddresses
+     */
+    private function handleAddressCreate(Request $request, User $user, array $existingAddresses): ?string
+    {
+        if (!$this->isCsrfTokenValid('cabinet_addresses', $request->request->get('_csrf_token'))) {
+            return 'frontend.cabinet.addresses.error.invalid_csrf';
+        }
+
+        $address = trim((string) $request->request->get('address', ''));
+        if ('' === $address) {
+            return 'frontend.cabinet.addresses.error.empty_address';
+        }
+
+        $title = trim((string) $request->request->get('title', ''));
+        $isDefault = (bool) $request->request->get('is_default');
+
+        if ($isDefault) {
+            $this->syncSingleDefaultAddress($existingAddresses);
+        }
+
+        $deliveryAddress = new UserDeliveryAddress();
+        $deliveryAddress->setUser($user);
+        $deliveryAddress->setAddress($address);
+        $deliveryAddress->setTitle($title ?: null);
+        $deliveryAddress->setIsDefault($isDefault);
+
+        $this->em->persist($deliveryAddress);
+        $this->em->flush();
+
+        return null;
+    }
+
+    private function findOwnedAddressOrThrow(int $id, User $user): UserDeliveryAddress
+    {
+        $address = $this->em->getRepository(UserDeliveryAddress::class)->find($id);
+
+        if (!$address || $address->getUser()->getId() !== $user->getId()) {
+            throw $this->createNotFoundException();
+        }
+
+        return $address;
+    }
+
+    /**
+     * @return list<UserDeliveryAddress>
+     */
+    private function findAddressesForUser(User $user): array
+    {
+        return $this->em->getRepository(UserDeliveryAddress::class)->findBy(['user' => $user]);
+    }
+
+    private function orderBelongsToUser(Order $order, User $user): bool
+    {
+        if (null !== $order->getUser()) {
+            return $order->getUser()->getId() === $user->getId();
+        }
+
+        return 0 === strcasecmp((string) $order->getEmail(), (string) $user->getEmail());
+    }
+
+    private function getCurrentUser(): User
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return $user;
     }
 
     private function redirectToAddresses(Request $request): Response
@@ -279,7 +288,7 @@ class CabinetController extends BaseController
     }
 
     /**
-     * @param UserDeliveryAddress[] $addresses
+     * @param list<UserDeliveryAddress> $addresses
      */
     private function syncSingleDefaultAddress(array $addresses, ?UserDeliveryAddress $preferred = null): bool
     {
@@ -287,22 +296,7 @@ class CabinetController extends BaseController
             return false;
         }
 
-        $selectedId = null;
-
-        if ($preferred !== null) {
-            $selectedId = $preferred->getId();
-        } else {
-            foreach ($addresses as $address) {
-                if ($address->getIsDefault()) {
-                    $selectedId = $address->getId();
-                    break;
-                }
-            }
-
-            if ($selectedId === null) {
-                $selectedId = $addresses[0]->getId();
-            }
-        }
+        $selectedId = $preferred?->getId() ?? $this->findCurrentDefaultId($addresses) ?? $addresses[0]->getId();
 
         $changed = false;
         foreach ($addresses as $address) {
@@ -314,5 +308,19 @@ class CabinetController extends BaseController
         }
 
         return $changed;
+    }
+
+    /**
+     * @param list<UserDeliveryAddress> $addresses
+     */
+    private function findCurrentDefaultId(array $addresses): ?int
+    {
+        foreach ($addresses as $address) {
+            if ($address->getIsDefault()) {
+                return $address->getId();
+            }
+        }
+
+        return null;
     }
 }

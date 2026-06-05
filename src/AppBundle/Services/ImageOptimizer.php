@@ -12,20 +12,13 @@ class ImageOptimizer
     private const S_800 = 800;
     private const S_750 = 750;
 
-    private ImageManager $imagine;
-
-    private EntityManagerInterface $em;
-    private RequestStack $requestStack;
-    private string $imagineWebRoot;
+    private readonly ImageManager $imagine;
 
     public function __construct(
-        EntityManagerInterface $em,
-        RequestStack $requestStack,
-        string $imagineWebRoot
+        private readonly EntityManagerInterface $em,
+        private readonly RequestStack $requestStack,
+        private readonly string $imagineWebRoot,
     ) {
-        $this->em = $em;
-        $this->requestStack = $requestStack;
-        $this->imagineWebRoot = $imagineWebRoot;
         $this->imagine = new ImageManager();
     }
 
@@ -37,7 +30,7 @@ class ImageOptimizer
         }
 
         $sizes = $this->getSizes();
-        $path  = $this->imagineWebRoot . $object->getPath();
+        $path = $this->imagineWebRoot . $object->getPath();
 
         if (!array_key_exists($request->get('pcode'), $sizes)) {
             return;

@@ -16,12 +16,12 @@ use WheelSpinBundle\Entity\WheelSpinOption;
  */
 class Order
 {
-    const STATUS_NEW       = 1;
-    const STATUS_COMPLETED = 2;
-    const STATUS_CANCEL    = 3;
+    public const STATUS_NEW = 1;
+    public const STATUS_COMPLETED = 2;
+    public const STATUS_CANCEL = 3;
 
-    const TYPE_ORDER_CART = 1;
-    const TYPE_ORDER_QUICK = 2;
+    public const TYPE_ORDER_CART = 1;
+    public const TYPE_ORDER_QUICK = 2;
 
     /**
      * @var int
@@ -117,7 +117,7 @@ class Order
     protected $address;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer", nullable=false)
      */
@@ -222,7 +222,7 @@ class Order
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -242,11 +242,9 @@ class Order
     /**
      * Set fio
      *
-     * @param string|null $fio
-     *
      * @return $this
      */
-    public function setFio(string $fio = null)
+    public function setFio(?string $fio = null)
     {
         $this->fio = $fio;
 
@@ -266,11 +264,9 @@ class Order
     /**
      * Set email
      *
-     * @param  string|null  $email
-     *
      * @return $this
      */
-    public function setEmail(string $email = null)
+    public function setEmail(?string $email = null)
     {
         $this->email = $email;
 
@@ -290,11 +286,9 @@ class Order
     /**
      * Set phone
      *
-     * @param  string|null  $phone
-     *
      * @return $this
      */
-    public function setPhone(string $phone = null)
+    public function setPhone(?string $phone = null)
     {
         $this->phone = $phone;
 
@@ -314,11 +308,9 @@ class Order
     /**
      * Set instagram
      *
-     * @param  string|null  $instagram
-     *
      * @return $this
      */
-    public function setInstagram(string $instagram = null)
+    public function setInstagram(?string $instagram = null)
     {
         $this->instagram = $instagram;
 
@@ -338,11 +330,9 @@ class Order
     /**
      * Set type
      *
-     * @param  string|null  $type
-     *
      * @return $this
      */
-    public function setType(string $type = null)
+    public function setType(?string $type = null)
     {
         $this->type = $type;
 
@@ -361,8 +351,6 @@ class Order
 
     /**
      * Set callMe
-     *
-     * @param  bool  $callMe
      *
      * @return $this
      */
@@ -386,11 +374,9 @@ class Order
     /**
      * Set comment
      *
-     * @param string $comment
-     *
      * @return $this
      */
-    public function setComment(string $comment = null)
+    public function setComment(?string $comment = null)
     {
         $this->comment = $comment;
 
@@ -410,11 +396,9 @@ class Order
     /**
      * Set address
      *
-     * @param string $address
-     *
      * @return $this
      */
-    public function setAddress(string $address = null)
+    public function setAddress(?string $address = null)
     {
         $this->address = $address;
 
@@ -450,28 +434,21 @@ class Order
     }
 
     /**
-     * @param  string  $secret
-     *
      * @return $this
      */
-    public function setSecret(string  $secret)
+    public function setSecret(string $secret)
     {
         $this->secret = $secret;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function getIsSpin(): bool
     {
         return $this->isSpin;
     }
 
     /**
-     * @param  bool  $isSpin
-     *
      * @return $this
      */
     public function setIsSpin(bool $isSpin)
@@ -494,11 +471,9 @@ class Order
     /**
      * Set messenger
      *
-     * @param string $messenger
-     *
      * @return $this
      */
-    public function setMessenger(string $messenger = null)
+    public function setMessenger(?string $messenger = null)
     {
         $this->messenger = $messenger;
 
@@ -517,8 +492,6 @@ class Order
 
     /**
      * Set totalSum
-     *
-     * @param float $totalSum
      *
      * @return $this
      */
@@ -542,8 +515,6 @@ class Order
     /**
      * Set orderSum
      *
-     * @param float $orderSum
-     *
      * @return $this
      */
     public function setOrderSum(float $orderSum = 0)
@@ -565,8 +536,6 @@ class Order
 
     /**
      * Set discountPromo
-     *
-     * @param float $discountPromo
      *
      * @return $this
      */
@@ -606,7 +575,7 @@ class Order
         return $this->wheelSpinOption;
     }
 
-    public function setWheelSpinOption(WheelSpinOption $wheelSpinOption = null)
+    public function setWheelSpinOption(?WheelSpinOption $wheelSpinOption = null)
     {
         $this->wheelSpinOption = $wheelSpinOption;
 
@@ -630,7 +599,7 @@ class Order
         return $this->spinPrize;
     }
 
-    public function setSpinPrize(string $spinPrize = null)
+    public function setSpinPrize(?string $spinPrize = null)
     {
         $this->spinPrize = $spinPrize;
 
@@ -664,11 +633,9 @@ class Order
     /**
      * Add orderHasItems.
      *
-     * @param \OrderBundle\Entity\OrderHasItem $orderHasItems
-     *
      * @return $this
      */
-    public function addOrderHasItem(\OrderBundle\Entity\OrderHasItem $orderHasItems)
+    public function addOrderHasItem(OrderHasItem $orderHasItems)
     {
         $orderHasItems->setOrder($this);
         $this->orderHasItems[] = $orderHasItems;
@@ -679,11 +646,9 @@ class Order
     /**
      * Remove orderHasItems.
      *
-     * @param \OrderBundle\Entity\OrderHasItem $orderHasItems
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise
      */
-    public function removeOrderHasItem(\OrderBundle\Entity\OrderHasItem $orderHasItems)
+    public function removeOrderHasItem(OrderHasItem $orderHasItems)
     {
         return $this->orderHasItems->removeElement($orderHasItems);
     }
@@ -704,9 +669,9 @@ class Order
     public static function getStatuses()
     {
         return [
-            self::STATUS_NEW       => 'new',
+            self::STATUS_NEW => 'new',
             self::STATUS_COMPLETED => 'completed',
-            self::STATUS_CANCEL    => 'cancel',
+            self::STATUS_CANCEL => 'cancel',
         ];
     }
 
@@ -716,7 +681,7 @@ class Order
     public static function getTypes()
     {
         return [
-            self::TYPE_ORDER_CART  => 'cart',
+            self::TYPE_ORDER_CART => 'cart',
             self::TYPE_ORDER_QUICK => 'quick',
         ];
     }
@@ -724,9 +689,9 @@ class Order
     public static function getNameStatus($status)
     {
         $statuses = [
-            self::STATUS_NEW       => 'order.fields.statuses.new',
+            self::STATUS_NEW => 'order.fields.statuses.new',
             self::STATUS_COMPLETED => 'order.fields.statuses.completed',
-            self::STATUS_CANCEL    => 'order.fields.statuses.cancel',
+            self::STATUS_CANCEL => 'order.fields.statuses.cancel',
         ];
 
         return $statuses[$status];

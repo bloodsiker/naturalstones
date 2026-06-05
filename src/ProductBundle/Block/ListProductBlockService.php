@@ -3,10 +3,10 @@
 namespace ProductBundle\Block;
 
 use AppBundle\Block\AbstractEditableBlockService;
-use ProductBundle\Block\Traits\HomepageDefaultMethodTrait;
-use ProductBundle\Block\Traits\StrictRelationSonataAdminTrait;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
+use ProductBundle\Block\Traits\HomepageDefaultMethodTrait;
+use ProductBundle\Block\Traits\StrictRelationSonataAdminTrait;
 use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
 use ShareBundle\Entity\Colour;
@@ -14,9 +14,9 @@ use ShareBundle\Entity\Stone;
 use ShareBundle\Entity\Tag;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Form\Mapper\FormMapper;
-use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Meta\MetadataInterface;
+use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\Form\Type\ImmutableArrayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -32,27 +32,23 @@ use Twig\Environment;
  */
 class ListProductBlockService extends AbstractEditableBlockService
 {
-    use StrictRelationSonataAdminTrait,
-        HomepageDefaultMethodTrait;
+    use StrictRelationSonataAdminTrait;
+    use HomepageDefaultMethodTrait;
 
-    const SIMILAR_LIST = '@Product/Block/similar_list.html.twig';
-    const BUY_WITH_LIST = '@Product/Block/buy_with_list.html.twig';
-    const TEMPLATE_AJAX  = '@Product/Block/large_list_ajax.html.twig';
-    const TEMPLATE_PAGINATION  = '@Product/Block/_pagination.html.twig';
+    public const SIMILAR_LIST = '@Product/Block/similar_list.html.twig';
+    public const BUY_WITH_LIST = '@Product/Block/buy_with_list.html.twig';
+    public const TEMPLATE_AJAX = '@Product/Block/large_list_ajax.html.twig';
+    public const TEMPLATE_PAGINATION = '@Product/Block/_pagination.html.twig';
 
-    const CATEGORY_NABORI = 5;
+    public const CATEGORY_NABORI = 5;
 
     /**
-     * @var RequestStack $requestStack
+     * @var RequestStack
      */
     protected $requestStack;
 
     /**
      * ListGenreBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param RequestStack    $requestStack
      */
     public function __construct(Environment $twig, RequestStack $requestStack)
     {
@@ -61,29 +57,27 @@ class ListProductBlockService extends AbstractEditableBlockService
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
-            'title'            => null,
-            'title_url'        => null,
-            'list_type'        => null,
-            'items_count'      => 20,
-            'page'             => 1,
-            'filter'            => false,
-            'category'         => null,
-            'category_slug'    => null,
-            'tag'              => null,
-            'colour'           => null,
-            'stone'            => null,
-            'who'              => null,
-            'discount'         => false,
-            'random'           => false,
-            'exclude_ids'      => null,
-            'show_paginator'   => false,
-            'ajax_paginator'   => false,
-            'template'         => '@Product/Block/large_list.html.twig',
+            'title' => null,
+            'title_url' => null,
+            'list_type' => null,
+            'items_count' => 20,
+            'page' => 1,
+            'filter' => false,
+            'category' => null,
+            'category_slug' => null,
+            'tag' => null,
+            'colour' => null,
+            'stone' => null,
+            'who' => null,
+            'discount' => false,
+            'random' => false,
+            'exclude_ids' => null,
+            'show_paginator' => false,
+            'ajax_paginator' => false,
+            'template' => '@Product/Block/large_list.html.twig',
         ]);
     }
 
@@ -93,6 +87,7 @@ class ListProductBlockService extends AbstractEditableBlockService
         foreach ($this->doctrine->getRepository($entityClass)->findAll() as $entity) {
             $choices[$entity->$labelMethod()] = $entity->getId();
         }
+
         return $choices;
     }
 
@@ -107,51 +102,51 @@ class ListProductBlockService extends AbstractEditableBlockService
 
         $form->add('settings', ImmutableArrayType::class, [
             'translation_domain' => 'ProductBundle',
-            'label'              => false,
-            'keys'               => [
+            'label' => false,
+            'keys' => [
                 ['title', TextType::class, [
-                    'label'    => 'product.block.fields.title',
+                    'label' => 'product.block.fields.title',
                     'required' => false,
                 ]],
                 ['items_count', TextType::class, [
-                    'label'    => 'product.block.fields.items_count',
+                    'label' => 'product.block.fields.items_count',
                     'required' => false,
                 ]],
                 ['category', ChoiceType::class, [
-                    'label'       => 'product.block.fields.category',
-                    'required'    => false,
+                    'label' => 'product.block.fields.category',
+                    'required' => false,
                     'placeholder' => '—',
-                    'choices'     => $this->buildEntityChoices(Category::class, 'getName'),
+                    'choices' => $this->buildEntityChoices(Category::class, 'getName'),
                 ]],
                 ['tag', ChoiceType::class, [
-                    'label'       => 'product.block.fields.tag',
-                    'required'    => false,
+                    'label' => 'product.block.fields.tag',
+                    'required' => false,
                     'placeholder' => '—',
-                    'choices'     => $this->buildEntityChoices(Tag::class, 'getName'),
+                    'choices' => $this->buildEntityChoices(Tag::class, 'getName'),
                 ]],
                 ['stone', ChoiceType::class, [
-                    'label'       => 'product.block.fields.stone',
-                    'required'    => false,
+                    'label' => 'product.block.fields.stone',
+                    'required' => false,
                     'placeholder' => '—',
-                    'choices'     => $this->buildEntityChoices(Stone::class, 'getName'),
+                    'choices' => $this->buildEntityChoices(Stone::class, 'getName'),
                 ]],
                 ['colour', ChoiceType::class, [
-                    'label'       => 'product.block.fields.colour',
-                    'required'    => false,
+                    'label' => 'product.block.fields.colour',
+                    'required' => false,
                     'placeholder' => '—',
-                    'choices'     => $this->buildEntityChoices(Colour::class, 'getName'),
+                    'choices' => $this->buildEntityChoices(Colour::class, 'getName'),
                 ]],
                 ['who', ChoiceType::class, [
-                    'label'    => 'product.block.fields.who',
+                    'label' => 'product.block.fields.who',
                     'required' => false,
-                    'choices'  => array_merge(['' => ''], array_flip(Product::$whois)),
+                    'choices' => array_merge(['' => ''], array_flip(Product::$whois)),
                 ]],
                 ['discount', CheckboxType::class, [
-                    'label'    => 'product.block.fields.discount',
+                    'label' => 'product.block.fields.discount',
                     'required' => false,
                 ]],
                 ['random', CheckboxType::class, [
-                    'label'    => 'product.block.fields.random',
+                    'label' => 'product.block.fields.random',
                     'required' => false,
                 ]],
             ],
@@ -166,14 +161,10 @@ class ListProductBlockService extends AbstractEditableBlockService
     }
 
     /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         $block = $blockContext->getBlock();
 
         if (!$block->getEnabled()) {
@@ -260,7 +251,6 @@ class ListProductBlockService extends AbstractEditableBlockService
             }
         }
 
-
         if ($request->get('min_price')) {
             $qb->andWhere('p.price >= :minPrice')->setParameter('minPrice', $request->get('min_price'));
         }
@@ -298,34 +288,34 @@ class ListProductBlockService extends AbstractEditableBlockService
 
         if ($loadMore) {
             $responseProducts = $this->renderResponse(self::TEMPLATE_AJAX, [
-                'products'  => $paginator,
-                'block'     => $block,
-                'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
+                'products' => $paginator,
+                'block' => $block,
+                'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
             ], new Response());
 
             $responsePagination = $this->renderResponse(self::TEMPLATE_PAGINATION, [
-                '_route_params'  => $request->get('route_params'),
-                '_route'    => $request->get('route'),
-                'products'  => $paginator,
-                'block'     => $block,
-                'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
+                '_route_params' => $request->get('route_params'),
+                '_route' => $request->get('route'),
+                'products' => $paginator,
+                'block' => $block,
+                'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
             ], new Response());
 
             return new JsonResponse([
                 'view' => $responseProducts->getContent(),
                 'pagination' => $responsePagination->getContent(),
-                'next_page' => $paginator->hasNextPage()
+                'next_page' => $paginator->hasNextPage(),
             ]);
         }
 
         return $this->renderResponse($isAjax ? self::TEMPLATE_AJAX : $template, [
-            'products'  => $paginator,
-            'maxPrice'  => $maxPrice['max'] ?? 0,
-            'minPrice'  => $minPrice['min'] ?? 0,
-            'stones'    => $stoneArray ?? [],
-            'colours'   => $colourArray ?? [],
-            'block'     => $block,
-            'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
+            'products' => $paginator,
+            'maxPrice' => $maxPrice['max'] ?? 0,
+            'minPrice' => $minPrice['min'] ?? 0,
+            'stones' => $stoneArray ?? [],
+            'colours' => $colourArray ?? [],
+            'block' => $block,
+            'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
         ], $response);
     }
 }

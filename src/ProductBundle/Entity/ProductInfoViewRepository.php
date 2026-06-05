@@ -10,9 +10,6 @@ use Doctrine\ORM\QueryBuilder;
  */
 class ProductInfoViewRepository extends EntityRepository
 {
-    /**
-     * @return QueryBuilder
-     */
     public function baseProductInfoViewQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('piv');
@@ -28,13 +25,7 @@ class ProductInfoViewRepository extends EntityRepository
         return $qb;
     }
 
-
     /**
-     * @param QueryBuilder $qb
-     * @param int          $period
-     *
-     * @return QueryBuilder
-     *
      * @throws \Exception
      */
     public function filterPopularByDaysAgo(QueryBuilder $qb, int $period): QueryBuilder
@@ -49,11 +40,6 @@ class ProductInfoViewRepository extends EntityRepository
     }
 
     /**
-     * @param QueryBuilder $qb
-     * @param int          $difference
-     *
-     * @return QueryBuilder
-     *
      * @throws \Exception
      */
     public function filterPopularByMonth(QueryBuilder $qb, int $difference = 0): QueryBuilder

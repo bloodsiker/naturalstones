@@ -3,16 +3,14 @@
 namespace PageBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\Form\Validator\ErrorElement;
-
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Admin definition for the PageRedirect class
@@ -23,13 +21,11 @@ class PageRedirectAdmin extends AbstractAdmin
      * @var array
      */
     protected $datagridValues = [
-        '_sort_by'      => 'id',
-        '_sort_order'   => 'DESC',
+        '_sort_by' => 'id',
+        '_sort_order' => 'DESC',
     ];
 
-
     /**
-     * @param ErrorElement $errorElement
      * @param object       $object
      */
     public function validate(ErrorElement $errorElement, $object)
@@ -52,11 +48,10 @@ class PageRedirectAdmin extends AbstractAdmin
     }
 
     /**
-     * @param FormMapper $formMapper
-     *
      * @throws \Exception
      */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('football.form_group.basic', ['class' => 'col-md-6', 'label' => false])
                 ->add('fromPath', TextType::class, [
@@ -90,10 +85,8 @@ class PageRedirectAdmin extends AbstractAdmin
         ;
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('fromPath', null, [
                 'label' => 'form.label_redirect_from',
@@ -107,10 +100,8 @@ class PageRedirectAdmin extends AbstractAdmin
         ;
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('type', null, [
                 'label' => 'form.label_type',
@@ -136,15 +127,13 @@ class PageRedirectAdmin extends AbstractAdmin
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'delete'    => [],
+                    'delete' => [],
                 ],
             ]);
     }
 
     /**
      * @param string $property
-     *
-     * @return mixed
      *
      * @throws \Exception
      */
@@ -161,7 +150,7 @@ class PageRedirectAdmin extends AbstractAdmin
         }
 
         foreach ($types as $key => $value) {
-            $typeChoice['form.types.'.$value] = $key;
+            $typeChoice['form.types.' . $value] = $key;
         }
 
         return $typeChoice;

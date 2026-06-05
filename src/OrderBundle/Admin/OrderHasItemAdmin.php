@@ -3,9 +3,7 @@
 namespace OrderBundle\Admin;
 
 use AdminBundle\Form\Type\TextareaCounterType;
-use AdminBundle\Form\Type\TextCounterType;
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
-
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
@@ -19,10 +17,8 @@ class OrderHasItemAdmin extends Admin
 {
     protected $parentAssociationMapping = 'product';
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('order', null, [
                 'label' => 'order_has_item.fields.order',
@@ -47,10 +43,8 @@ class OrderHasItemAdmin extends Admin
         ;
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $linkParameters = [];
 
         if ($this->hasParentFieldDescription()) {
@@ -90,7 +84,7 @@ class OrderHasItemAdmin extends Admin
                 'required' => false,
                 'attr' => [
                     'readonly' => true,
-                ]
+                ],
             ])
             ->add('discount', MoneyType::class, [
                 'label' => 'order_has_item.fields.discount',
@@ -98,7 +92,7 @@ class OrderHasItemAdmin extends Admin
                 'required' => false,
                 'attr' => [
                     'readonly' => true,
-                ]
+                ],
             ])
             ->add('options', TextareaCounterType::class, [
                 'label' => 'order_has_item.fields.option',

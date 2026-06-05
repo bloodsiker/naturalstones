@@ -3,7 +3,6 @@
 namespace ShareBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
-
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
@@ -17,10 +16,8 @@ class StoneHasConstructorAdmin extends Admin
 {
     protected $parentAssociationMapping = 'stone';
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('stone', null, [
                 'label' => 'stone_has_constructor.fields.stone',
@@ -39,10 +36,8 @@ class StoneHasConstructorAdmin extends Admin
         ;
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $linkParameters = [];
 
         if ($this->hasParentFieldDescription()) {
@@ -60,8 +55,8 @@ class StoneHasConstructorAdmin extends Admin
         $formMapper
             ->add('image', ModelListType::class, [
                 'label' => 'stone_has_constructor.fields.image',
-                'required'      => false,
-                'btn_delete'    => false,
+                'required' => false,
+                'btn_delete' => false,
             ], ['link_parameters' => $linkParameters])
             ->add('size', TextType::class, [
                 'label' => 'stone_has_constructor.fields.size',

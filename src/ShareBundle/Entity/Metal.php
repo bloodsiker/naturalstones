@@ -3,11 +3,11 @@
 namespace ShareBundle\Entity;
 
 use AppBundle\Traits\TranslatableProxyTrait;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Colour
@@ -77,7 +77,7 @@ class Metal implements TranslatableInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -111,7 +111,7 @@ class Metal implements TranslatableInterface
     /**
      * Set isActive
      *
-     * @param boolean $isActive
+     * @param bool $isActive
      *
      * @return Metal
      */
@@ -125,7 +125,7 @@ class Metal implements TranslatableInterface
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {

@@ -92,13 +92,10 @@ class WheelSpinOption implements TranslatableInterface
         return $this->product;
     }
 
-
     /**
-     * @param  \ProductBundle\Entity\Product  $product
-     *
      * @return $this
      */
-    public function setProduct(\ProductBundle\Entity\Product $product = null)
+    public function setProduct(?\ProductBundle\Entity\Product $product = null)
     {
         $this->product = $product;
 
@@ -114,11 +111,9 @@ class WheelSpinOption implements TranslatableInterface
     }
 
     /**
-     * @param  \MediaBundle\Entity\MediaImage|null  $image
-     *
      * @return $this
      */
-    public function setImage(\MediaBundle\Entity\MediaImage $image = null)
+    public function setImage(?\MediaBundle\Entity\MediaImage $image = null)
     {
         $this->image = $image;
 
@@ -127,8 +122,6 @@ class WheelSpinOption implements TranslatableInterface
 
     /**
      * Set isActive
-     *
-     * @param bool $isActive
      *
      * @return $this
      */

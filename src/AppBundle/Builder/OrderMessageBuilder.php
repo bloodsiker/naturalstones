@@ -8,19 +8,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class OrderMessageBuilder implements BuilderMessage
 {
-    private string $message;
-
+    private string $message = '';
     private Order $order;
-
-    private ProductRouterHelper $productRouterHelper;
-
-    private string $fullDomain;
+    private readonly string $fullDomain;
 
     public function __construct(
-        ProductRouterHelper $productRouterHelper,
-        string $fullDomain
+        private readonly ProductRouterHelper $productRouterHelper,
+        string $fullDomain,
     ) {
-        $this->productRouterHelper = $productRouterHelper;
         $this->fullDomain = rtrim($fullDomain, '/');
     }
 
@@ -57,11 +52,11 @@ class OrderMessageBuilder implements BuilderMessage
 
     public function getMessageFeedback(Request $request): string
     {
-        $this->message = "Не нашли то, что искали?" . PHP_EOL;
-        $this->message .= "<b>Имя:</b> " . $this->escape($request->get('name')) . PHP_EOL;
-        $this->message .= "<b>Телефон:</b> " . $this->escape($request->get('phone')) . PHP_EOL;
-        $this->message .= "<b>Email:</b> " . $this->escape($request->get('email')) . PHP_EOL;
-        $this->message .= "<b>Сообщение:</b> " . $this->escape($request->get('message')) . PHP_EOL;
+        $this->message = 'Не нашли то, что искали?' . PHP_EOL;
+        $this->message .= '<b>Имя:</b> ' . $this->escape($request->get('name')) . PHP_EOL;
+        $this->message .= '<b>Телефон:</b> ' . $this->escape($request->get('phone')) . PHP_EOL;
+        $this->message .= '<b>Email:</b> ' . $this->escape($request->get('email')) . PHP_EOL;
+        $this->message .= '<b>Сообщение:</b> ' . $this->escape($request->get('message')) . PHP_EOL;
 
         return $this->get();
     }
@@ -75,16 +70,16 @@ class OrderMessageBuilder implements BuilderMessage
 
     public function getTitleFromCart(): self
     {
-        $this->message = "<b>Заказ #" . $this->order->getId() . "</b>" . PHP_EOL;
-        $this->message .= "Заказ с корзины" . PHP_EOL;
+        $this->message = '<b>Заказ #' . $this->order->getId() . '</b>' . PHP_EOL;
+        $this->message .= 'Заказ с корзины' . PHP_EOL;
 
         return $this;
     }
 
     public function getTitleQuickForm(): self
     {
-        $this->message = "<b>Заказ #" . $this->order->getId() . "</b>" . PHP_EOL;
-        $this->message .= "Форма быстрого заказа" . PHP_EOL;
+        $this->message = '<b>Заказ #' . $this->order->getId() . '</b>' . PHP_EOL;
+        $this->message .= 'Форма быстрого заказа' . PHP_EOL;
 
         return $this;
     }
@@ -92,9 +87,9 @@ class OrderMessageBuilder implements BuilderMessage
     public function getMessenger(): self
     {
         if ($this->order->getMessenger() === 'instagram') {
-            $this->message .= "<b>Ссылка на инстаграм:</b> " . $this->escape($this->order->getInstagram()) . PHP_EOL;
+            $this->message .= '<b>Ссылка на инстаграм:</b> ' . $this->escape($this->order->getInstagram()) . PHP_EOL;
         } else {
-            $this->message .= "<b>Телефон:</b> " . $this->escape($this->order->getPhone()) . ' - ' . $this->escape($this->order->getMessenger()) . PHP_EOL;
+            $this->message .= '<b>Телефон:</b> ' . $this->escape($this->order->getPhone()) . ' - ' . $this->escape($this->order->getMessenger()) . PHP_EOL;
         }
 
         return $this;
@@ -102,7 +97,7 @@ class OrderMessageBuilder implements BuilderMessage
 
     public function getName(): self
     {
-        $this->message .= "<b>Имя:</b> " . $this->escape($this->order->getFio()) . PHP_EOL;
+        $this->message .= '<b>Имя:</b> ' . $this->escape($this->order->getFio()) . PHP_EOL;
 
         return $this;
     }
@@ -110,7 +105,7 @@ class OrderMessageBuilder implements BuilderMessage
     public function getEmail(): self
     {
         if ($this->order->getEmail()) {
-            $this->message .= "<b>Email:</b> " . $this->escape($this->order->getEmail()) . PHP_EOL;
+            $this->message .= '<b>Email:</b> ' . $this->escape($this->order->getEmail()) . PHP_EOL;
         }
 
         return $this;
@@ -119,7 +114,7 @@ class OrderMessageBuilder implements BuilderMessage
     public function getAddress(): self
     {
         if ($this->order->getAddress()) {
-            $this->message .= "<b>Адрес:</b> " . $this->escape($this->order->getAddress()) . PHP_EOL;
+            $this->message .= '<b>Адрес:</b> ' . $this->escape($this->order->getAddress()) . PHP_EOL;
         }
 
         return $this;
@@ -128,7 +123,7 @@ class OrderMessageBuilder implements BuilderMessage
     public function getComment(): self
     {
         if ($this->order->getComment()) {
-            $this->message .= "<b>Комментарий:</b> " . $this->escape($this->order->getComment()) . PHP_EOL;
+            $this->message .= '<b>Комментарий:</b> ' . $this->escape($this->order->getComment()) . PHP_EOL;
         }
 
         return $this;
@@ -137,7 +132,7 @@ class OrderMessageBuilder implements BuilderMessage
     public function getCallMe(): self
     {
         if ($this->order->getCallMe()) {
-            $this->message .= "<b>Перезвонить:</b> Да" . PHP_EOL;
+            $this->message .= '<b>Перезвонить:</b> Да' . PHP_EOL;
         }
 
         return $this;
@@ -146,7 +141,7 @@ class OrderMessageBuilder implements BuilderMessage
     public function getSpinPrize(): self
     {
         if ($this->order->getSpinPrize()) {
-            $this->message .= "<b>Приз колеса:</b> " . $this->escape($this->order->getSpinPrize()) . PHP_EOL;
+            $this->message .= '<b>Приз колеса:</b> ' . $this->escape($this->order->getSpinPrize()) . PHP_EOL;
         }
 
         return $this;
@@ -154,7 +149,7 @@ class OrderMessageBuilder implements BuilderMessage
 
     public function getTotalSum(): self
     {
-        $this->message .= "<b>Сумма заказа:</b> " . number_format($this->order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
+        $this->message .= '<b>Сумма заказа:</b> ' . number_format($this->order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
 
         return $this;
     }
@@ -165,7 +160,7 @@ class OrderMessageBuilder implements BuilderMessage
             $product = $orderItem->getProduct();
             $link = $this->productRouterHelper->getProductPath($product, true, $this->fullDomain);
 
-            $this->message .= "--- " . sprintf(
+            $this->message .= '--- ' . sprintf(
                 '<a href="%s">%s %s</a>',
                 $this->escape($link),
                 $this->escape($product->getName()),

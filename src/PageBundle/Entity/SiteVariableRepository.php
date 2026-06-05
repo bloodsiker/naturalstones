@@ -4,38 +4,22 @@ namespace PageBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
-/**
- * Class SiteVariableRepository
- */
 class SiteVariableRepository extends EntityRepository
 {
     /**
-     * Returns SiteVariables. Items without Site comes first ("default" variables).
+     * Returns SiteVariables. Items without Site come first ("default" variables).
      *
-     * @param string $placement
-     *
-     * @return array
+     * @return list<SiteVariable>
      */
-    public function findVariables($placement)
+    public function findVariables(?string $placement): array
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $expr = $qb->expr();
-
-        $where = $expr->andX(
-            $expr->eq('p.alias', ':placement'),
-            $expr->eq('v.isActive', true)
-        );
-
-        $query = $qb
+        return $this->createQueryBuilder('v')
             ->select('v')
-            ->from('PageBundle:SiteVariable', 'v')
             ->innerJoin('v.placement', 'p')
-
-            ->where($where)
-            ->setParameter(':placement', $placement)
-
-            ->getQuery();
-
-        return $query->getResult();
+            ->where('p.alias = :placement')
+            ->andWhere('v.isActive = true')
+            ->setParameter('placement', $placement)
+            ->getQuery()
+            ->getResult();
     }
 }

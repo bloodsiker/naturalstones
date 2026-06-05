@@ -9,9 +9,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
-use Sonata\Form\Type\DateTimePickerType;
-use Sonata\Form\Type\CollectionType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
+use Sonata\Form\Type\CollectionType;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,27 +28,24 @@ class OrderAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'id',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
         '_sort_order' => 'DESC',
     ];
 
-    /**
-     * @param RouteCollectionInterface $collection
-     */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
 
         $collection->add('preview', 'preview');
     }
 
     /**
-     * @param ListMapper $listMapper
-     *
      * @throws \Exception
      */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'order.fields.id',
@@ -69,7 +66,7 @@ class OrderAdmin extends Admin
                 'label' => 'order.fields.status',
                 'choices' => array_flip($this->getStatuses()),
                 'catalogue' => $this->getTranslationDomain(),
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('isSpin', null, [
                 'label' => 'order.fields.is_spin',
@@ -80,17 +77,16 @@ class OrderAdmin extends Admin
             ->add('_action', 'actions', [
                 'actions' => [
                     'preview' => ['template' => '@Order/CRUD/list__action_preview.html.twig'],
-                    'edit' => []
+                    'edit' => [],
                 ],
             ]);
     }
 
     /**
-     * @param DatagridMapper $datagridMapper
-     *
      * @throws \Exception
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('email', null, [
                 'label' => 'order.fields.email',
@@ -125,19 +121,18 @@ class OrderAdmin extends Admin
                 ],
             ])
             ->add('createdAt', DateFilter::class, [
-                'label'         => 'order.fields.created_at',
-                'field_type'    => DateTimePickerType::class,
-                'field_options' => array('format' => 'dd.MM.yyyy'),
+                'label' => 'order.fields.created_at',
+                'field_type' => DateTimePickerType::class,
+                'field_options' => ['format' => 'dd.MM.yyyy'],
                 'show_filter' => true,
             ]);
     }
 
     /**
-     * @param FormMapper $formMapper
-     *
      * @throws \Exception
      */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $context = $this->getPersistentParameter('context');
 
         $formMapper
@@ -170,7 +165,7 @@ class OrderAdmin extends Admin
                         ],
                     ])
                     ->add('createdAt', DateTimePickerType::class, [
-                        'label'     => 'order.fields.created_at',
+                        'label' => 'order.fields.created_at',
                         'required' => true,
                         'format' => 'yyyy-MM-dd HH:mm',
                         'attr' => ['readonly' => true],
@@ -273,7 +268,7 @@ class OrderAdmin extends Admin
         $statusChoice = [];
 
         foreach ($statusesEntity as $key => $value) {
-            $statusChoice["order.fields.statuses.".$value] = $key;
+            $statusChoice['order.fields.statuses.' . $value] = $key;
         }
 
         return $statusChoice;
@@ -286,7 +281,7 @@ class OrderAdmin extends Admin
         $statusChoice = [];
 
         foreach ($statusesEntity as $key => $value) {
-            $statusChoice["order.fields.types.".$value] = $key;
+            $statusChoice['order.fields.types.' . $value] = $key;
         }
 
         return $statusChoice;

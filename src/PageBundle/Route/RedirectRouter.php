@@ -1,76 +1,45 @@
 <?php
-namespace PageBundle\Route;
 
-use Sonata\PageBundle\Model\Site;
-use Symfony\Cmf\Component\Routing\ChainedRouterInterface;
-use Symfony\Cmf\Component\Routing\VersatileGeneratorInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
+namespace PageBundle\Route;
 
 use PageBundle\Entity\PageRedirect;
 use PageBundle\Model\RedirectInterface;
 use PageBundle\Model\RedirectManagerInterface;
-use PageBundle\Services\RedisCacheKeyDecorator;
+use Sonata\PageBundle\Model\Site;
+use Symfony\Cmf\Component\Routing\ChainedRouterInterface;
+use Symfony\Cmf\Component\Routing\VersatileGeneratorInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\RouterInterface;
 
-/**
- * Class RedirectRouter
- */
 class RedirectRouter implements ChainedRouterInterface
 {
-    /**
-     * @var RequestContext
-     */
-    protected $context;
+    protected RequestContext $context;
 
-    /**
-     * @var RedirectManagerInterface
-     */
-    protected $redirectManager;
+    private ?Request $request = null;
 
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
-
-    /**
-     * @var Request
-     */
-    private $request;
-
-    public function __construct(RedirectManagerInterface $redirectManager, RouterInterface $router)
-    {
-        $this->redirectManager = $redirectManager;
-        $this->router = $router;
+    public function __construct(
+        protected readonly RedirectManagerInterface $redirectManager,
+        protected readonly RouterInterface $router,
+    ) {
         $this->context = $this->router->getContext();
     }
 
-    /**
-     * @param mixed $name
-     *
-     * @return bool
-     */
-    public function supports($name)
+    public function supports($name): bool
     {
         if (is_string($name)) {
             return false;
         }
-        if (is_object($name) && !($name instanceof RedirectInterface)) {
-            return false;
-        }
 
-        return true;
+        return !is_object($name) || $name instanceof RedirectInterface;
     }
 
     /**
-     * @param mixed $name
-     * @param array $parameters
-     *
-     * @return string
+     * @param array<string, mixed> $parameters
      */
     public function getRouteDebugMessage(string $name, array $parameters = []): string
     {
@@ -82,11 +51,7 @@ class RedirectRouter implements ChainedRouterInterface
     }
 
     /**
-     * @param string $name
-     * @param array  $parameters
-     * @param int    $referenceType
-     *
-     * @return string|void
+     * @param array<string, mixed> $parameters
      */
     public function generate(string $name, array $parameters = [], int $referenceType = self::ABSOLUTE_PATH): string
     {
@@ -98,9 +63,6 @@ class RedirectRouter implements ChainedRouterInterface
         $this->context = $context;
     }
 
-    /**
-     * @return RequestContext|\Symfony\Component\Routing\RequestContext
-     */
     public function getContext(): RequestContext
     {
         return $this->context;
@@ -111,110 +73,86 @@ class RedirectRouter implements ChainedRouterInterface
         return new RouteCollection();
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return array|mixed|null|string|void
-     *
-     * @throws \Exception
-     */
     public function getUrlRedirect(Request $request): ?string
     {
         $this->request = $request;
 
         try {
-            $result = $this->match($request->getPathInfo());
-            return $result['path'] ?? null;
-        } catch (ResourceNotFoundException $e) {
+            return $this->match($request->getPathInfo())['path'] ?? null;
+        } catch (ResourceNotFoundException) {
             return null;
         }
     }
 
     /**
-     * @param string $pathinfo
-     *
-     * @return array|mixed|null|string|void
+     * @return array{_controller: string, path: string, permanent: true}
      *
      * @throws \Exception
      */
     public function match(string $pathinfo): array
     {
-        $url = null;
-        $listRedirect = (array) $this->getRedirectCollection();
         if (false !== stripos($pathinfo, '_profiler')) {
             throw new ResourceNotFoundException();
         }
 
-        foreach ($listRedirect as $redirect) {
-            $fromPath = $redirect->getFromPath();
-            $checkPath = substr($fromPath, 0, 8) === 'https://' ? $this->request->getUri() : $this->request->getPathInfo();
-
-            switch ($redirect->getType()) {
-                case PageRedirect::TYPE_FULL:
-                    if ($fromPath === $checkPath) {
-                        $url = $this->getFinalUrl($redirect);
-                    }
-                    break;
-                case PageRedirect::TYPE_SEGMENT:
-                    if (preg_match("~$fromPath~", $pathinfo)) {
-                        $url = $this->getFinalUrl($redirect);
-                    }
-                    break;
-                case PageRedirect::TYPE_REGEX:
-                    if (preg_match($fromPath, $pathinfo)) {
-                        $url = $this->getFinalUrl($redirect);
-                    }
-                    break;
-                case PageRedirect::TYPE_STARTS_WITH:
-                    $checkPart = mb_substr($checkPath, 0, mb_strlen($fromPath));
-                    if ($checkPart === $fromPath) {
-                        $url = str_replace($fromPath, $redirect->getToPath(), $checkPath);
-                    }
-                    break;
-                default:
-                    throw new \Exception(sprintf('Unknown PageRedirect const %s', $redirect->getType()));
-            }
+        $url = null;
+        foreach ($this->getActualRedirects() as $redirect) {
+            $url = $this->matchRedirect($redirect, $pathinfo) ?? $url;
         }
 
         if (null === $url) {
             throw new ResourceNotFoundException();
         }
 
-        return ['_controller' => 'Symfony\Component\HttpKernel\Controller\RedirectController::urlRedirectAction', 'path' => $url, 'permanent' => true];
+        return [
+            '_controller' => 'Symfony\Component\HttpKernel\Controller\RedirectController::urlRedirectAction',
+            'path' => $url,
+            'permanent' => true,
+        ];
     }
 
     /**
-     * @return false|mixed
+     * @return list<PageRedirect>
      */
-    public function getActualRedirects()
+    public function getActualRedirects(): array
     {
         $listRedirect = $this->redirectManager->findBy(['isActive' => true]);
-        usort($listRedirect, function ($a, $b) {
-            return mb_strlen($a->getFromPath()) <=> mb_strlen($b->getFromPath());
-        });
-        $listRedirect = array_reverse($listRedirect);
+        usort(
+            $listRedirect,
+            static fn ($a, $b) => mb_strlen($a->getFromPath()) <=> mb_strlen($b->getFromPath())
+        );
 
-        return $listRedirect;
+        return array_reverse($listRedirect);
     }
 
     /**
-     * @param PageRedirect $objectRedirect
-     *
-     * @return mixed|string|void
+     * @throws \Exception
      */
-    protected function getFinalUrl(PageRedirect $objectRedirect)
+    private function matchRedirect(PageRedirect $redirect, string $pathinfo): ?string
     {
-        if (null === $objectRedirect) {
-            return;
-        }
+        $fromPath = $redirect->getFromPath();
+        $checkPath = str_starts_with($fromPath, 'https://') ? $this->request->getUri() : $this->request->getPathInfo();
 
+        return match ($redirect->getType()) {
+            PageRedirect::TYPE_FULL => $fromPath === $checkPath ? $this->getFinalUrl($redirect) : null,
+            PageRedirect::TYPE_SEGMENT => preg_match("~$fromPath~", $pathinfo) ? $this->getFinalUrl($redirect) : null,
+            PageRedirect::TYPE_REGEX => preg_match($fromPath, $pathinfo) ? $this->getFinalUrl($redirect) : null,
+            PageRedirect::TYPE_STARTS_WITH => str_starts_with($checkPath, $fromPath)
+                ? str_replace($fromPath, $redirect->getToPath(), $checkPath)
+                : null,
+            default => throw new \Exception(sprintf('Unknown PageRedirect const %s', $redirect->getType())),
+        };
+    }
+
+    protected function getFinalUrl(PageRedirect $objectRedirect): string
+    {
         if (null !== $objectRedirect->getToPage()) {
-            if ('page_slug' === $objectRedirect->getToPage()->getRouteName()) {
-                $url = $objectRedirect->getToPage()->getUrl();
-                $url = $this->decorateUrl($url, [], self::ABSOLUTE_URL, $objectRedirect->getToPage()->getSite());
+            $toPage = $objectRedirect->getToPage();
+            if ('page_slug' === $toPage->getRouteName()) {
+                $url = $this->decorateUrl($toPage->getUrl(), [], self::ABSOLUTE_URL, $toPage->getSite());
             } else {
-                $this->context->setHost($objectRedirect->getToPage()->getSite()->getHost());
-                $url = $this->router->generate($objectRedirect->getToPage()->getRouteName(), [], self::ABSOLUTE_URL);
+                $this->context->setHost($toPage->getSite()->getHost());
+                $url = $this->router->generate($toPage->getRouteName(), [], self::ABSOLUTE_URL);
             }
         } else {
             $url = $this->decorateUrl($objectRedirect->getToPath(), [], self::ABSOLUTE_PATH);
@@ -228,44 +166,26 @@ class RedirectRouter implements ChainedRouterInterface
     }
 
     /**
-     * Method from Sonata Page Bundle code! Slightly modified
+     * Method from Sonata Page Bundle code! Slightly modified.
      *
-     * Decorates an URL with url context and query
+     * Decorates a URL with url context and query.
      *
-     * @param string      $url           Relative URL
-     * @param array       $parameters    An array of parameters
-     * @param bool|string $referenceType The type of reference to be generated (one of the constants)
-     * @param Site        $site
-     *
-     * @return string
+     * @param array<string, mixed> $parameters
      *
      * @throws \RuntimeException
      */
-    protected function decorateUrl($url, array $parameters = array(), $referenceType = self::RELATIVE_PATH, Site $site = null)
+    protected function decorateUrl(string $url, array $parameters = [], int $referenceType = self::RELATIVE_PATH, ?Site $site = null): string
     {
         if (!$this->context) {
             throw new \RuntimeException('No context associated to the CmsPageRouter');
         }
-        $schemeAuthority = '';
-        if ($this->context->getHost() && (self::ABSOLUTE_URL === $referenceType || self::NETWORK_PATH === $referenceType)) {
-            $port = '';
-            if ('http' === $this->context->getScheme() && 80 !== $this->context->getHttpPort()) {
-                $port = sprintf(':%s', $this->context->getHttpPort());
-            } elseif ('https' === $this->context->getScheme() && 443 !== $this->context->getHttpsPort()) {
-                $port = sprintf(':%s', $this->context->getHttpsPort());
-            }
-            $schemeAuthority = self::NETWORK_PATH === $referenceType ? '//' : sprintf('%s://', $this->context->getScheme());
-            if (null !== $site && $site instanceof Site) {
-                $schemeAuthority = sprintf('%s%s%s', $schemeAuthority, $site->getHost(), $port);
-            } else {
-                $schemeAuthority = sprintf('%s%s%s', $schemeAuthority, $this->context->getHost(), $port);
-            }
-        }
-        if (self::RELATIVE_PATH === $referenceType) {
-            $url = $this->getRelativePath($this->context->getPathInfo(), $url);
-        } else {
-            $url = sprintf('%s%s', $schemeAuthority, $url);
-        }
+
+        $schemeAuthority = $this->buildSchemeAuthority($referenceType, $site);
+
+        $url = self::RELATIVE_PATH === $referenceType
+            ? UrlGenerator::getRelativePath($this->context->getPathInfo(), $url)
+            : sprintf('%s%s', $schemeAuthority, $url);
+
         if (count($parameters) > 0) {
             return sprintf('%s?%s', $url, http_build_query($parameters, '', '&'));
         }
@@ -273,24 +193,28 @@ class RedirectRouter implements ChainedRouterInterface
         return $url;
     }
 
-    /**
-     * Returns the target path as relative reference from the base path.
-     *
-     * @param string $basePath   The base path
-     * @param string $targetPath The target path
-     *
-     * @return string The relative target path
-     */
-    protected function getRelativePath($basePath, $targetPath)
+    private function buildSchemeAuthority(int $referenceType, ?Site $site): string
     {
-        return UrlGenerator::getRelativePath($basePath, $targetPath);
+        if (!$this->context->getHost() || (self::ABSOLUTE_URL !== $referenceType && self::NETWORK_PATH !== $referenceType)) {
+            return '';
+        }
+
+        $port = $this->resolvePort();
+        $scheme = self::NETWORK_PATH === $referenceType ? '//' : sprintf('%s://', $this->context->getScheme());
+        $host = $site instanceof Site ? $site->getHost() : $this->context->getHost();
+
+        return $scheme . $host . $port;
     }
 
-    /**
-     * @return false|mixed
-     */
-    private function getRedirectCollection()
+    private function resolvePort(): string
     {
-        return $this->getActualRedirects();
+        if ('http' === $this->context->getScheme() && 80 !== $this->context->getHttpPort()) {
+            return sprintf(':%s', $this->context->getHttpPort());
+        }
+        if ('https' === $this->context->getScheme() && 443 !== $this->context->getHttpsPort()) {
+            return sprintf(':%s', $this->context->getHttpsPort());
+        }
+
+        return '';
     }
 }

@@ -2,9 +2,6 @@
 
 namespace ShareBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,8 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Size
 {
-    const TYPE_MM = 'мм';
-    const TYPE_SM = 'см';
+    public const TYPE_MM = 'мм';
+    public const TYPE_SM = 'см';
 
     /**
      * @var int
@@ -71,7 +68,7 @@ class Size
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -129,7 +126,7 @@ class Size
     /**
      * Set isActive
      *
-     * @param boolean $isActive
+     * @param bool $isActive
      *
      * @return Size
      */
@@ -143,7 +140,7 @@ class Size
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {

@@ -3,63 +3,40 @@
 namespace AppBundle\Block;
 
 use AppBundle\Services\BreadcrumbService;
-use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
-/**
- * Class BreadcrumbBlockService
- */
 class BreadcrumbBlockService extends AbstractEditableBlockService
 {
-    /**
-     * @var BreadcrumbService
-     */
-    private $breadcrumb;
-
-    /**
-     * GetStateValueBlockService constructor.
-     *
-     * @param string            $name
-     * @param EngineInterface   $templating
-     * @param BreadcrumbService $breadcrumb
-     */
-    public function __construct(Environment $twig, BreadcrumbService $breadcrumb)
-    {
+    public function __construct(
+        Environment $twig,
+        private readonly BreadcrumbService $breadcrumb,
+    ) {
         parent::__construct($twig);
-
-        $this->breadcrumb = $breadcrumb;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
-            'template'  => '@App/Block/breadcrumb.html.twig',
+            'template' => '@App/Block/breadcrumb.html.twig',
         ]);
     }
 
     /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         if (!$blockContext->getBlock()->getEnabled()) {
             return new Response();
         }
 
-        return $this->renderResponse($blockContext->getTemplate(), array(
+        return $this->renderResponse($blockContext->getTemplate(), [
             'breadcrumbs' => $this->breadcrumb->getBreadcrumb(),
-            'settings'    => $blockContext->getSettings(),
-            'block'       => $blockContext->getBlock(),
-        ));
+            'settings' => $blockContext->getSettings(),
+            'block' => $blockContext->getBlock(),
+        ]);
     }
 }

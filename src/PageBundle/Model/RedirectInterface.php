@@ -1,55 +1,20 @@
 <?php
+
 namespace PageBundle\Model;
 
-/**
- * Interface RedirectInterface
- */
 interface RedirectInterface
 {
-    /**
-     * @return mixed
-     */
-    public function getId();
+    public function getId(): ?int;
 
-    /**
-     * Set isActive.
-     *
-     * @param bool $isActive
-     */
-    public function setIsActive(bool $isActive);
+    public function setIsActive(bool $isActive): self;
 
-    /**
-     * Get isActive.
-     *
-     * @return bool $isActive
-     */
-    public function getIsActive();
+    public function getIsActive(): bool;
 
-    /**
-     * Set fromPath.
-     *
-     * @param string $fromPath
-     */
-    public function setFromPath($fromPath);
+    public function setFromPath(?string $fromPath): self;
 
-    /**
-     * Get fromPath.
-     *
-     * @return string $link
-     */
-    public function getFromPath();
+    public function getFromPath(): ?string;
 
-    /**
-     * Set toPath.
-     *
-     * @param string $toPath
-     */
-    public function setToPath($toPath);
+    public function setToPath(?string $toPath): self;
 
-    /**
-     * Get toPath.
-     *
-     * @return string $path
-     */
-    public function getToPath();
+    public function getToPath(): ?string;
 }

@@ -3,67 +3,36 @@
 namespace AppBundle\Block;
 
 use AppBundle\Services\SendTelegramService;
-use Doctrine\ORM\EntityManager;
-use Pagerfanta\Doctrine\ORM\QueryAdapter;
-use Pagerfanta\Pagerfanta;
-use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
-/**
- * Class FeedbackBlockService
- */
 class FeedbackBlockService extends AbstractEditableBlockService
 {
-    const DEFAULT_TEMPLATE = '@App/Block/feedback.html.twig';
+    public const DEFAULT_TEMPLATE = '@App/Block/feedback.html.twig';
+    private const HONEYPOT_MIN_SECONDS = 3;
 
-    /**
-     * @var RequestStack
-     */
-    private $request;
-
-    /**
-     * @var SendTelegramService
-     */
-    private $sendTelegramService;
-
-    /**
-     * FeedbackBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param RequestStack    $request
-     */
-    public function __construct(Environment $twig, RequestStack $request, SendTelegramService $sendTelegramService)
-    {
+    public function __construct(
+        Environment $twig,
+        private readonly RequestStack $request,
+        private readonly SendTelegramService $sendTelegramService,
+    ) {
         parent::__construct($twig);
-
-        $this->request = $request;
-        $this->sendTelegramService = $sendTelegramService;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
-            'list_type'   => null,
-            'template'    => self::DEFAULT_TEMPLATE,
+            'list_type' => null,
+            'template' => self::DEFAULT_TEMPLATE,
         ]);
     }
 
-    /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         $block = $blockContext->getBlock();
         if (!$block->getEnabled()) {
             return new Response();
@@ -75,23 +44,20 @@ class FeedbackBlockService extends AbstractEditableBlockService
             $formTime = (int) $request->get('form_time', 0);
             $honeypot = $request->get('website', '');
 
-            if ($honeypot !== '' || (time() - $formTime) < 3) {
+            if ('' !== $honeypot || (time() - $formTime) < self::HONEYPOT_MIN_SECONDS) {
                 return new JsonResponse(['type' => 'success']);
             }
 
             $this->sendTelegramService->sendFeedback($request);
 
-            return new JsonResponse([
-                'type' => 'success'
-            ]);
+            return new JsonResponse(['type' => 'success']);
         }
 
-        $template = !is_null($blockContext->getSetting('list_type'))
-            ? $blockContext->getSetting('list_type') : $blockContext->getTemplate();
+        $template = $blockContext->getSetting('list_type') ?? $blockContext->getTemplate();
 
         return $this->renderResponse($template, [
-            'block'       => $block,
-            'settings'    => array_merge($blockContext->getSettings(), $block->getSettings()),
+            'block' => $block,
+            'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
         ]);
     }
 }

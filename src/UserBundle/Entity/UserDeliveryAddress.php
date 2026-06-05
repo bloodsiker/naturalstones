@@ -18,57 +18,44 @@ use Doctrine\ORM\Mapping as ORM;
 class UserDeliveryAddress
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned"=true})
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
-     * @var User
-     *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
-    protected $user;
+    protected ?User $user = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="string", length=120, nullable=true)
      */
-    protected $title;
+    protected ?string $title = null;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="text", nullable=false)
      */
-    protected $address;
+    protected ?string $address = null;
 
     /**
-     * @var bool
-     *
      * @ORM\Column(type="boolean", nullable=false, options={"default": false})
      */
-    protected $isDefault;
+    protected bool $isDefault = false;
 
     /**
-     * @var \DateTime
-     *
      * @ORM\Column(type="datetime", nullable=false)
      */
-    protected $createdAt;
+    protected \DateTime $createdAt;
 
     public function __construct()
     {
-        $this->isDefault = false;
         $this->createdAt = new \DateTime('now');
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) ($this->title ?: $this->address);
     }
@@ -116,7 +103,7 @@ class UserDeliveryAddress
 
     public function getIsDefault(): bool
     {
-        return (bool) $this->isDefault;
+        return $this->isDefault;
     }
 
     public function setIsDefault(bool $isDefault): self

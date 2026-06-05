@@ -12,35 +12,19 @@ use Twig\Environment;
 
 class OrderEmailService
 {
-    private Environment $twig;
-    private LoggerInterface $logger;
-    private string $mailerTransport;
-    private string $mailerHost;
-    private ?string $mailerUser;
-    private ?string $mailerPassword;
-    private string $orderEmail;
-    private string $companyName;
-    private string $fullDomain;
+    private readonly string $fullDomain;
 
     public function __construct(
-        Environment $twig,
-        LoggerInterface $logger,
-        string $mailerTransport,
-        string $mailerHost,
-        ?string $mailerUser,
-        ?string $mailerPassword,
-        string $orderEmail,
-        string $companyName,
-        string $fullDomain
+        private readonly Environment $twig,
+        private readonly LoggerInterface $logger,
+        private readonly string $mailerTransport,
+        private readonly string $mailerHost,
+        private readonly ?string $mailerUser,
+        private readonly ?string $mailerPassword,
+        private readonly string $orderEmail,
+        private readonly string $companyName,
+        string $fullDomain,
     ) {
-        $this->twig = $twig;
-        $this->logger = $logger;
-        $this->mailerTransport = $mailerTransport;
-        $this->mailerHost = $mailerHost;
-        $this->mailerUser = $mailerUser;
-        $this->mailerPassword = $mailerPassword;
-        $this->orderEmail = $orderEmail;
-        $this->companyName = $companyName;
         $this->fullDomain = rtrim($fullDomain, '/');
     }
 

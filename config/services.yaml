@@ -74,9 +74,9 @@ services:
         tags: ['controller.service_arguments']
 
     app.exception.locale_listener:
-        class: "AppBundle\\EventSubscriber\\ExceptionListener"
+        class: AppBundle\EventSubscriber\ExceptionListener
+        arguments:
+            - '%kernel.default_locale%'
+            - '@translator'
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException', priority: -126 }
-        calls:
-            - [ 'setDefaultLocale', [ '%kernel.default_locale%' ] ]
-            - [ 'setTranslator', [ '@translator' ] ]

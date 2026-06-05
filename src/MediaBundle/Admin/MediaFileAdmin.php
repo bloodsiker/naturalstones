@@ -3,7 +3,6 @@
 namespace MediaBundle\Admin;
 
 use AdminBundle\Admin\BaseAdmin as Admin;
-use MediaBundle\Twig\Extension\MediaExtension;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -21,9 +20,9 @@ class MediaFileAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'id',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
         '_sort_order' => 'desc',
     ];
 
@@ -55,10 +54,8 @@ class MediaFileAdmin extends Admin
         }
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'media.fields.id',
@@ -70,11 +67,11 @@ class MediaFileAdmin extends Admin
             ])
             ->addIdentifier('description', null, [
                 'label' => 'media.fields.description',
-                'template'  => '@Media/Admin/list_media.html.twig',
+                'template' => '@Media/Admin/list_media.html.twig',
             ])
             ->add('isActive', null, [
                 'label' => 'media.fields.is_active',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('createdAt', null, [
                 'label' => 'media.fields.created_at',
@@ -87,10 +84,8 @@ class MediaFileAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('description', null, [
                 'label' => 'media.fields.description',
@@ -103,55 +98,53 @@ class MediaFileAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-4', 'label' => false])
                 ->add('description', TextType::class, [
                     'label' => 'media.fields.description',
-                    'required'  => false,
+                    'required' => false,
                 ])
                 ->add('file', VichFileType::class, [
-                    'label'     => 'media.fields.file',
-                    'required'  => false,
-                    'help'      => $this->getSubject()->getPath() ?: null,
+                    'label' => 'media.fields.file',
+                    'required' => false,
+                    'help' => $this->getSubject()->getPath() ?: null,
                 ])
             ->end()
             ->with('form_group.basic2', ['class' => 'col-md-4', 'label' => false])
                 ->add('mimeType', TextType::class, [
                     'label' => 'media.fields.mime_type',
                     'required' => false,
-                    'attr'  => ['readonly' => true],
+                    'attr' => ['readonly' => true],
                 ])
                 ->add('size', TextType::class, [
                     'label' => 'media.fields.size',
                     'required' => false,
-                    'attr'  => ['readonly' => true],
+                    'attr' => ['readonly' => true],
                 ])
             ->end()
             ->with('form_group.additional', ['class' => 'col-md-4', 'label' => false])
                 ->add('isActive', null, [
-                    'label'    => 'media.fields.is_active',
+                    'label' => 'media.fields.is_active',
                     'required' => false,
                 ])
                 ->add('createdBy', ModelListType::class, [
-                    'label'    => 'media.fields.created_by',
+                    'label' => 'media.fields.created_by',
                     'btn_edit' => false,
                     'btn_add' => false,
                     'required' => true,
                 ])
                 ->add('updatedAt', DateTimePickerType::class, [
-                    'label'  => 'media.fields.updated_at',
+                    'label' => 'media.fields.updated_at',
                     'format' => 'yyyy-MM-dd HH:mm',
-                    'attr'   => ['readonly' => true],
+                    'attr' => ['readonly' => true],
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
-                    'label'    => 'media.fields.created_at',
+                    'label' => 'media.fields.created_at',
                     'required' => true,
-                    'format'   => 'yyyy-MM-dd HH:mm',
-                    'attr'     => ['readonly' => true],
+                    'format' => 'yyyy-MM-dd HH:mm',
+                    'attr' => ['readonly' => true],
                 ])
             ->end();
     }

@@ -3,101 +3,59 @@
 namespace ShortcodeBundle\Twig;
 
 use ShortcodeBundle\Templating\ShortcodeHelper;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-/**
- * Class ShortcodeExtension
- */
-class ShortcodeExtension extends \Twig\Extension\AbstractExtension
+class ShortcodeExtension extends AbstractExtension
 {
-    /**
-     * @var ShortcodeHelper
-     */
-    private $helper;
-
-    /**
-     * @param ShortcodeHelper $helper
-     */
-    public function __construct(ShortcodeHelper $helper)
-    {
-        $this->helper = $helper;
+    public function __construct(
+        private readonly ShortcodeHelper $helper,
+    ) {
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'shortcode_extension';
     }
 
     /**
-     * Returns a list of filters to add to the existing list.
-     *
-     * @return array An array of filters
+     * @return list<TwigFilter>
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig\TwigFilter('shortcode', [$this, 'shortcodeFilter'], ['is_safe' => ['html']]),
-            new \Twig\TwigFilter('shortcode_only', [$this, 'shortcodeOnlyFilter'], ['is_safe' => ['html']]),
-            new \Twig\TwigFilter('shortcode_pure', [$this, 'shortcodePureFilter'], ['is_safe' => ['html']]),
+            new TwigFilter('shortcode', $this->shortcodeFilter(...), ['is_safe' => ['html']]),
+            new TwigFilter('shortcode_only', $this->shortcodeOnlyFilter(...), ['is_safe' => ['html']]),
+            new TwigFilter('shortcode_pure', $this->shortcodePureFilter(...), ['is_safe' => ['html']]),
         ];
     }
 
     /**
-     * Replaces shortcode entities with corresponding content.
-     *
-     * @param string     $content Content for filtering
-     * @param bool|array $enabled
-     * @param string     $mode
-     *
-     * @return string
+     * @param bool|list<string> $enabled
      *
      * @throws \Throwable
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
-    public function shortcodeFilter($content, $enabled = true, $mode = '')
+    public function shortcodeFilter(string $content, bool|array $enabled = true, string $mode = ''): string
     {
         return $this->helper->renderShortcodes($content, $enabled, $mode);
     }
 
-
     /**
-     * Replaces shortcode entities with corresponding content.
-     *
-     * @param string $content Content for filtering
-     * @param array  $names
-     * @param string $mode
-     *
-     * @return string
+     * @param list<string> $names
      *
      * @throws \Throwable
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
-    public function shortcodeOnlyFilter($content, $names = [], $mode = '')
+    public function shortcodeOnlyFilter(string $content, array $names = [], string $mode = ''): string
     {
         return $this->helper->renderShortcodesOnly($content, $names, $mode);
     }
 
     /**
-     * Replaces shortcode entities with corresponding content.
-     *
-     * @param string $content Content for filtering
-     * @param array  $names
-     * @param string $mode
-     *
-     * @return string
+     * @param list<string> $names
      *
      * @throws \Throwable
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
-    public function shortcodePureFilter($content, $names = [], $mode = '')
+    public function shortcodePureFilter(string $content, array $names = [], string $mode = ''): string
     {
         return $this->helper->renderShortcodesPure($content, $names, $mode);
     }

@@ -2,67 +2,52 @@
 
 namespace AppBundle\Services;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OrderBundle\Entity\Order;
 use OrderBundle\Entity\OrderHasItem;
 use ProductBundle\Entity\Product;
 use ShareBundle\Entity\Colour;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use UserBundle\Entity\User;
 
-/**
- * Class Cart
- */
 class Cart
 {
-    const SESSION_CART  = 'user_cart';
-    const TYPE_PRODUCT  = 'product';
+    public const SESSION_CART = 'user_cart';
+    public const TYPE_PRODUCT = 'product';
 
-    private RequestStack $requestStack;
-    private $entityManager;
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(RequestStack $requestStack, EntityManager $entityManager, TokenStorageInterface $tokenStorage)
-    {
-        $this->requestStack = $requestStack;
-        $this->entityManager = $entityManager;
-        $this->tokenStorage = $tokenStorage;
-    }
-
-    private function session()
-    {
-        return $this->requestStack->getSession();
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly TokenStorageInterface $tokenStorage,
+    ) {
     }
 
     /**
-     * Get product in cart
-     *
-     * @return mixed
+     * @return array<string, array<string, array<string, mixed>>>|null
      */
-    public function getProductInCart()
+    public function getProductInCart(): ?array
     {
         return $this->session()->get(self::SESSION_CART);
     }
 
     /**
-     * Add product to cart
-     *
-     * @param  string  $type
-     * @param  string  $id
-     * @param  int     $count
-     * @param  int|null  $colour
-     *
-     * @return mixed
+     * @param array{option: string, value: string|int}|array{} $options
      */
-    public function addProductToCart(string $type, string $id, int $count, $colour = null, $options = [])
-    {
+    public function addProductToCart(
+        string $type,
+        string $id,
+        int $count,
+        ?int $colour = null,
+        array $options = [],
+    ): int {
         $productsInCart = $this->getProductInCart() ?: [];
 
         $count = max($count, 1);
-
         $key = $id;
+
         if ($colour) {
             $key .= sprintf(':colour:%s', $colour);
         }
@@ -71,29 +56,15 @@ class Cart
             $key .= sprintf(':%s:%s', $options['option'], $options['value']);
         }
 
-        if (array_key_exists($type, $productsInCart)) {
-            if (array_key_exists($key, $productsInCart[$type])) {
-                $productsInCart[$type][$key]['id'] = $id;
-                $productsInCart[$type][$key]['count'] += $count;
-            } else {
-                $productsInCart[$type][$key]['id'] = $id;
-                $productsInCart[$type][$key]['count'] = $count;
-            }
-            if ($colour) {
-                $productsInCart[$type][$key]['colour'] = $colour;
-            }
-            if ($options) {
-                $productsInCart[$type][$key][$options['option']] = $options['value'];
-            }
-        } else {
-            $productsInCart[$type][$key]['id'] = $id;
-            $productsInCart[$type][$key]['count'] = $count;
-            if ($colour) {
-                $productsInCart[$type][$key]['colour'] = $colour;
-            }
-            if ($options) {
-                $productsInCart[$type][$key][$options['option']] = $options['value'];
-            }
+        $existing = $productsInCart[$type][$key] ?? null;
+        $productsInCart[$type][$key]['id'] = $id;
+        $productsInCart[$type][$key]['count'] = ($existing['count'] ?? 0) + $count;
+
+        if ($colour) {
+            $productsInCart[$type][$key]['colour'] = $colour;
+        }
+        if ($options) {
+            $productsInCart[$type][$key][$options['option']] = $options['value'];
         }
 
         $this->setCart($productsInCart);
@@ -102,11 +73,9 @@ class Cart
     }
 
     /**
-     * Get product info from cart
-     *
-     * @return array
+     * @return array<string, array<string, array<string, mixed>>>
      */
-    public function getProductsInfo()
+    public function getProductsInfo(): array
     {
         $productsInCart = $this->getProductInCart();
         $productRepository = $this->entityManager->getRepository(Product::class);
@@ -114,49 +83,32 @@ class Cart
 
         $productsInfo = [];
 
-        if ($productsInCart && is_array($productsInCart)) {
-            if (array_key_exists(self::TYPE_PRODUCT, $productsInCart)) {
-                foreach ($productsInCart[self::TYPE_PRODUCT] as $key => $data) {
-                    $infoProduct = $productRepository->find($data['id']);
-                    if ($infoProduct) {
-                        $infoProduct->setFinalPrice();
-                        if (isset($data['colour'])) {
-                            $infoColour = $colourRepository->find($data['colour']);
-                            if ($infoColour) {
-                                $productsInfo[self::TYPE_PRODUCT][$key]['colour'] = $infoColour;
-                                $infoProduct->setFinalPrice($infoColour);
-                            }
-                        }
-                        $productsInfo[self::TYPE_PRODUCT][$key]['item'] = $infoProduct;
-                        $productsInfo[self::TYPE_PRODUCT][$key]['count'] = $data['count'];
-                        $productsInfo[self::TYPE_PRODUCT][$key]['price'] = $infoProduct->getFinalPrice();
-                        $productsInfo[self::TYPE_PRODUCT][$key]['totalPrice'] = $data['count'] * $infoProduct->getFinalPrice();
+        if (!is_array($productsInCart) || !array_key_exists(self::TYPE_PRODUCT, $productsInCart)) {
+            return $productsInfo;
+        }
 
-                        if (isset($data['letter'])) {
-                            $productsInfo[self::TYPE_PRODUCT][$key]['letter'] = $data['letter'];
-                        }
-                        if (isset($data['insert'])) {
-                            $productsInfo[self::TYPE_PRODUCT][$key]['insert'] = $data['insert'];
-                        }
-                        if (isset($data['pendant'])) {
-                            $productsInfo[self::TYPE_PRODUCT][$key]['pendant'] = $data['pendant'];
-                        }
-                        if (isset($data['bracelet'])) {
-                            $productsInfo[self::TYPE_PRODUCT][$key]['bracelet'] = $data['bracelet'];
-                        }
-                        if (isset($data['ring'])) {
-                            $productsInfo[self::TYPE_PRODUCT][$key]['ring'] = $data['ring'];
-                        }
-                        if (isset($data['necklace'])) {
-                            $productsInfo[self::TYPE_PRODUCT][$key]['necklace'] = $data['necklace'];
-                        }
-                        if (isset($data['earring'])) {
-                            $productsInfo[self::TYPE_PRODUCT][$key]['earring'] = $data['earring'];
-                        }
-                        if (isset($data['money'])) {
-                            $productsInfo[self::TYPE_PRODUCT][$key]['money'] = $data['money'];
-                        }
-                    }
+        foreach ($productsInCart[self::TYPE_PRODUCT] as $key => $data) {
+            $infoProduct = $productRepository->find($data['id']);
+            if (!$infoProduct) {
+                continue;
+            }
+
+            $infoProduct->setFinalPrice();
+            if (isset($data['colour'])) {
+                $infoColour = $colourRepository->find($data['colour']);
+                if ($infoColour) {
+                    $productsInfo[self::TYPE_PRODUCT][$key]['colour'] = $infoColour;
+                    $infoProduct->setFinalPrice($infoColour);
+                }
+            }
+            $productsInfo[self::TYPE_PRODUCT][$key]['item'] = $infoProduct;
+            $productsInfo[self::TYPE_PRODUCT][$key]['count'] = $data['count'];
+            $productsInfo[self::TYPE_PRODUCT][$key]['price'] = $infoProduct->getFinalPrice();
+            $productsInfo[self::TYPE_PRODUCT][$key]['totalPrice'] = $data['count'] * $infoProduct->getFinalPrice();
+
+            foreach (['letter', 'insert', 'pendant', 'bracelet', 'ring', 'necklace', 'earring', 'money'] as $optionKey) {
+                if (isset($data[$optionKey])) {
+                    $productsInfo[self::TYPE_PRODUCT][$key][$optionKey] = $data[$optionKey];
                 }
             }
         }
@@ -164,30 +116,10 @@ class Cart
         return $productsInfo;
     }
 
-    /**
-     * Recalculate product in cart
-     *
-     * @param string $type
-     * @param string $key
-     * @param int    $count
-     *
-     * @return bool
-     */
-    public function recalculateCart($type, string $key, int $count)
+    public function recalculateCart(string $type, string $key, int $count): bool
     {
         $productsInCart = $this->getProductInCart() ?: [];
-
-        $count = $count < 1 ? 1 : $count;
-
-        if (array_key_exists($type, $productsInCart)) {
-            if (array_key_exists($key, $productsInCart[$type])) {
-                $productsInCart[$type][$key]['count'] = $count;
-            } else {
-                $productsInCart[$type][$key]['count'] = $count;
-            }
-        } else {
-            $productsInCart[$type][$key]['count'] = $count;
-        }
+        $productsInCart[$type][$key]['count'] = max($count, 1);
 
         $this->setCart($productsInCart);
 
@@ -195,109 +127,72 @@ class Cart
     }
 
     /**
-     * @param  Request  $request
-     *
-     * @return Order
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function orderCart(Request $request, $orderType = Order::TYPE_ORDER_QUICK)
+    public function orderCart(Request $request, int $orderType = Order::TYPE_ORDER_QUICK): Order
     {
-        $fio = $request->get('name');
-        $email = $request->get('email');
-        $phone = $request->get('phone');
-        $instagram = $request->get('instagram');
-        $address = $request->get('address');
-        $comment = $request->get('comment');
-        $messenger = $request->get('messenger');
-        $colour = $request->get('colour_id');
         $option = $request->get('option');
         $optionValue = $request->get('option_value');
-        $callMe = $request->get('call_me') ?? false;
 
         $productObject = null;
         if ($request->get('product')) {
-            $productRepository = $this->entityManager->getRepository(Product::class);
-            $productObject = $productRepository->find($request->get('product'));
+            $productObject = $this->entityManager->getRepository(Product::class)->find($request->get('product'));
         }
+
         $colourObject = null;
-        if ($colour) {
-            $colourRepository = $this->entityManager->getRepository(Colour::class);
-            $colourObject = $colourRepository->find($colour);
+        if ($colour = $request->get('colour_id')) {
+            $colourObject = $this->entityManager->getRepository(Colour::class)->find($colour);
         }
 
-        $totalPrice = 0;
-
-        $order = new Order();
-        $order->setFio($fio);
-        $order->setEmail($email);
-        $order->setPhone($phone);
-        $order->setInstagram($instagram);
-        $order->setAddress($address);
-        $order->setComment($comment);
-        $order->setMessenger($messenger);
-        $order->setType($orderType);
-        $order->setCallMe($callMe);
+        $order = (new Order())
+            ->setFio($request->get('name'))
+            ->setEmail($request->get('email'))
+            ->setPhone($request->get('phone'))
+            ->setInstagram($request->get('instagram'))
+            ->setAddress($request->get('address'))
+            ->setComment($request->get('comment'))
+            ->setMessenger($request->get('messenger'))
+            ->setType($orderType)
+            ->setCallMe((bool) $request->get('call_me'));
 
         $token = $this->tokenStorage->getToken();
-        if ($token) {
-            $user = $token->getUser();
-            if ($user instanceof User) {
-                $order->setUser($user);
-            }
+        if ($token && ($user = $token->getUser()) instanceof User) {
+            $order->setUser($user);
         }
 
         if ($productObject) {
             $productObject->setFinalPrice($colourObject);
-            $products[0] = [
+            $products = [[
                 'item' => $productObject,
                 'totalPrice' => $productObject->getFinalPrice(),
                 'count' => 1,
                 'colour' => $colourObject,
                 $option => $optionValue,
-            ];
+            ]];
         } else {
-            $products = $this->getProductsInfo()['product'];
+            $products = $this->getProductsInfo()['product'] ?? [];
         }
 
+        $totalPrice = 0;
         foreach ($products as $item) {
-            $option = null;
-            if (isset($item['letter']) && $item['letter']) {
-                $option .= 'Буква: ' . $item['letter'] . PHP_EOL;
-            }
-            if (isset($item['insert']) && $item['insert']) {
-                $option .= 'Вставка: ' . $item['insert'] . PHP_EOL;
-            }
-            if (isset($item['pendant']) && $item['pendant']) {
-                $option .= 'Подвеска: ' . $item['pendant'] . PHP_EOL;
-            }
-            if (isset($item['bracelet']) && $item['bracelet']) {
-                $option .= 'Браслет: ' . $item['bracelet'] . PHP_EOL;
-            }
-            if (isset($item['ring']) && $item['ring']) {
-                $option .= 'Кольцо: ' . $item['ring'] . PHP_EOL;
-            }
-            if (isset($item['necklace']) && $item['necklace']) {
-                $option .= 'Колье: ' . $item['necklace'] . PHP_EOL;
-            }
-            if (isset($item['earring']) && $item['earring']) {
-                $option .= 'Серьги: ' . $item['earring'] . PHP_EOL;
-            }
-            if (isset($item['money']) && $item['money']) {
-                $option .= 'Сума: ' . $item['money'] . PHP_EOL;
-            }
+            $optionText = $this->buildOptionText($item);
             $totalPrice += $item['totalPrice'];
+
+            /** @var Product $product */
             $product = $item['item'];
-            $orderHasItem = new OrderHasItem();
-            $orderHasItem->setProduct($product);
-            $orderHasItem->setColour($item['colour'] ?? null);
-            $orderHasItem->setDiscount($product->getDiscount());
-            $orderHasItem->setPrice($item['totalPrice']);
-            $orderHasItem->setQuantity($item['count']);
-            $orderHasItem->setOptions($option);
+            $orderHasItem = (new OrderHasItem())
+                ->setProduct($product)
+                ->setColour($item['colour'] ?? null)
+                ->setDiscount($product->getDiscount())
+                ->setPrice($item['totalPrice'])
+                ->setQuantity($item['count'])
+                ->setOptions($optionText);
+
             $order->addOrderHasItem($orderHasItem);
             $this->entityManager->persist($orderHasItem);
         }
+
         $order->setOrderSum($totalPrice);
         $order->setTotalSum($totalPrice);
         $this->entityManager->persist($order);
@@ -309,71 +204,46 @@ class Cart
         return $order;
     }
 
-    /**
-     * Get count product in cart
-     *
-     * @return int|mixed
-     */
-    public function countItems()
+    public function countItems(): int
     {
         $productsInCart = $this->getProductInCart();
-        $count = 0;
+        if (!is_array($productsInCart) || !array_key_exists(self::TYPE_PRODUCT, $productsInCart)) {
+            return 0;
+        }
 
-        if ($productsInCart && is_array($productsInCart)) {
-            if (array_key_exists(self::TYPE_PRODUCT, $productsInCart)) {
-                foreach ($productsInCart[self::TYPE_PRODUCT] as $data) {
-                    $count += $data['count'];
-                }
-            }
+        $count = 0;
+        foreach ($productsInCart[self::TYPE_PRODUCT] as $data) {
+            $count += $data['count'];
         }
 
         return $count;
     }
 
-    /**
-     * Get total price in Cart
-     *
-     * @return int
-     */
-    public function getTotalPrice()
+    public function getTotalPrice(): float
     {
         $productsInCart = $this->getProductsInfo();
-        $totalPrice = 0;
+        if (!array_key_exists(self::TYPE_PRODUCT, $productsInCart)) {
+            return 0.0;
+        }
 
-        if ($productsInCart && is_array($productsInCart)) {
-            if (array_key_exists(self::TYPE_PRODUCT, $productsInCart)) {
-                foreach ($productsInCart[self::TYPE_PRODUCT] as $data) {
-                    $totalPrice += $data['totalPrice'];
-                }
-            }
+        $totalPrice = 0.0;
+        foreach ($productsInCart[self::TYPE_PRODUCT] as $data) {
+            $totalPrice += $data['totalPrice'];
         }
 
         return $totalPrice;
     }
 
-    /**
-     * Remove product in cart
-     *
-     * @param string $type
-     * @param string $key
-     *
-     * @return bool
-     */
-    public function deleteProduct($type, string $key)
+    public function deleteProduct(string $type, string $key): int
     {
         $productsInCart = $this->getProductInCart();
-
         unset($productsInCart[$type][$key]);
-
         $this->setCart($productsInCart);
 
         return $this->countItems();
     }
 
-    /**
-     * Clear all product in cart
-     */
-    public function clear()
+    public function clear(): bool
     {
         if ($this->session()->has(self::SESSION_CART)) {
             $this->session()->remove(self::SESSION_CART);
@@ -382,13 +252,42 @@ class Cart
         return true;
     }
 
+    private function session(): SessionInterface
+    {
+        return $this->requestStack->getSession();
+    }
+
     /**
-     * Set product in session
-     *
-     * @param $products
+     * @param array<string, mixed> $products
      */
-    private function setCart($products)
+    private function setCart(array $products): void
     {
         $this->session()->set(self::SESSION_CART, $products);
+    }
+
+    /**
+     * @param array<string, mixed> $item
+     */
+    private function buildOptionText(array $item): ?string
+    {
+        $labels = [
+            'letter' => 'Буква',
+            'insert' => 'Вставка',
+            'pendant' => 'Подвеска',
+            'bracelet' => 'Браслет',
+            'ring' => 'Кольцо',
+            'necklace' => 'Колье',
+            'earring' => 'Серьги',
+            'money' => 'Сума',
+        ];
+
+        $lines = [];
+        foreach ($labels as $key => $label) {
+            if (!empty($item[$key])) {
+                $lines[] = $label . ': ' . $item[$key];
+            }
+        }
+
+        return $lines ? implode(PHP_EOL, $lines) . PHP_EOL : null;
     }
 }

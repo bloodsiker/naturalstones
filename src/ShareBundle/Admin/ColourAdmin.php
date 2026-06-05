@@ -25,21 +25,20 @@ class ColourAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_sort_by'      => 'id',
-        '_sort_order'   => 'DESC',
+        '_sort_by' => 'id',
+        '_sort_order' => 'DESC',
     ];
 
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('share.form_group.basic', ['class' => 'col-md-8', 'label' => false])
                 ->add('translations', TranslationsType::class, [
@@ -62,8 +61,8 @@ class ColourAdmin extends Admin
                 ->add('slug', TextType::class, [
                     'label' => 'colour.fields.slug',
                     'required' => false,
-                    'attr'      => [
-                        'readonly'  => $this->getSubject()->getId() > 0,
+                    'attr' => [
+                        'readonly' => $this->getSubject()->getId() > 0,
                     ],
                 ])
                 ->add('colour', ColorPickerType::class, [
@@ -74,10 +73,8 @@ class ColourAdmin extends Admin
         ;
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('id', null, [
                 'label' => 'colour.fields.id',
@@ -91,17 +88,15 @@ class ColourAdmin extends Admin
         ;
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'colour.fields.id',
             ])
             ->add('colour', null, [
                 'label' => 'colour.fields.colour',
-                'template'  => '@Share/Admin/list_fields.html.twig',
+                'template' => '@Share/Admin/list_fields.html.twig',
             ])
             ->addIdentifier('name', null, [
                 'label' => 'colour.fields.name',
@@ -122,10 +117,8 @@ class ColourAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param ShowMapper $showMapper
-     */
-    protected function configureShowFields(ShowMapper $showMapper): void    {
+    protected function configureShowFields(ShowMapper $showMapper): void
+    {
         $showMapper
             ->add('id')
             ->add('name')

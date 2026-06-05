@@ -20,7 +20,7 @@ class WheelSpinAdmin extends Admin
     use FixAdminFormTranslationDomainTrait;
 
     /**
-     * @var EntityManager $entityManager
+     * @var EntityManager
      */
     protected $entityManager;
 
@@ -28,15 +28,13 @@ class WheelSpinAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'orderNum',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'orderNum',
         '_sort_order' => 'ASC',
     ];
 
     /**
-     * @param EntityManager $entityManager
-     *
      * @return EntityManager
      */
     public function setEntityManager(EntityManager $entityManager)
@@ -58,9 +56,9 @@ class WheelSpinAdmin extends Admin
     {
         $options = $object->getWheelSpinHasOption()->getValues();
 
-        usort($options, static fn($a, $b) => $a->getOrderNum() <=> $b->getOrderNum());
+        usort($options, static fn ($a, $b) => $a->getOrderNum() <=> $b->getOrderNum());
 
-        $maxValuation = (int) max(array_map(static fn($o) => (int) $o->getValuation(), $options) ?: [0]);
+        $maxValuation = (int) max(array_map(static fn ($o) => (int) $o->getValuation(), $options) ?: [0]);
         $weights = [];
 
         foreach ($options as $option) {
@@ -87,9 +85,15 @@ class WheelSpinAdmin extends Admin
             return sprintf('1:%d', $hi);
         }
 
-        while ($hi <= 0) { $hi += 360; }
-        while ($lo <= 0) { $lo += 360; }
-        if ($hi >= 360) { $hi = 359; }
+        while ($hi <= 0) {
+            $hi += 360;
+        }
+        while ($lo <= 0) {
+            $lo += 360;
+        }
+        if ($hi >= 360) {
+            $hi = 359;
+        }
 
         if ($lo < $hi) {
             return sprintf('%d:%d', $lo, $hi);
@@ -98,10 +102,8 @@ class WheelSpinAdmin extends Admin
         return sprintf('1:%d,%d:359', $hi, $lo);
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->addIdentifier('id', null, [
                 'label' => 'wheel_spin.fields.id',
@@ -114,19 +116,17 @@ class WheelSpinAdmin extends Admin
             ])
             ->add('isActive', null, [
                 'label' => 'wheel_spin.fields.is_active',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'edit'      => [],
+                    'edit' => [],
                 ],
             ]);
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('isActive', null, [
                 'label' => 'wheel_spin.fields.is_active',
@@ -139,10 +139,8 @@ class WheelSpinAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $context = $this->getPersistentParameter('context');
 
         $formMapper

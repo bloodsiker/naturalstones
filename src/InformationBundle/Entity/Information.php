@@ -85,9 +85,6 @@ class Information implements TranslatableInterface
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
     public function title()
     {
         return $this->translate()->getTitle();
@@ -116,7 +113,6 @@ class Information implements TranslatableInterface
     {
         return $this->isActive;
     }
-
 
     /**
      * Set createdAt

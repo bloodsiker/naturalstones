@@ -3,12 +3,10 @@
 namespace ProductBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
-
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -18,10 +16,8 @@ class ProductHasOptionColourAdmin extends Admin
 {
     protected $parentAssociationMapping = 'product';
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('product', null, [
                 'label' => 'product_has_option_colour.fields.product',
@@ -43,10 +39,8 @@ class ProductHasOptionColourAdmin extends Admin
         ;
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $linkParameters = [];
 
         if ($this->hasParentFieldDescription()) {
@@ -64,13 +58,13 @@ class ProductHasOptionColourAdmin extends Admin
         $formMapper
             ->add('image', ModelListType::class, [
                 'label' => 'product_has_option_colour.fields.image',
-                'required'      => false,
-                'btn_delete'    => false,
+                'required' => false,
+                'btn_delete' => false,
             ], ['link_parameters' => $linkParameters])
             ->add('colour', ModelListType::class, [
                 'label' => 'product_has_option_colour.fields.colour',
-                'required'      => true,
-                'btn_delete'    => false,
+                'required' => true,
+                'btn_delete' => false,
             ], ['link_parameters' => $linkParameters])
             ->add('price', TextType::class, [
                 'label' => 'product_has_option_colour.fields.price',

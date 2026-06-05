@@ -2,17 +2,14 @@
 
 namespace ShortcodeBundle\Processor;
 
-/**
- * Interface ProcessorInterface
- */
 interface ProcessorInterface
 {
     /**
      * Performs data modification before passing it to template.
      *
-     * @param array $data Array of matched elements of shortcode pattern
+     * @param array<int|string, mixed> $data array of matched elements of shortcode pattern
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public function process(array $data);
+    public function process(array $data): array;
 }

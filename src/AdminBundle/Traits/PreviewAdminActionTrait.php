@@ -5,17 +5,9 @@ namespace AdminBundle\Traits;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Trait PreviewAdminActionTrait
- */
 trait PreviewAdminActionTrait
 {
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function previewAction(Request $request)
+    public function previewAction(Request $request): Response
     {
         $admin = $this->admin;
         $response = new Response();
@@ -25,14 +17,14 @@ trait PreviewAdminActionTrait
         $entity = $admin->getObject($id);
 
         if ($entity && $entity->getId()) {
-            list($bundleName) = explode(':', $this->admin->getBaseControllerName());
+            [$bundleName] = explode(':', $this->admin->getBaseControllerName());
             $response->setContent(
                 $this->renderView(
-                    $bundleName.':Preview:preview.html.twig',
+                    $bundleName . ':Preview:preview.html.twig',
                     [
-                        'entity'    => $entity,
-                        'language'  => $language,
-                        'admin'     => $admin,
+                        'entity' => $entity,
+                        'language' => $language,
+                        'admin' => $admin,
                     ]
                 )
             );
@@ -44,6 +36,4 @@ trait PreviewAdminActionTrait
 
         return $response;
     }
-
-
 }

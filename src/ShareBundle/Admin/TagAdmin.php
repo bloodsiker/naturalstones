@@ -10,7 +10,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -22,21 +21,20 @@ class TagAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_sort_by'      => 'id',
-        '_sort_order'   => 'DESC',
+        '_sort_by' => 'id',
+        '_sort_order' => 'DESC',
     ];
 
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('share.form_group.basic', ['class' => 'col-md-8', 'label' => false])
                 ->add('translations', TranslationsType::class, [
@@ -55,8 +53,8 @@ class TagAdmin extends Admin
                 ->add('slug', TextType::class, [
                     'label' => 'tag.fields.slug',
                     'required' => false,
-                    'attr'      => [
-                        'readonly'  => $this->getSubject()->getId() > 0,
+                    'attr' => [
+                        'readonly' => $this->getSubject()->getId() > 0,
                     ],
                 ])
                 ->add('isActive', CheckboxType::class, [
@@ -67,10 +65,8 @@ class TagAdmin extends Admin
         ;
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('id', null, [
                 'label' => 'tag.fields.id',
@@ -84,10 +80,8 @@ class TagAdmin extends Admin
         ;
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'tag.fields.id',
@@ -109,10 +103,8 @@ class TagAdmin extends Admin
         ;
     }
 
-    /**
-     * @param ShowMapper $showMapper
-     */
-    protected function configureShowFields(ShowMapper $showMapper): void    {
+    protected function configureShowFields(ShowMapper $showMapper): void
+    {
         $showMapper
             ->add('id')
             ->add('name')

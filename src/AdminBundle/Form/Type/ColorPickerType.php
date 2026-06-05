@@ -8,61 +8,30 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ColorPickerType
- */
 class ColorPickerType extends AbstractType
 {
-    /**
-     * @param FormView      $view
-     * @param FormInterface $form
-     * @param array         $options
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['widget'] = $options['widget'];
         $view->vars['configs'] = $options['configs'];
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
-                'widget'  => 'text',
+                'widget' => 'text',
                 'configs' => [],
             ])
-            ->setAllowedValues('widget', [
-                'text',
-                'image',
-            ])
-        ;
+            ->setAllowedValues('widget', ['text', 'image']);
     }
 
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     * @return string
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'colorpicker';
     }
 
-    /**
-     * @return string
-     */
-    public function getParent()
+    public function getParent(): ?string
     {
         return TextType::class;
     }

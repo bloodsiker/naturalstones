@@ -3,7 +3,6 @@
 namespace ProductBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
-
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
@@ -17,10 +16,8 @@ class ProductHasVideoAdmin extends Admin
 {
     protected $parentAssociationMapping = 'product';
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('product', null, [
                 'label' => 'product_has_video.fields.product',
@@ -36,10 +33,8 @@ class ProductHasVideoAdmin extends Admin
         ;
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $linkParameters = [];
 
         if ($this->hasParentFieldDescription()) {
@@ -63,8 +58,8 @@ class ProductHasVideoAdmin extends Admin
         $formMapper
             ->add('video', ModelListType::class, [
                 'label' => 'product_has_video.fields.video',
-                'required'      => true,
-                'btn_delete'    => false,
+                'required' => true,
+                'btn_delete' => false,
             ], ['link_parameters' => $linkParameters])
             ->add('path', TextType::class, [
                 'label' => 'product_has_video.fields.path',

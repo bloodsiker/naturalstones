@@ -22,16 +22,14 @@ class CategoryAdmin extends Admin
     use FixAdminFormTranslationDomainTrait;
 
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'id',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
         '_sort_order' => 'ASC',
     ];
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'category.fields.id',
@@ -49,11 +47,11 @@ class CategoryAdmin extends Admin
             ])
             ->add('isActive', null, [
                 'label' => 'category.fields.is_active',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('orderNum', null, [
                 'label' => 'category.fields.order_num',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('_action', 'actions', [
                 'actions' => [
@@ -62,10 +60,8 @@ class CategoryAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('translations.name', null, [
                 'label' => 'category.fields.name',
@@ -88,10 +84,8 @@ class CategoryAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('translations', TranslationsType::class, [
@@ -147,7 +141,7 @@ class CategoryAdmin extends Admin
 
         $typesChoice = [];
         foreach ($typesEntity as $key => $value) {
-            $typesChoice["category.fields.types.".$value] = $key;
+            $typesChoice['category.fields.types.' . $value] = $key;
         }
 
         return $typesChoice;

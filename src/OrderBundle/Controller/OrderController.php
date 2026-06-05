@@ -2,167 +2,127 @@
 
 namespace OrderBundle\Controller;
 
+use AppBundle\Controller\BaseController;
 use AppBundle\Services\Cart;
 use AppBundle\Services\OrderEmailService;
 use AppBundle\Services\SendTelegramService;
 use Doctrine\ORM\EntityManagerInterface;
 use OrderBundle\Entity\Order;
-use AppBundle\Controller\BaseController;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * Class OrderController
- */
 class OrderController extends BaseController
 {
-    const ORDER_404 = 'Order doesn\'t exist';
+    public const ORDER_404 = 'Order doesn\'t exist';
 
-    private RouterInterface $router;
-    private Cart $cartService;
-    private SendTelegramService $telegramService;
-    private OrderEmailService $orderEmailService;
-    private EntityManagerInterface $entityManager;
+    private const MESSENGERS_REQUIRING_PHONE = ['telegram', 'viber'];
 
     public function __construct(
-        RouterInterface $router,
-        Cart $cartService,
-        SendTelegramService $telegramService,
-        OrderEmailService $orderEmailService,
-        EntityManagerInterface $entityManager
+        private readonly RouterInterface $router,
+        private readonly Cart $cartService,
+        private readonly SendTelegramService $telegramService,
+        private readonly OrderEmailService $orderEmailService,
+        private readonly EntityManagerInterface $entityManager,
     ) {
-        $this->router = $router;
-        $this->cartService = $cartService;
-        $this->telegramService = $telegramService;
-        $this->orderEmailService = $orderEmailService;
-        $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     */
-     #[Cache(maxage: 60, public: true)]
-    public function quickOrderAction(Request $request)
+    #[Cache(maxage: 60, public: true)]
+    public function quickOrderAction(Request $request): JsonResponse
     {
-        $phone = $request->get('phone');
-        if (in_array($request->get('messenger'), ['telegram', 'viber']) && !$phone) {
-            return new JsonResponse([
-                'type' => 'error',
-                'message' => 'Не указан номер телефона'
-            ]);
+        if ($error = $this->validateMessenger($request)) {
+            return $error;
+        }
+        if ($error = $this->validateCartHasProducts()) {
+            return $error;
         }
 
-        if ($request->get('messenger') === 'instagram' && !$request->get('instagram')) {
-            return new JsonResponse([
-                'type' => 'error',
-                'message' => 'Не указана ссылка на инстаграм'
-            ]);
-        }
-
-        $cart = $this->cartService->getProductsInfo();
-
-        if (!isset($cart['product']) || !count($cart['product'])) {
-            return new JsonResponse([
-                'type' => 'error',
-                'message' => 'В корзине нет товаров!'
-            ]);
-        }
-
-        $order = $this->cartService->orderCart($request);
-        $this->telegramService->sendMessageFromQuickForm($order);
-        $this->orderEmailService->sendOrderCreatedEmail($order);
-
-        return new JsonResponse([
-            'type' => 'success',
-            'url' => $this->router->generate('success_order', ['secret' => $order->getSecret()], RouterInterface::ABSOLUTE_URL)
-        ]);
+        return $this->createOrderAndRespond($request, Order::TYPE_ORDER_QUICK, useCartMessage: false);
     }
 
-    public function productQuickOrderAction(Request $request)
+    public function productQuickOrderAction(Request $request): JsonResponse
     {
-        if (in_array($request->get('messenger'), ['telegram', 'viber']) && !$request->get('phone')) {
-            return new JsonResponse([
-                'type' => 'error',
-                'message' => 'Не указан номер телефона'
-            ]);
+        if ($error = $this->validateMessenger($request)) {
+            return $error;
         }
-
-        if ($request->get('messenger') === 'instagram' && !$request->get('instagram')) {
-            return new JsonResponse([
-                'type' => 'error',
-                'message' => 'Не указана ссылка на инстаграм'
-            ]);
-        }
-
         if (!$request->get('product')) {
-            return new JsonResponse([
-                'type' => 'error',
-                'message' => 'Не выбран товар для заказа'
-            ]);
+            return $this->errorResponse('Не выбран товар для заказа');
         }
 
-        $order = $this->cartService->orderCart($request);
-        $this->telegramService->sendMessageFromQuickForm($order);
-        $this->orderEmailService->sendOrderCreatedEmail($order);
-
-        return new JsonResponse([
-            'type' => 'success',
-            'url' => $this->router->generate('success_order', ['secret' => $order->getSecret()], RouterInterface::ABSOLUTE_URL)
-        ]);
+        return $this->createOrderAndRespond($request, Order::TYPE_ORDER_QUICK, useCartMessage: false);
     }
 
-    public function orderAction(Request $request)
+    public function orderAction(Request $request): JsonResponse
     {
-        $phone = $request->get('phone');
-        if (in_array($request->get('messenger'), ['telegram', 'viber']) && !$phone) {
-            return new JsonResponse([
-                'type' => 'error',
-                'message' => 'Не указан номер телефона'
-            ]);
+        if ($error = $this->validateMessenger($request)) {
+            return $error;
+        }
+        if ($error = $this->validateCartHasProducts()) {
+            return $error;
         }
 
-        if ($request->get('messenger') === 'instagram' && !$request->get('instagram')) {
-            return new JsonResponse([
-                'type' => 'error',
-                'message' => 'Не указана ссылка на инстаграм'
-            ]);
-        }
-
-        $cart = $this->cartService->getProductsInfo();
-        if (!isset($cart['product']) || !count($cart['product'])) {
-            return new JsonResponse([
-                'type' => 'error',
-                'message' => 'В корзине нет товаров!'
-            ]);
-        }
-
-        $order = $this->cartService->orderCart($request, Order::TYPE_ORDER_CART);
-        $this->telegramService->sendMessageFromCart($order);
-        $this->orderEmailService->sendOrderCreatedEmail($order);
-
-        return new JsonResponse([
-            'type' => 'success',
-            'url' => $this->router->generate('success_order', ['secret' => $order->getSecret()], RouterInterface::ABSOLUTE_URL)
-        ]);
+        return $this->createOrderAndRespond($request, Order::TYPE_ORDER_CART, useCartMessage: true);
     }
 
-    public function successAction(Request $request)
+    public function successAction(Request $request): Response
     {
-        $secret = $request->get('secret');
-//        $idOrder = $this->get('app.helper.encrypt')->stringDecrypt($hash);
-        $repo = $this->entityManager->getRepository(Order::class);
-        $order = $repo->findOneBy(['secret' => $secret]);
+        $order = $this->entityManager->getRepository(Order::class)
+            ->findOneBy(['secret' => $request->get('secret')]);
+
         if (!$order) {
             throw $this->createNotFoundException(self::ORDER_404);
         }
 
         return $this->render('@Order/order_success.html.twig', ['order' => $order]);
+    }
+
+    private function createOrderAndRespond(Request $request, int $orderType, bool $useCartMessage): JsonResponse
+    {
+        $order = $this->cartService->orderCart($request, $orderType);
+
+        if ($useCartMessage) {
+            $this->telegramService->sendMessageFromCart($order);
+        } else {
+            $this->telegramService->sendMessageFromQuickForm($order);
+        }
+
+        $this->orderEmailService->sendOrderCreatedEmail($order);
+
+        return new JsonResponse([
+            'type' => 'success',
+            'url' => $this->router->generate('success_order', ['secret' => $order->getSecret()], RouterInterface::ABSOLUTE_URL),
+        ]);
+    }
+
+    private function validateMessenger(Request $request): ?JsonResponse
+    {
+        $messenger = $request->get('messenger');
+
+        if (in_array($messenger, self::MESSENGERS_REQUIRING_PHONE, true) && !$request->get('phone')) {
+            return $this->errorResponse('Не указан номер телефона');
+        }
+
+        if ('instagram' === $messenger && !$request->get('instagram')) {
+            return $this->errorResponse('Не указана ссылка на инстаграм');
+        }
+
+        return null;
+    }
+
+    private function validateCartHasProducts(): ?JsonResponse
+    {
+        $cart = $this->cartService->getProductsInfo();
+        if (empty($cart['product'])) {
+            return $this->errorResponse('В корзине нет товаров!');
+        }
+
+        return null;
+    }
+
+    private function errorResponse(string $message): JsonResponse
+    {
+        return new JsonResponse(['type' => 'error', 'message' => $message]);
     }
 }

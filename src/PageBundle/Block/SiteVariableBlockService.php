@@ -2,57 +2,34 @@
 
 namespace PageBundle\Block;
 
+use AppBundle\Block\AbstractEditableBlockService;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use PageBundle\Entity\SiteVariable;
-use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Twig\Environment;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
-/**
- * Class SiteVariableBlockService
- */
 class SiteVariableBlockService extends AbstractEditableBlockService
 {
-    /**
-     * @var Registry $doctrine
-     */
-    protected $doctrine;
-
-    /**
-     * SiteVariableBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param Registry        $doctrine
-     */
-    public function __construct(Environment $twig, Registry $doctrine)
-    {
+    public function __construct(
+        Environment $twig,
+        protected readonly Registry $doctrine,
+    ) {
         parent::__construct($twig);
-
-        $this->doctrine = $doctrine;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
             'placement' => null,
-            'template'  => '@Page/Block/site_variable.html.twig',
+            'template' => '@Page/Block/site_variable.html.twig',
         ]);
     }
 
-    /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         $block = $blockContext->getBlock();
-
         if (!$block->getEnabled()) {
             return new Response();
         }
@@ -63,8 +40,8 @@ class SiteVariableBlockService extends AbstractEditableBlockService
 
         return $this->renderResponse($blockContext->getTemplate(), [
             'variables' => $variables,
-            'block'     => $block,
-            'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
+            'block' => $block,
+            'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
         ], $response);
     }
 }

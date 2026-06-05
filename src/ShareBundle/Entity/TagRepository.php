@@ -5,35 +5,33 @@ namespace ShareBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 
-/**
- * Class TagRepository
- */
 class TagRepository extends EntityRepository
 {
     /**
-     * @param array $excludeIds
+     * @param list<int> $excludeIds
      *
-     * @return mixed
+     * @return list<array{id: int, name: string}>
      */
-    public function baseTagQueryBuilder(array $excludeIds = [])
+    public function baseTagQueryBuilder(array $excludeIds = []): array
     {
-        $qb = $this->createQueryBuilder('t');
-        $qb
+        $qb = $this->createQueryBuilder('t')
             ->select('t.id', 't.name')
             ->where('t.isActive = 1')
-            ->orderBy('t.id', 'DESC')
-        ;
+            ->orderBy('t.id', 'DESC');
 
         if ($excludeIds) {
-            $qb->andWhere('t.id not in (:exclude_ids)')->setParameter('exclude_ids', $excludeIds);
+            $qb->andWhere('t.id NOT IN (:exclude_ids)')->setParameter('exclude_ids', $excludeIds);
         }
 
         return $qb->getQuery()->getResult();
     }
 
-    public function getTagsByArticles()
+    /**
+     * @return list<Tag>
+     */
+    public function getTagsByArticles(): array
     {
-        $sql = 'SELECT 
+        $sql = 'SELECT
                     t.*
                 FROM article_article_tags aat
                 INNER JOIN share_tags t
@@ -46,6 +44,7 @@ class TagRepository extends EntityRepository
         $rsm->addFieldResult('t', 'id', 'id');
         $rsm->addFieldResult('t', 'isActive', 'is_active');
         $rsm->addFieldResult('t', 'slug', 'slug');
+
         return $this->getEntityManager()->createNativeQuery($sql, $rsm)->getResult();
     }
 }

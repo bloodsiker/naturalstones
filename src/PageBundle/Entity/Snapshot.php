@@ -2,8 +2,8 @@
 
 namespace PageBundle\Entity;
 
-use Sonata\PageBundle\Entity\BaseSnapshot as BaseSnapshot;
 use Doctrine\ORM\Mapping as ORM;
+use Sonata\PageBundle\Entity\BaseSnapshot;
 
 /**
  * Class Snapshot

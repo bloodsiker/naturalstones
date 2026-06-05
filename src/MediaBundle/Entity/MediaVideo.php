@@ -3,8 +3,6 @@
 namespace MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -73,11 +71,9 @@ class MediaVideo extends AbstractMedia
     }
 
     /**
-     * @param string $width
-     *
      * @return $this
      */
-    public function setWidth(string $width = null)
+    public function setWidth(?string $width = null)
     {
         $this->width = $width;
 
@@ -93,11 +89,9 @@ class MediaVideo extends AbstractMedia
     }
 
     /**
-     * @param string $height
-     *
      * @return $this
      */
-    public function setHeight(string $height = null)
+    public function setHeight(?string $height = null)
     {
         $this->height = $height;
 

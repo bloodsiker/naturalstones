@@ -24,9 +24,6 @@ class ProductRepository extends EntityRepository
         $this->locale = $locale;
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function baseProductQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p');
@@ -57,35 +54,23 @@ class ProductRepository extends EntityRepository
         return $qb;
     }
 
-    /**
-     * @param QueryBuilder $qb
-     */
     public function filterByLocale(QueryBuilder $qb, $search): QueryBuilder
     {
         $qb->andWhere('pt.name LIKE :search OR pt.description LIKE :search')
-            ->setParameter('search', '%'.$search.'%');
+            ->setParameter('search', '%' . $search . '%');
 
         return $qb;
     }
 
     /**
-     * @param QueryBuilder $qb
      * @param Category|int $category
-     *
-     * @return QueryBuilder
      */
     public function filterByCategory(QueryBuilder $qb, $category): QueryBuilder
     {
         return $qb->andWhere('p.category = :category')->setParameter('category', $category);
     }
 
-    /**
-     * @param  QueryBuilder  $qb
-     * @param $who
-     *
-     * @return QueryBuilder
-     */
-    public function filterByWho(QueryBuilder $qb, $who) : QueryBuilder
+    public function filterByWho(QueryBuilder $qb, $who): QueryBuilder
     {
         if ($who === Product::WHO_MAN) {
             $qb->andWhere('p.isMan = :isMan')->setParameter('isMan', true);
@@ -96,69 +81,56 @@ class ProductRepository extends EntityRepository
         return $qb;
     }
 
-    public function filterByDiscount(QueryBuilder $qb) : QueryBuilder
+    public function filterByDiscount(QueryBuilder $qb): QueryBuilder
     {
         return $qb->andWhere('p.discount != :discount')->setParameter('discount', 0);
     }
 
-    public function filterByRand(QueryBuilder $qb) : QueryBuilder
+    public function filterByRand(QueryBuilder $qb): QueryBuilder
     {
         return $qb->addSelect('RAND() as HIDDEN rand')->orderBy('RAND()');
     }
 
-    public function filterByColour(QueryBuilder $qb, $colour) : QueryBuilder
+    public function filterByColour(QueryBuilder $qb, $colour): QueryBuilder
     {
         return $qb->innerJoin('p.colours', 'colour', 'WITH', 'colour.id = :colour')
             ->setParameter('colour', $colour);
     }
 
-    public function filterByColours(QueryBuilder $qb, $colourIds) : QueryBuilder
+    public function filterByColours(QueryBuilder $qb, $colourIds): QueryBuilder
     {
         return $qb->innerJoin('p.colours', 'colour', 'WITH', 'colour.id IN (:colour)')
             ->setParameter('colour', $colourIds);
     }
 
-    public function filterByStone(QueryBuilder $qb, $stone) : QueryBuilder
+    public function filterByStone(QueryBuilder $qb, $stone): QueryBuilder
     {
         return $qb->innerJoin('p.stones', 'stone', 'WITH', 'stone.id = :stone')
             ->setParameter('stone', $stone);
     }
 
-    public function filterByStones(QueryBuilder $qb, $stoneIds) : QueryBuilder
+    public function filterByStones(QueryBuilder $qb, $stoneIds): QueryBuilder
     {
         return $qb->innerJoin('p.stones', 'stone', 'WITH', 'stone.id IN (:stone)')
             ->setParameter('stone', $stoneIds);
     }
 
     /**
-     * @param QueryBuilder $qb
      * @param Tag|int      $tag
-     *
-     * @return QueryBuilder
      */
-    public function filterByTag(QueryBuilder $qb, $tag) : QueryBuilder
+    public function filterByTag(QueryBuilder $qb, $tag): QueryBuilder
     {
         return $qb->innerJoin('p.tags', 'tag', 'WITH', 'tag.id = :tag')
             ->setParameter('tag', $tag);
     }
 
-    /**
-     * @param  QueryBuilder  $qb
-     * @param $excludeIds
-     *
-     * @return QueryBuilder
-     */
-    public function filterExclude(QueryBuilder $qb, $excludeIds) : QueryBuilder
+    public function filterExclude(QueryBuilder $qb, $excludeIds): QueryBuilder
     {
         return $qb->andWhere('p.id not in (:exclude_ids)')->setParameter('exclude_ids', $excludeIds);
     }
 
     /**
-     * @param array $tags
-     * @param array $excludeIds
      * @param int   $limit
-     *
-     * @return mixed
      *
      * @throws \Exception
      */
@@ -179,9 +151,6 @@ class ProductRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @param int $item
-     */
     public function incViewCounter(int $item): void
     {
         $qb = $this->createQueryBuilder('p');

@@ -1,72 +1,47 @@
 <?php
+
 namespace AppBundle\Services;
 
-/**
- * Class SaveStateValue
- */
 class SaveStateValue
 {
-    /**
-     * @var array $state
-     */
-    private $state = [];
+    /** @var array<string, mixed> */
+    private array $state = [];
 
-    /**
-     * @param string           $key
-     * @param int|string|array $value
-     */
-    public function setValue($key, $value)
+    public function setValue(string $key, mixed $value): void
     {
         $this->state[$key] = $value;
     }
 
-    /**
-     * @param string $key
-     *
-     * @return mixed|null
-     */
-    public function getValue($key)
+    public function getValue(string $key): mixed
     {
-        if (array_key_exists($key, $this->state)) {
-            return $this->state[$key];
-        }
-
-        return null;
+        return $this->state[$key] ?? null;
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getValues()
+    public function getValues(): array
     {
         return $this->state;
     }
 
     /**
-     * @param string    $key
-     * @param int|array $result
-     *
-     * @return mixed
+     * @param int|array<int, object>|\ArrayIterator<int, object> $result
      */
-    public function setExcludedIds(string $key, $result)
+    public function setExcludedIds(string $key, int|array|\ArrayIterator $result): void
     {
-        if (!array_key_exists($key, $this->state)) {
-            $excluded = [];
-        } else {
-            $excluded = $this->state[$key];
-        }
+        $excluded = $this->state[$key] ?? [];
 
         if (is_array($result) || $result instanceof \ArrayIterator) {
             foreach ($result as $value) {
-                if (is_object($value) && !in_array($value->getId(), $excluded)) {
+                if (is_object($value) && !in_array($value->getId(), $excluded, true)) {
                     $excluded[] = (int) $value->getId();
                 }
             }
-        } else {
-            if (!empty($result) && !in_array($result, $excluded)) {
-                $excluded[] = (int) $result;
-            }
+        } elseif (!empty($result) && !in_array($result, $excluded, true)) {
+            $excluded[] = (int) $result;
         }
+
         $this->state[$key] = $excluded;
     }
 }

@@ -90,11 +90,9 @@ class MainImage implements TranslatableInterface
     /**
      * Set image
      *
-     * @param \MediaBundle\Entity\MediaImage $image
-     *
      * @return $this
      */
-    public function setImage(\MediaBundle\Entity\MediaImage $image = null)
+    public function setImage(?\MediaBundle\Entity\MediaImage $image = null)
     {
         $this->image = $image;
 
@@ -134,7 +132,6 @@ class MainImage implements TranslatableInterface
     {
         return $this->isActive;
     }
-
 
     /**
      * Set createdAt

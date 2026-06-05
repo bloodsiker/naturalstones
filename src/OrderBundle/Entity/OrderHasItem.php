@@ -3,10 +3,10 @@
 namespace OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ProductBundle\Entity\Product;
+use ShareBundle\Entity\Colour;
 
 /**
- * Class OrderHasItem
- *
  * @ORM\Entity()
  * @ORM\Table(name="order_order_has_item")
  * @ORM\HasLifecycleCallbacks
@@ -14,289 +14,155 @@ use Doctrine\ORM\Mapping as ORM;
 class OrderHasItem
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned"=true})
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
-     * @var \OrderBundle\Entity\Order
-     *
      * @ORM\ManyToOne(targetEntity="OrderBundle\Entity\Order", inversedBy="orderHasItems")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false)
      */
-    protected $order;
+    protected ?Order $order = null;
 
     /**
-     * @var \ProductBundle\Entity\Product
-     *
      * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", fetch="EAGER")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
      */
-    protected $product;
+    protected ?Product $product = null;
 
     /**
-     * @var \ProductBundle\Entity\Product
-     *
      * @ORM\ManyToOne(targetEntity="ShareBundle\Entity\Colour", fetch="EAGER")
      * @ORM\JoinColumn(name="colour_id", referencedColumnName="id", nullable=true)
      */
-    protected $colour;
+    protected ?Colour $colour = null;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=255, nullable=false)
      */
-    protected $options;
+    protected ?string $options = null;
 
     /**
-     * @var int
-     *
      * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
      */
-    protected $orderNum;
+    protected int $orderNum = 0;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=false)
      */
-    protected $quantity;
+    protected int $quantity = 1;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="float", nullable=false, options={"default": 0})
      */
-    protected $price;
+    protected float $price = 0.0;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="float", nullable=true)
      */
-    protected $discount;
+    protected ?float $discount = null;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->orderNum = 0;
-        $this->quantity = 1;
-        $this->price = 0;
-    }
-
-    /**
-     * "String" representation of class
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->product;
     }
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set order.
-     *
-     * @param \OrderBundle\Entity\Order $order
-     *
-     * @return $this
-     */
-    public function setOrder(\OrderBundle\Entity\Order $order = null)
+    public function setOrder(?Order $order = null): self
     {
         $this->order = $order;
 
         return $this;
     }
 
-    /**
-     * Get order.
-     *
-     * @return \OrderBundle\Entity\Order
-     */
-    public function getOrder()
+    public function getOrder(): ?Order
     {
         return $this->order;
     }
 
-    /**
-     * Set product.
-     *
-     * @param \ProductBundle\Entity\Product $product
-     *
-     * @return $this
-     */
-    public function setProduct(\ProductBundle\Entity\Product $product = null)
+    public function setProduct(?Product $product = null): self
     {
         $this->product = $product;
 
         return $this;
     }
 
-    /**
-     * Get product.
-     *
-     * @return \ProductBundle\Entity\Product
-     */
-    public function getProduct()
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    /**
-     * Set colour.
-     *
-     * @param \ShareBundle\Entity\Colour $colour
-     *
-     * @return $this
-     */
-    public function setColour(\ShareBundle\Entity\Colour $colour = null)
+    public function setColour(?Colour $colour = null): self
     {
         $this->colour = $colour;
 
         return $this;
     }
 
-    /**
-     * Get colour.
-     *
-     * @return \ShareBundle\Entity\Colour
-     */
-    public function getColour()
+    public function getColour(): ?Colour
     {
         return $this->colour;
     }
 
-    /**
-     * Get quantity
-     *
-     * @return int
-     */
-    public function getQuantity()
+    public function getQuantity(): int
     {
         return $this->quantity;
     }
 
-    /**
-     * Set quantity
-     *
-     * @param int $quantity
-     *
-     * @return $this
-     */
-    public function setQuantity(int $quantity)
+    public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
 
         return $this;
     }
 
-    /**
-     * Get options
-     *
-     * @return string
-     */
-    public function getOptions()
+    public function getOptions(): ?string
     {
         return $this->options;
     }
 
-    /**
-     * Set options
-     *
-     * @param string|null $options
-     *
-     * @return $this
-     */
-    public function setOptions($options)
+    public function setOptions(?string $options): self
     {
         $this->options = $options;
 
         return $this;
     }
 
-    /**
-     * Set orderNum.
-     *
-     * @param int $orderNum
-     *
-     * @return $this
-     */
-    public function setOrderNum($orderNum)
+    public function setOrderNum(int $orderNum): self
     {
         $this->orderNum = $orderNum;
 
         return $this;
     }
 
-    /**
-     * Get orderNum.
-     *
-     * @return int
-     */
-    public function getOrderNum()
+    public function getOrderNum(): int
     {
         return $this->orderNum;
     }
 
-    /**
-     * Get price
-     *
-     * @return int
-     */
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }
 
-    /**
-     * Set price
-     *
-     * @param float $price
-     *
-     * @return $this
-     */
-    public function setPrice(float $price)
+    public function setPrice(float $price): self
     {
         $this->price = $price;
 
         return $this;
     }
 
-    /**
-     * Get discount
-     *
-     * @return int
-     */
-    public function getDiscount()
+    public function getDiscount(): ?float
     {
         return $this->discount;
     }
 
-    /**
-     * Set discount
-     *
-     * @param float|null $discount
-     *
-     * @return $this
-     */
-    public function setDiscount(float $discount = null)
+    public function setDiscount(?float $discount = null): self
     {
         $this->discount = $discount;
 

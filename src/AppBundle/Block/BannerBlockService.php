@@ -2,69 +2,54 @@
 
 namespace AppBundle\Block;
 
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Form\Mapper\FormMapper as BlockFormMapper;
 use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Meta\MetadataInterface;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\Form\Type\ImmutableArrayType;
 use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Component\Validator\Constraints\NotNull;
 
-/**
- * Class BannerBlockService
- */
 class BannerBlockService extends AbstractEditableBlockService
 {
-    const BANNER_PREMIUM_1 = 'banner-premium1-index';
-    const BANNER_PREMIUM_2 = 'banner-premium2-index';
+    public const BANNER_PREMIUM_1 = 'banner-premium1-index';
+    public const BANNER_PREMIUM_2 = 'banner-premium2-index';
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
-            'banner'   => null,
+            'banner' => null,
             'template' => '@App/Block/banner.html.twig',
         ]);
     }
 
-    /**
-     * @param ErrorElement   $errorElement
-     * @param BlockInterface $block
-     */
-    public function validateBlock(ErrorElement $errorElement, BlockInterface $block)
+    public function validateBlock(ErrorElement $errorElement, BlockInterface $block): void
     {
         $errorElement
             ->with('settings[banner]')
                 ->addConstraint(new NotNull())
-            ->end()
-        ;
+            ->end();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildEditForm(FormMapper $formMapper, BlockInterface $block)
+    public function buildEditForm(FormMapper $formMapper, BlockInterface $block): void
     {
         $formMapper->add('settings', ImmutableArrayType::class, [
             'translation_domain' => 'AppBundle',
             'label' => false,
             'keys' => [
                 ['banner', ChoiceType::class, [
-                    'label'    => 'app.block.fields.type_banner',
+                    'label' => 'app.block.fields.type_banner',
                     'required' => false,
-                    'choices'  => [
+                    'choices' => [
                         'app.block.fields.premium_banner1' => self::BANNER_PREMIUM_1,
                         'app.block.fields.premium_banner2' => self::BANNER_PREMIUM_2,
                     ],
-                ],
-                ],
+                ]],
             ],
         ]);
     }
@@ -92,23 +77,18 @@ class BannerBlockService extends AbstractEditableBlockService
     }
 
     /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         $block = $blockContext->getBlock();
-
         if (!$block->getEnabled()) {
             return new Response();
         }
 
         return $this->renderResponse($blockContext->getTemplate(), [
-            'banner'  => $block->getSetting('banner'),
-            'block'    => $blockContext->getBlock(),
+            'banner' => $block->getSetting('banner'),
+            'block' => $block,
             'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
         ], $response);
     }

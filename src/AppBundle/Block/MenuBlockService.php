@@ -3,61 +3,35 @@
 namespace AppBundle\Block;
 
 use AppBundle\Entity\MenuSection;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
-/**
- * Class MenuBlockService
- */
 class MenuBlockService extends AbstractEditableBlockService
 {
     /**
-     * @var EntityManager
+     * @param list<string> $locales
      */
-    protected $em;
-
-    /**
-     * @var array
-     */
-    protected $locales;
-
-    /**
-     * HeaderBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param EntityManager   $em
-     * @param array           $locales
-     */
-    public function __construct(Environment $twig, EntityManager $em, array $locales)
-    {
+    public function __construct(
+        Environment $twig,
+        protected readonly EntityManagerInterface $em,
+        protected readonly array $locales,
+    ) {
         parent::__construct($twig);
-
-        $this->em = $em;
-        $this->locales = $locales;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
-            'template'  => '@App/Block/menu.html.twig',
-            'type'      => 'header',
+            'template' => '@App/Block/menu.html.twig',
+            'type' => 'header',
         ]);
     }
 
-    /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         if (!$blockContext->getBlock()->getEnabled()) {
             return new Response();
         }
@@ -77,10 +51,10 @@ class MenuBlockService extends AbstractEditableBlockService
             ->getResult();
 
         return $this->renderResponse($blockContext->getTemplate(), [
-            'settings'      => $blockContext->getSettings(),
-            'block'         => $blockContext->getBlock(),
-            'menuSections'  => $menuSections,
-            'locales'       => $this->locales,
+            'settings' => $blockContext->getSettings(),
+            'block' => $blockContext->getBlock(),
+            'menuSections' => $menuSections,
+            'locales' => $this->locales,
         ]);
     }
 }

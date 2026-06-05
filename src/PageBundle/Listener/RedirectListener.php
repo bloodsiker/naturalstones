@@ -2,48 +2,38 @@
 
 namespace PageBundle\Listener;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use PageBundle\Route\RedirectRouter;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
-/**
- * Class RedirectListener
- */
 class RedirectListener
 {
-    /**
-     * @var RedirectRouter
-     */
-    private $redirectRouter;
-
-    /**
-     * RedirectListener constructor.
-     *
-     * @param RedirectRouter $redirectRouter
-     */
-    public function __construct(RedirectRouter $redirectRouter)
-    {
-        $this->redirectRouter = $redirectRouter;
+    public function __construct(
+        private readonly RedirectRouter $redirectRouter,
+    ) {
     }
 
     /**
-     * @param GetResponseEvent $event
-     *
      * @throws \Exception
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
-        $isMain = 'index' === $request->attributes->get('_route');
 
-        if (false === stripos($request->getUri(), 'admin')) {
-            $urlRedirect = $this->redirectRouter->getUrlRedirect($request);
-
-            if (!$isMain && null !== $urlRedirect) {
-                $response = new RedirectResponse($urlRedirect, Response::HTTP_MOVED_PERMANENTLY);
-                $event->setResponse($response);
-            }
+        if (false !== stripos($request->getUri(), 'admin')) {
+            return;
         }
+
+        if ('index' === $request->attributes->get('_route')) {
+            return;
+        }
+
+        $urlRedirect = $this->redirectRouter->getUrlRedirect($request);
+        if (null === $urlRedirect) {
+            return;
+        }
+
+        $event->setResponse(new RedirectResponse($urlRedirect, Response::HTTP_MOVED_PERMANENTLY));
     }
 }

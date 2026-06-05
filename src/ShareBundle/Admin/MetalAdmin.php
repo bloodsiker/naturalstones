@@ -24,23 +24,22 @@ class MetalAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'      => 'id',
-        '_sort_order'   => 'DESC',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
+        '_sort_order' => 'DESC',
     ];
 
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('share.form_group.basic', ['class' => 'col-md-8', 'label' => false])
                 ->add('translations', TranslationsType::class, [
@@ -63,18 +62,16 @@ class MetalAdmin extends Admin
                 ->add('slug', TextType::class, [
                     'label' => 'metal.fields.slug',
                     'required' => false,
-                    'attr'      => [
-                        'readonly'  => $this->getSubject()->getId() > 0,
+                    'attr' => [
+                        'readonly' => $this->getSubject()->getId() > 0,
                     ],
                 ])
             ->end()
         ;
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('id', null, [
                 'label' => 'metal.fields.id',
@@ -88,10 +85,8 @@ class MetalAdmin extends Admin
         ;
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'metal.fields.id',
@@ -115,10 +110,8 @@ class MetalAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param ShowMapper $showMapper
-     */
-    protected function configureShowFields(ShowMapper $showMapper): void    {
+    protected function configureShowFields(ShowMapper $showMapper): void
+    {
         $showMapper
             ->add('id')
             ->add('name')

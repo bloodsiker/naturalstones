@@ -39,7 +39,7 @@ class Article implements TranslatableInterface
     protected $image;
 
     /**
-     * @var \ArticleBundle\Entity\Category
+     * @var Category
      *
      * @ORM\ManyToOne(targetEntity="ArticleBundle\Entity\Category")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
@@ -97,8 +97,8 @@ class Article implements TranslatableInterface
      */
     public function __construct()
     {
-        $this->views     = 0;
-        $this->isActive  = true;
+        $this->views = 0;
+        $this->isActive = true;
         $this->createdAt = new \DateTime('now');
 
         $this->tags = new ArrayCollection();
@@ -144,25 +144,16 @@ class Article implements TranslatableInterface
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
     public function title()
     {
         return $this->translate()->getTitle();
     }
 
-    /**
-     * @return mixed
-     */
     public function description()
     {
         return $this->translate()->getDescription();
     }
 
-    /**
-     * @return mixed
-     */
     public function shortDescription()
     {
         return $this->translate()->getShortDescription();
@@ -171,11 +162,9 @@ class Article implements TranslatableInterface
     /**
      * Set image
      *
-     * @param \MediaBundle\Entity\MediaImage $image
-     *
      * @return self
      */
-    public function setImage(\MediaBundle\Entity\MediaImage $image = null)
+    public function setImage(?\MediaBundle\Entity\MediaImage $image = null)
     {
         $this->image = $image;
 
@@ -201,8 +190,6 @@ class Article implements TranslatableInterface
     }
 
     /**
-     * @param  Category  $category
-     *
      * @return $this
      */
     public function setCategory(Category $category)
@@ -239,8 +226,6 @@ class Article implements TranslatableInterface
     /**
      * Set views
      *
-     * @param  boolean  $views
-     *
      * @return $this
      */
     public function setViews(bool $views)
@@ -253,7 +238,7 @@ class Article implements TranslatableInterface
     /**
      * Get views
      *
-     * @return integer
+     * @return int
      */
     public function getViews()
     {
@@ -293,17 +278,14 @@ class Article implements TranslatableInterface
     }
 
     /**
-     * @param  \DateTime  $updatedAt
-     *
      * @return $this
      */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
+    public function setUpdatedAt(?\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
-
 
     /**
      * Set createdAt
@@ -332,8 +314,6 @@ class Article implements TranslatableInterface
     /**
      * Add tags
      *
-     * @param \ShareBundle\Entity\Tag $tags
-     *
      * @return self
      */
     public function addTag(\ShareBundle\Entity\Tag $tags)
@@ -345,8 +325,6 @@ class Article implements TranslatableInterface
 
     /**
      * Remove tags
-     *
-     * @param \ShareBundle\Entity\Tag $tags
      */
     public function removeTag(\ShareBundle\Entity\Tag $tags)
     {

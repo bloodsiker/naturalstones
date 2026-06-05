@@ -14,13 +14,6 @@ services:
         arguments: [ '@router', '%kernel.default_locale%' ]
         tags: [ kernel.event_subscriber ]
 
-    app.security.authentication_handler:
-        class: AppBundle\Handler\AuthenticationHandler
-        public: false
-        arguments:
-            - "@router"
-            - "@session"
-
 #    session.handler.pdo:
 #        class: "Symfony\\Component\\HttpFoundation\\Session\\Storage\\Handler\\PdoSessionHandler"
 #        public: false

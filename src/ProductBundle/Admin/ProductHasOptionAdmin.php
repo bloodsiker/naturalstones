@@ -3,13 +3,10 @@
 namespace ProductBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
-
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -19,10 +16,8 @@ class ProductHasOptionAdmin extends Admin
 {
     protected $parentAssociationMapping = 'product';
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('product', null, [
                 'label' => 'product_has_option.fields.product',
@@ -44,10 +39,8 @@ class ProductHasOptionAdmin extends Admin
         ;
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $linkParameters = [];
 
         if ($this->hasParentFieldDescription()) {
@@ -65,8 +58,8 @@ class ProductHasOptionAdmin extends Admin
         $formMapper
             ->add('image', ModelListType::class, [
                 'label' => 'product_has_option.fields.image',
-                'required'      => false,
-                'btn_delete'    => false,
+                'required' => false,
+                'btn_delete' => false,
             ], ['link_parameters' => $linkParameters])
             ->add('value', TextType::class, [
                 'label' => 'product_has_option.fields.value',

@@ -17,11 +17,11 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
-use Sonata\Form\Validator\ErrorElement;
 use Sonata\DatagridBundle\Filter\FilterInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateFilter;
 use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateTimePickerType;
+use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -38,12 +38,12 @@ class ProductAdmin extends Admin
     use FixAdminFormTranslationDomainTrait;
 
     /**
-     * @var EntityManager $entityManager
+     * @var EntityManager
      */
     protected $entityManager;
 
     /**
-     * @var SendTelegramService $sendTelegramService
+     * @var SendTelegramService
      */
     protected $sendTelegramService;
 
@@ -51,15 +51,13 @@ class ProductAdmin extends Admin
      * @var array
      */
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'id',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
         '_sort_order' => 'DESC',
     ];
 
     /**
-     * @param EntityManager $entityManager
-     *
      * @return EntityManager
      */
     public function setEntityManager(EntityManager $entityManager)
@@ -73,8 +71,6 @@ class ProductAdmin extends Admin
     }
 
     /**
-     * @param  object  $object
-     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -90,9 +86,6 @@ class ProductAdmin extends Admin
     }
 
     /**
-     * @param $object
-     *
-     * @return void
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -105,9 +98,6 @@ class ProductAdmin extends Admin
         $this->entityManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function postUpdate(object $object): void
     {
         if ($object->getIsActive() && $object->getIsMainProduct()) {
@@ -134,10 +124,6 @@ class ProductAdmin extends Admin
         $this->setFormTheme(array_merge($this->getFormTheme(), ['@Product/Form/admin_fields.html.twig']));
     }
 
-    /**
-     * @param ErrorElement $errorElement
-     * @param mixed        $object
-     */
     public function validate(ErrorElement $errorElement, $object)
     {
         $errorElement
@@ -150,23 +136,22 @@ class ProductAdmin extends Admin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
 
         $collection->add('preview', 'preview');
-        $collection->add('clone', $this->getRouterIdParameter().'/clone');
+        $collection->add('clone', $this->getRouterIdParameter() . '/clone');
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'product.fields.id',
             ])
             ->add('image', null, [
-                'label'    => 'product.fields.image',
+                'label' => 'product.fields.image',
                 'template' => '@Product/Admin/list_fields.html.twig',
             ])
             ->addIdentifier('name', null, [
@@ -210,10 +195,8 @@ class ProductAdmin extends Admin
         ;
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('id', null, [
                 'label' => 'product.fields.id',
@@ -253,16 +236,14 @@ class ProductAdmin extends Admin
                 'label' => 'product.fields.product_group',
             ])
             ->add('createdAt', DateFilter::class, [
-                'label'         => 'product.fields.created_at',
-                'field_type'    => DateTimePickerType::class,
+                'label' => 'product.fields.created_at',
+                'field_type' => DateTimePickerType::class,
                 'field_options' => ['format' => 'dd.MM.yyyy'],
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $context = $this->getPersistentParameter('context');
 
         $formMapper
@@ -358,15 +339,10 @@ class ProductAdmin extends Admin
                         'property' => 'translations.name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
-                        'callback' => function($admin, $property, $value) {
+                        'callback' => function ($admin, $property, $value) {
                             $datagrid = $admin->getDatagrid();
                             if (!$datagrid->hasFilter($property)) {
-                                throw new \RuntimeException(sprintf(
-                                    'To retrieve autocomplete items,'
-                                    .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
-                                    $property,
-                                    \get_class($admin)
-                                ));
+                                throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, \get_class($admin)));
                             }
                             $filter = $datagrid->getFilter($property);
                             $filter->setCondition(FilterInterface::CONDITION_AND);
@@ -387,15 +363,10 @@ class ProductAdmin extends Admin
                         'property' => 'translations.name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
-                        'callback' => function($admin, $property, $value) {
+                        'callback' => function ($admin, $property, $value) {
                             $datagrid = $admin->getDatagrid();
                             if (!$datagrid->hasFilter($property)) {
-                                throw new \RuntimeException(sprintf(
-                                    'To retrieve autocomplete items,'
-                                    .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
-                                    $property,
-                                    \get_class($admin)
-                                ));
+                                throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, \get_class($admin)));
                             }
                             $filter = $datagrid->getFilter($property);
                             $filter->setCondition(FilterInterface::CONDITION_AND);
@@ -416,15 +387,10 @@ class ProductAdmin extends Admin
                         'property' => 'translations.name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
-                        'callback' => function($admin, $property, $value) {
+                        'callback' => function ($admin, $property, $value) {
                             $datagrid = $admin->getDatagrid();
                             if (!$datagrid->hasFilter($property)) {
-                                throw new \RuntimeException(sprintf(
-                                    'To retrieve autocomplete items,'
-                                    .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
-                                    $property,
-                                    \get_class($admin)
-                                ));
+                                throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, \get_class($admin)));
                             }
                             $filter = $datagrid->getFilter($property);
                             $filter->setCondition(FilterInterface::CONDITION_AND);
@@ -445,15 +411,10 @@ class ProductAdmin extends Admin
                         'property' => 'translations.name',
                         'multiple' => true,
                         'attr' => ['class' => 'form-control'],
-                        'callback' => function($admin, $property, $value) {
+                        'callback' => function ($admin, $property, $value) {
                             $datagrid = $admin->getDatagrid();
                             if (!$datagrid->hasFilter($property)) {
-                                throw new \RuntimeException(sprintf(
-                                    'To retrieve autocomplete items,'
-                                    .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
-                                    $property,
-                                    \get_class($admin)
-                                ));
+                                throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, \get_class($admin)));
                             }
                             $filter = $datagrid->getFilter($property);
                             $filter->setCondition(FilterInterface::CONDITION_AND);
@@ -481,7 +442,7 @@ class ProductAdmin extends Admin
                         'required' => false,
                     ])
                     ->add('updatedAt', DateTimePickerType::class, [
-                        'label'     => 'product.fields.updated_at',
+                        'label' => 'product.fields.updated_at',
                         'required' => false,
                         'format' => 'dd-MM-yyyy HH:mm',
                         'attr' => ['readonly' => true],
@@ -590,7 +551,7 @@ class ProductAdmin extends Admin
 
         $typesChoice = [];
         foreach ($typesEntity as $key => $value) {
-            $typesChoice["product.fields.types.".$value] = $key;
+            $typesChoice['product.fields.types.' . $value] = $key;
         }
 
         return $typesChoice;

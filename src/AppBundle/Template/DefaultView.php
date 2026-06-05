@@ -2,196 +2,132 @@
 
 namespace AppBundle\Template;
 
-use Pagerfanta\Pagerfanta;
 use Pagerfanta\PagerfantaInterface;
 use Pagerfanta\View\Template\TemplateInterface;
 use Pagerfanta\View\ViewInterface;
-use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 
-/**
- * Class DefaultView
- */
 class DefaultView implements ViewInterface
 {
-    private $template;
+    private ?PagerfantaInterface $pagerfanta = null;
+    private int $proximity = 3;
+    private int $currentPage = 1;
+    private int $nbPages = 1;
+    private int $startPage = 1;
+    private int $endPage = 1;
 
-    private $pagerfanta;
-    private $proximity;
+    /** @var list<array{0: string, 1: string}> */
+    private array $extraPages = [];
 
-    private $currentPage;
-    private $nbPages;
-
-    private $startPage;
-    private $endPage;
-    private $extraPages = [];
-
-    /**
-     * DefaultView constructor.
-     * @param TemplateInterface|null $template
-     */
-    public function __construct(TemplateInterface $template = null)
-    {
-        $this->template = $template;
+    public function __construct(
+        private readonly ?TemplateInterface $template = null,
+    ) {
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'default';
     }
 
     /**
-     * @param PagerfantaInterface $pagerfanta
-     * @param callable            $routeGenerator
-     * @param array               $options
-     *
-     * @return mixed
+     * @param array<string, mixed> $options
      */
     public function render(PagerfantaInterface $pagerfanta, callable $routeGenerator, array $options = []): string
     {
         $this->initializePagerfanta($pagerfanta);
         $this->initializeOptions($options);
-
-        $this->configureTemplate($routeGenerator, $options);
+        $this->template->setRouteGenerator($routeGenerator);
+        $this->template->setOptions($options);
 
         return $this->generate();
     }
 
     /**
-     * @param array $extraPages
-     *
-     * @return DefaultView
+     * @param list<array{0: string, 1: string}> $extraPages
      */
-    public function setExtraPages($extraPages)
+    public function setExtraPages(array $extraPages): self
     {
         $this->extraPages = $extraPages;
 
         return $this;
     }
 
-
     /**
-     * @param array $extraPage
-     *
-     * @return DefaultView
+     * @param array{0: string, 1: string} $extraPage
      */
-    public function addExtraPage($extraPage)
+    public function addExtraPage(array $extraPage): self
     {
         $this->extraPages[] = $extraPage;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    protected function getDefaultProximity()
+    protected function getDefaultProximity(): int
     {
         return 3;
     }
 
-    /**
-     * @param PagerfantaInterface $pagerfanta
-     */
-    private function initializePagerfanta(PagerfantaInterface $pagerfanta)
+    private function initializePagerfanta(PagerfantaInterface $pagerfanta): void
     {
         $this->pagerfanta = $pagerfanta;
-
         $this->currentPage = $pagerfanta->getCurrentPage();
         $this->nbPages = $pagerfanta->getNbPages();
     }
 
     /**
-     * @param array $options
+     * @param array<string, mixed> $options
      */
-    private function initializeOptions($options)
+    private function initializeOptions(array $options): void
     {
-        $this->proximity = isset($options['proximity']) ?
-            (int) $options['proximity'] :
-            $this->getDefaultProximity();
+        $this->proximity = isset($options['proximity'])
+            ? (int) $options['proximity']
+            : $this->getDefaultProximity();
     }
 
-    /**
-     * @param RouteGeneratorInterface $routeGenerator
-     * @param array                   $options
-     */
-    private function configureTemplate($routeGenerator, $options)
-    {
-        $this->template->setRouteGenerator($routeGenerator);
-        $this->template->setOptions($options);
-    }
-
-    /**
-     * @return mixed
-     */
-    private function generate()
+    private function generate(): string
     {
         $pages = $this->generatePages();
 
-        return $this->generateContainer($pages);
-    }
-
-    /**
-     * @param string $pages
-     *
-     * @return mixed
-     */
-    private function generateContainer($pages)
-    {
         return str_replace(
             ['%prev%', '%next%'],
-            [$this->previous(), $this->next()],
-            str_replace('%pages%', $pages.$this->generateExtraPages(), $this->template->container())
+            [$this->previous() ?? '', $this->next() ?? ''],
+            str_replace('%pages%', $pages . $this->generateExtraPages(), $this->template->container())
         );
     }
 
-    /**
-     * @return string
-     */
-    private function generatePages()
+    private function generatePages(): string
     {
         $this->calculateStartAndEndPage();
 
-        return $this->first().
-            $this->secondIfStartIs3().
-            $this->dotsIfStartIsOver3().
-            $this->pages().
-            $this->dotsIfEndIsUnder3ToLast().
-            $this->secondToLastIfEndIs3ToLast().
-            $this->last();
+        return ($this->first() ?? '')
+            . ($this->secondIfStartIs3() ?? '')
+            . ($this->dotsIfStartIsOver3() ?? '')
+            . $this->pages()
+            . ($this->dotsIfEndIsUnder3ToLast() ?? '')
+            . ($this->secondToLastIfEndIs3ToLast() ?? '')
+            . ($this->last() ?? '');
     }
 
-
-    /**
-     * @return string
-     */
-    private function generateExtraPages()
+    private function generateExtraPages(): string
     {
         $pages = '';
-        foreach ($this->extraPages as $page) {
-            list($href, $text) = $page;
+        foreach ($this->extraPages as [$href, $text]) {
             $pages .= $this->template->extraPageWithText($href, $text);
         }
 
         return $pages;
     }
 
-    /**
-     * @return void
-     */
-    private function calculateStartAndEndPage()
+    private function calculateStartAndEndPage(): void
     {
         $startPage = $this->currentPage - $this->proximity;
         $endPage = $this->currentPage + $this->proximity;
 
-        if ($this->startPageUnderflow($startPage)) {
-            $endPage = $this->calculateEndPageForStartPageUnderflow($startPage, $endPage);
+        if ($startPage < 1) {
+            $endPage = min($endPage + (1 - $startPage), $this->nbPages);
             $startPage = 1;
         }
-        if ($this->endPageOverflow($endPage)) {
-            $startPage = $this->calculateStartPageForEndPageOverflow($startPage, $endPage);
+        if ($endPage > $this->nbPages) {
+            $startPage = max($startPage - ($endPage - $this->nbPages), 1);
             $endPage = $this->nbPages;
         }
 
@@ -199,97 +135,31 @@ class DefaultView implements ViewInterface
         $this->endPage = $endPage;
     }
 
-    /**
-     * @param int $startPage
-     *
-     * @return bool
-     */
-    private function startPageUnderflow($startPage)
+    private function first(): ?string
     {
-        return $startPage < 1;
+        return $this->startPage > 1 ? $this->template->first() : null;
     }
 
-    /**
-     * @param int $endPage
-     *
-     * @return bool
-     */
-    private function endPageOverflow($endPage)
+    private function previous(): ?string
     {
-        return $endPage > $this->nbPages;
+        return $this->pagerfanta->hasPreviousPage()
+            ? $this->template->previousEnabled($this->pagerfanta->getPreviousPage())
+            : null;
     }
 
-    /**
-     * @param int $startPage
-     * @param int $endPage
-     *
-     * @return mixed
-     */
-    private function calculateEndPageForStartPageUnderflow($startPage, $endPage)
+    private function secondIfStartIs3(): ?string
     {
-        return min($endPage + (1 - $startPage), $this->nbPages);
+        return 3 === $this->startPage ? $this->template->page(2) : null;
     }
 
-    /**
-     * @param int $startPage
-     * @param int $endPage
-     *
-     * @return mixed
-     */
-    private function calculateStartPageForEndPageOverflow($startPage, $endPage)
+    private function dotsIfStartIsOver3(): ?string
     {
-        return max($startPage - ($endPage - $this->nbPages), 1);
+        return $this->startPage > 3 ? $this->template->separator() : null;
     }
 
-    /**
-     * @return string
-     */
-    private function first()
-    {
-        if ($this->startPage > 1) {
-            return $this->template->first();
-        }
-    }
-
-    /**
-     * @return string
-     */
-    private function previous()
-    {
-        if ($this->pagerfanta->hasPreviousPage()) {
-            return $this->template->previousEnabled($this->pagerfanta->getPreviousPage());
-        }
-
-        return null;
-    }
-
-    /**
-     * @return string
-     */
-    private function secondIfStartIs3()
-    {
-        if ($this->startPage === 3) {
-            return $this->template->page(2);
-        }
-    }
-
-    /**
-     *  @return string
-     */
-    private function dotsIfStartIsOver3()
-    {
-        if ($this->startPage > 3) {
-            return $this->template->separator();
-        }
-    }
-
-    /**
-     * @return string
-     */
-    private function pages()
+    private function pages(): string
     {
         $pages = '';
-
         foreach (range($this->startPage, $this->endPage) as $page) {
             $pages .= $this->page($page);
         }
@@ -297,70 +167,41 @@ class DefaultView implements ViewInterface
         return $pages;
     }
 
-    /**
-     * @return string
-     */
-    private function dotsIfEndIsUnder3ToLast()
+    private function dotsIfEndIsUnder3ToLast(): ?string
     {
-        if ($this->endPage < $this->toLast(3)) {
-            return $this->template->separator();
-        }
+        return $this->endPage < $this->toLast(3) ? $this->template->separator() : null;
     }
 
-        /**
-     * @param int $page
-     *
-     * @return string
-     */
-    private function page($page)
+    private function page(int $page): string
     {
-        if ($page === $this->currentPage) {
-            return $this->template->current($page);
-        }
-
-        return $this->template->page($page);
+        return $page === $this->currentPage
+            ? $this->template->current($page)
+            : $this->template->page($page);
     }
 
-    /**
-     * @return string
-     */
-    private function secondToLastIfEndIs3ToLast()
+    private function secondToLastIfEndIs3ToLast(): ?string
     {
-        if ($this->endPage === $this->toLast(3)) {
-            return $this->template->page($this->toLast(2));
-        }
+        return $this->endPage === $this->toLast(3)
+            ? $this->template->page($this->toLast(2))
+            : null;
     }
 
-    /**
-     * @param int $n
-     *
-     * @return mixed
-     */
-    private function toLast($n)
+    private function toLast(int $n): int
     {
         return $this->pagerfanta->getNbPages() - ($n - 1);
     }
 
-    /**
-     * @return string
-     */
-    private function last()
+    private function last(): ?string
     {
-        if ($this->pagerfanta->getNbPages() > $this->endPage) {
-            return $this->template->last($this->pagerfanta->getNbPages());
-        }
+        return $this->pagerfanta->getNbPages() > $this->endPage
+            ? $this->template->last($this->pagerfanta->getNbPages())
+            : null;
     }
 
-    /**
-     * @return string
-     */
-    private function next()
+    private function next(): ?string
     {
-        if ($this->pagerfanta->hasNextPage()) {
-            return $this->template->nextEnabled($this->pagerfanta->getNextPage());
-        }
-
-        return null;
-//        return $this->template->nextDisabled();
+        return $this->pagerfanta->hasNextPage()
+            ? $this->template->nextEnabled($this->pagerfanta->getNextPage())
+            : null;
     }
 }

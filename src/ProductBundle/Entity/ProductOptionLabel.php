@@ -56,7 +56,7 @@ class ProductOptionLabel implements TranslatableInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -65,8 +65,6 @@ class ProductOptionLabel implements TranslatableInterface
 
     /**
      * Set isActive
-     *
-     * @param boolean $isActive
      *
      * @return $this
      */
@@ -80,7 +78,7 @@ class ProductOptionLabel implements TranslatableInterface
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {

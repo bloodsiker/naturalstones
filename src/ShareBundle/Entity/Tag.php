@@ -3,12 +3,12 @@
 namespace ShareBundle\Entity;
 
 use AppBundle\Traits\TranslatableProxyTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Tag
@@ -94,7 +94,7 @@ class Tag implements TranslatableInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -114,7 +114,7 @@ class Tag implements TranslatableInterface
     /**
      * Set isActive
      *
-     * @param boolean $isActive
+     * @param bool $isActive
      *
      * @return Tag
      */
@@ -128,7 +128,7 @@ class Tag implements TranslatableInterface
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {
@@ -175,8 +175,6 @@ class Tag implements TranslatableInterface
 
     /**
      * Remove products
-     *
-     * @param \ProductBundle\Entity\Product $product
      */
     public function removeProduct(\ProductBundle\Entity\Product $product)
     {
@@ -196,8 +194,6 @@ class Tag implements TranslatableInterface
     /**
      * Add article
      *
-     * @param \ArticleBundle\Entity\Article $article
-     *
      * @return $this
      */
     public function addArticle(\ArticleBundle\Entity\Article $article)
@@ -209,8 +205,6 @@ class Tag implements TranslatableInterface
 
     /**
      * Remove article
-     *
-     * @param \ArticleBundle\Entity\Article $article
      */
     public function removeArticle(\ArticleBundle\Entity\Article $article)
     {

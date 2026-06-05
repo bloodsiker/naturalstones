@@ -20,14 +20,13 @@ class SiteVariableAdmin extends AbstractAdmin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
     }
 
-    /**
-     * @param ListMapper $list
-     */
-    protected function configureListFields(ListMapper $list): void    {
+    protected function configureListFields(ListMapper $list): void
+    {
         $list
             ->add('isActive', null, [
                 'label' => 'list.label_active',
@@ -38,20 +37,18 @@ class SiteVariableAdmin extends AbstractAdmin
             ])
             ->add('placement', 'text', [
                 'label' => 'list.label_placement',
-                'template'  => '@Page/Admin/list.html.twig',
+                'template' => '@Page/Admin/list.html.twig',
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'edit'      => [],
+                    'edit' => [],
                 ],
             ])
         ;
     }
 
-    /**
-     * @param DatagridMapper $filter
-     */
-    protected function configureDatagridFilters(DatagridMapper $filter): void    {
+    protected function configureDatagridFilters(DatagridMapper $filter): void
+    {
         $filter
             ->add('name', null, [
                 'label' => 'filter.label_name',
@@ -65,10 +62,8 @@ class SiteVariableAdmin extends AbstractAdmin
         ;
     }
 
-    /**
-     * @param FormMapper $form
-     */
-    protected function configureFormFields(FormMapper $form): void    {
+    protected function configureFormFields(FormMapper $form): void
+    {
         $form
             ->with('site_variable_form_group.basic', ['class' => 'col-md-8', 'label' => false])
                 ->add('name', null, [

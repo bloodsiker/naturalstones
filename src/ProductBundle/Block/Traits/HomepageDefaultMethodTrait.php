@@ -9,73 +9,37 @@ use ShareBundle\Entity\Colour;
 use ShareBundle\Entity\Stone;
 use ShareBundle\Entity\Tag;
 
-/**
- * Trait HomepageDefaultMethodTrait
- */
 trait HomepageDefaultMethodTrait
 {
-    /**
-     * @var Registry $doctrine
-     */
-    private $doctrine;
+    private Registry $doctrine;
+    private SaveStateValue $stateValue;
 
-    /**
-     * @var SaveStateValue
-     */
-    private $stateValue;
+    /** @var array<string, object>|null */
+    protected ?array $admins = null;
 
-    /**
-     * @var ArticleAdmin|null
-     */
-    protected $admins;
-
-    /**
-     * @var array
-     */
-    protected $entities = [
-        'category'           => Category::class,
-        'tag'                => Tag::class,
-        'stone'              => Stone::class,
-        'colour'             => Colour::class,
+    /** @var array<string, class-string> */
+    protected array $entities = [
+        'category' => Category::class,
+        'tag' => Tag::class,
+        'stone' => Stone::class,
+        'colour' => Colour::class,
     ];
 
-    /**
-     * @param Registry $doctrine
-     */
-    public function setDoctrine(Registry $doctrine)
+    public function setDoctrine(Registry $doctrine): void
     {
         $this->doctrine = $doctrine;
     }
 
-    /**
-     * @param SaveStateValue $stateValue
-     */
-    public function setStateValue(SaveStateValue $stateValue)
+    public function setStateValue(SaveStateValue $stateValue): void
     {
         $this->stateValue = $stateValue;
     }
 
     /**
-     * @param mixed $admins
+     * @param array<string, object>|null $admins
      */
-    public function setAdmins($admins)
+    public function setAdmins(?array $admins): void
     {
         $this->admins = $admins;
     }
-
-//    /**
-//     * @return array $choice
-//     */
-//    protected function getTypeChoice()
-//    {
-//        $list = $this->doctrine->getRepository(ArticleType::class)
-//            ->findBy(['isActive' => true, 'isHidden' => false ]);
-//
-//        $choice = [];
-//        foreach ($list as $value) {
-//            $choice[$value->translate()->getTitle()] = $value->getId();
-//        }
-//
-//        return $choice;
-//    }
 }

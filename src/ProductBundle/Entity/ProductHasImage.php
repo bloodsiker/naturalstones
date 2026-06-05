@@ -23,7 +23,7 @@ class ProductHasImage
     protected $id;
 
     /**
-     * @var \ProductBundle\Entity\Product
+     * @var Product
      *
      * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasImage")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
@@ -66,7 +66,7 @@ class ProductHasImage
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -100,11 +100,9 @@ class ProductHasImage
     /**
      * Set product.
      *
-     * @param \ProductBundle\Entity\Product $product
-     *
      * @return ProductHasImage
      */
-    public function setProduct(\ProductBundle\Entity\Product $product)
+    public function setProduct(Product $product)
     {
         $this->product = $product;
 
@@ -114,7 +112,7 @@ class ProductHasImage
     /**
      * Get product.
      *
-     * @return \ProductBundle\Entity\Product
+     * @return Product
      */
     public function getProduct()
     {
@@ -124,11 +122,9 @@ class ProductHasImage
     /**
      * Set image.
      *
-     * @param \MediaBundle\Entity\MediaImage $image
-     *
      * @return ProductHasImage
      */
-    public function setImage(\MediaBundle\Entity\MediaImage $image = null)
+    public function setImage(?\MediaBundle\Entity\MediaImage $image = null)
     {
         $this->image = $image;
 

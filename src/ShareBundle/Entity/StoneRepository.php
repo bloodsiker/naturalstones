@@ -5,61 +5,46 @@ namespace ShareBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
-/**
- * Class StoneRepository
- */
 class StoneRepository extends EntityRepository
 {
-    /**
-     * @return mixed
-     */
-    public function baseStoneQueryBuilder()
+    public function baseStoneQueryBuilder(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('s')
+        return $this->createQueryBuilder('s')
             ->leftJoin('s.translations', 'st')
             ->addSelect('st')
             ->where('s.isActive = 1')
             ->orderBy('s.id', 'DESC');
-
-        return $qb;
     }
 
-    public function filterByShowMain(QueryBuilder $qb) : QueryBuilder
+    public function filterByShowMain(QueryBuilder $qb): QueryBuilder
     {
         return $qb->andWhere('s.isShowMain = :isShowMain')->setParameter('isShowMain', true);
     }
 
-    public function filterByShowConstructor(QueryBuilder $qb) : QueryBuilder
+    public function filterByShowConstructor(QueryBuilder $qb): QueryBuilder
     {
         return $qb->andWhere('s.isShowConstructor = :isShowConstructor')->setParameter('isShowConstructor', true);
     }
 
-    public function filterByZodiac(QueryBuilder $qb, $zodiac) : QueryBuilder
+    public function filterByZodiac(QueryBuilder $qb, int|string $zodiac): QueryBuilder
     {
         return $qb->innerJoin('s.zodiacs', 'zodiac', 'WITH', 'zodiac.id = :zodiac')
             ->setParameter('zodiac', $zodiac);
     }
 
-    /**
-     * @param QueryBuilder $qb
-     * @param string       $letter
-     *
-     * @return QueryBuilder
-     */
     public function filterByLetter(QueryBuilder $qb, string $letter): QueryBuilder
     {
         return $qb
-            ->andWhere("st.name LIKE :letter")
-            ->setParameter('letter', $letter.'%');
+            ->andWhere('st.name LIKE :letter')
+            ->setParameter('letter', $letter . '%');
     }
 
     /**
-     * @return mixed
+     * @return list<array<int, string>>
      */
-    public function uniqLetterByStone($locale)
+    public function uniqLetterByStone(string $locale): array
     {
         $qb = $this->baseStoneQueryBuilder();
-
         $qb->select($qb->expr()->substring('st.name', 1, 1))
             ->andWhere('st.locale = :locale')
             ->setParameter('locale', $locale)

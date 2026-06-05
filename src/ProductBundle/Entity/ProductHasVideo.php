@@ -23,7 +23,7 @@ class ProductHasVideo
     protected $id;
 
     /**
-     * @var \ProductBundle\Entity\Product
+     * @var Product
      *
      * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasVideo")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
@@ -68,7 +68,7 @@ class ProductHasVideo
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -102,11 +102,9 @@ class ProductHasVideo
     /**
      * Set product.
      *
-     * @param \ProductBundle\Entity\Product $product
-     *
      * @return ProductHasVideo
      */
-    public function setProduct(\ProductBundle\Entity\Product $product)
+    public function setProduct(Product $product)
     {
         $this->product = $product;
 
@@ -116,7 +114,7 @@ class ProductHasVideo
     /**
      * Get product.
      *
-     * @return \ProductBundle\Entity\Product
+     * @return Product
      */
     public function getProduct()
     {
@@ -126,11 +124,9 @@ class ProductHasVideo
     /**
      * Set video.
      *
-     * @param \MediaBundle\Entity\MediaVideo $image
-     *
      * @return ProductHasVideo
      */
-    public function setVideo(\MediaBundle\Entity\MediaVideo $video = null)
+    public function setVideo(?\MediaBundle\Entity\MediaVideo $video = null)
     {
         $this->video = $video;
 
@@ -147,17 +143,11 @@ class ProductHasVideo
         return $this->video;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPath()
     {
         return $this->path;
     }
 
-    /**
-     * @param  mixed  $path
-     */
     public function setPath($path)
     {
         $this->path = $path;

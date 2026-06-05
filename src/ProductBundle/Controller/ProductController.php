@@ -2,62 +2,63 @@
 
 namespace ProductBundle\Controller;
 
+use AppBundle\Controller\BaseController;
 use AppBundle\Helper\AppHelper;
-use GenreBundle\Entity\Genre;
-use MediaBundle\Entity\MediaFile;
+use AppBundle\Services\BreadcrumbService;
+use AppBundle\Services\SaveStateValue;
+use AppBundle\Services\SeoUpdater;
+use Doctrine\ORM\EntityManagerInterface;
 use ProductBundle\Entity\Category;
 use ProductBundle\Entity\Product;
+use ProductBundle\Entity\ProductRepository;
+use ProductBundle\Helper\ProductViewHelper;
 use ShareBundle\Entity\Colour;
 use ShareBundle\Entity\Stone;
 use ShareBundle\Entity\Tag;
-use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class ProductController
- */
 class ProductController extends BaseController
 {
-    const PRODUCT_404 = 'Product doesn\'t exist';
+    public const PRODUCT_404 = 'Product doesn\'t exist';
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     */
-     #[Cache(maxage: 60, public: true)]
-    public function listAction(Request $request)
+    private const SEO_CATEGORY_SLUGS = ['braslety', 'kole', 'podveski', 'niti-oberegi'];
+    private const DESCRIPTION_LIMIT = 140;
+
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly TranslatorInterface $translator,
+        private readonly RouterInterface $router,
+        private readonly BreadcrumbService $breadcrumb,
+        private readonly SeoUpdater $seoUpdater,
+        private readonly ProductViewHelper $productViewHelper,
+    ) {
+    }
+
+    #[Cache(maxage: 60, public: true)]
+    public function listAction(Request $request): Response
     {
         $slug = $request->get('slug');
-        $router = $this->get('router');
-        $repo = $this->getDoctrine()->getManager()->getRepository(Category::class);
-        $category = $repo->findOneBy(['slug' => $slug]);
+        $category = $this->em->getRepository(Category::class)->findOneBy(['slug' => $slug]);
 
         if (!$category instanceof Category) {
             return $this->redirectToRoute('index');
         }
 
-        $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => $category->getName()]);
+        $this->breadcrumb->addBreadcrumb(['title' => $category->getName()]);
 
-        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
-        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
         $categorySeo = $this->getCategorySeo($category->getSlug(), $category->getName());
-        $metaTitle = isset($categorySeo['meta_title']) ? $categorySeo['meta_title'] : $this->get('translator')->trans('frontend.meta.meta_title_products', ['%CATEGORY%' => $category->getName()], 'AppBundle');
-        $metaDescription = isset($categorySeo['meta_description']) ? $categorySeo['meta_description'] : $this->get('translator')->trans('frontend.meta.meta_description_products', ['%CATEGORY%' => $category->getName()], 'AppBundle');
+        $metaTitle = $categorySeo['meta_title']
+            ?? $this->translator->trans('frontend.meta.meta_title_products', ['%CATEGORY%' => $category->getName()], 'AppBundle');
+        $metaDescription = $categorySeo['meta_description']
+            ?? $this->translator->trans('frontend.meta.meta_description_products', ['%CATEGORY%' => $category->getName()], 'AppBundle');
 
-        $this->get('app.seo.updater')->doMagic(null, [
-            'title' => $metaTitle.$page,
-            'description' => $pageDesc.$metaDescription,
-            'og' => [
-                'og:type' => 'website',
-                'og:url' => $request->getSchemeAndHttpHost(),
-            ],
-            'canonicalUrl' => $router->generate('product_list', ['slug' => $slug, 'page' => $request->get('page')], 0),
-        ]);
+        $this->seoUpdater->doMagic(null, $this->buildListSeo($request, $metaTitle, $metaDescription, [
+            'canonicalUrl' => $this->router->generate('product_list', ['slug' => $slug, 'page' => $request->get('page')], 0),
+        ]));
 
         return $this->render('@Product/product_list.html.twig', [
             'category' => $category,
@@ -65,154 +66,89 @@ class ProductController extends BaseController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     */
-     #[Cache(maxage: 60, public: true)]
-    public function listWhoAction(Request $request)
+    #[Cache(maxage: 60, public: true)]
+    public function listWhoAction(Request $request): Response
     {
         $who = $request->get('who');
-        $whoIs = $this->get('translator')->trans(Product::$whois[$who], [], 'AppBundle');
-        $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => $whoIs]);
+        $whoIs = $this->translator->trans(Product::$whois[$who], [], 'AppBundle');
+        $this->breadcrumb->addBreadcrumb(['title' => $whoIs]);
 
-        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
-        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
-
-        $this->get('app.seo.updater')->doMagic(null, [
-            'title' => $this->get('translator')->trans('frontend.meta.meta_title_who', ['%WHO%' => $whoIs], 'AppBundle') . $page,
-            'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_who', [], 'AppBundle'),
-            'og' => [
-                'og:type' => 'website',
-                'og:url' => $request->getSchemeAndHttpHost(),
-            ],
-        ]);
+        $this->seoUpdater->doMagic(null, $this->buildListSeo(
+            $request,
+            $this->translator->trans('frontend.meta.meta_title_who', ['%WHO%' => $whoIs], 'AppBundle'),
+            $this->translator->trans('frontend.meta.meta_description_who', [], 'AppBundle'),
+        ));
 
         return $this->render('@Product/product_list_who.html.twig', ['whois' => $whoIs]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     */
-     #[Cache(maxage: 60, public: true)]
-    public function listTagAction(Request $request)
+    #[Cache(maxage: 60, public: true)]
+    public function listTagAction(Request $request): Response
     {
-        $slug = $request->get('slug');
-        $repo = $this->getDoctrine()->getManager()->getRepository(Tag::class);
-        $tag = $repo->findOneBy(['slug' => $slug]);
-        $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.tag', [], 'AppBundle') . $tag->getName()]);
-
-        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
-        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
-
-        $title = $this->get('translator')->trans('frontend.meta.meta_title_tag', ['%TAG%' => $tag->getName()], 'AppBundle') . $page;
-
-        $this->get('app.seo.updater')->doMagic(null, [
-            'title' => $title,
-            'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_tag', ['%TAG%' => $tag->getName()], 'AppBundle'),
-            'og' => [
-                'og:type' => 'website',
-                'og:title' => $title,
-                'og:url' => $request->getSchemeAndHttpHost(),
-            ],
+        $tag = $this->em->getRepository(Tag::class)->findOneBy(['slug' => $request->get('slug')]);
+        $this->breadcrumb->addBreadcrumb([
+            'title' => $this->translator->trans('frontend.breadcrumb.tag', [], 'AppBundle') . $tag->getName(),
         ]);
+
+        $title = $this->translator->trans('frontend.meta.meta_title_tag', ['%TAG%' => $tag->getName()], 'AppBundle');
+        $description = $this->translator->trans('frontend.meta.meta_description_tag', ['%TAG%' => $tag->getName()], 'AppBundle');
+
+        $this->seoUpdater->doMagic(null, $this->buildListSeo($request, $title, $description, [
+            'og' => $this->ogWebsite($request, $title . $this->pageSuffix($request)),
+        ]));
 
         return $this->render('@Product/product_list_tag.html.twig', ['tag' => $tag]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     */
-     #[Cache(maxage: 60, public: true)]
-    public function listColourAction(Request $request)
+    #[Cache(maxage: 60, public: true)]
+    public function listColourAction(Request $request): Response
     {
-        $slug = $request->get('slug');
-        $repo = $this->getDoctrine()->getManager()->getRepository(Colour::class);
-        $colour = $repo->findOneBy(['slug' => $slug]);
-        $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.colour', [], 'AppBundle') . $colour->getName()]);
-
-        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
-        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
-
-        $title = $this->get('translator')->trans('frontend.meta.meta_title_colour', ['%COLOUR%' => $colour->getName()], 'AppBundle') . $page;
-
-        $this->get('app.seo.updater')->doMagic(null, [
-            'title' => $title,
-            'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_colour', ['%COLOUR%' => $colour->getName()], 'AppBundle'),
-            'og' => [
-                'og:type' => 'website',
-                'og:title' => $title,
-                'og:url' => $request->getSchemeAndHttpHost(),
-            ],
+        $colour = $this->em->getRepository(Colour::class)->findOneBy(['slug' => $request->get('slug')]);
+        $this->breadcrumb->addBreadcrumb([
+            'title' => $this->translator->trans('frontend.breadcrumb.colour', [], 'AppBundle') . $colour->getName(),
         ]);
+
+        $title = $this->translator->trans('frontend.meta.meta_title_colour', ['%COLOUR%' => $colour->getName()], 'AppBundle');
+        $description = $this->translator->trans('frontend.meta.meta_description_colour', ['%COLOUR%' => $colour->getName()], 'AppBundle');
+
+        $this->seoUpdater->doMagic(null, $this->buildListSeo($request, $title, $description, [
+            'og' => $this->ogWebsite($request, $title . $this->pageSuffix($request)),
+        ]));
 
         return $this->render('@Product/product_list_colour.html.twig', ['colour' => $colour]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     */
-     #[Cache(maxage: 60, public: true)]
-    public function listStoneAction(Request $request)
+    #[Cache(maxage: 60, public: true)]
+    public function listStoneAction(Request $request): Response
     {
-        $slug = $request->get('slug');
-        $repo = $this->getDoctrine()->getManager()->getRepository(Stone::class);
-        $stone = $repo->findOneBy(['slug' => $slug]);
-        $router = $this->get('router');
-        $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.stones', [], 'AppBundle'),  'href' => $router->generate('stone_list')]);
-        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.stone', [], 'AppBundle') . $stone->getName()]);
-
-        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
-        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
-
-        $title = $this->get('translator')->trans('frontend.meta.meta_title_stones', ['%STONE%' => $stone->getName()], 'AppBundle') . $page;
-
-        $this->get('app.seo.updater')->doMagic(null, [
-            'title' => $title,
-            'description' => $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_stones', ['%STONE%' => $stone->getName()], 'AppBundle'),
-            'og' => [
-                'og:type' => 'website',
-                'og:title' => $title,
-                'og:url' => $request->getSchemeAndHttpHost(),
-            ],
+        $stone = $this->em->getRepository(Stone::class)->findOneBy(['slug' => $request->get('slug')]);
+        $this->breadcrumb->addBreadcrumb([
+            'title' => $this->translator->trans('frontend.breadcrumb.stones', [], 'AppBundle'),
+            'href' => $this->router->generate('stone_list'),
         ]);
+        $this->breadcrumb->addBreadcrumb([
+            'title' => $this->translator->trans('frontend.breadcrumb.stone', [], 'AppBundle') . $stone->getName(),
+        ]);
+
+        $title = $this->translator->trans('frontend.meta.meta_title_stones', ['%STONE%' => $stone->getName()], 'AppBundle');
+        $description = $this->translator->trans('frontend.meta.meta_description_stones', ['%STONE%' => $stone->getName()], 'AppBundle');
+
+        $this->seoUpdater->doMagic(null, $this->buildListSeo($request, $title, $description, [
+            'og' => $this->ogWebsite($request, $title . $this->pageSuffix($request)),
+        ]));
 
         return $this->render('@Product/product_list_stone.html.twig', ['stone' => $stone]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     */
-     #[Cache(maxage: 60, public: true)]
-    public function viewAction(Request $request)
+    #[Cache(maxage: 60, public: true)]
+    public function viewAction(Request $request): Response
     {
-        $repo = $this->getDoctrine()->getManager()->getRepository(Product::class);
+        /** @var ProductRepository $repo */
+        $repo = $this->em->getRepository(Product::class);
         $product = $repo->find($request->get('id'));
-        if (!$product) {
-            return $this->redirectToRoute('product_list', ['slug' => $product->getCategory()->getSlug()]);
-//            throw $this->createNotFoundException(self::PRODUCT_404);
-        }
 
-        if (!$product->getIsActive()) {
-           return $this->redirectToRoute('product_list', ['slug' => $product->getCategory()->getSlug()]);
+        if (!$product || !$product->getIsActive()) {
+            throw $this->createNotFoundException(self::PRODUCT_404);
         }
 
         if ($request->get('slug') !== $product->getSlug()) {
@@ -223,40 +159,31 @@ class ProductController extends BaseController
             ->getQuery()
             ->getResult();
 
-        $router = $this->get('router');
-        $breadcrumb = $this->get('app.breadcrumb');
         if ($product->getCategory()) {
-            $breadcrumb->addBreadcrumb([
+            $this->breadcrumb->addBreadcrumb([
                 'title' => $product->getCategory()->getName(),
-                'href' => $router->generate('product_list', ['slug' => $product->getCategory()->getSlug()]),
+                'href' => $this->router->generate('product_list', ['slug' => $product->getCategory()->getSlug()]),
             ]);
         }
-        $breadcrumb->addBreadcrumb(['title' => $product->getName()]);
+        $this->breadcrumb->addBreadcrumb(['title' => $product->getName()]);
 
         $price = $product->getDiscount() ?: $product->getPrice();
-        $priceStr = $price ? ' — від '.number_format($price, 0, '.', ' ').' грн' : '';
-        $availabilityStr = $product->getIsAvailable()
-            ? $this->get('translator')->trans('frontend.meta.in_stock', [], 'AppBundle')
-            : '';
+        $title = $product->getName()
+            . ($price ? ' — від ' . number_format($price, 0, '.', ' ') . ' грн' : '')
+            . ' | Naturalstones Jewerly';
 
-        $title = $product->getName().$priceStr.' | Naturalstones Jewerly';
+        $metaDescription = ($product->getIsAvailable() ? $this->translator->trans('frontend.meta.in_stock', [], 'AppBundle') : '')
+            . $this->truncateDescription($product->getDescription());
 
-        $cleanDescription = trim(strip_tags($product->getDescription()));
-        $description = mb_substr($cleanDescription, 0, 140);
-        if (mb_strlen($cleanDescription) > 140) {
-            $description .= '...';
-        }
-        $metaDescription = $availabilityStr.$description;
-
-        $this->get('app.seo.updater')->doMagic(null, [
+        $this->seoUpdater->doMagic(null, [
             'title' => $title,
             'description' => $metaDescription,
             'og' => [
-                'og:site_name' => $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
+                'og:site_name' => $this->translator->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
                 'og:type' => 'product',
                 'og:title' => $title,
-                'og:url' => $request->getSchemeAndHttpHost().$request->getPathInfo(),
-                'og:image' => $request->getSchemeAndHttpHost().$product->getImage()->getPath(),
+                'og:url' => $request->getSchemeAndHttpHost() . $request->getPathInfo(),
+                'og:image' => $request->getSchemeAndHttpHost() . $product->getImage()->getPath(),
                 'og:description' => $metaDescription,
                 'product:price:amount' => $price,
                 'product:price:currency' => 'UAH',
@@ -265,11 +192,10 @@ class ProductController extends BaseController
 
         if (!AppHelper::isBot($request->headers->get('User-Agent'))) {
             $repo->incViewCounter($product->getId());
-            $this->container->get('product.helper.views')->doView($product);
+            $this->productViewHelper->doView($product);
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $ratingData = $em->createQuery(
+        $ratingData = $this->em->createQuery(
             'SELECT AVG(c.rating) as avgRating, COUNT(c.id) as reviewCount
              FROM CommentBundle\Entity\Comment c
              WHERE c.product = :product AND c.isActive = 1'
@@ -278,45 +204,91 @@ class ProductController extends BaseController
         return $this->render('@Product/product_view.html.twig', [
             'product' => $product,
             'sizes' => $sizes,
-            'avgRating' => $ratingData['avgRating'] ? round((float)$ratingData['avgRating'], 1) : null,
-            'reviewCount' => (int)$ratingData['reviewCount'],
+            'avgRating' => $ratingData['avgRating'] ? round((float) $ratingData['avgRating'], 1) : null,
+            'reviewCount' => (int) $ratingData['reviewCount'],
         ]);
     }
 
     /**
-     * @param string $slug
-     * @param string $fallbackTitle
+     * @param array<string, mixed> $extra
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    private function getCategorySeo($slug, $fallbackTitle)
+    private function buildListSeo(Request $request, string $title, string $description, array $extra = []): array
     {
-        $seoSlugs = ['braslety', 'kole', 'podveski', 'niti-oberegi'];
+        $seo = [
+            'title' => $title . $this->pageSuffix($request),
+            'description' => $this->pageDescriptionPrefix($request) . $description,
+            'og' => [
+                'og:type' => 'website',
+                'og:url' => $request->getSchemeAndHttpHost(),
+            ],
+        ];
 
-        if (!in_array($slug, $seoSlugs, true)) {
+        return array_replace_recursive($seo, $extra);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function ogWebsite(Request $request, string $title): array
+    {
+        return [
+            'og:type' => 'website',
+            'og:title' => $title,
+            'og:url' => $request->getSchemeAndHttpHost(),
+        ];
+    }
+
+    private function pageSuffix(Request $request): string
+    {
+        return $request->get('page')
+            ? ' | ' . $this->translator->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1)
+            : '';
+    }
+
+    private function pageDescriptionPrefix(Request $request): string
+    {
+        return $request->get('page')
+            ? $this->translator->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . ' |'
+            : '';
+    }
+
+    private function truncateDescription(?string $description): string
+    {
+        $clean = trim(strip_tags((string) $description));
+        $truncated = mb_substr($clean, 0, self::DESCRIPTION_LIMIT);
+
+        return mb_strlen($clean) > self::DESCRIPTION_LIMIT ? $truncated . '...' : $truncated;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getCategorySeo(string $slug, string $fallbackTitle): array
+    {
+        if (!in_array($slug, self::SEO_CATEGORY_SLUGS, true)) {
             return ['h1' => $fallbackTitle];
         }
 
-        $translator = $this->get('translator');
-        $prefix = 'frontend.category_seo.'.$slug.'.';
+        $prefix = 'frontend.category_seo.' . $slug . '.';
         $faq = [];
-
-        for ($i = 1; $i <= 3; $i++) {
+        for ($i = 1; $i <= 3; ++$i) {
             $faq[] = [
-                'question' => $translator->trans($prefix.'faq_'.$i.'_question', [], 'AppBundle'),
-                'answer' => $translator->trans($prefix.'faq_'.$i.'_answer', [], 'AppBundle'),
+                'question' => $this->translator->trans($prefix . 'faq_' . $i . '_question', [], 'AppBundle'),
+                'answer' => $this->translator->trans($prefix . 'faq_' . $i . '_answer', [], 'AppBundle'),
             ];
         }
 
         return [
-            'h1' => $translator->trans($prefix.'h1', [], 'AppBundle'),
-            'intro' => $translator->trans($prefix.'intro', [], 'AppBundle'),
-            'bottom_title' => $translator->trans($prefix.'bottom_title', [], 'AppBundle'),
-            'bottom' => $translator->trans($prefix.'bottom', [], 'AppBundle'),
-            'faq_title' => $translator->trans('frontend.category_seo.faq_title', [], 'AppBundle'),
+            'h1' => $this->translator->trans($prefix . 'h1', [], 'AppBundle'),
+            'intro' => $this->translator->trans($prefix . 'intro', [], 'AppBundle'),
+            'bottom_title' => $this->translator->trans($prefix . 'bottom_title', [], 'AppBundle'),
+            'bottom' => $this->translator->trans($prefix . 'bottom', [], 'AppBundle'),
+            'faq_title' => $this->translator->trans('frontend.category_seo.faq_title', [], 'AppBundle'),
             'faq' => $faq,
-            'meta_title' => $translator->trans($prefix.'meta_title', [], 'AppBundle'),
-            'meta_description' => $translator->trans($prefix.'meta_description', [], 'AppBundle'),
+            'meta_title' => $this->translator->trans($prefix . 'meta_title', [], 'AppBundle'),
+            'meta_description' => $this->translator->trans($prefix . 'meta_description', [], 'AppBundle'),
         ];
     }
 }

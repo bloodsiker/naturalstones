@@ -3,78 +3,51 @@
 namespace AppBundle\Block;
 
 use AppBundle\Services\SaveStateValue;
-use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
-/**
- * Class GetStateValueBlockService
- */
 class GetStateValueBlockService extends AbstractEditableBlockService
 {
-    /**
-     * @var SaveStateValue
-     */
-    private $saveStateService;
+    private ?SaveStateValue $saveStateService = null;
 
-    /**
-     * GetStateValueBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     */
     public function __construct(Environment $twig)
     {
         parent::__construct($twig);
     }
 
-    /**
-     * @param SaveStateValue $saveStateService
-     *
-     * @return void
-     */
-    public function setSaveStateService(SaveStateValue $saveStateService)
+    public function setSaveStateService(SaveStateValue $saveStateService): void
     {
         $this->saveStateService = $saveStateService;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
-        $resolver->setDefaults(array(
-            'template'  => '@App/Block/get_state_value.html.twig',
+    public function configureSettings(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'template' => '@App/Block/get_state_value.html.twig',
             'key' => null,
-        ));
+        ]);
     }
 
     /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         if (!$blockContext->getBlock()->getEnabled()) {
             return new Response();
         }
 
         $settings = $blockContext->getSettings();
-        if (!empty($settings['key'])) {
-            $value = $this->saveStateService->getValue($settings['key']) ?: null;
-        } else {
-            $value = null;
-        }
+        $value = !empty($settings['key']) && $this->saveStateService
+            ? ($this->saveStateService->getValue($settings['key']) ?: null)
+            : null;
 
-        return $this->renderResponse($blockContext->getTemplate(), array(
-            'value'     => $value,
-            'settings'  => $blockContext->getSettings(),
-            'block'     => $blockContext->getBlock(),
-        ));
+        return $this->renderResponse($blockContext->getTemplate(), [
+            'value' => $value,
+            'settings' => $blockContext->getSettings(),
+            'block' => $blockContext->getBlock(),
+        ]);
     }
 }

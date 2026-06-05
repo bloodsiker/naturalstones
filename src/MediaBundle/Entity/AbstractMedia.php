@@ -80,7 +80,7 @@ abstract class AbstractMedia
      */
     public function __construct()
     {
-        $this->isActive  = true;
+        $this->isActive = true;
         $this->createdAt = new \DateTime('now');
     }
 
@@ -90,7 +90,7 @@ abstract class AbstractMedia
      */
     public function __toString()
     {
-        return (string) '#'.$this->id.'-'.$this->description;
+        return (string) '#' . $this->id . '-' . $this->description;
     }
 
     /**
@@ -183,7 +183,7 @@ abstract class AbstractMedia
     /**
      * Set isActive
      *
-     * @param boolean $isActive
+     * @param bool $isActive
      *
      * @return AbstractMedia
      */
@@ -197,7 +197,7 @@ abstract class AbstractMedia
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {
@@ -207,11 +207,9 @@ abstract class AbstractMedia
     /**
      * Set createdBy.
      *
-     * @param \UserBundle\Entity\User|null $createdBy
-     *
      * @return AbstractMedia
      */
-    public function setCreatedBy(\UserBundle\Entity\User $createdBy = null)
+    public function setCreatedBy(?\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
 
@@ -299,5 +297,4 @@ abstract class AbstractMedia
     {
         return $this->updatedAt;
     }
-
 }

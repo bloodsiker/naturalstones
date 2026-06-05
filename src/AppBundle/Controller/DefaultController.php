@@ -9,7 +9,6 @@ use ShareBundle\Entity\Colour;
 use ShareBundle\Entity\Stone;
 use ShareBundle\Entity\Tag;
 use ShareBundle\Entity\Zodiac;
-use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,14 +20,12 @@ use UserBundle\Entity\UserDeliveryAddress;
 class DefaultController extends BaseController
 {
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function indexAction(Request $request)
     {
         $metaTitle = $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle');
-        $metaDescription = $this->get('translator')->trans('frontend.meta.meta_description_index', ['%YEAR%' => date("Y")], 'AppBundle');
+        $metaDescription = $this->get('translator')->trans('frontend.meta.meta_description_index', ['%YEAR%' => date('Y')], 'AppBundle');
 
         $this->get('app.seo.updater')->doMagic(null, [
             'title' => $metaTitle,
@@ -184,8 +181,6 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function searchAction(Request $request)
@@ -194,7 +189,7 @@ class DefaultController extends BaseController
         $breadcrumb = $this->get('app.breadcrumb');
         $breadcrumb->addBreadcrumb([
             'title' => $this->get('translator')->trans('frontend.breadcrumb.search', [], 'AppBundle'),
-            'href' => $router->generate('search_category', ['search' => $request->get('search')])
+            'href' => $router->generate('search_category', ['search' => $request->get('search')]),
         ]);
         $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.search_category', [], 'AppBundle')]);
 
@@ -220,8 +215,6 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function sitemapAction(Request $request)
@@ -281,7 +274,7 @@ class DefaultController extends BaseController
 
         $categories = $em->getRepository(Category::class)->findBy(['isActive' => true]);
         foreach ($categories as $category) {
-            $key = 'category_'.$category->getId();
+            $key = 'category_' . $category->getId();
             $url = $router->generate('product_list', ['slug' => $category->getSlug()]);
             $urls[$key]['loc'] = $hostname . $url;
             foreach ($locales as $local) {
@@ -295,7 +288,7 @@ class DefaultController extends BaseController
 
         $products = $em->getRepository(Product::class)->findBy(['isActive' => true], ['id' => 'DESC']);
         foreach ($products as $product) {
-            $key = 'product_'.$product->getId();
+            $key = 'product_' . $product->getId();
             $url = $router->generate('product_view', ['category' => $product->getCategory()->getSlug(), 'id' => $product->getId(), 'slug' => $product->getSlug()]);
             $urls[$key]['loc'] = $hostname . $url;
             foreach ($locales as $local) {
@@ -309,7 +302,7 @@ class DefaultController extends BaseController
 
         $stones = $em->getRepository(Stone::class)->findBy(['isActive' => true]);
         foreach ($stones as $stone) {
-            $key = 'stone_'.$stone->getId();
+            $key = 'stone_' . $stone->getId();
             $url = $router->generate('product_stone_list', ['slug' => $stone->getSlug()]);
             $urls[$key]['loc'] = $hostname . $url;
             foreach ($locales as $local) {
@@ -324,7 +317,7 @@ class DefaultController extends BaseController
         $letter = $em->getRepository(Stone::class)->uniqLetterByStone('ru');
         foreach ($letter as $key => $let) {
             if (isset($let[1])) {
-                $key = 'stone_letter_'.$key;
+                $key = 'stone_letter_' . $key;
                 $url = $router->generate('stone_list_letter', ['letter' => $let[1]]);
                 $urls[$key]['loc'] = $hostname . $url;
                 foreach ($locales as $local) {
@@ -339,7 +332,7 @@ class DefaultController extends BaseController
 
         $zodiacs = $em->getRepository(Zodiac::class)->findBy(['isActive' => true]);
         foreach ($zodiacs as $zodiac) {
-            $key = 'zodiac_'.$zodiac->getId();
+            $key = 'zodiac_' . $zodiac->getId();
             $url = $router->generate('zodiac_stone_list', ['slug' => $zodiac->getSlug()]);
             $urls[$key]['loc'] = $hostname . $url;
             foreach ($locales as $local) {
@@ -353,7 +346,7 @@ class DefaultController extends BaseController
 
         $colours = $em->getRepository(Colour::class)->findBy(['isActive' => true]);
         foreach ($colours as $colour) {
-            $key = 'colour_'.$colour->getId();
+            $key = 'colour_' . $colour->getId();
             $url = $router->generate('product_colour_list', ['slug' => $colour->getSlug()]);
             $urls[$key]['loc'] = $hostname . $url;
             foreach ($locales as $local) {
@@ -367,7 +360,7 @@ class DefaultController extends BaseController
 
         $tags = $em->getRepository(Tag::class)->findBy(['isActive' => true]);
         foreach ($tags as $tag) {
-            $key = 'tag_'.$colour->getId();
+            $key = 'tag_' . $colour->getId();
             $url = $router->generate('product_tags_list', ['slug' => $tag->getSlug()]);
             $urls[$key]['loc'] = $hostname . $url;
             foreach ($locales as $local) {
@@ -403,7 +396,7 @@ class DefaultController extends BaseController
 
         $articles = $em->getRepository(Article::class)->findBy(['isActive' => true]);
         foreach ($articles as $article) {
-            $key = 'article_'.$article->getId();
+            $key = 'article_' . $article->getId();
             $url = $router->generate('article_view', ['category' => $article->getSlug(), 'id' => $article->getId(), 'slug' => $article->getSlug()]);
             $urls[$key]['loc'] = $hostname . $url;
             foreach ($locales as $local) {
@@ -417,7 +410,7 @@ class DefaultController extends BaseController
 
         $articleCategories = $em->getRepository(\ArticleBundle\Entity\Category::class)->findBy(['isActive' => true]);
         foreach ($articleCategories as $articleCategory) {
-            $key = 'article_category_'.$articleCategory->getId();
+            $key = 'article_category_' . $articleCategory->getId();
             $url = $router->generate('article_category', ['category' => $articleCategory->getSlug()]);
             $urls[$key]['loc'] = $hostname . $url;
             foreach ($locales as $local) {
@@ -431,7 +424,7 @@ class DefaultController extends BaseController
 
         $articleTags = $em->getRepository(Tag::class)->getTagsByArticles();
         foreach ($articleTags as $articleTag) {
-            $key = 'article_tag_'.$articleTag->getId();
+            $key = 'article_tag_' . $articleTag->getId();
             $url = $router->generate('article_tags_list', ['slug' => $articleTag->getSlug()]);
             $urls[$key]['loc'] = $hostname . $url;
             foreach ($locales as $local) {
@@ -457,7 +450,7 @@ class DefaultController extends BaseController
 
         $feedData = [
             ['id', 'title', 'description', 'availability', 'condition', 'price', 'sale_price', 'link', 'image_link', 'brand',
-                'fb_product_category', 'gender', 'age_group', 'material', 'rich_text_description']
+                'fb_product_category', 'gender', 'age_group', 'material', 'rich_text_description'],
         ];
 
         $products = $em->getRepository(Product::class)->findBy(['isActive' => true], ['id' => 'DESC']);
@@ -508,11 +501,11 @@ class DefaultController extends BaseController
                 $gender,
                 'all ages',
                 $materials,
-                preg_replace(['/\[(.+?)\]/', '/[\n\r]/'], ['', ' '], $product->translate('uk')->getDescription())
+                preg_replace(['/\[(.+?)\]/', '/[\n\r]/'], ['', ' '], $product->translate('uk')->getDescription()),
             ]);
         }
 
-        $filePath = $this->getParameter('kernel.project_dir').'/public/feeds/facebook_feed.csv';
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/feeds/facebook_feed.csv';
         $this->saveFeedToFile($filePath, $feedData);
 
         $response = new Response();
@@ -550,8 +543,6 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function openSearchAction(Request $request)
@@ -563,8 +554,6 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @param Request $request
-     *
      * @return RedirectResponse
      */
     public function removeTrailingSlashAction(Request $request)

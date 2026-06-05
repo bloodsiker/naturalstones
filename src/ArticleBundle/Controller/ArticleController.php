@@ -2,192 +2,130 @@
 
 namespace ArticleBundle\Controller;
 
-use AppBundle\Helper\AppHelper;
-use ArticleBundle\Entity\Article;
-use ArticleBundle\Entity\Category;
-use ShareBundle\Entity\Tag;
 use AppBundle\Controller\BaseController;
+use AppBundle\Helper\AppHelper;
+use AppBundle\Services\BreadcrumbService;
+use AppBundle\Services\SeoUpdater;
+use ArticleBundle\Entity\Article;
+use ArticleBundle\Entity\ArticleRepository;
+use ArticleBundle\Entity\Category;
+use Doctrine\ORM\EntityManagerInterface;
+use ShareBundle\Entity\Tag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class ArticleController
- */
 class ArticleController extends BaseController
 {
-    const ARTICLE_404 = 'Article doesn\'t exist';
+    public const ARTICLE_404 = 'Article doesn\'t exist';
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     */
-     #[Cache(maxage: 60, public: true)]
-    public function listAction(Request $request)
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly TranslatorInterface $translator,
+        private readonly RouterInterface $router,
+        private readonly BreadcrumbService $breadcrumb,
+        private readonly SeoUpdater $seoUpdater,
+    ) {
+    }
+
+    #[Cache(maxage: 60, public: true)]
+    public function listAction(Request $request): Response
     {
-        $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb(['title' => $this->get('translator')->trans('frontend.breadcrumb.articles', [], 'AppBundle')]);
-
-        $repo = $this->getDoctrine()->getManager()->getRepository(Category::class);
-        $categories = $repo->findBy(['isActive' => true]);
-
-        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
-        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
-
-        $title = $this->get('translator')->trans('frontend.meta.meta_title_articles', [], 'AppBundle') . $page;
-        $description = $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_articles', [], 'AppBundle');
-
-        $this->get('app.seo.updater')->doMagic(null, [
-            'title' => $title,
-            'description' => $description,
-            'og' => [
-                'og:site_name' => $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
-                'og:type' => 'website',
-                'og:title' => $title,
-                'og:url' => $request->getSchemeAndHttpHost(),
-            ],
+        $this->breadcrumb->addBreadcrumb([
+            'title' => $this->translator->trans('frontend.breadcrumb.articles', [], 'AppBundle'),
         ]);
+
+        $categories = $this->em->getRepository(Category::class)->findBy(['isActive' => true]);
+
+        $this->applySeo(
+            $request,
+            $this->translator->trans('frontend.meta.meta_title_articles', [], 'AppBundle'),
+            $this->translator->trans('frontend.meta.meta_description_articles', [], 'AppBundle'),
+        );
 
         return $this->render('@Article/list.html.twig', ['categories' => $categories]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     */
-     #[Cache(maxage: 60, public: true)]
-    public function listCategoryAction(Request $request, $category)
+    #[Cache(maxage: 60, public: true)]
+    public function listCategoryAction(Request $request, string $category): Response
     {
-        $repo = $this->getDoctrine()->getManager()->getRepository(Category::class);
+        $repo = $this->em->getRepository(Category::class);
         $categoryObject = $repo->findOneBy(['slug' => $category]);
 
         if (!$categoryObject) {
             throw $this->createNotFoundException(self::ARTICLE_404);
         }
 
-        $categories = $repo->findBy(['isActive' => true]);
+        $this->addArticlesBreadcrumb();
+        $this->breadcrumb->addBreadcrumb(['title' => $categoryObject->getName()]);
 
-        $router = $this->get('router');
-        $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb([
-            'title' => $this->get('translator')->trans('frontend.breadcrumb.articles', [], 'AppBundle'),
-            'href' => $router->generate('article_list'),
-        ]);
-        $breadcrumb->addBreadcrumb(['title' => $categoryObject->getName()]);
-
-        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
-        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
-
-        $title = $this->get('translator')->trans('frontend.meta.meta_title_article_category', ['%CATEGORY%' => $categoryObject->getName()], 'AppBundle') . $page;
-        $description = $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_article_category', ['%CATEGORY%' => $categoryObject->getName()], 'AppBundle');
-
-        $this->get('app.seo.updater')->doMagic(null, [
-            'title' => $title,
-            'description' => $description,
-            'og' => [
-                'og:site_name' => $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
-                'og:type' => 'website',
-                'og:title' => $title,
-                'og:url' => $request->getSchemeAndHttpHost(),
-            ],
-        ]);
+        $this->applySeo(
+            $request,
+            $this->translator->trans('frontend.meta.meta_title_article_category', ['%CATEGORY%' => $categoryObject->getName()], 'AppBundle'),
+            $this->translator->trans('frontend.meta.meta_description_article_category', ['%CATEGORY%' => $categoryObject->getName()], 'AppBundle'),
+        );
 
         return $this->render('@Article/list_category.html.twig', [
             'category' => $categoryObject,
-            'categories' => $categories
+            'categories' => $repo->findBy(['isActive' => true]),
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     */
-     #[Cache(maxage: 60, public: true)]
-    public function listTagAction(Request $request)
+    #[Cache(maxage: 60, public: true)]
+    public function listTagAction(Request $request): Response
     {
-        $repo = $this->getDoctrine()->getManager()->getRepository(Tag::class);
-        $tag = $repo->findOneBy(['slug' => $request->get('slug')]);
-
+        $tag = $this->em->getRepository(Tag::class)->findOneBy(['slug' => $request->get('slug')]);
         if (!$tag) {
             throw $this->createNotFoundException(self::ARTICLE_404);
         }
 
-        $repoCategory = $this->getDoctrine()->getManager()->getRepository(Category::class);
-        $categories = $repoCategory->findBy(['isActive' => true]);
+        $this->addArticlesBreadcrumb();
+        $this->breadcrumb->addBreadcrumb(['title' => $tag->getName()]);
 
-        $router = $this->get('router');
-        $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb([
-            'title' => $this->get('translator')->trans('frontend.breadcrumb.articles', [], 'AppBundle'),
-            'href' => $router->generate('article_list'),
-        ]);
-        $breadcrumb->addBreadcrumb(['title' => $tag->getName()]);
-
-        $page = $request->get('page') ? " | " . $this->get('translator')->trans('frontend.page', [], 'AppBundle') .$request->get('page', 1) : null;
-        $pageDesc = $request->get('page') ? $this->get('translator')->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . " |" : null;
-
-        $title = $this->get('translator')->trans('frontend.meta.meta_title_article_tag', ['%TAG%' => $tag->getName()], 'AppBundle') . $page;
-        $description = $pageDesc . $this->get('translator')->trans('frontend.meta.meta_description_article_tag', ['%TAG%' => $tag->getName()], 'AppBundle');
-
-        $this->get('app.seo.updater')->doMagic(null, [
-            'title' => $title,
-            'description' => $description,
-            'og' => [
-                'og:site_name' => $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
-                'og:type' => 'website',
-                'og:title' => $title,
-                'og:url' => $request->getSchemeAndHttpHost(),
-            ],
-        ]);
+        $this->applySeo(
+            $request,
+            $this->translator->trans('frontend.meta.meta_title_article_tag', ['%TAG%' => $tag->getName()], 'AppBundle'),
+            $this->translator->trans('frontend.meta.meta_description_article_tag', ['%TAG%' => $tag->getName()], 'AppBundle'),
+        );
 
         return $this->render('@Article/list_tag.html.twig', [
             'tag' => $tag,
-            'categories' => $categories
+            'categories' => $this->em->getRepository(Category::class)->findBy(['isActive' => true]),
         ]);
     }
 
-    public function viewAction(Request $request)
+    public function viewAction(Request $request): Response
     {
-        $repo = $this->getDoctrine()->getManager()->getRepository(Article::class);
-        $article = $repo->findOneBy(['id' => $request->get('id'),'isActive' => true]);
+        /** @var ArticleRepository $repo */
+        $repo = $this->em->getRepository(Article::class);
+        $article = $repo->findOneBy(['id' => $request->get('id'), 'isActive' => true]);
 
         if (!$article) {
             throw $this->createNotFoundException(self::ARTICLE_404);
         }
 
-        $router = $this->get('router');
-        $breadcrumb = $this->get('app.breadcrumb');
-        $breadcrumb->addBreadcrumb([
-            'title' => $this->get('translator')->trans('frontend.breadcrumb.articles', [], 'AppBundle'),
-            'href' => $router->generate('article_list'),
-        ]);
-
+        $this->addArticlesBreadcrumb();
         if ($article->getCategory()) {
-            $breadcrumb->addBreadcrumb([
+            $this->breadcrumb->addBreadcrumb([
                 'title' => $article->getCategory()->getName(),
-                'href' => $router->generate('article_category', ['category' => $article->getCategory()->getSlug()]),
+                'href' => $this->router->generate('article_category', ['category' => $article->getCategory()->getSlug()]),
             ]);
         }
+        $this->breadcrumb->addBreadcrumb(['title' => $article->getTitle()]);
 
-        $breadcrumb->addBreadcrumb(['title' => $article->getTitle()]);
+        $title = $article->getTitle() . ' - ' . $this->translator->trans('frontend.meta.meta_title_index', [], 'AppBundle');
 
-        $title = $article->getTitle().' - '. $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle');
-
-        $this->get('app.seo.updater')->doMagic(null, [
+        $this->seoUpdater->doMagic(null, [
             'title' => $title,
             'description' => $article->shortDescription(),
             'og' => [
-                'og:site_name' => $this->get('translator')->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
+                'og:site_name' => $this->translator->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
                 'og:type' => 'article',
                 'og:title' => $title,
                 'og:url' => $request->getSchemeAndHttpHost(),
-                'og:image' => $request->getSchemeAndHttpHost().$article->getImage()->getPath(),
+                'og:image' => $request->getSchemeAndHttpHost() . $article->getImage()->getPath(),
                 'og:description' => $article->shortDescription(),
             ],
         ]);
@@ -197,5 +135,44 @@ class ArticleController extends BaseController
         }
 
         return $this->render('@Article/view.html.twig', ['article' => $article]);
+    }
+
+    private function applySeo(Request $request, string $title, string $description): void
+    {
+        $title .= $this->pageSuffix($request);
+        $description = $this->pageDescriptionPrefix($request) . $description;
+
+        $this->seoUpdater->doMagic(null, [
+            'title' => $title,
+            'description' => $description,
+            'og' => [
+                'og:site_name' => $this->translator->trans('frontend.meta.meta_title_index', [], 'AppBundle'),
+                'og:type' => 'website',
+                'og:title' => $title,
+                'og:url' => $request->getSchemeAndHttpHost(),
+            ],
+        ]);
+    }
+
+    private function addArticlesBreadcrumb(): void
+    {
+        $this->breadcrumb->addBreadcrumb([
+            'title' => $this->translator->trans('frontend.breadcrumb.articles', [], 'AppBundle'),
+            'href' => $this->router->generate('article_list'),
+        ]);
+    }
+
+    private function pageSuffix(Request $request): string
+    {
+        return $request->get('page')
+            ? ' | ' . $this->translator->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1)
+            : '';
+    }
+
+    private function pageDescriptionPrefix(Request $request): string
+    {
+        return $request->get('page')
+            ? $this->translator->trans('frontend.page', [], 'AppBundle') . $request->get('page', 1) . ' |'
+            : '';
     }
 }

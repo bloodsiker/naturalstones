@@ -2,21 +2,16 @@
 
 namespace AdminBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-/**
- * Class BaseAdmin
- */
-class BaseAdmin extends Admin
+class BaseAdmin extends AbstractAdmin
 {
-    private $searchSynchronization;
-
+    private ?object $searchSynchronization = null;
     private bool $searchSphinxEnabled = false;
-
     private ?TokenStorageInterface $tokenStorage = null;
 
-    public function setSearchSynchronization($searchSynchronization = null): void
+    public function setSearchSynchronization(?object $searchSynchronization = null): void
     {
         $this->searchSynchronization = $searchSynchronization;
     }
@@ -29,6 +24,27 @@ class BaseAdmin extends Admin
     public function setTokenStorage(TokenStorageInterface $tokenStorage): void
     {
         $this->tokenStorage = $tokenStorage;
+    }
+
+    public function postPersist(object $object): void
+    {
+        if ($this->isSearchSynchronizationEnabled()) {
+            $this->searchSynchronization->insert($object);
+        }
+    }
+
+    public function postUpdate(object $object): void
+    {
+        if ($this->isSearchSynchronizationEnabled()) {
+            $this->searchSynchronization->update($object);
+        }
+    }
+
+    public function preRemove(object $object): void
+    {
+        if ($this->isSearchSynchronizationEnabled()) {
+            $this->searchSynchronization->delete($object);
+        }
     }
 
     protected function configureFormOptions(array &$formOptions): void
@@ -48,37 +64,7 @@ class BaseAdmin extends Admin
         return $actions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function postPersist(object $object): void
-    {
-        if ($this->isSearchSynchronizationEnabled()) {
-            $this->searchSynchronization->insert($object);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function postUpdate(object $object): void
-    {
-        if ($this->isSearchSynchronizationEnabled()) {
-            $this->searchSynchronization->update($object);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function preRemove(object $object): void
-    {
-        if ($this->isSearchSynchronizationEnabled()) {
-            $this->searchSynchronization->delete($object);
-        }
-    }
-
-    protected function getAdminUser()
+    protected function getAdminUser(): ?object
     {
         if (!$this->tokenStorage || !$this->tokenStorage->getToken()) {
             return null;

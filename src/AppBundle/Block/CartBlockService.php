@@ -3,132 +3,97 @@
 namespace AppBundle\Block;
 
 use AppBundle\Services\Cart;
-use Doctrine\ORM\EntityManager;
-use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-
-use Twig\Environment;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
-/**
- * Class CartBlockService
- */
 class CartBlockService extends AbstractEditableBlockService
 {
-    const TEMPLATE_CART = '@App/Block/cart/cart.html.twig';
-    const TEMPLATE_CART_QUANTITY = '@App/Block/cart/cart_quantity.html.twig';
-    const TEMPLATE_CART_PAGE = '@App/Block/cart/cart_page.html.twig';
-    const TEMPLATE_CART_STEP_1_PAGE = '@App/Block/cart/cart_step_1_page.html.twig';
+    public const TEMPLATE_CART = '@App/Block/cart/cart.html.twig';
+    public const TEMPLATE_CART_QUANTITY = '@App/Block/cart/cart_quantity.html.twig';
+    public const TEMPLATE_CART_PAGE = '@App/Block/cart/cart_page.html.twig';
+    public const TEMPLATE_CART_STEP_1_PAGE = '@App/Block/cart/cart_step_1_page.html.twig';
 
-    const TEMPLATE_BUTTON_HEAD = '@App/Block/cart/button_header.html.twig';
-    const TEMPLATE_BUTTON_IN_PRODUCT  = '@App/Block/cart/product_button.html.twig';
-    const TEMPLATE_BUTTON_CLEAR  = '@App/Block/cart/cart_clear_button.html.twig';
+    public const TEMPLATE_BUTTON_HEAD = '@App/Block/cart/button_header.html.twig';
+    public const TEMPLATE_BUTTON_IN_PRODUCT = '@App/Block/cart/product_button.html.twig';
+    public const TEMPLATE_BUTTON_CLEAR = '@App/Block/cart/cart_clear_button.html.twig';
 
-    const ACTION_ADD = 'add.cart';
-    const ACTION_REMOVE = 'remove.cart';
-    const ACTION_CLEAR = 'clear.cart';
-    const ACTION_SHOW = 'show.cart';
-    const ACTION_CART_RECALCULATE = 'recalculate.cart';
+    public const ACTION_ADD = 'add.cart';
+    public const ACTION_REMOVE = 'remove.cart';
+    public const ACTION_CLEAR = 'clear.cart';
+    public const ACTION_SHOW = 'show.cart';
+    public const ACTION_CART_RECALCULATE = 'recalculate.cart';
 
-    /**
-     * @var RequestStack
-     */
-    private $request;
-
-    /**
-     * @var Cart
-     */
-    private $cart;
-
-    /**
-     * CartBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param Cart            $cart
-     * @param RequestStack    $request
-     */
-    public function __construct(Environment $twig, Cart $cart, RequestStack $request)
-    {
+    public function __construct(
+        Environment $twig,
+        private readonly Cart $cart,
+        private readonly RequestStack $request,
+    ) {
         parent::__construct($twig);
-
-        $this->cart = $cart;
-        $this->request  = $request;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
-            'product'     => null,
-            'action'      => null,
-            'class'       => null,
-            'template'    => self::TEMPLATE_CART,
+            'product' => null,
+            'action' => null,
+            'class' => null,
+            'template' => self::TEMPLATE_CART,
         ]);
     }
 
     /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null $response
-     *
-     * @return Response
-     *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         if (!$blockContext->getBlock()->getEnabled()) {
             return new Response();
         }
 
         $request = $this->request->getCurrentRequest();
-
         $type = Cart::TYPE_PRODUCT;
         $action = $request->get('action');
         $item = $request->get('item_id');
-        $count = $request->get('quantity') ?: 1;
-        $colour = $request->get('colour_id');
-        $option = $request->get('option');
-        $optionValue = $request->get('option_value');
-        $letter = $request->get('letter');
+        $count = (int) ($request->get('quantity') ?: 1);
+        $colour = $request->get('colour_id') ? (int) $request->get('colour_id') : null;
         $template = $request->get('template');
 
-        if ($blockContext->getSetting('action') === self::ACTION_SHOW) {
-            $products = $this->getProductInfoFromCart();
+        $options = [
+            'option' => $request->get('option'),
+            'value' => $request->get('option_value'),
+        ];
+
+        if (self::ACTION_SHOW === $blockContext->getSetting('action')) {
+            $products = $this->cart->getProductsInfo();
         }
 
         if ($template) {
             $blockContext->setSetting('template', $template);
         }
 
-        $options = [
-            'option' => $option,
-            'value' => $optionValue,
-        ];
-
         if ($request->isXmlHttpRequest() && $action) {
-
             switch ($action) {
                 case self::ACTION_ADD:
                     $countItems = $this->addToCart($type, $item, $count, $colour, $options);
+
                     return new JsonResponse(['code' => 200, 'count' => $countItems, 'total' => $this->cart->getTotalPrice()]);
-                    break;
                 case self::ACTION_REMOVE:
-                    $this->removeProductFromCart($type, $item);
-                    $products = $this->getProductInfoFromCart();
+                    $this->cart->deleteProduct($type, $item);
+                    $products = $this->cart->getProductsInfo();
                     break;
                 case self::ACTION_CLEAR:
-                    $this->clearCart();
+                    $this->cart->clear();
                     break;
                 case self::ACTION_SHOW:
-                    $products = $this->getProductInfoFromCart();
+                    $products = $this->cart->getProductsInfo();
                     break;
                 case self::ACTION_CART_RECALCULATE:
                     $this->recalculateCart($type, $item, $count);
-                    $products = $this->getProductInfoFromCart();
+                    $products = $this->cart->getProductsInfo();
                     break;
                 default:
                     throw new \Exception('Undefined action');
@@ -136,96 +101,39 @@ class CartBlockService extends AbstractEditableBlockService
         }
 
         return $this->renderResponse($blockContext->getTemplate(), [
-            'countItems'    => $this->cart->countItems(),
-            'cart'          => $this->cart,
-            'products'      => $products ?? [],
-            'count'         => $count,
-            'item'          => $item,
-            'settings'      => $blockContext->getSettings(),
-            'block'         => $blockContext->getBlock(),
+            'countItems' => $this->cart->countItems(),
+            'cart' => $this->cart,
+            'products' => $products ?? [],
+            'count' => $count,
+            'item' => $item,
+            'settings' => $blockContext->getSettings(),
+            'block' => $blockContext->getBlock(),
         ]);
     }
 
     /**
-     * Add product to cart
-     *
-     * @param  string  $type
-     * @param  string $id
-     * @param  int    $count
-     * @param  int|null  $colour
-     * @param  array  $options
-     *
-     * @return mixed
+     * @param array{option: string|null, value: string|int|null} $options
      *
      * @throws \Exception
      */
-    private function addToCart(string $type, string $id, int $count, $colour = null, $options = [])
+    private function addToCart(string $type, string $id, int $count, ?int $colour = null, array $options = []): int
     {
-        switch ($type) {
-            case Cart::TYPE_PRODUCT:
-                $countItem = $this->cart->addProductToCart(Cart::TYPE_PRODUCT, $id, $count, $colour, $options);
-                break;
-            default:
-                throw new \Exception('Undefined type product');
+        if (Cart::TYPE_PRODUCT !== $type) {
+            throw new \Exception('Undefined type product');
         }
 
-        return $countItem;
+        return $this->cart->addProductToCart(Cart::TYPE_PRODUCT, $id, $count, $colour, $options);
     }
 
     /**
-     * @param string $type
-     * @param string $key
-     * @param int    $count
-     *
-     * @return bool
-     *
      * @throws \Exception
      */
-    private function recalculateCart($type, string $key, int $count)
+    private function recalculateCart(string $type, string $key, int $count): bool
     {
-        switch ($type) {
-            case Cart::TYPE_PRODUCT:
-                $countItem = $this->cart->recalculateCart(Cart::TYPE_PRODUCT, $key, $count);
-                break;
-            default:
-                throw new \Exception('Undefined type product');
+        if (Cart::TYPE_PRODUCT !== $type) {
+            throw new \Exception('Undefined type product');
         }
 
-        return $countItem;
-    }
-
-    /**
-     * @return array
-     */
-    private function getProductInfoFromCart()
-    {
-        return $this->cart->getProductsInfo();
-    }
-
-    /**
-     * Remove product from cart
-     *
-     * @param string $type
-     * @param string $id
-     *
-     * @return bool
-     */
-    private function removeProductFromCart($type, string $key)
-    {
-        $this->cart->deleteProduct($type, $key);
-
-        return true;
-    }
-
-    /**
-     * Clear cart
-     *
-     * @return bool
-     */
-    private function clearCart()
-    {
-        $this->cart->clear();
-
-        return true;
+        return $this->cart->recalculateCart(Cart::TYPE_PRODUCT, $key, $count);
     }
 }

@@ -3,13 +3,15 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use UserBundle\Entity\User;
 
+/**
+ * @extends EntityRepository<UserDeliveryAddress>
+ */
 class UserDeliveryAddressRepository extends EntityRepository
 {
     public function clearDefaultForUser(User $user): int
     {
-        return $this->createQueryBuilder('a')
+        return (int) $this->createQueryBuilder('a')
             ->update()
             ->set('a.isDefault', ':default')
             ->where('a.user = :user')

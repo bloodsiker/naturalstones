@@ -2,57 +2,45 @@
 
 namespace ShareBundle\Controller;
 
+use AppBundle\Controller\BaseController;
 use AppBundle\Services\BreadcrumbService;
 use AppBundle\Services\SeoUpdater;
+use Doctrine\ORM\EntityManagerInterface;
 use ShareBundle\Entity\Zodiac;
-use AppBundle\Controller\BaseController;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 
-/**
- * Class ZodiacController
- */
 class ZodiacController extends BaseController
 {
-    const ZODIAC_404 = 'Zodiac doesn\'t exist';
+    public const ZODIAC_404 = 'Zodiac doesn\'t exist';
 
-    /**
-     * @var BreadcrumbService
-     */
-    private $breadcrumb;
-
-    /**
-     * @var SeoUpdater
-     */
-    private $seoUpdater;
-
-    public function __construct(BreadcrumbService $breadcrumb, SeoUpdater $seoUpdater)
-    {
-        $this->breadcrumb = $breadcrumb;
-        $this->seoUpdater = $seoUpdater;
+    public function __construct(
+        private readonly BreadcrumbService $breadcrumb,
+        private readonly SeoUpdater $seoUpdater,
+        private readonly EntityManagerInterface $em,
+    ) {
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     */
-     #[Cache(maxage: 60, public: true)]
-    public function listAction(Request $request)
+    #[Cache(maxage: 60, public: true)]
+    public function listAction(Request $request): Response
     {
-        $slug = $request->get('slug');
-        $repo = $this->getDoctrine()->getManager()->getRepository(Zodiac::class);
-        $zodiac = $repo->findOneBy(['slug' => $slug, 'isActive' => true]);
+        $zodiac = $this->em->getRepository(Zodiac::class)->findOneBy([
+            'slug' => $request->get('slug'),
+            'isActive' => true,
+        ]);
+
         if (!$zodiac) {
             throw $this->createNotFoundException(self::ZODIAC_404);
         }
 
         $this->breadcrumb->addBreadcrumb(['title' => 'Камни для знака зодиака ' . $zodiac->getName()]);
 
-        $title = 'Изделия для знака зодиака - ' . $zodiac->getName().' | Изделия | Страница '.$request->get('page', 1).' | Naturalstones Jewerly - Изделия из натуральных камней';
+        $title = sprintf(
+            'Изделия для знака зодиака - %s | Изделия | Страница %s | Naturalstones Jewerly - Изделия из натуральных камней',
+            $zodiac->getName(),
+            $request->get('page', 1),
+        );
 
         $this->seoUpdater->doMagic(null, [
             'title' => $title,

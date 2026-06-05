@@ -5,13 +5,9 @@ namespace ArticleBundle\Admin;
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AdminBundle\Admin\BaseAdmin as Admin;
 use AppBundle\Traits\FixAdminFormTranslationDomainTrait;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelListType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -22,16 +18,14 @@ class CategoryAdmin extends Admin
     use FixAdminFormTranslationDomainTrait;
 
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'id',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
         '_sort_order' => 'ASC',
     ];
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'category.fields.id',
@@ -44,7 +38,7 @@ class CategoryAdmin extends Admin
             ])
             ->add('isActive', null, [
                 'label' => 'category.fields.is_active',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('_action', 'actions', [
                 'actions' => [
@@ -53,10 +47,8 @@ class CategoryAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('translations.name', null, [
                 'label' => 'category.fields.name',
@@ -69,10 +61,8 @@ class CategoryAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('translations', TranslationsType::class, [

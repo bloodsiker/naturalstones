@@ -1,88 +1,57 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pretorian42
- * Date: 07.10.16
- * Time: 16:12
- */
 
 namespace AppBundle\Traits;
-
 
 use Doctrine\ORM\NoResultException;
 
 /**
- * Trait OrderNumLogicTrait
+ * Provides ordering helpers for repositories whose entity has an `orderNum` property.
+ *
+ * Hosting class is expected to extend Doctrine\ORM\EntityRepository.
  */
 trait OrderNumLogicTrait
 {
-    private $reorderQuery = 'set @i:= -99;
-        UPDATE %s 
+    private string $reorderQuery = 'set @i:= -99;
+        UPDATE %s
         SET order_num = ( @i := @i + 100 )
         order by order_num';
 
-    /**
-     * @param $property
-     * @param string $order
-     * @return mixed
-     */
-    public function getHighestPropertyByOrder($property, $order = 'DESC')
+    public function getHighestPropertyByOrder(string $property, string $order = 'DESC'): int|float|string
     {
-        $qb = $this->createQueryBuilder('object');
-        $qb
+        $qb = $this->createQueryBuilder('object')
             ->select('object.' . $property)
             ->orderBy('object.' . $property, $order)
             ->setMaxResults(1);
+
         try {
             return $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException $e){
+        } catch (NoResultException) {
             return 0;
         }
     }
 
-    /**
-     * @param $property
-     * @param string $order
-     * @return mixed
-     */
-    public function getHighestPropertyByPosition($property, $except, $order = 'DESC')
+    public function getHighestPropertyByPosition(string $property, object $except, string $order = 'DESC'): ?object
     {
-        $qb = $this->createQueryBuilder('object');
-        $qb
+        $comparison = 'DESC' !== $order ? '>=' : '<=';
+
+        return $this->createQueryBuilder('object')
             ->select('object')
-            ->andWhere(
-                'object.' . $property . ' '
-                . ($order != 'DESC' ? '>=' : '<=')
-                . ' :property'
-            )->setParameter('property', $except->getOrderNum())
-            ->andWhere('object.id != :except')->setParameter('except', $except)
+            ->andWhere(sprintf('object.%s %s :property', $property, $comparison))
+            ->setParameter('property', $except->getOrderNum())
+            ->andWhere('object.id != :except')
+            ->setParameter('except', $except)
             ->orderBy('object.' . $property, $order)
-            ->setMaxResults(1);;
-
-        return $qb->getQuery()->getOneOrNullResult();
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDuplicationList()
-    {
-        $qb = $this->createQueryBuilder('object');
-        $qb
-            ->select('object')
-            ->andHaving('count(object.orderNum) > 1')
-            ->groupBy('object.orderNum')
-            ;
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     *
-     */
-    public function reCountOrderNum()
+    public function reCountOrderNum(): void
     {
         $em = $this->getEntityManager();
-        $stmt = $em->getConnection()->prepare(sprintf($this->reorderQuery, $this->getClassMetadata()->getTableName()));
+        $stmt = $em->getConnection()->prepare(
+            sprintf($this->reorderQuery, $this->getClassMetadata()->getTableName())
+        );
         $stmt->execute();
     }
 }

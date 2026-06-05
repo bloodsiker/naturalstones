@@ -21,24 +21,22 @@ class TextAdmin extends Admin
     use FixAdminFormTranslationDomainTrait;
 
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'id',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
         '_sort_order' => 'DESC',
     ];
 
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
 
         $collection->add('preview', 'preview');
     }
 
-    /**
-     * @return array
-     */
     protected function configurePersistentParameters(): array
     {
         if (!$this->hasRequest()) {
@@ -55,7 +53,7 @@ class TextAdmin extends Admin
     /**
      * @param string $name
      *
-     * @return null|string|void
+     * @return string|void|null
      */
     public function getTemplate($name)
     {
@@ -67,10 +65,8 @@ class TextAdmin extends Admin
         return $this->getTemplateRegistry()->getTemplate($name);
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'text.fields.id',
@@ -80,7 +76,7 @@ class TextAdmin extends Admin
             ])
             ->add('isActive', null, [
                 'label' => 'text.fields.is_active',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('_action', 'actions', [
                 'template' => isset($this->getPersistentParameters()['CKEditor']) ? '@Admin/Ckeditor/select.html.twig' : null,
@@ -90,10 +86,8 @@ class TextAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('translations.name', null, [
                 'label' => 'text.fields.name',
@@ -103,10 +97,8 @@ class TextAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('translations', TranslationsType::class, [

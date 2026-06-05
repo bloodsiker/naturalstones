@@ -21,41 +21,40 @@ class ZodiacAdmin extends Admin
     use FixAdminFormTranslationDomainTrait;
 
     protected $datagridValues = [
-        '_page'       => 1,
-        '_per_page'   => 25,
-        '_sort_by'    => 'id',
+        '_page' => 1,
+        '_per_page' => 25,
+        '_sort_by' => 'id',
         '_sort_order' => 'DESC',
     ];
 
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollectionInterface $collection): void    {
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
         $collection->remove('acl');
     }
 
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper): void    {
+    protected function configureListFields(ListMapper $listMapper): void
+    {
         $listMapper
             ->add('id', null, [
                 'label' => 'zodiac.fields.id',
             ])
             ->add('image', null, [
-                'label'     => 'stone.fields.image',
-                'template'  => '@Share/Admin/list_fields.html.twig',
+                'label' => 'stone.fields.image',
+                'template' => '@Share/Admin/list_fields.html.twig',
             ])
             ->addIdentifier('name', null, [
                 'label' => 'zodiac.fields.name',
             ])
             ->add('isActive', null, [
                 'label' => 'zodiac.fields.is_active',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('isShowMain', null, [
                 'label' => 'zodiac.fields.is_show_main',
-                'editable'  => true,
+                'editable' => true,
             ])
             ->add('slug', null, [
                 'label' => 'zodiac.fields.slug',
@@ -71,10 +70,8 @@ class ZodiacAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void    {
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    {
         $datagridMapper
             ->add('translations.name', null, [
                 'label' => 'zodiac.fields.name',
@@ -91,10 +88,8 @@ class ZodiacAdmin extends Admin
             ]);
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    protected function configureFormFields(FormMapper $formMapper): void    {
+    protected function configureFormFields(FormMapper $formMapper): void
+    {
         $formMapper
             ->with('form_group.basic', ['class' => 'col-md-8', 'name' => false])
                 ->add('translations', TranslationsType::class, [
@@ -128,7 +123,7 @@ class ZodiacAdmin extends Admin
                     'required' => true,
                 ])
                 ->add('createdAt', DateTimePickerType::class, [
-                    'label'     => 'zodiac.fields.created_at',
+                    'label' => 'zodiac.fields.created_at',
                     'required' => true,
                     'format' => 'yyyy-MM-dd HH:mm',
                     'attr' => ['readonly' => true],

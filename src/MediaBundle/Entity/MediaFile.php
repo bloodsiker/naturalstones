@@ -26,11 +26,9 @@ class MediaFile extends AbstractMedia
     /**
      * Sets file
      *
-     * @param File|null $file
-     *
      * @throws \Exception
      */
-    public function setFile(File $file = null)
+    public function setFile(?File $file = null)
     {
         $this->file = $file;
         if (null !== $file) {

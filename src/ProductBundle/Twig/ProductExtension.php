@@ -8,73 +8,47 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-/**
- * Class ProductExtension
- */
 class ProductExtension extends AbstractExtension
 {
-    private ProductRouterHelper $productRouterHelper;
-
-    /**
-     * ArticleExtension constructor.
-     *
-     * @param ProductRouterHelper $productRouterHelper
-     */
-    public function __construct(ProductRouterHelper $productRouterHelper)
-    {
-        $this->productRouterHelper = $productRouterHelper;
+    public function __construct(
+        private readonly ProductRouterHelper $productRouterHelper,
+    ) {
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'product_extension';
     }
 
     /**
-     * @return array
+     * @return list<TwigFunction>
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new TwigFunction('product_path', [$this, 'getProductPath']),
+            new TwigFunction('product_path', $this->getProductPath(...)),
         ];
     }
 
     /**
-     * @return array
+     * @return list<TwigFilter>
      */
-    public function getFilters()
+    public function getFilters(): array
     {
-        return array(
-            new TwigFilter('video_url', [$this, 'getVideoUrl']),
-        );
+        return [
+            new TwigFilter('video_url', $this->getVideoUrl(...)),
+        ];
     }
 
-    /**
-     * @param  Product  $product
-     * @param  false  $needAbsolute
-     *
-     * @return string
-     */
-    public function getProductPath(Product $product, $needAbsolute = false)
+    public function getProductPath(Product $product, bool $needAbsolute = false): ?string
     {
         return $this->productRouterHelper->getProductPath($product, $needAbsolute);
     }
 
-    /**
-     * @param $path
-     *
-     * @return string
-     */
-    public function getVideoUrl($path)
+    public function getVideoUrl(string $path): string
     {
-        $queryString = parse_url($path, PHP_URL_QUERY);
-        parse_str($queryString, $queryParams);
-        $videoId = $queryParams['v'];
+        parse_str((string) parse_url($path, PHP_URL_QUERY), $queryParams);
 
-        return sprintf('https://www.youtube.com/embed/%s?feature=oembed', $videoId);
+        return sprintf('https://www.youtube.com/embed/%s?feature=oembed', $queryParams['v'] ?? '');
     }
 }

@@ -70,8 +70,8 @@ class SiteVariable
      */
     public function __construct()
     {
-        $this->isActive     = true;
-        $this->createdAt    = $this->modifiedAt = new \DateTime('now');
+        $this->isActive = true;
+        $this->createdAt = $this->modifiedAt = new \DateTime('now');
     }
 
     /**
@@ -95,7 +95,7 @@ class SiteVariable
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -105,7 +105,7 @@ class SiteVariable
     /**
      * Set isActive
      *
-     * @param boolean $isActive
+     * @param bool $isActive
      *
      * @return SiteVariable
      */
@@ -119,7 +119,7 @@ class SiteVariable
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {

@@ -15,7 +15,7 @@ class Group
      * @ORM\Column(type="integer", options={"unsigned"=true})
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected int $id;
+    protected ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -27,7 +27,7 @@ class Group
      */
     protected array $roles = [];
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -40,6 +40,7 @@ class Group
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 

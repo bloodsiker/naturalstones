@@ -23,7 +23,7 @@ class ProductHasOption
     protected $id;
 
     /**
-     * @var \ProductBundle\Entity\Product
+     * @var Product
      *
      * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasOption")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
@@ -81,7 +81,7 @@ class ProductHasOption
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -115,11 +115,9 @@ class ProductHasOption
     /**
      * Set product.
      *
-     * @param \ProductBundle\Entity\Product $product
-     *
      * @return $this
      */
-    public function setProduct(\ProductBundle\Entity\Product $product)
+    public function setProduct(Product $product)
     {
         $this->product = $product;
 
@@ -129,7 +127,7 @@ class ProductHasOption
     /**
      * Get product.
      *
-     * @return \ProductBundle\Entity\Product
+     * @return Product
      */
     public function getProduct()
     {
@@ -139,11 +137,9 @@ class ProductHasOption
     /**
      * Set image.
      *
-     * @param \MediaBundle\Entity\MediaImage $image
-     *
      * @return $this
      */
-    public function setImage(\MediaBundle\Entity\MediaImage $image = null)
+    public function setImage(?\MediaBundle\Entity\MediaImage $image = null)
     {
         $this->image = $image;
 
@@ -162,8 +158,6 @@ class ProductHasOption
 
     /**
      * Set value
-     *
-     * @param string $value
      *
      * @return $this
      */
@@ -196,8 +190,6 @@ class ProductHasOption
 
     /**
      * Set price
-     *
-     * @param  float  $price
      *
      * @return $this
      */

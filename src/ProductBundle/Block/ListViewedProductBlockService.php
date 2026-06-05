@@ -2,134 +2,125 @@
 
 namespace ProductBundle\Block;
 
+use AppBundle\Block\AbstractEditableBlockService;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use ProductBundle\Entity\Product;
-use AppBundle\Block\AbstractEditableBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Twig\Environment;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
-/**
- * Class ListViewedProductBlockService
- */
 class ListViewedProductBlockService extends AbstractEditableBlockService
 {
-    const TEMPLATE_DEFAULT = '@Product/Block/viewed_list.html.twig';
-    const TEMPLATE_AJAX  = '@Product/Block/viewed_list_ajax.html.twig';
+    public const TEMPLATE_DEFAULT = '@Product/Block/viewed_list.html.twig';
+    public const TEMPLATE_AJAX = '@Product/Block/viewed_list_ajax.html.twig';
 
-    /**
-     * @var Registry $doctrine
-     */
-    protected $doctrine;
+    private const DEFAULT_LOCALE = 'uk';
 
-    /**
-     * @var RequestStack $requestStack
-     */
-    protected $requestStack;
-
-    /**
-     * ListGenreBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param Registry        $doctrine
-     * @param RequestStack    $requestStack
-     */
-    public function __construct(Environment $twig, Registry $doctrine, RequestStack $requestStack)
-    {
+    public function __construct(
+        Environment $twig,
+        protected readonly Registry $doctrine,
+        protected readonly RequestStack $requestStack,
+    ) {
         parent::__construct($twig);
-
-        $this->doctrine = $doctrine;
-        $this->requestStack = $requestStack;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
-            'items_count'      => 6,
-            'class'            => 'section',
-            'template'         => self::TEMPLATE_DEFAULT,
+            'items_count' => 6,
+            'class' => 'section',
+            'template' => self::TEMPLATE_DEFAULT,
         ]);
     }
 
     /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     *
      * @throws \Exception
      */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         $block = $blockContext->getBlock();
-
         if (!$block->getEnabled()) {
             return new Response();
         }
 
         $request = $this->requestStack->getCurrentRequest();
         $limit = (int) $blockContext->getSetting('items_count');
+        $result = [];
 
         if ($request->isXmlHttpRequest()) {
             $ids = array_slice((array) $request->get('ids', []), 0, $limit);
-
-            if (!empty($ids)) {
-                $repository = $this->doctrine->getRepository(Product::class);
-                $qb = $repository->baseProductQueryBuilder();
-
-                $qb->where('p.id IN (:ids)')
-                    ->setParameter('ids', $ids)
-                    ->resetDQLPart('orderBy');
-
-                $allProducts = $qb->getQuery()->getResult();
-
-                $seen = [];
-                $deduped = [];
-                foreach ($allProducts as $product) {
-                    $groupKey = $product->getProductGroup() ?? ('id_' . $product->getId());
-                    if (!isset($seen[$groupKey])) {
-                        $seen[$groupKey] = true;
-                        $deduped[] = $product;
-                    }
-                }
-
-                $locale = $this->normalizeLocale($request->getLocale());
-                foreach ($deduped as $product) {
-                    $product->setCurrentLocale($locale);
-
-                    if ($product->getCategory()) {
-                        $product->getCategory()->setCurrentLocale($locale);
-                    }
-                }
-
-                usort($deduped, function($a, $b) use ($ids) {
-                    $sort = array_flip($ids);
-
-                    return $sort[$a->getId()] <=> $sort[$b->getId()];
-                });
-
-                $result = array_slice($deduped, 0, $limit);
+            if ($ids) {
+                $result = $this->loadProducts($ids, $request->getLocale(), $limit);
             }
         }
 
-        return $this->renderResponse($request->isXmlHttpRequest() ? self::TEMPLATE_AJAX : $blockContext->getTemplate(), [
-            'products'  => $result ?? [],
-            'block'     => $block,
-            'settings'  => array_merge($blockContext->getSettings(), $block->getSettings()),
-        ], $response);
+        return $this->renderResponse(
+            $request->isXmlHttpRequest() ? self::TEMPLATE_AJAX : $blockContext->getTemplate(),
+            [
+                'products' => $result,
+                'block' => $block,
+                'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
+            ],
+            $response
+        );
     }
 
     /**
-     * @param string|null $locale
+     * @param list<int|string> $ids
      *
-     * @return string
+     * @return list<Product>
      */
-    private function normalizeLocale($locale)
+    private function loadProducts(array $ids, ?string $locale, int $limit): array
     {
-        return $locale === 'ua' ? 'uk' : ($locale ?: 'uk');
+        $repository = $this->doctrine->getRepository(Product::class);
+        $allProducts = $repository->baseProductQueryBuilder()
+            ->where('p.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->resetDQLPart('orderBy')
+            ->getQuery()
+            ->getResult();
+
+        $deduped = $this->dedupeByGroup($allProducts);
+        $locale = $this->normalizeLocale($locale);
+
+        foreach ($deduped as $product) {
+            $product->setCurrentLocale($locale);
+            if ($product->getCategory()) {
+                $product->getCategory()->setCurrentLocale($locale);
+            }
+        }
+
+        $orderMap = array_flip($ids);
+        usort($deduped, fn (Product $a, Product $b) => ($orderMap[$a->getId()] ?? PHP_INT_MAX) <=> ($orderMap[$b->getId()] ?? PHP_INT_MAX));
+
+        return array_slice($deduped, 0, $limit);
+    }
+
+    /**
+     * @param list<Product> $products
+     *
+     * @return list<Product>
+     */
+    private function dedupeByGroup(array $products): array
+    {
+        $seen = [];
+        $deduped = [];
+
+        foreach ($products as $product) {
+            $groupKey = $product->getProductGroup() ?? ('id_' . $product->getId());
+            if (!isset($seen[$groupKey])) {
+                $seen[$groupKey] = true;
+                $deduped[] = $product;
+            }
+        }
+
+        return $deduped;
+    }
+
+    private function normalizeLocale(?string $locale): string
+    {
+        return 'ua' === $locale ? 'uk' : ($locale ?: self::DEFAULT_LOCALE);
     }
 }

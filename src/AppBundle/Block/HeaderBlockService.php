@@ -2,62 +2,38 @@
 
 namespace AppBundle\Block;
 
-use Doctrine\ORM\EntityManager;
-use AppBundle\Block\AbstractEditableBlockService;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
-/**
- * Class HeaderBlockService
- */
 class HeaderBlockService extends AbstractEditableBlockService
 {
-    /**
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
-     * HeaderBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param EntityManager   $em
-     */
-    public function __construct(Environment $twig, EntityManager $em)
-    {
+    public function __construct(
+        Environment $twig,
+        protected readonly EntityManagerInterface $em,
+    ) {
         parent::__construct($twig);
-
-        $this->em = $em;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureSettings(OptionsResolver $resolver): void    {
+    public function configureSettings(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
-            'template'  => '@App/Block/header.html.twig',
-            'class'     => null,
+            'template' => '@App/Block/header.html.twig',
+            'class' => null,
         ]);
     }
 
-    /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null         $response
-     *
-     * @return Response
-     */
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response    {
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
+    {
         if (!$blockContext->getBlock()->getEnabled()) {
             return new Response();
         }
 
         return $this->renderResponse($blockContext->getTemplate(), [
-            'settings'      => $blockContext->getSettings(),
-            'block'         => $blockContext->getBlock(),
+            'settings' => $blockContext->getSettings(),
+            'block' => $blockContext->getBlock(),
         ]);
     }
 }

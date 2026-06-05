@@ -23,7 +23,7 @@ class StoneHasConstructor
     protected $id;
 
     /**
-     * @var \ShareBundle\Entity\Stone
+     * @var Stone
      *
      * @ORM\ManyToOne(targetEntity="ShareBundle\Entity\Stone", inversedBy="stoneHasConstructor")
      * @ORM\JoinColumn(name="stone_id", referencedColumnName="id", nullable=false)
@@ -73,7 +73,7 @@ class StoneHasConstructor
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -107,11 +107,9 @@ class StoneHasConstructor
     /**
      * Set stone.
      *
-     * @param \ShareBundle\Entity\Stone $stone
-     *
      * @return $this
      */
-    public function setStone(\ShareBundle\Entity\Stone $stone)
+    public function setStone(Stone $stone)
     {
         $this->stone = $stone;
 
@@ -121,7 +119,7 @@ class StoneHasConstructor
     /**
      * Get stone.
      *
-     * @return \ShareBundle\Entity\Stone
+     * @return Stone
      */
     public function getStone()
     {
@@ -131,11 +129,9 @@ class StoneHasConstructor
     /**
      * Set image.
      *
-     * @param \MediaBundle\Entity\MediaImage $image
-     *
      * @return $this
      */
-    public function setImage(\MediaBundle\Entity\MediaImage $image = null)
+    public function setImage(?\MediaBundle\Entity\MediaImage $image = null)
     {
         $this->image = $image;
 
@@ -154,8 +150,6 @@ class StoneHasConstructor
 
     /**
      * Set size
-     *
-     * @param string $size
      *
      * @return $this
      */

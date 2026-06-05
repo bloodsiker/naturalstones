@@ -9,11 +9,10 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class WheelSpinOption
- *
- * @ORM\Entity
- * @ORM\Table(name="wheel_spin_option")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'wheel_spin_option')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class WheelSpinOption implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
@@ -21,34 +20,30 @@ class WheelSpinOption implements TranslatableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var \ProductBundle\Entity\Product
-     *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", fetch="EAGER")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=true)
      */
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Product::class, fetch: 'EAGER')]
     protected $product;
 
     /**
      * @var \MediaBundle\Entity\MediaImage
-     *
-     * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaImage", fetch="EAGER")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true)
      */
+    #[ORM\JoinColumn(name: 'image_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: \MediaBundle\Entity\MediaImage::class, fetch: 'EAGER')]
     protected $image;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**

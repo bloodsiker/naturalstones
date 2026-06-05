@@ -8,78 +8,68 @@ use UserBundle\Entity\User;
 
 /**
  * Class Comment
- *
- * @ORM\Entity()
- * @ORM\Table(name="product_comments")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_comments')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class Comment
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="text", nullable=false)
      */
+    #[ORM\Column(type: 'text', nullable: false)]
     protected $comment;
 
     /**
      * @var Product
-     *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Product::class)]
     protected $product;
 
     /**
      * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: \UserBundle\Entity\User::class)]
     protected $user;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $userName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $userEmail;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="smallint", length=1, nullable=false)
      */
+    #[ORM\Column(type: 'smallint', length: 1, nullable: false)]
     protected $rating;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=false)
      */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected $createdAt;
 
     /**

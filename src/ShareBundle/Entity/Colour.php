@@ -12,12 +12,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Colour
- *
- * @ORM\Entity()
- * @ORM\Table(name="share_colours")
- * @ORM\HasLifecycleCallbacks
  */
 #[UniqueEntity('slug')]
+#[ORM\Table(name: 'share_colours')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class Colour implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
@@ -25,39 +24,34 @@ class Colour implements TranslatableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     protected $colour;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false, unique: true)]
     protected $slug;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="ProductBundle\Entity\Product", mappedBy="colours")
      */
+    #[ORM\ManyToMany(targetEntity: \ProductBundle\Entity\Product::class, mappedBy: 'colours')]
     protected $products;
 
     /**
@@ -80,9 +74,7 @@ class Colour implements TranslatableInterface
         return (string) $this->translate()->getName();
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (is_null($this->slug)) {

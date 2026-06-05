@@ -9,11 +9,10 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class Information
- *
- * @ORM\Entity()
- * @ORM\Table(name="informations")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'informations')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class Information implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
@@ -21,39 +20,34 @@ class Information implements TranslatableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $startedAt;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $finishedAt;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=false)
      */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected $createdAt;
 
     /**

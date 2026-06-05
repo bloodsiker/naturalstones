@@ -7,19 +7,17 @@ use Sonata\PageBundle\Entity\BaseSnapshot;
 
 /**
  * Class Snapshot
- *
- * @ORM\Entity
- * @ORM\Table(name="page_snapshot")
  */
+#[ORM\Table(name: 'page_snapshot')]
+#[ORM\Entity]
 class Snapshot extends BaseSnapshot
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**

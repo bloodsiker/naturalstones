@@ -12,12 +12,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Tag
- *
- * @ORM\Entity(repositoryClass="ShareBundle\Entity\TagRepository")
- * @ORM\Table(name="share_tags")
- * @ORM\HasLifecycleCallbacks
  */
 #[UniqueEntity('slug')]
+#[ORM\Table(name: 'share_tags')]
+#[ORM\Entity(repositoryClass: \ShareBundle\Entity\TagRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Tag implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
@@ -25,39 +24,34 @@ class Tag implements TranslatableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false, unique: true)]
     protected $slug;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="ProductBundle\Entity\Product", mappedBy="tags")
      */
+    #[ORM\ManyToMany(targetEntity: \ProductBundle\Entity\Product::class, mappedBy: 'tags')]
     protected $products;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="ArticleBundle\Entity\Article", mappedBy="tags")
      */
+    #[ORM\ManyToMany(targetEntity: \ArticleBundle\Entity\Article::class, mappedBy: 'tags')]
     protected $articles;
 
     /**
@@ -80,9 +74,7 @@ class Tag implements TranslatableInterface
         return (string) $this->translate()->getName();
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (is_null($this->slug)) {

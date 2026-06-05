@@ -6,57 +6,50 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class ProductHasOption
- *
- * @ORM\Entity()
- * @ORM\Table(name="product_product_has_option")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_product_has_option')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class ProductHasOption
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var Product
-     *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasOption")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Product::class, inversedBy: 'productHasOption')]
     protected $product;
 
     /**
      * @var \MediaBundle\Entity\MediaImage
-     *
-     * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaImage", fetch="EAGER")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true)
      */
+    #[ORM\JoinColumn(name: 'image_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: \MediaBundle\Entity\MediaImage::class, fetch: 'EAGER')]
     protected $image;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     protected $value;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="float", nullable=true)
      */
+    #[ORM\Column(type: 'float', nullable: true)]
     protected $price;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
      */
+    #[ORM\Column(name: 'order_num', type: 'integer', nullable: false, options: ['default' => 1])]
     protected $orderNum;
 
     /**

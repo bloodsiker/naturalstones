@@ -5,12 +5,9 @@ namespace PageBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use PageBundle\Model\RedirectInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="page_page_redirect", uniqueConstraints={
- *      @ORM\UniqueConstraint(name="idx_unique_from_path", columns={"from_path"})
- * })
- */
+#[ORM\Table(name: 'page_page_redirect')]
+#[ORM\UniqueConstraint(name: 'idx_unique_from_path', columns: ['from_path'])]
+#[ORM\Entity]
 class PageRedirect implements RedirectInterface
 {
     public const TYPE_FULL = 1;
@@ -18,42 +15,28 @@ class PageRedirect implements RedirectInterface
     public const TYPE_REGEX = 3;
     public const TYPE_STARTS_WITH = 4;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=false, unique=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: false, unique: true)]
     protected ?string $fromPath = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected ?string $toPath = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="\PageBundle\Entity\Page")
-     * @ORM\JoinColumn(name="to_page_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(name: 'to_page_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Page::class)]
     protected ?Page $toPage = null;
 
-    /**
-     * @ORM\Column(name="is_active", type="boolean", nullable=false)
-     */
+    #[ORM\Column(name: 'is_active', type: 'boolean', nullable: false)]
     protected bool $isActive = true;
 
-    /**
-     * @ORM\Column(type="smallint", columnDefinition="TINYINT(1) UNSIGNED DEFAULT 1 NOT NULL")
-     */
+    #[ORM\Column(type: 'smallint', columnDefinition: 'TINYINT(1) UNSIGNED DEFAULT 1 NOT NULL')]
     public ?int $type = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected ?string $help = null;
 
     public function __toString(): string

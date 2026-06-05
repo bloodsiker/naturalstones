@@ -6,42 +6,37 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class BookInfoView
- *
- * @ORM\Entity(repositoryClass="ProductBundle\Entity\ProductInfoViewRepository")
- * @ORM\Table(name="product_product_info_view")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_product_info_view')]
+#[ORM\Entity(repositoryClass: \ProductBundle\Entity\ProductInfoViewRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class ProductInfoView
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var Product
-     *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=true, onDelete="cascade")
      */
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: true, onDelete: 'cascade')]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Product::class)]
     protected $product;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="smallint", length=6, nullable=false)
      */
+    #[ORM\Column(type: 'smallint', length: 6, nullable: false)]
     protected $views;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="date", nullable=false)
      */
+    #[ORM\Column(type: 'date', nullable: false)]
     protected $viewAt;
 
     /**

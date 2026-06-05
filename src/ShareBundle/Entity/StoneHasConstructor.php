@@ -6,50 +6,44 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class StoneHasConstructor
- *
- * @ORM\Entity()
- * @ORM\Table(name="share_stone_has_constructor")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'share_stone_has_constructor')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class StoneHasConstructor
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var Stone
-     *
-     * @ORM\ManyToOne(targetEntity="ShareBundle\Entity\Stone", inversedBy="stoneHasConstructor")
-     * @ORM\JoinColumn(name="stone_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\JoinColumn(name: 'stone_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \ShareBundle\Entity\Stone::class, inversedBy: 'stoneHasConstructor')]
     protected $stone;
 
     /**
      * @var \MediaBundle\Entity\MediaImage
-     *
-     * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaImage", fetch="EAGER")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true)
      */
+    #[ORM\JoinColumn(name: 'image_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: \MediaBundle\Entity\MediaImage::class, fetch: 'EAGER')]
     protected $image;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=20, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 20, nullable: false)]
     protected $size;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
      */
+    #[ORM\Column(name: 'order_num', type: 'integer', nullable: false, options: ['default' => 1])]
     protected $orderNum;
 
     /**

@@ -8,28 +8,26 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class WheelSpinOptionTranslation
- *
- * @ORM\Entity()
- * @ORM\Table(name="wheel_spin_option_translation")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'wheel_spin_option_translation')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class WheelSpinOptionTranslation implements TranslationInterface
 {
     use ORMBehaviors\Translatable\TranslationTrait;
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $title;
 
     /**

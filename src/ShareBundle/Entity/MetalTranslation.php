@@ -8,28 +8,26 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class MetalTranslation
- *
- * @ORM\Entity()
- * @ORM\Table(name="share_metals_translation")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'share_metals_translation')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class MetalTranslation implements TranslationInterface
 {
     use ORMBehaviors\Translatable\TranslationTrait;
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     protected $name;
 
     /**

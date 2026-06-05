@@ -11,11 +11,10 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class Category
- *
- * @ORM\Entity(repositoryClass="ProductBundle\Entity\CategoryRepository")
- * @ORM\Table(name="product_category")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_category')]
+#[ORM\Entity(repositoryClass: \ProductBundle\Entity\CategoryRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Category implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
@@ -30,54 +29,47 @@ class Category implements TranslatableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var \MediaBundle\Entity\MediaImage
-     *
-     * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaImage")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(name: 'image_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: \MediaBundle\Entity\MediaImage::class)]
     protected $image;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
     protected $slug;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="smallint", nullable=false)
      */
+    #[ORM\Column(type: 'smallint', nullable: false)]
     protected $type;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\Product", mappedBy="category")
      */
+    #[ORM\OneToMany(targetEntity: \ProductBundle\Entity\Product::class, mappedBy: 'category')]
     protected $products;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
      */
+    #[ORM\Column(name: 'order_num', type: 'integer', nullable: false, options: ['default' => 1])]
     protected $orderNum;
 
     /**
@@ -102,9 +94,7 @@ class Category implements TranslatableInterface
         return (string) $this->translate()->getName();
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (is_null($this->slug)) {
@@ -113,9 +103,7 @@ class Category implements TranslatableInterface
         }
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now');

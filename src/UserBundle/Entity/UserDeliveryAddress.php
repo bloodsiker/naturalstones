@@ -4,50 +4,32 @@ namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="UserBundle\Entity\UserDeliveryAddressRepository")
- * @ORM\Table(
- *     name="user_users_delivery_address",
- *     indexes={
- *         @ORM\Index(name="idx_user_delivery_address_user", columns={"user_id"}),
- *         @ORM\Index(name="idx_user_delivery_address_default", columns={"is_default"})
- *     }
- * )
- * @ORM\HasLifecycleCallbacks
- */
+#[ORM\Table(name: 'user_users_delivery_address')]
+#[ORM\Index(name: 'idx_user_delivery_address_user', columns: ['user_id'])]
+#[ORM\Index(name: 'idx_user_delivery_address_default', columns: ['is_default'])]
+#[ORM\Entity(repositoryClass: \UserBundle\Entity\UserDeliveryAddressRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class UserDeliveryAddress
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: \UserBundle\Entity\User::class)]
     protected ?User $user = null;
 
-    /**
-     * @ORM\Column(type="string", length=120, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 120, nullable: true)]
     protected ?string $title = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=false)
-     */
+    #[ORM\Column(type: 'text', nullable: false)]
     protected ?string $address = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => false])]
     protected bool $isDefault = false;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=false)
-     */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected \DateTime $createdAt;
 
     public function __construct()

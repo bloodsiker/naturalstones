@@ -6,58 +6,51 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class ProductHasImage
- *
- * @ORM\Entity()
- * @ORM\Table(name="product_product_has_option_metal")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_product_has_option_metal')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class ProductHasOptionMetal
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var Product
-     *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasOptionMetal")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Product::class, inversedBy: 'productHasOptionMetal')]
     protected $product;
 
     /**
      * @var \MediaBundle\Entity\MediaImage
-     *
-     * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaImage", fetch="EAGER")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true)
      */
+    #[ORM\JoinColumn(name: 'image_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: \MediaBundle\Entity\MediaImage::class, fetch: 'EAGER')]
     protected $image;
 
     /**
      * @var \ShareBundle\Entity\Metal
-     *
-     * @ORM\ManyToOne(targetEntity="ShareBundle\Entity\Metal", fetch="EAGER")
-     * @ORM\JoinColumn(name="metal_id", referencedColumnName="id", nullable=true)
      */
+    #[ORM\JoinColumn(name: 'metal_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: \ShareBundle\Entity\Metal::class, fetch: 'EAGER')]
     protected $metal;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="float", nullable=true)
      */
+    #[ORM\Column(type: 'float', nullable: true)]
     protected $price;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
      */
+    #[ORM\Column(name: 'order_num', type: 'integer', nullable: false, options: ['default' => 1])]
     protected $orderNum;
 
     /**

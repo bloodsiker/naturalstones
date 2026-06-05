@@ -6,78 +6,68 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class WheelSpinHasOption
- *
- * @ORM\Entity()
- * @ORM\Table(name="wheel_spin_has_option")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'wheel_spin_has_option')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class WheelSpinHasOption
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var WheelSpin
-     *
-     * @ORM\ManyToOne(targetEntity="WheelSpinBundle\Entity\WheelSpin", inversedBy="wheelSpinHasOption")
-     * @ORM\JoinColumn(name="wheel_spin_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\JoinColumn(name: 'wheel_spin_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \WheelSpinBundle\Entity\WheelSpin::class, inversedBy: 'wheelSpinHasOption')]
     protected $wheelSpin;
 
     /**
      * @var WheelSpinOption
-     *
-     * @ORM\ManyToOne(targetEntity="WheelSpinBundle\Entity\WheelSpinOption", fetch="EAGER")
-     * @ORM\JoinColumn(name="wheel_spin_option_id", referencedColumnName="id", nullable=true)
      */
+    #[ORM\JoinColumn(name: 'wheel_spin_option_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: \WheelSpinBundle\Entity\WheelSpinOption::class, fetch: 'EAGER')]
     protected $wheelSpinOption;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="integer", nullable=false, options={"default": 0})
      */
+    #[ORM\Column(type: 'integer', nullable: false, options: ['default' => 0])]
     protected $valuation;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="float", nullable=false, options={"default": 0,00})
      */
+    #[ORM\Column(type: 'float', nullable: false, options: ['default' => 0, '00'])]
     protected $percent;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     protected $colour;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     protected $degrees;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     protected $label;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
      */
+    #[ORM\Column(name: 'order_num', type: 'integer', nullable: false, options: ['default' => 1])]
     protected $orderNum;
 
     /**

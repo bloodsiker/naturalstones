@@ -6,50 +6,44 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class ProductHasProduct
- *
- * @ORM\Entity()
- * @ORM\Table(name="product_product_has_product")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_product_has_product')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class ProductHasProduct
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var Product
-     *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasProduct")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Product::class, inversedBy: 'productHasProduct')]
     protected $product;
 
     /**
      * @var Product
-     *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", fetch="EAGER")
-     * @ORM\JoinColumn(name="product_set_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\JoinColumn(name: 'product_set_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Product::class, fetch: 'EAGER')]
     protected $productSet;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="smallint", length=6, nullable=false)
      */
+    #[ORM\Column(type: 'smallint', length: 6, nullable: false)]
     protected $quantity;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
      */
+    #[ORM\Column(name: 'order_num', type: 'integer', nullable: false, options: ['default' => 1])]
     protected $orderNum;
 
     protected $size;

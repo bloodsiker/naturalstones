@@ -11,11 +11,10 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class Product
- *
- * @ORM\Entity(repositoryClass="ProductBundle\Entity\ProductRepository")
- * @ORM\Table(name="product_product")
- * @ORM\HasLifecycleCallbacks()
  */
+#[ORM\Table(name: 'product_product')]
+#[ORM\Entity(repositoryClass: \ProductBundle\Entity\ProductRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Product implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
@@ -35,266 +34,218 @@ class Product implements TranslatableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var \MediaBundle\Entity\MediaImage
-     *
-     * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaImage")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(name: 'image_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: \MediaBundle\Entity\MediaImage::class)]
     protected $image;
 
     /**
      * @var Category
-     *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Category", inversedBy="products")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Category::class, inversedBy: 'products')]
     protected $category;
 
     /**
      * @var ProductOptionLabel
-     *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\ProductOptionLabel")
-     * @ORM\JoinColumn(name="option_label_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(name: 'option_label_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\ProductOptionLabel::class)]
     protected $optionLabel;
 
     /**
      * @var \ShareBundle\Entity\Size
-     *
-     * @ORM\ManyToOne(targetEntity="ShareBundle\Entity\Size")
-     * @ORM\JoinColumn(name="size_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(name: 'size_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: \ShareBundle\Entity\Size::class)]
     protected $size;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
     protected $slug;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
     protected $instagram_link;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="float", nullable=true)
      */
+    #[ORM\Column(type: 'float', nullable: true)]
     protected $price;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="float", nullable=true)
      */
+    #[ORM\Column(type: 'float', nullable: true)]
     protected $discount;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="float", nullable=true)
      */
+    #[ORM\Column(type: 'float', nullable: true)]
     protected $percent;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isMan;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isWoman;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isAvailable;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isMainProduct;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", nullable=false)
      */
+    #[ORM\Column(type: 'integer', nullable: false)]
     protected $views;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", nullable=false)
      */
+    #[ORM\Column(type: 'integer', nullable: false)]
     protected $productGroup;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="smallint", nullable=false)
      */
+    #[ORM\Column(type: 'smallint', nullable: false)]
     protected $optionType;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Colour", inversedBy="products")
-     * @ORM\JoinTable(name="product_product_colours",
-     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="colour_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
      */
+    #[ORM\JoinTable(name: 'product_product_colours')]
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'colour_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: \ShareBundle\Entity\Colour::class, inversedBy: 'products')]
     protected $colours;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Metal")
-     * @ORM\JoinTable(name="product_product_metals",
-     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="metal_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
      */
+    #[ORM\JoinTable(name: 'product_product_metals')]
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'metal_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: \ShareBundle\Entity\Metal::class)]
     protected $metals;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Tag", inversedBy="products")
-     * @ORM\JoinTable(name="product_product_tags",
-     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
      */
+    #[ORM\JoinTable(name: 'product_product_tags')]
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'tag_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: \ShareBundle\Entity\Tag::class, inversedBy: 'products')]
     protected $tags;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Stone")
-     * @ORM\JoinTable(name="product_product_stones",
-     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="stone_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
      */
+    #[ORM\JoinTable(name: 'product_product_stones')]
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'stone_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: \ShareBundle\Entity\Stone::class)]
     protected $stones;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasImage",
-     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"orderNum" = "ASC"})
      */
+    #[ORM\OneToMany(targetEntity: \ProductBundle\Entity\ProductHasImage::class, mappedBy: 'product', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['orderNum' => 'ASC'])]
     protected $productHasImage;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasVideo",
-     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"orderNum" = "ASC"})
      */
+    #[ORM\OneToMany(targetEntity: \ProductBundle\Entity\ProductHasVideo::class, mappedBy: 'product', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['orderNum' => 'ASC'])]
     protected $productHasVideo;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasProduct",
-     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"orderNum" = "ASC"})
      */
+    #[ORM\OneToMany(targetEntity: \ProductBundle\Entity\ProductHasProduct::class, mappedBy: 'product', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['orderNum' => 'ASC'])]
     protected $productHasProduct;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasOption",
-     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"orderNum" = "ASC"})
      */
+    #[ORM\OneToMany(targetEntity: \ProductBundle\Entity\ProductHasOption::class, mappedBy: 'product', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['orderNum' => 'ASC'])]
     protected $productHasOption;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasOptionMetal",
-     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"orderNum" = "ASC"})
      */
+    #[ORM\OneToMany(targetEntity: \ProductBundle\Entity\ProductHasOptionMetal::class, mappedBy: 'product', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['orderNum' => 'ASC'])]
     protected $productHasOptionMetal;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="ProductBundle\Entity\ProductHasOptionColour",
-     *     mappedBy="product", cascade={"all"}, orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"orderNum" = "ASC"})
      */
+    #[ORM\OneToMany(targetEntity: \ProductBundle\Entity\ProductHasOptionColour::class, mappedBy: 'product', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['orderNum' => 'ASC'])]
     protected $productHasOptionColour;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
      */
+    #[ORM\Column(name: 'order_num', type: 'integer', nullable: false, options: ['default' => 1])]
     protected $orderNum;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $telegramMessageId;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=false)
      */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected $createdAt;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $updatedAt;
 
     /**
@@ -361,9 +312,7 @@ class Product implements TranslatableInterface
         }
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (is_null($this->slug)) {
@@ -372,9 +321,7 @@ class Product implements TranslatableInterface
         }
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now');

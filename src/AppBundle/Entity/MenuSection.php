@@ -9,36 +9,26 @@ use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="app_menu_section")
- */
+#[ORM\Table(name: 'app_menu_section')]
+#[ORM\Entity]
 class MenuSection implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
     use TranslatableProxyTrait;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false)
-     */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
-    /**
-     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 0})
-     */
+    #[ORM\Column(name: 'order_num', type: 'integer', nullable: false, options: ['default' => 0])]
     protected $orderNum;
 
-    /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MenuItem", mappedBy="menuSection", cascade={"all"}, orphanRemoval=true)
-     * @ORM\OrderBy({"orderNum" = "DESC"})
-     */
+    #[ORM\OneToMany(targetEntity: \AppBundle\Entity\MenuItem::class, mappedBy: 'menuSection', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['orderNum' => 'DESC'])]
     protected $items;
 
     public function __construct()

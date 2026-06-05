@@ -7,19 +7,17 @@ use Sonata\PageBundle\Entity\BaseSite;
 
 /**
  * Class Site
- *
- * @ORM\Entity
- * @ORM\Table(name="page_site")
  */
+#[ORM\Table(name: 'page_site')]
+#[ORM\Entity]
 class Site extends BaseSite
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**

@@ -7,27 +7,24 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class SiteVariablePlacement
- *
- * @ORM\Entity
- * @ORM\Table(name="page_site_variable_placement")
  */
 #[UniqueEntity('alias')]
+#[ORM\Table(name: 'page_site_variable_placement')]
+#[ORM\Entity]
 class SiteVariablePlacement
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false, unique: true)]
     protected $alias;
 
     /**

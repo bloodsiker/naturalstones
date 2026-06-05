@@ -6,49 +6,43 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class CommentVotesResult
- *
- * @ORM\Entity()
- * @ORM\Table(name="product_comment_vote_results")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_comment_vote_results')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class CommentVotesResult
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var Comment
-     *
-     * @ORM\ManyToOne(targetEntity="CommentBundle\Entity\Comment")
-     * @ORM\JoinColumn(name="comment_id", referencedColumnName="id", nullable=true, onDelete="cascade")
      */
+    #[ORM\JoinColumn(name: 'comment_id', referencedColumnName: 'id', nullable: true, onDelete: 'cascade')]
+    #[ORM\ManyToOne(targetEntity: \CommentBundle\Entity\Comment::class)]
     protected $comment;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="bigint", nullable=true, options={"unsigned"=true})
      */
+    #[ORM\Column(type: 'bigint', nullable: true, options: ['unsigned' => true])]
     protected $ip;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $resultVote;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=false)
      */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected $votedAt;
 
     /**

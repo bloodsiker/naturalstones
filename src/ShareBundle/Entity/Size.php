@@ -6,11 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Size
- *
- * @ORM\Entity()
- * @ORM\Table(name="share_sizes")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'share_sizes')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class Size
 {
     public const TYPE_MM = 'мм';
@@ -18,32 +17,28 @@ class Size
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
     protected $name;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=20, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 20, nullable: false)]
     protected $type;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**

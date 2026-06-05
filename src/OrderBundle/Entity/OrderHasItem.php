@@ -6,61 +6,41 @@ use Doctrine\ORM\Mapping as ORM;
 use ProductBundle\Entity\Product;
 use ShareBundle\Entity\Colour;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="order_order_has_item")
- * @ORM\HasLifecycleCallbacks
- */
+#[ORM\Table(name: 'order_order_has_item')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class OrderHasItem
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="OrderBundle\Entity\Order", inversedBy="orderHasItems")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false)
-     */
+    #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \OrderBundle\Entity\Order::class, inversedBy: 'orderHasItems')]
     protected ?Order $order = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", fetch="EAGER")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
-     */
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Product::class, fetch: 'EAGER')]
     protected ?Product $product = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ShareBundle\Entity\Colour", fetch="EAGER")
-     * @ORM\JoinColumn(name="colour_id", referencedColumnName="id", nullable=true)
-     */
+    #[ORM\JoinColumn(name: 'colour_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: \ShareBundle\Entity\Colour::class, fetch: 'EAGER')]
     protected ?Colour $colour = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     protected ?string $options = null;
 
-    /**
-     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
-     */
+    #[ORM\Column(name: 'order_num', type: 'integer', nullable: false, options: ['default' => 1])]
     protected int $orderNum = 0;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     */
+    #[ORM\Column(type: 'integer', nullable: false)]
     protected int $quantity = 1;
 
-    /**
-     * @ORM\Column(type="float", nullable=false, options={"default": 0})
-     */
+    #[ORM\Column(type: 'float', nullable: false, options: ['default' => 0])]
     protected float $price = 0.0;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     protected ?float $discount = null;
 
     public function __toString(): string

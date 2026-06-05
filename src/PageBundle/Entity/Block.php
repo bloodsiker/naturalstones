@@ -7,19 +7,17 @@ use Sonata\PageBundle\Entity\BaseBlock;
 
 /**
  * Class Block
- *
- * @ORM\Entity(repositoryClass="Doctrine\ORM\EntityRepository")
- * @ORM\Table(name="page_block")
  */
+#[ORM\Table(name: 'page_block')]
+#[ORM\Entity(repositoryClass: \Doctrine\ORM\EntityRepository::class)]
 class Block extends BaseBlock
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**

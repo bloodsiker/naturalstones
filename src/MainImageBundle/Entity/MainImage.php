@@ -9,11 +9,10 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class MainImage
- *
- * @ORM\Entity(repositoryClass="MainImageBundle\Entity\MainImageRepository")
- * @ORM\Table(name="main_image")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'main_image')]
+#[ORM\Entity(repositoryClass: \MainImageBundle\Entity\MainImageRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class MainImage implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
@@ -21,40 +20,35 @@ class MainImage implements TranslatableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var \MediaBundle\Entity\MediaImage
-     *
-     * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaImage")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(name: 'image_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: \MediaBundle\Entity\MediaImage::class)]
     protected $image;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", options={"default"=1}, nullable=false)
      */
+    #[ORM\Column(type: 'integer', options: ['default' => 1], nullable: false)]
     protected $orderNum;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=false)
      */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected $createdAt;
 
     /**

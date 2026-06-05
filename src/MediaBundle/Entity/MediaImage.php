@@ -9,26 +9,23 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Class MediaImage
- *
- * @ORM\Entity()
- * @ORM\Table(name="media_image")
- * @ORM\HasLifecycleCallbacks
  */
 #[Vich\Uploadable]
+#[ORM\Table(name: 'media_image')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class MediaImage extends AbstractMedia
 {
     /**
      * @var string
-     *
-     * @ORM\Column(type="integer", nullable=true, options={"unsigned"=true})
      */
+    #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
     protected $width;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="integer", nullable=true, options={"unsigned"=true})
      */
+    #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
     protected $height;
 
     /**

@@ -9,12 +9,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Class MediaFile
- *
- * @ORM\Entity()
- * @ORM\Table(name="media_file")
- * @ORM\HasLifecycleCallbacks
  */
 #[Vich\Uploadable]
+#[ORM\Table(name: 'media_file')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class MediaFile extends AbstractMedia
 {
     /**

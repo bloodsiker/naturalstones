@@ -10,11 +10,10 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class Category
- *
- * @ORM\Entity()
- * @ORM\Table(name="article_category")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'article_category')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class Category implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
@@ -22,39 +21,34 @@ class Category implements TranslatableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
     protected $slug;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=false)
      */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected $createdAt;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $updatedAt;
 
     /**
@@ -76,9 +70,7 @@ class Category implements TranslatableInterface
         return (string) $this->translate()->getName();
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (is_null($this->slug)) {
@@ -87,9 +79,7 @@ class Category implements TranslatableInterface
         }
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now');

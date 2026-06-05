@@ -6,43 +6,38 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class ProductHasImage
- *
- * @ORM\Entity()
- * @ORM\Table(name="product_product_has_image")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_product_has_image')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class ProductHasImage
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var Product
-     *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasImage")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Product::class, inversedBy: 'productHasImage')]
     protected $product;
 
     /**
      * @var \MediaBundle\Entity\MediaImage
-     *
-     * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaImage", fetch="EAGER")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\JoinColumn(name: 'image_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \MediaBundle\Entity\MediaImage::class, fetch: 'EAGER')]
     protected $image;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
      */
+    #[ORM\Column(name: 'order_num', type: 'integer', nullable: false, options: ['default' => 1])]
     protected $orderNum;
 
     /**

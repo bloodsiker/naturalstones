@@ -7,33 +7,29 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Class MediaVideo
- *
- * @ORM\Entity()
- * @ORM\Table(name="media_video")
- * @ORM\HasLifecycleCallbacks
  */
 #[Vich\Uploadable]
+#[ORM\Table(name: 'media_video')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class MediaVideo extends AbstractMedia
 {
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $thumb;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="integer", nullable=true, options={"unsigned"=true})
      */
+    #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
     protected $width;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="integer", nullable=true, options={"unsigned"=true})
      */
+    #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
     protected $height;
 
     public function __construct()

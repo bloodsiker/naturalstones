@@ -9,11 +9,10 @@ use WheelSpinBundle\Entity\WheelSpinOption;
 
 /**
  * Class Order
- *
- * @ORM\Entity(repositoryClass="OrderBundle\Entity\OrderRepository")
- * @ORM\Table(name="order_order")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'order_order')]
+#[ORM\Entity(repositoryClass: \OrderBundle\Entity\OrderRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Order
 {
     public const STATUS_NEW = 1;
@@ -25,170 +24,145 @@ class Order
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     protected $fio;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     protected $email;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     protected $phone;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     protected $messenger;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $instagram;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="decimal", precision=12, scale=2, nullable=false, options={"default": 0.00})
      */
+    #[ORM\Column(type: 'decimal', precision: 12, scale: 2, nullable: false, options: ['default' => '0.00'])]
     protected $totalSum;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="decimal", precision=12, scale=2, nullable=false, options={"default": 0.00})
      */
+    #[ORM\Column(type: 'decimal', precision: 12, scale: 2, nullable: false, options: ['default' => '0.00'])]
     protected $orderSum;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="decimal", precision=12, scale=2, nullable=false, options={"default": 0.00})
      */
+    #[ORM\Column(type: 'decimal', precision: 12, scale: 2, nullable: false, options: ['default' => '0.00'])]
     protected $discountPromo;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="smallint", nullable=false, options={"default": 0})
      */
+    #[ORM\Column(type: 'smallint', nullable: false, options: ['default' => 0])]
     protected $type;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $callMe;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     protected $comment;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     protected $address;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", nullable=false)
      */
+    #[ORM\Column(type: 'integer', nullable: false)]
     protected $status;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
     protected $secret;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isSpin;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=false)
      */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected $createdAt;
 
     /**
      * @var WheelSpinOption
-     *
-     * @ORM\ManyToOne(targetEntity="WheelSpinBundle\Entity\WheelSpinOption", fetch="EAGER")
-     * @ORM\JoinColumn(name="wheel_spin_option_id", referencedColumnName="id", nullable=true)
      */
+    #[ORM\JoinColumn(name: 'wheel_spin_option_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: \WheelSpinBundle\Entity\WheelSpinOption::class, fetch: 'EAGER')]
     protected $wheelSpinOption;
 
     /**
      * @var User|null
-     *
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: \UserBundle\Entity\User::class)]
     protected $user;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="telegram_chat_id", type="string", length=100, nullable=true)
      */
+    #[ORM\Column(name: 'telegram_chat_id', type: 'string', length: 100, nullable: true)]
     protected $telegramChatId;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(name="telegram_message_id", type="integer", nullable=true)
      */
+    #[ORM\Column(name: 'telegram_message_id', type: 'integer', nullable: true)]
     protected $telegramMessageId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $spinPrize;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="OrderBundle\Entity\OrderHasItem",
-     *     mappedBy="order", cascade={"all"}, orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"orderNum" = "ASC"})
      */
+    #[ORM\OneToMany(targetEntity: \OrderBundle\Entity\OrderHasItem::class, mappedBy: 'order', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['orderNum' => 'ASC'])]
     protected $orderHasItems;
 
     /**

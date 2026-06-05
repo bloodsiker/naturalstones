@@ -11,12 +11,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Colour
- *
- * @ORM\Entity()
- * @ORM\Table(name="share_metals")
- * @ORM\HasLifecycleCallbacks
  */
 #[UniqueEntity('slug')]
+#[ORM\Table(name: 'share_metals')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class Metal implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
@@ -24,25 +23,22 @@ class Metal implements TranslatableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false, unique: true)]
     protected $slug;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**
@@ -63,9 +59,7 @@ class Metal implements TranslatableInterface
         return (string) $this->translate()->getName();
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (is_null($this->slug)) {

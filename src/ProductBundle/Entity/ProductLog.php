@@ -6,49 +6,43 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class ProductLog
- *
- * @ORM\Entity()
- * @ORM\Table(name="product_product_log")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_product_log')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class ProductLog
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var Product
-     *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="cascade")
      */
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', onDelete: 'cascade')]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Product::class)]
     protected $product;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="float", nullable=true)
      */
+    #[ORM\Column(type: 'float', nullable: true)]
     protected $newPrice;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="float", nullable=true)
      */
+    #[ORM\Column(type: 'float', nullable: true)]
     protected $oldPrice;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=false)
      */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected $createdAt;
 
     /**

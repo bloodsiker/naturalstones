@@ -5,34 +5,24 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use ProductBundle\Entity\Category;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="app_menu_item")
- */
+#[ORM\Table(name: 'app_menu_item')]
+#[ORM\Entity]
 class MenuItem
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MenuSection", inversedBy="items")
-     * @ORM\JoinColumn(name="menu_section_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(name: 'menu_section_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: \AppBundle\Entity\MenuSection::class, inversedBy: 'items')]
     protected $menuSection;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Category")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Category::class)]
     protected $category;
 
-    /**
-     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 0})
-     */
+    #[ORM\Column(name: 'order_num', type: 'integer', nullable: false, options: ['default' => 0])]
     protected $orderNum;
 
     public function __construct()

@@ -11,43 +11,32 @@ use Sonata\UserBundle\Entity\BaseUser;
 
 /**
  * Class User
- *
- * @ORM\Entity
- * @ORM\Table(name="user_users")
  */
+#[ORM\Table(name: 'user_users')]
+#[ORM\Entity]
 class User extends BaseUser implements TimezoneAwareInterface
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     protected ?string $firstname = null;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     protected ?string $lastname = null;
 
-    /**
-     * @ORM\Column(type="string", length=30, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 30, nullable: true)]
     protected ?string $phone = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="ProductBundle\Entity\Product")
-     * @ORM\JoinTable(name="user_users_favorite_product",
-     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     */
+    #[ORM\JoinTable(name: 'user_users_favorite_product')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'product_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: \ProductBundle\Entity\Product::class)]
     private Collection $favorites;
 
     protected ?string $locale = null;

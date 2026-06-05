@@ -9,11 +9,10 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class ProductOptionLabel
- *
- * @ORM\Entity(repositoryClass="ProductBundle\Entity\CategoryRepository")
- * @ORM\Table(name="product_option_label")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_option_label')]
+#[ORM\Entity(repositoryClass: \ProductBundle\Entity\CategoryRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class ProductOptionLabel implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
@@ -21,18 +20,16 @@ class ProductOptionLabel implements TranslatableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**

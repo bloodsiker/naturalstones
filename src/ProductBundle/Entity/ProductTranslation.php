@@ -8,35 +8,32 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class ProductTranslation
- *
- * @ORM\Entity()
- * @ORM\Table(name="product_product_translation")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_product_translation')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class ProductTranslation implements TranslationInterface
 {
     use ORMBehaviors\Translatable\TranslationTrait;
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $name;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     protected $description;
 
     /**

@@ -6,43 +6,38 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class ProductHasVideo
- *
- * @ORM\Entity()
- * @ORM\Table(name="product_product_has_video")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_product_has_video')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class ProductHasVideo
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var Product
-     *
-     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="productHasVideo")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \ProductBundle\Entity\Product::class, inversedBy: 'productHasVideo')]
     protected $product;
 
     /**
      * @var \MediaBundle\Entity\MediaVideo
-     *
-     * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaVideo", fetch="EAGER")
-     * @ORM\JoinColumn(name="video_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\JoinColumn(name: 'video_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \MediaBundle\Entity\MediaVideo::class, fetch: 'EAGER')]
     protected $video;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="order_num", type="integer", nullable=false, options={"default": 1})
      */
+    #[ORM\Column(name: 'order_num', type: 'integer', nullable: false, options: ['default' => 1])]
     protected $orderNum;
 
     protected $path;

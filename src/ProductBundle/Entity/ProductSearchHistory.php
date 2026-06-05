@@ -6,41 +6,36 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class BookInfoDownload
- *
- * @ORM\Entity()
- * @ORM\Table(name="product_search_history")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'product_search_history')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class ProductSearchHistory
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     protected $search;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=20, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 20, nullable: true)]
     protected $ip;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=false)
      */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected $createdAt;
 
     /**

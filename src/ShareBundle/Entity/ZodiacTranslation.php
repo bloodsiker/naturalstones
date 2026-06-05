@@ -8,28 +8,26 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class ZodiacTranslation
- *
- * @ORM\Entity()
- * @ORM\Table(name="share_zodiacs_translation")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'share_zodiacs_translation')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class ZodiacTranslation implements TranslationInterface
 {
     use ORMBehaviors\Translatable\TranslationTrait;
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $name;
 
     /**

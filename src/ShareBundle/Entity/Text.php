@@ -9,11 +9,10 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class Text
- *
- * @ORM\Entity()
- * @ORM\Table(name="share_text")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'share_text')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class Text implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
@@ -21,18 +20,16 @@ class Text implements TranslatableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**

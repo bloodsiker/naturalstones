@@ -7,51 +7,43 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class WheelSpin
- *
- * @ORM\Entity(repositoryClass="WheelSpinBundle\Entity\WheelSpinRepository")
- * @ORM\Table(name="wheel_spin")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'wheel_spin')]
+#[ORM\Entity(repositoryClass: \WheelSpinBundle\Entity\WheelSpinRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class WheelSpin
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="float", nullable=false, options={"default": 0,00})
      */
+    #[ORM\Column(type: 'float', nullable: false, options: ['default' => 0, '00'])]
     protected $minSum;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="float", nullable=false, options={"default": 0,00})
      */
+    #[ORM\Column(type: 'float', nullable: false, options: ['default' => 0, '00'])]
     protected $maxSum;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="WheelSpinBundle\Entity\WheelSpinHasOption",
-     *     mappedBy="wheelSpin", cascade={"all"}, orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"label" = "ASC"})
      */
+    #[ORM\OneToMany(targetEntity: \WheelSpinBundle\Entity\WheelSpinHasOption::class, mappedBy: 'wheelSpin', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['label' => 'ASC'])]
     protected $wheelSpinHasOption;
 
     /**

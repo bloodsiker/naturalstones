@@ -6,63 +6,55 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class SiteVariable
- *
- * @ORM\Entity(repositoryClass="PageBundle\Entity\SiteVariableRepository");
- * @ORM\Table(name="page_site_variable")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'page_site_variable')]
+#[ORM\Entity(repositoryClass: \PageBundle\Entity\SiteVariableRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class SiteVariable
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     protected $name;
 
     /**
      * @var int
-     *
-     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\SiteVariablePlacement")
-     * @ORM\JoinColumn(name="placement_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(name: 'placement_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: \PageBundle\Entity\SiteVariablePlacement::class)]
     protected $placement;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="text", length=65535, nullable=true)
      */
+    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     protected $value;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=false)
      */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected $createdAt;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=false)
      */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected $modifiedAt;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false, options={"default": 1})
      */
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => 1])]
     protected $isActive;
 
     /**
@@ -84,9 +76,7 @@ class SiteVariable
         return (string) $this->name;
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->modifiedAt = new \DateTime('now');

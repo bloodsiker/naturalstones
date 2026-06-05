@@ -11,11 +11,10 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Class Stone
- *
- * @ORM\Entity(repositoryClass="ShareBundle\Entity\StoneRepository")
- * @ORM\Table(name="share_stones")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: 'share_stones')]
+#[ORM\Entity(repositoryClass: \ShareBundle\Entity\StoneRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Stone implements TranslatableInterface
 {
     use ORMBehaviors\Translatable\TranslatableTrait;
@@ -23,75 +22,63 @@ class Stone implements TranslatableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var \MediaBundle\Entity\MediaImage
-     *
-     * @ORM\ManyToOne(targetEntity="MediaBundle\Entity\MediaImage")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(name: 'image_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: \MediaBundle\Entity\MediaImage::class)]
     protected $image;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=100, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
     protected $slug;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isShowConstructor;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isShowMain;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=false)
      */
+    #[ORM\Column(type: 'datetime', nullable: false)]
     protected $createdAt;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="ShareBundle\Entity\Zodiac", inversedBy="stones")
-     * @ORM\JoinTable(name="share_stone_zodiacs",
-     *     joinColumns={@ORM\JoinColumn(name="stone_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="zodiac_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
      */
+    #[ORM\JoinTable(name: 'share_stone_zodiacs')]
+    #[ORM\JoinColumn(name: 'stone_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'zodiac_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: \ShareBundle\Entity\Zodiac::class, inversedBy: 'stones')]
     protected $zodiacs;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="ShareBundle\Entity\StoneHasConstructor",
-     *     mappedBy="stone", cascade={"all"}, orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"orderNum" = "ASC"})
      */
+    #[ORM\OneToMany(targetEntity: \ShareBundle\Entity\StoneHasConstructor::class, mappedBy: 'stone', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['orderNum' => 'ASC'])]
     protected $stoneHasConstructor;
 
     /**
@@ -117,9 +104,7 @@ class Stone implements TranslatableInterface
         return (string) $this->translate()->getName();
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (is_null($this->slug)) {
@@ -128,9 +113,7 @@ class Stone implements TranslatableInterface
         }
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->prePersist();

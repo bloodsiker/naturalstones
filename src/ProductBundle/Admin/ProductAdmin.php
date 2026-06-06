@@ -48,16 +48,6 @@ class ProductAdmin extends Admin
     protected $sendTelegramService;
 
     /**
-     * @var array
-     */
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 25,
-        '_sort_by' => 'createdAt',
-        '_sort_order' => 'DESC',
-    ];
-
-    /**
      * @return EntityManager
      */
     public function setEntityManager(EntityManager $entityManager)
@@ -257,6 +247,9 @@ class ProductAdmin extends Admin
                                 'label' => 'product.fields.name',
                                 'field_type' => TextCounterType::class,
                                 'required' => true,
+                                'attr' => [
+                                    'data-product-name-autocomplete' => '1',
+                                ],
                             ],
                             'description' => [
                                 'label' => 'product.fields.description',

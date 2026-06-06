@@ -13,6 +13,7 @@ use ShareBundle\Entity\Stone;
 use ShareBundle\Entity\Tag;
 use ShareBundle\Entity\Zodiac;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -133,6 +134,54 @@ class DefaultController extends BaseController
         ]);
 
         return $this->render('@App/search_category/search.html.twig');
+    }
+
+    public function productNameAutocompleteAction(Request $request): JsonResponse
+    {
+        $term = trim((string) $request->query->get('q', $request->query->get('term', '')));
+        $locale = (string) $request->query->get('locale', $request->getLocale());
+        if (!\in_array($locale, $this->locales, true)) {
+            $locale = $request->getLocale();
+        }
+
+        if (mb_strlen($term) < 2) {
+            return new JsonResponse(['items' => []]);
+        }
+
+        $products = $this->em->getRepository(Product::class)
+            ->createQueryBuilder('p')
+            ->select('DISTINCT p')
+            ->leftJoin('p.translations', 'pt', 'WITH', 'pt.locale = :locale')
+            ->andWhere('LOWER(pt.name) LIKE LOWER(:term)')
+            ->setParameter('term', '%' . $term . '%')
+            ->setParameter('locale', $locale)
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults(50)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        $items = [];
+        $seenLabels = [];
+        foreach ($products as $product) {
+            $label = (string) $product->translate($locale)->getName();
+            if (isset($seenLabels[$label])) {
+                continue;
+            }
+
+            $seenLabels[$label] = true;
+            $items[] = [
+                'id' => $product->getId(),
+                'label' => $label,
+                'value' => $label,
+            ];
+
+            if (count($items) >= 50) {
+                break;
+            }
+        }
+
+        return new JsonResponse(['items' => $items]);
     }
 
     public function sitemapAction(Request $request): Response

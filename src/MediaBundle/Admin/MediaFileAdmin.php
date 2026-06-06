@@ -22,8 +22,6 @@ class MediaFileAdmin extends Admin
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 25,
-        '_sort_by' => 'id',
-        '_sort_order' => 'desc',
     ];
 
     /**

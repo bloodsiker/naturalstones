@@ -297,6 +297,204 @@
 {% block text_counter_widget %}
     {{ block('form_widget') }}
     {{ block('counter_widget') }}
+
+    {% if attr['data-product-name-autocomplete']|default(false) %}
+        <script>
+            jQuery(function ($) {
+                var $input = $('#{{ id }}');
+                var pendingRequest = null;
+                var requestTimer = null;
+                var items = [];
+                var activeIndex = -1;
+                var isOpen = false;
+                var suppressSearch = false;
+                var fieldLocaleMatch = $input.attr('name').match(/\[translations]\[([^\]]+)]\[name]$/);
+                var fieldLocale = fieldLocaleMatch ? fieldLocaleMatch[1] : '{{ app.request.locale|e('js') }}';
+                var $dropdown = $('<div>', {
+                    'class': 'dropdown-menu',
+                    css: {
+                        display: 'none',
+                        position: 'fixed',
+                        zIndex: 1060,
+                        maxHeight: '260px',
+                        overflowY: 'auto',
+                        padding: 0
+                    }
+                });
+
+                $input.after($dropdown);
+
+                function positionDropdown() {
+                    var rect = $input[0].getBoundingClientRect();
+                    if (!rect) {
+                        return;
+                    }
+
+                    $dropdown.css({
+                        top: rect.bottom,
+                        left: rect.left,
+                        width: rect.width
+                    });
+                }
+
+                function closeDropdown() {
+                    isOpen = false;
+                    activeIndex = -1;
+                    $dropdown.hide().empty();
+                }
+
+                function setActive(index) {
+                    activeIndex = index;
+                    $dropdown.find('[data-product-item]').removeClass('active');
+                    if (index >= 0) {
+                        $dropdown.find('[data-product-item]').eq(index).addClass('active');
+                    }
+                }
+
+                function chooseItem(index) {
+                    if (index < 0 || index >= items.length) {
+                        return;
+                    }
+
+                    closeDropdown();
+                    suppressSearch = true;
+                    $input.val(items[index].value).trigger('change');
+                    window.setTimeout(function () {
+                        suppressSearch = false;
+                    }, 0);
+                }
+
+                function renderDropdown(data) {
+                    items = data || [];
+                    activeIndex = items.length ? 0 : -1;
+                    $dropdown.empty();
+
+                    if (!items.length) {
+                        closeDropdown();
+                        return;
+                    }
+
+                    items.forEach(function (item, index) {
+                        var $item = $('<a>', {
+                            href: '#',
+                            'class': 'dropdown-item',
+                            'data-product-item': '1',
+                            text: item.label
+                        });
+
+                        $item.css({
+                            display: 'block',
+                            width: '100%',
+                            padding: '6px 12px',
+                            cursor: 'pointer',
+                            textDecoration: 'none'
+                        });
+
+                        if (index === activeIndex) {
+                            $item.addClass('active');
+                        }
+
+                        $item.on('mouseenter', function () {
+                            setActive(index);
+                        });
+
+                        $item.on('mousedown', function (event) {
+                            event.preventDefault();
+                            chooseItem(index);
+                        });
+
+                        $dropdown.append($item);
+                    });
+
+                    positionDropdown();
+                    $dropdown.show();
+                    isOpen = true;
+                }
+
+                function search(term) {
+                    if (pendingRequest) {
+                        pendingRequest.abort();
+                    }
+
+                    pendingRequest = $.ajax({
+                        url: '{{ path('product_name_autocomplete') }}',
+                        dataType: 'json',
+                        data: {
+                            q: term,
+                            locale: fieldLocale
+                        }
+                    }).done(function (data) {
+                        renderDropdown((data.items || []).map(function (item) {
+                            return {
+                                label: item.label,
+                                value: item.value,
+                                id: item.id
+                            };
+                        }));
+                    }).fail(function () {
+                        closeDropdown();
+                    });
+                }
+
+                $input.attr('autocomplete', 'off');
+
+                $input.on('input', function () {
+                    if (suppressSearch) {
+                        return;
+                    }
+
+                    var term = $.trim($input.val());
+                    if (requestTimer) {
+                        clearTimeout(requestTimer);
+                    }
+
+                    if (term.length < 2) {
+                        closeDropdown();
+                        return;
+                    }
+
+                    requestTimer = setTimeout(function () {
+                        search(term);
+                    }, 250);
+                });
+
+                $input.on('keydown', function (event) {
+                    if (!isOpen) {
+                        return;
+                    }
+
+                    if (event.which === 40) {
+                        event.preventDefault();
+                        setActive(Math.min(activeIndex + 1, items.length - 1));
+                    } else if (event.which === 38) {
+                        event.preventDefault();
+                        setActive(Math.max(activeIndex - 1, 0));
+                    } else if (event.which === 13) {
+                        event.preventDefault();
+                        chooseItem(activeIndex < 0 ? 0 : activeIndex);
+                    } else if (event.which === 27) {
+                        event.preventDefault();
+                        closeDropdown();
+                    }
+                });
+
+                $input.on('blur', function () {
+                    window.setTimeout(closeDropdown, 150);
+                });
+
+                $(window).on('resize scroll', function () {
+                    if (isOpen) {
+                        positionDropdown();
+                    }
+                });
+                $(document).on('mousedown', function (event) {
+                    if (!$(event.target).closest($dropdown).length && event.target !== $input[0]) {
+                        closeDropdown();
+                    }
+                });
+            });
+        </script>
+    {% endif %}
 {% endblock %}
 
 {% block textarea_counter_widget %}

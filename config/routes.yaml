@@ -87,6 +87,15 @@ opensearch:
     requirements:
         _format: "xml"
 
+product_name_autocomplete:
+    path:
+        uk: /admin/product-name-autocomplete
+        ru: /ru/admin/product-name-autocomplete
+    defaults:
+        _controller: AppBundle\Controller\DefaultController::productNameAutocompleteAction
+    requirements:
+        _locale: 'uk|ru'
+
 # ============================================================
 # Localized public routes (uk = no prefix, ru = /ru)
 # ============================================================

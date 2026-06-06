@@ -27,8 +27,6 @@ class MainImageAdmin extends Admin
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 25,
-        '_sort_by' => 'orderNum',
-        '_sort_order' => 'ASC',
     ];
 
     /**

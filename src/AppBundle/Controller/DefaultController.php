@@ -144,17 +144,21 @@ class DefaultController extends BaseController
             $locale = $request->getLocale();
         }
 
+        $searchLocales = array_values(array_unique(array_merge([$locale], $this->locales)));
+
         if (mb_strlen($term) < 2) {
             return new JsonResponse(['items' => []]);
         }
 
         $products = $this->em->getRepository(Product::class)
             ->createQueryBuilder('p')
-            ->select('DISTINCT p')
-            ->leftJoin('p.translations', 'pt', 'WITH', 'pt.locale = :locale')
-            ->andWhere('LOWER(pt.name) LIKE LOWER(:term)')
+            ->select('DISTINCT p, ptLabel')
+            ->innerJoin('p.translations', 'ptSearch', 'WITH', 'ptSearch.locale IN (:searchLocales)')
+            ->leftJoin('p.translations', 'ptLabel', 'WITH', 'ptLabel.locale = :locale')
+            ->andWhere('LOWER(ptSearch.name) LIKE LOWER(:term)')
             ->setParameter('term', '%' . $term . '%')
             ->setParameter('locale', $locale)
+            ->setParameter('searchLocales', $searchLocales)
             ->orderBy('p.id', 'DESC')
             ->setMaxResults(50)
             ->getQuery()
@@ -164,7 +168,10 @@ class DefaultController extends BaseController
         $items = [];
         $seenLabels = [];
         foreach ($products as $product) {
-            $label = (string) $product->translate($locale)->getName();
+            $label = trim((string) $product->translate($locale)->getName());
+            if ('' === $label) {
+                $label = trim((string) ($product->translate()->getName() ?? ''));
+            }
             if (isset($seenLabels[$label])) {
                 continue;
             }

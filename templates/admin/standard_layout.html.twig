@@ -8,6 +8,100 @@
     </script>
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        jQuery(function ($) {
+            window.sonataLegacyToggleFilter = function (element) {
+                var link = $(element);
+                var filter = getElementById(link.attr('filter-target'));
+                var container = getElementById(link.attr('filter-container'));
+
+                if (!filter.length) {
+                    return false;
+                }
+
+                var shouldShow = link.find('i').hasClass('fa-minus-circle') ? false : !filter.is(':visible');
+                setFilterVisible(filter, shouldShow);
+
+                if (container.length) {
+                    var scope = container.closest('.modal, body');
+
+                    setFilterVisible(container, container.find('[sonata-filter]:visible').length > 0);
+                    scope
+                        .find('.sonata-toggle-filter[filter-target="' + link.attr('filter-target') + '"]')
+                        .each(function () {
+                            syncFilterIcon($(this), shouldShow);
+                        });
+
+                    syncFilterCounter(container);
+                }
+
+                syncFilterIcon(link, shouldShow);
+
+                return false;
+            };
+
+            window.sonataLegacyToggleAdvancedFilter = function (element) {
+                $(element).closest('form').find('.advanced-filter').each(function () {
+                    var field = $(this);
+                    var visible = field.is(':visible');
+
+                    field.toggle(!visible);
+                    field.prop('hidden', visible);
+                });
+
+                return false;
+            };
+
+            function getElementById(id) {
+                return id ? $(document.getElementById(id)) : $();
+            }
+
+            function setFilterVisible(filter, visible) {
+                filter.toggle(visible);
+                filter.prop('hidden', !visible);
+            }
+
+            function syncFilterIcon(link, visible) {
+                var icon = link.find('i').first();
+                if (!icon.length || icon.hasClass('fa-minus-circle') || icon.hasClass('fas')) {
+                    return;
+                }
+
+                icon
+                    .toggleClass('fa-check-square', visible)
+                    .toggleClass('fa-square', !visible);
+                link.toggleClass('active', visible);
+            }
+
+            function syncFilterCounter(container) {
+                var count = container.find('[sonata-filter]').filter(function () {
+                    return $(this).is(':visible') && $(this).attr('sonata-filter') !== 'false';
+                }).length;
+
+                var scope = container.closest('.modal, body');
+                scope.find('.sonata-filter-count, [data-sonata-filter-list-target="counter"]').text(count || '');
+            }
+
+            $(document).on('click', '.sonata-toggle-filter[filter-target]', function (event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+
+                return window.sonataLegacyToggleFilter(this);
+            });
+
+            $(document).on('click', '[data-toggle="advanced-filter"]', function (event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+
+                return window.sonataLegacyToggleAdvancedFilter(this);
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block logo %}
     {% apply spaceless %}
         <a style="background: rgb(34, 45, 50) none repeat scroll 0% 0%;" class="logo" href="{{ path('sonata_admin_dashboard') }}">

@@ -8,7 +8,7 @@
 
             <li class="dropdown sonata-actions">
                 <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">
-                    <i class="fa fa-filter" aria-hidden="true"></i>
+                    <i class="fas fa-filter" aria-hidden="true"></i>
                     {{ 'link_filters'|trans({}, 'SonataAdminBundle') }}
                     <span class="badge sonata-filter-count"></span>
                     <b class="caret"></b>
@@ -22,8 +22,8 @@
                         {% if filterCanBeDisplayed %}
                         {% set filterDisplayed = filter.isActive() or filter.showFilter|default(filter.option('show_filter')) is same as(true) %}
                         <li>
-                            <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ filter_target }}-{{ filter.name }}" filter-container="filter-container-{{ filter_target }}">
-                                <i class="fa {{ filterDisplayed ? 'fa-check-square-o' : 'fa-square-o' }}"></i>
+                            <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ filter_target }}-{{ filter.name }}" filter-container="filter-container-{{ filter_target }}" onclick="if (event) { event.preventDefault(); event.stopPropagation(); if (event.stopImmediatePropagation) event.stopImmediatePropagation(); } var target=document.getElementById('{{ ('filter-' ~ filter_target ~ '-' ~ filter.name)|e('js') }}'); var container=document.getElementById('{{ ('filter-container-' ~ filter_target)|e('js') }}'); if (!target) return false; target.style.display='block'; target.hidden=false; if (container) { container.style.display='block'; container.hidden=false; } var scope=(container && container.closest('.modal')) || document; var links=scope.querySelectorAll('[filter-target=&quot;{{ ('filter-' ~ filter_target ~ '-' ~ filter.name)|e('html_attr') }}&quot;]'); for (var i=0; i<links.length; i++) { var icon=links[i].querySelector('i'); if (icon && !icon.classList.contains('fa-minus-circle')) { icon.classList.remove('fa-square'); icon.classList.add('fa-check-square'); links[i].classList.add('active'); } } return false;">
+                                <i class="far {{ filterDisplayed ? 'fa-check-square' : 'fa-square' }}"></i>
                                 {% if filter.label is not same as(false) %}
                                     {% if filter.translationDomain is same as(false) %}
                                         {{ filter.label }}
@@ -79,8 +79,8 @@
 
                                         <div class="col-sm-1">
                                             <label class="control-label">
-                                                <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ filter_target }}-{{ filter.name }}" filter-container="filter-container-{{ filter_target }}">
-                                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                                <a href="#" class="sonata-ba-action" filter-target="filter-{{ filter_target }}-{{ filter.name }}" filter-container="filter-container-{{ filter_target }}" onclick="if (event) { event.preventDefault(); event.stopPropagation(); if (event.stopImmediatePropagation) event.stopImmediatePropagation(); } var target=document.getElementById('{{ ('filter-' ~ filter_target ~ '-' ~ filter.name)|e('js') }}'); var container=document.getElementById('{{ ('filter-container-' ~ filter_target)|e('js') }}'); if (!target) return false; target.style.display='none'; target.hidden=true; var scope=(container && container.closest('.modal')) || document; var links=scope.querySelectorAll('[filter-target=&quot;{{ ('filter-' ~ filter_target ~ '-' ~ filter.name)|e('html_attr') }}&quot;]'); for (var i=0; i<links.length; i++) { var icon=links[i].querySelector('i'); if (icon && !icon.classList.contains('fa-minus-circle')) { icon.classList.remove('fa-check-square'); icon.classList.add('fa-square'); links[i].classList.remove('active'); } } if (container) { var rows=container.querySelectorAll('[sonata-filter]'); var visible=false; for (var j=0; j<rows.length; j++) { if (rows[j].style.display !== 'none' && !rows[j].hidden) { visible=true; break; } } container.style.display=visible ? 'block' : 'none'; container.hidden=!visible; } return false;">
+                                                    <i class="fas fa-minus-circle" aria-hidden="true"></i>
                                                 </a>
                                             </label>
                                         </div>
@@ -99,7 +99,7 @@
 
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-filter" aria-hidden="true"></i> {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}
+                                        <i class="fas fa-filter" aria-hidden="true"></i> {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}
                                     </button>
 
                                     <a class="btn btn-default" href="{{ admin.generateUrl('list', {filters: 'reset'}) }}">
@@ -109,8 +109,8 @@
 
                                 {% if withAdvancedFilter %}
                                     <div class="form-group">
-                                        <a href="#" data-toggle="advanced-filter">
-                                            <i class="fa fa-cogs" aria-hidden="true"></i>
+                                        <a href="#" data-toggle="advanced-filter" onclick="if (event) { event.preventDefault(); event.stopPropagation(); if (event.stopImmediatePropagation) event.stopImmediatePropagation(); } var form=this.closest('form'); if (!form) return false; var fields=form.querySelectorAll('.advanced-filter'); for (var i=0; i<fields.length; i++) { var visible=fields[i].style.display !== 'none' && !fields[i].hidden; fields[i].style.display=visible ? 'none' : 'block'; fields[i].hidden=visible; } return false;">
+                                            <i class="fas fa-cogs" aria-hidden="true"></i>
                                             {{ 'btn_advanced_filters'|trans({}, 'SonataAdminBundle') }}
                                         </a>
                                     </div>

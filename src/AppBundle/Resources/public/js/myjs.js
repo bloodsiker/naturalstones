@@ -1178,76 +1178,160 @@ $(document).ready(function() {
 		});
 	}
 
-	let filterUpdate = function(e) {
-		e.preventDefault();
-
-		let url = $('.filter-form input[name=url]').val();
-		let filter = '';
-		let sortUrl = '';
-		let priceUrl = '';
-		let stoneUrl = '';
-		let colourUrl = '';
+	let getFilterParams = function() {
+		let params = new URLSearchParams();
 		let sort = $('select[name=sort] :selected').val();
+		let stones = [];
+		let colours = [];
 
-		if (sort) {
-			sortUrl = 'sort=' + sort;
+		if ($('#priceFrom').length && $('#priceTo').length) {
+			params.set('min_price', $('#priceFrom').val());
+			params.set('max_price', $('#priceTo').val());
 		}
 
-		priceUrl = 'min_price=' + $('#priceFrom').val() + '&max_price=' + $('#priceTo').val();
-
 		$('.filter-stones input[name=stone]:checked').each(function() {
-			if (stoneUrl) {
-				stoneUrl += ',' + $(this).val();
-			} else {
-				stoneUrl = 'stone=' + $(this).val();
-			}
+			stones.push($(this).val());
 		});
 
 		$('.filter-colours input[name=colour]:checked').each(function() {
-			if (colourUrl) {
-				colourUrl += ',' + $(this).val();
-			} else {
-				colourUrl = 'colour=' + $(this).val();
-			}
+			colours.push($(this).val());
 		});
 
-		if (priceUrl) {
-			if (filter) {
-				filter += '&' + priceUrl;
-			} else {
-				filter += '?' + priceUrl;
-			}
+		if (stones.length) {
+			params.set('stone', stones.join(','));
 		}
 
-		if (stoneUrl) {
-			if (filter) {
-				filter += '&' + stoneUrl;
-			} else {
-				filter += '?' + stoneUrl;
-			}
+		if (colours.length) {
+			params.set('colour', colours.join(','));
 		}
 
-		if (colourUrl) {
-			if (filter) {
-				filter += '&' + colourUrl;
-			} else {
-				filter += '?' + colourUrl;
-			}
+		if (sort) {
+			params.set('sort', sort);
 		}
 
-		if (sortUrl) {
-			if (filter) {
-				filter += '&' + sortUrl;
-			} else {
-				filter += '?' + sortUrl;
-			}
+		return params;
+	};
+
+	let paramsToObject = function(params) {
+		let result = {};
+
+		params.forEach(function(value, key) {
+			result[key] = value;
+		});
+
+		return result;
+	};
+
+	let getFilterUrl = function(params) {
+		let baseUrl = $('.filter-form input[name=url]').val();
+		let query = params.toString();
+
+		return baseUrl + (query ? '?' + query : '');
+	};
+
+	let syncFilterControls = function(params) {
+		let stones = params.get('stone') ? params.get('stone').split(',') : [];
+		let colours = params.get('colour') ? params.get('colour').split(',') : [];
+
+		$('.filter-stones input[name=stone]').prop('checked', false);
+		stones.forEach(function(id) {
+			$('.filter-stones input[name=stone][value="' + id + '"]').prop('checked', true);
+		});
+
+		$('.filter-colours input[name=colour]').prop('checked', false);
+		colours.forEach(function(id) {
+			$('.filter-colours input[name=colour][value="' + id + '"]').prop('checked', true);
+		});
+
+		if ($('#priceFrom').length && $('#priceTo').length) {
+			$('#priceFrom').val(params.get('min_price') || $('#priceFrom').data('min'));
+			$('#priceTo').val(params.get('max_price') || $('#priceTo').data('max'));
 		}
 
-		window.location = url + filter;
-	}
+		if ($('.filter-form .sort-select').length) {
+			$('.filter-form .sort-select').val(params.get('sort') || '').trigger('change.select2');
+		}
+	};
+
+	let updateFilterResponse = function(response) {
+		$('.main-catalog').html(response.view);
+		$('.pagination-container').html(response.pagination);
+
+		if ($('.selected-filters-container').length) {
+			$('.selected-filters-container').html(response.selected_filters || '');
+		} else if (response.selected_filters && $.trim(response.selected_filters)) {
+			$('.filter-outer').after('<div class="selected-filters-container">' + response.selected_filters + '</div>');
+		}
+
+		if ($('.more-catalog-link').length) {
+			$('.more-catalog-link').data('next-page', response.next_page_number || 2);
+			$('.more-catalog').toggle(!!response.next_page);
+		}
+
+		_updateFavoriteButtons();
+	};
+
+	let filterUpdate = function(e, customParams, customUrl) {
+		if (e) {
+			e.preventDefault();
+		}
+
+		let form = $('.filter-form');
+		let ajaxUrl = form.data('url');
+		let params = customParams || getFilterParams();
+		let targetUrl = customUrl || getFilterUrl(params);
+
+		if (!ajaxUrl) {
+			window.location = targetUrl;
+			return;
+		}
+
+		let data = paramsToObject(params);
+		let routeParams = paramsToObject(params);
+		let category = form.data('category');
+
+		if (category) {
+			routeParams.slug = category;
+			data.category_slug = category;
+		}
+
+		data.ajax_filter = true;
+		data.show_paginator = true;
+		data.url = form.find('input[name=url]').val();
+		data.route = form.data('route');
+		data.route_params = routeParams;
+
+		form.addClass('loading');
+		$('.main-catalog').addClass('catalog-loading');
+
+		$.ajax({
+			type: 'POST',
+			url: ajaxUrl,
+			data: data,
+			success: function(response) {
+				updateFilterResponse(response);
+				window.history.pushState({}, '', targetUrl);
+				form.removeClass('loading');
+				$('.main-catalog').removeClass('catalog-loading');
+			},
+			error: function() {
+				window.location = targetUrl;
+			}
+		});
+	};
 
 	$('.btn-filter').on('click', filterUpdate);
 	$(document).on('change', '.filter-form .sort-select', filterUpdate);
+	$(document).on('change', '.filter-form input[name=stone], .filter-form input[name=colour]', filterUpdate);
+	$(document).on('click', '.selected-filter', function(e) {
+		e.preventDefault();
+
+		let url = new URL(this.href, window.location.origin);
+		let params = new URLSearchParams(url.search);
+
+		syncFilterControls(params);
+		filterUpdate(e, params, url.pathname + url.search);
+	});
 
 	let lang = $('html').attr('lang');
 

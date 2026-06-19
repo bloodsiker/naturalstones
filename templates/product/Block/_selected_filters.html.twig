@@ -1,0 +1,61 @@
+{% set selectedStones = selectedStones|default(app.request.get('stone') ? app.request.get('stone')|split(',') : []) %}
+{% set selectedColours = selectedColours|default(app.request.get('colour') ? app.request.get('colour')|split(',') : []) %}
+{% set selectedMinPrice = selectedMinPrice|default(app.request.get('min_price')) %}
+{% set selectedMaxPrice = selectedMaxPrice|default(app.request.get('max_price')) %}
+{% set hasSelectedPrice = (selectedMinPrice and selectedMinPrice != minPrice) or (selectedMaxPrice and selectedMaxPrice != maxPrice) %}
+{% set selectedFilterBaseUrl = filterBaseUrl|default(app.request.pathinfo) %}
+{% set selectedFilterQuery = selectedFilterQuery|default(app.request.query.all) %}
+{% set selectedColourItems = colours|default([])|filter(colour => (colour.id ~ '') in selectedColours) %}
+{% set selectedStoneItems = stones|default([])|filter(stone => (stone.id ~ '') in selectedStones) %}
+{% set hasSelectedFilters = selectedColourItems|length or selectedStoneItems|length or hasSelectedPrice %}
+
+{% if hasSelectedFilters %}
+    <div class="selected-filters">
+        {% if selectedColourItems|length %}
+            <div class="selected-filter-group selected-filter-group-colours">
+                <strong class="selected-filter-label">{{ app.request.locale == 'ru' ? 'Цвет' : 'Колір' }}:</strong>
+                <div class="selected-filter-group-items">
+                    {% for colour in selectedColourItems %}
+                        {% set remainingColours = selectedColours|filter(id => id != (colour.id ~ '')) %}
+                        {% set query = selectedFilterQuery|filter((value, key) => key != 'colour' and key != 'page') %}
+                        {% set query = remainingColours|length ? query|merge({'colour': remainingColours|join(',')}) : query %}
+                        <a class="selected-filter" href="{{ selectedFilterBaseUrl }}{{ query|length ? '?' ~ query|url_encode : '' }}">
+                            <span>{{ colour.name }}</span>
+                            <i aria-hidden="true"></i>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if selectedStoneItems|length %}
+            <div class="selected-filter-group selected-filter-group-stones">
+                <strong class="selected-filter-label">{{ app.request.locale == 'ru' ? 'Камни' : 'Каміння' }}:</strong>
+                <div class="selected-filter-group-items">
+                    {% for stone in selectedStoneItems %}
+                        {% set remainingStones = selectedStones|filter(id => id != (stone.id ~ '')) %}
+                        {% set query = selectedFilterQuery|filter((value, key) => key != 'stone' and key != 'page') %}
+                        {% set query = remainingStones|length ? query|merge({'stone': remainingStones|join(',')}) : query %}
+                        <a class="selected-filter" href="{{ selectedFilterBaseUrl }}{{ query|length ? '?' ~ query|url_encode : '' }}">
+                            <span>{{ stone.name }}</span>
+                            <i aria-hidden="true"></i>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasSelectedPrice %}
+            {% set query = selectedFilterQuery|filter((value, key) => key not in ['min_price', 'max_price', 'page']) %}
+            <div class="selected-filter-group selected-filter-group-price">
+                <strong class="selected-filter-label">{{ app.request.locale == 'ru' ? 'Цена' : 'Ціна' }}:</strong>
+                <div class="selected-filter-group-items">
+                    <a class="selected-filter" href="{{ selectedFilterBaseUrl }}{{ query|length ? '?' ~ query|url_encode : '' }}">
+                        <span>{{ selectedMinPrice ?: minPrice }} - {{ selectedMaxPrice ?: maxPrice }} грн</span>
+                        <i aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

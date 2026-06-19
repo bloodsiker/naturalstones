@@ -1,4 +1,8 @@
-<form action="#" method="post" class="filter-form">
+{% set filter_ajax_path = block is defined ? (block.page is defined ? sonata_page_ajax_url(block) : block_ajax_url(block)) : null %}
+<form action="#" method="post" class="filter-form"
+      data-url="{{ filter_ajax_path }}"
+      data-route="{{ app.request.attributes.get('_route') }}"
+      data-category="{{ settings.category.slug|default(app.request.attributes.get('slug')) }}">
     <input type="hidden" name="url" value="{{ app.request.pathinfo }}">
     <div class="filter-content">
         <div class="filter-content-inner">
@@ -21,9 +25,6 @@
                                 </label>
                             </li>
                         {% endfor %}
-                        <li>
-                            <a href="" class="btn-filter">{{ 'frontend.filter.apply'|trans([], 'AppBundle') }}</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -43,9 +44,6 @@
                                     </label>
                                 </li>
                             {% endfor %}
-                            <li>
-                                <a href="" class="btn-filter">{{ 'frontend.filter.apply'|trans([], 'AppBundle') }}</a>
-                            </li>
                         </ul>
                     </div>
                 </div>

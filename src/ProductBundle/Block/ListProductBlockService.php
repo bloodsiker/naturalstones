@@ -39,6 +39,7 @@ class ListProductBlockService extends AbstractEditableBlockService
     public const BUY_WITH_LIST = '@Product/Block/buy_with_list.html.twig';
     public const TEMPLATE_AJAX = '@Product/Block/large_list_ajax.html.twig';
     public const TEMPLATE_PAGINATION = '@Product/Block/_pagination.html.twig';
+    public const TEMPLATE_SELECTED_FILTERS = '@Product/Block/_selected_filters.html.twig';
 
     public const CATEGORY_NABORI = 5;
 
@@ -226,7 +227,20 @@ class ListProductBlockService extends AbstractEditableBlockService
             $repository->filterByRand($qb);
         }
 
-        if ($blockContext->getSetting('filter') && !$loadMore) {
+        // On ajax filter requests the block is rebuilt with only its id/type, so the
+        // `category` setting is lost. Apply the category scope from the request before
+        // building the available filter options below so they stay category-scoped.
+        if ($request->get('category_slug')) {
+            $category = $repositoryCategory->findOneBy(['slug' => $request->get('category_slug')]);
+            if ($category) {
+                $repository->filterByCategory($qb, $category);
+            }
+        }
+
+        // The `filter` setting is also lost on ajax requests, so build the filter data
+        // whenever it is an ajax filter request as well, otherwise the selected filter
+        // chips can never be resolved.
+        if (($blockContext->getSetting('filter') || ($isAjax && $request->get('ajax_filter'))) && !$loadMore) {
             $maxPriceQb = $minPriceQb = clone $qb;
             $maxPrice = $maxPriceQb->resetDQLPart('select')->select('MAX(p.price) as max')->getQuery()->getSingleResult();
             $minPrice = $minPriceQb->resetDQLPart('select')->select('MIN(p.price) as min')->getQuery()->getSingleResult();
@@ -271,13 +285,6 @@ class ListProductBlockService extends AbstractEditableBlockService
             $repository->filterByColours($qb, explode(',', $request->get('colour')));
         }
 
-        if ($request->get('category_slug')) {
-            $category = $repositoryCategory->findOneBy(['slug' => $request->get('category_slug')]);
-            if ($category) {
-                $repository->filterByCategory($qb, $category);
-            }
-        }
-
         $paginator = new Pagerfanta(new QueryAdapter($qb, true, false));
         $paginator->setAllowOutOfRangePages(true);
         $paginator->setMaxPerPage((int) $limit);
@@ -286,11 +293,61 @@ class ListProductBlockService extends AbstractEditableBlockService
         $template = !is_null($blockContext->getSetting('list_type'))
             ? $blockContext->getSetting('list_type') : $blockContext->getTemplate();
 
+        $settings = array_merge($blockContext->getSettings(), $block->getSettings());
+
+        if ($isAjax && $request->get('ajax_filter')) {
+            $selectedFilterQuery = $request->request->all();
+            foreach (['ajax_filter', 'url', 'route', 'route_params', 'category_slug', 'show_paginator'] as $key) {
+                unset($selectedFilterQuery[$key]);
+            }
+            $selectedFilterQuery = array_filter($selectedFilterQuery, static fn ($value) => null !== $value && '' !== $value);
+
+            $routeParams = $request->get('route_params', []);
+            if (!is_array($routeParams)) {
+                $routeParams = [];
+            }
+
+            $responseProducts = $this->renderResponse(self::TEMPLATE_AJAX, [
+                'products' => $paginator,
+                'block' => $block,
+                'settings' => $settings,
+            ], new Response());
+
+            $responsePagination = $this->renderResponse(self::TEMPLATE_PAGINATION, [
+                '_route_params' => $routeParams,
+                '_route' => $request->get('route'),
+                'products' => $paginator,
+                'block' => $block,
+                'settings' => $settings,
+            ], new Response());
+
+            $responseSelectedFilters = $this->renderResponse(self::TEMPLATE_SELECTED_FILTERS, [
+                'maxPrice' => $maxPrice['max'] ?? 0,
+                'minPrice' => $minPrice['min'] ?? 0,
+                'stones' => $stoneArray ?? [],
+                'colours' => $colourArray ?? [],
+                'filterBaseUrl' => $request->get('url', ''),
+                'selectedFilterQuery' => $selectedFilterQuery,
+                'selectedStones' => isset($selectedFilterQuery['stone']) ? explode(',', (string) $selectedFilterQuery['stone']) : [],
+                'selectedColours' => isset($selectedFilterQuery['colour']) ? explode(',', (string) $selectedFilterQuery['colour']) : [],
+                'selectedMinPrice' => $selectedFilterQuery['min_price'] ?? null,
+                'selectedMaxPrice' => $selectedFilterQuery['max_price'] ?? null,
+            ], new Response());
+
+            return new JsonResponse([
+                'view' => $responseProducts->getContent(),
+                'pagination' => $responsePagination->getContent(),
+                'selected_filters' => $responseSelectedFilters->getContent(),
+                'next_page' => $paginator->hasNextPage(),
+                'next_page_number' => $paginator->hasNextPage() ? $paginator->getNextPage() : null,
+            ]);
+        }
+
         if ($loadMore) {
             $responseProducts = $this->renderResponse(self::TEMPLATE_AJAX, [
                 'products' => $paginator,
                 'block' => $block,
-                'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
+                'settings' => $settings,
             ], new Response());
 
             $responsePagination = $this->renderResponse(self::TEMPLATE_PAGINATION, [
@@ -298,7 +355,7 @@ class ListProductBlockService extends AbstractEditableBlockService
                 '_route' => $request->get('route'),
                 'products' => $paginator,
                 'block' => $block,
-                'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
+                'settings' => $settings,
             ], new Response());
 
             return new JsonResponse([
@@ -315,7 +372,7 @@ class ListProductBlockService extends AbstractEditableBlockService
             'stones' => $stoneArray ?? [],
             'colours' => $colourArray ?? [],
             'block' => $block,
-            'settings' => array_merge($blockContext->getSettings(), $block->getSettings()),
+            'settings' => $settings,
         ], $response);
     }
 }

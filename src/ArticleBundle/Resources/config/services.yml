@@ -19,5 +19,6 @@ services:
 
     article.shortcode.processor.read:
         class: "ArticleBundle\\Shortcode\\ReadProcessorService"
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'

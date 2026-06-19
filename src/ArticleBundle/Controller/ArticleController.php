@@ -10,6 +10,7 @@ use ArticleBundle\Entity\Article;
 use ArticleBundle\Entity\ArticleRepository;
 use ArticleBundle\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
+use ProductBundle\Entity\Product;
 use ShareBundle\Entity\Tag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -134,7 +135,13 @@ class ArticleController extends BaseController
             $repo->incViewCounter($article->getId());
         }
 
-        return $this->render('@Article/view.html.twig', ['article' => $article]);
+        $tagIds = $article->getTags()->map(fn($t) => $t->getId())->toArray();
+        $relatedProducts = $this->em->getRepository(Product::class)->findByTagIds($tagIds, 4);
+
+        return $this->render('@Article/view.html.twig', [
+            'article' => $article,
+            'relatedProducts' => $relatedProducts,
+        ]);
     }
 
     private function applySeo(Request $request, string $title, string $description): void

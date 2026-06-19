@@ -4950,8 +4950,45 @@ article.article:hover .img-relative img {
   text-decoration: underline;
 }
 
-.article-view {
+.article-view-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
   margin-bottom: 80px;
+}
+.article-view {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.article-related-products {
+  flex: 0 0 260px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+}
+.article-related-products .catalog-block .image {
+  height: 240px;
+}
+.article-related-products .catalog-block {
+  width: 100%;
+}
+@media (max-width: 900px) {
+  .article-view-layout {
+    flex-direction: column;
+  }
+  .article-related-products {
+    flex: none;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .article-related-products .catalog-block {
+    width: calc(50% - 10px);
+  }
 }
 .article-description {
   margin: 15px 0;

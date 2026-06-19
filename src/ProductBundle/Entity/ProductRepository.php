@@ -131,6 +131,41 @@ class ProductRepository extends EntityRepository
         return $qb->andWhere('p.category IN (:categories)')->setParameter('categories', $categoryIds);
     }
 
+    /**
+     * @param int[] $tagIds
+     * @return Product[]
+     */
+    public function findByTagIds(array $tagIds, int $limit = 4): array
+    {
+        if (empty($tagIds)) {
+            return [];
+        }
+
+        $ids = $this->createQueryBuilder('p')
+            ->select('p.id')
+            ->distinct(true)
+            ->innerJoin('p.tags', 'ptag')
+            ->where('p.isActive = 1')
+            ->andWhere('p.isMainProduct = 1')
+            ->andWhere('ptag.id IN (:tagIds)')
+            ->setParameter('tagIds', $tagIds)
+            ->orderBy('p.orderNum', 'DESC')
+            ->addOrderBy('p.id', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getSingleColumnResult();
+
+        if (empty($ids)) {
+            return [];
+        }
+
+        return $this->baseProductQueryBuilder()
+            ->andWhere('p.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function filterExclude(QueryBuilder $qb, $excludeIds): QueryBuilder
     {
         return $qb->andWhere('p.id not in (:exclude_ids)')->setParameter('exclude_ids', $excludeIds);

@@ -1,5 +1,6 @@
 {% set selectedStones = selectedStones|default(app.request.get('stone') ? app.request.get('stone')|split(',') : []) %}
 {% set selectedColours = selectedColours|default(app.request.get('colour') ? app.request.get('colour')|split(',') : []) %}
+{% set selectedCategories = selectedCategories|default(app.request.get('category') ? app.request.get('category')|split(',') : []) %}
 {% set selectedMinPrice = selectedMinPrice|default(app.request.get('min_price')) %}
 {% set selectedMaxPrice = selectedMaxPrice|default(app.request.get('max_price')) %}
 {% set hasSelectedPrice = (selectedMinPrice and selectedMinPrice != minPrice) or (selectedMaxPrice and selectedMaxPrice != maxPrice) %}
@@ -7,7 +8,8 @@
 {% set selectedFilterQuery = selectedFilterQuery|default(app.request.query.all) %}
 {% set selectedColourItems = colours|default([])|filter(colour => (colour.id ~ '') in selectedColours) %}
 {% set selectedStoneItems = stones|default([])|filter(stone => (stone.id ~ '') in selectedStones) %}
-{% set hasSelectedFilters = selectedColourItems|length or selectedStoneItems|length or hasSelectedPrice %}
+{% set selectedCategoryItems = categories|default([])|filter(category => (category.id ~ '') in selectedCategories) %}
+{% set hasSelectedFilters = selectedColourItems|length or selectedStoneItems|length or selectedCategoryItems|length or hasSelectedPrice %}
 
 {% if hasSelectedFilters %}
     <div class="selected-filters">
@@ -38,6 +40,23 @@
                         {% set query = remainingStones|length ? query|merge({'stone': remainingStones|join(',')}) : query %}
                         <a class="selected-filter" href="{{ selectedFilterBaseUrl }}{{ query|length ? '?' ~ query|url_encode : '' }}">
                             <span>{{ stone.name }}</span>
+                            <i aria-hidden="true"></i>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if selectedCategoryItems|length %}
+            <div class="selected-filter-group selected-filter-group-categories">
+                <strong class="selected-filter-label">{{ app.request.locale == 'ru' ? 'Категория' : 'Категорія' }}:</strong>
+                <div class="selected-filter-group-items">
+                    {% for category in selectedCategoryItems %}
+                        {% set remainingCategories = selectedCategories|filter(id => id != (category.id ~ '')) %}
+                        {% set query = selectedFilterQuery|filter((value, key) => key != 'category' and key != 'page') %}
+                        {% set query = remainingCategories|length ? query|merge({'category': remainingCategories|join(',')}) : query %}
+                        <a class="selected-filter" href="{{ selectedFilterBaseUrl }}{{ query|length ? '?' ~ query|url_encode : '' }}">
+                            <span>{{ category.name }}</span>
                             <i aria-hidden="true"></i>
                         </a>
                     {% endfor %}

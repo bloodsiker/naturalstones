@@ -37,7 +37,8 @@
                         'page': app.request.get('page') ? app.request.get('page') : 1,
                         'stones': zodiac.stones|map(stone => stone.id),
                         'title': 'frontend.products_zodiac'|trans({'%ZODIAC%': zodiac.name}, 'ShareBundle'),
-                        'show_paginator': true
+                        'show_paginator': true,
+                        'ajax_paginator': true
                     }
                 )
             }}

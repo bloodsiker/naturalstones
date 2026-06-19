@@ -796,13 +796,19 @@ $(document).ready(function() {
 		let	ajaxUrl = _this.data('url');
 		let page = _this.data('next-page');
 
-		if (_this.data('category')) {
+		if (_this.data('routeSlug')) {
+			routeParams['slug'] = _this.data('routeSlug');
+		} else if (_this.data('category')) {
 			routeParams['slug'] = _this.data('category');
 		}
 
 		if (_this.data('search')) {
 			paramsObj['search'] = _this.data('search');
 			routeParams['search'] = _this.data('search');
+		}
+
+		if (_this.data('scopeStones')) {
+			paramsObj['scope_stones'] = _this.data('scopeStones');
 		}
 
 		paramsObj['page'] = page;
@@ -1183,6 +1189,7 @@ $(document).ready(function() {
 		let sort = $('select[name=sort] :selected').val();
 		let stones = [];
 		let colours = [];
+		let categories = [];
 
 		if ($('#priceFrom').length && $('#priceTo').length) {
 			params.set('min_price', $('#priceFrom').val());
@@ -1197,12 +1204,20 @@ $(document).ready(function() {
 			colours.push($(this).val());
 		});
 
+		$('.filter-categories input[name=category]:checked').each(function() {
+			categories.push($(this).val());
+		});
+
 		if (stones.length) {
 			params.set('stone', stones.join(','));
 		}
 
 		if (colours.length) {
 			params.set('colour', colours.join(','));
+		}
+
+		if (categories.length) {
+			params.set('category', categories.join(','));
 		}
 
 		if (sort) {
@@ -1232,6 +1247,7 @@ $(document).ready(function() {
 	let syncFilterControls = function(params) {
 		let stones = params.get('stone') ? params.get('stone').split(',') : [];
 		let colours = params.get('colour') ? params.get('colour').split(',') : [];
+		let categories = params.get('category') ? params.get('category').split(',') : [];
 
 		$('.filter-stones input[name=stone]').prop('checked', false);
 		stones.forEach(function(id) {
@@ -1241,6 +1257,11 @@ $(document).ready(function() {
 		$('.filter-colours input[name=colour]').prop('checked', false);
 		colours.forEach(function(id) {
 			$('.filter-colours input[name=colour][value="' + id + '"]').prop('checked', true);
+		});
+
+		$('.filter-categories input[name=category]').prop('checked', false);
+		categories.forEach(function(id) {
+			$('.filter-categories input[name=category][value="' + id + '"]').prop('checked', true);
 		});
 
 		if ($('#priceFrom').length && $('#priceTo').length) {
@@ -1288,11 +1309,20 @@ $(document).ready(function() {
 
 		let data = paramsToObject(params);
 		let routeParams = paramsToObject(params);
+		let routeSlug = form.data('routeSlug');
 		let category = form.data('category');
+		let scopeStones = form.find('input[name=scope_stones]').val();
+
+		if (routeSlug) {
+			routeParams.slug = routeSlug;
+		}
 
 		if (category) {
-			routeParams.slug = category;
 			data.category_slug = category;
+		}
+
+		if (scopeStones) {
+			data.scope_stones = scopeStones;
 		}
 
 		data.ajax_filter = true;
@@ -1322,7 +1352,7 @@ $(document).ready(function() {
 
 	$('.btn-filter').on('click', filterUpdate);
 	$(document).on('change', '.filter-form .sort-select', filterUpdate);
-	$(document).on('change', '.filter-form input[name=stone], .filter-form input[name=colour]', filterUpdate);
+	$(document).on('change', '.filter-form input[name=stone], .filter-form input[name=colour], .filter-form input[name=category]', filterUpdate);
 	$(document).on('click', '.selected-filter', function(e) {
 		e.preventDefault();
 

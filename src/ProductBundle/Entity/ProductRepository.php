@@ -126,6 +126,11 @@ class ProductRepository extends EntityRepository
             ->setParameter('tag', $tag);
     }
 
+    public function filterByCategories(QueryBuilder $qb, $categoryIds): QueryBuilder
+    {
+        return $qb->andWhere('p.category IN (:categories)')->setParameter('categories', $categoryIds);
+    }
+
     public function filterExclude(QueryBuilder $qb, $excludeIds): QueryBuilder
     {
         return $qb->andWhere('p.id not in (:exclude_ids)')->setParameter('exclude_ids', $excludeIds);
@@ -168,6 +173,20 @@ class ProductRepository extends EntityRepository
         $ids = $this->distinctRelationIds($scopeQb, 'p.colours');
 
         return $ids ? $this->getEntityManager()->getRepository(Colour::class)->findBy(['id' => $ids]) : [];
+    }
+
+    /**
+     * Distinct categories available for the products in the given scope.
+     *
+     * @return Category[]
+     */
+    public function findAvailableCategories(QueryBuilder $scopeQb): array
+    {
+        $ids = $this->distinctRelationIds($scopeQb, 'p.category');
+
+        return $ids
+            ? $this->getEntityManager()->getRepository(Category::class)->findBy(['id' => $ids], ['orderNum' => 'DESC'])
+            : [];
     }
 
     /**

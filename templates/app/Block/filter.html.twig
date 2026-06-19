@@ -2,8 +2,10 @@
 <form action="#" method="post" class="filter-form"
       data-url="{{ filter_ajax_path }}"
       data-route="{{ app.request.attributes.get('_route') }}"
-      data-category="{{ settings.category.slug|default(app.request.attributes.get('slug')) }}">
+      data-route-slug="{{ app.request.attributes.get('slug') }}"
+      data-category="{{ settings.category.slug|default('') }}">
     <input type="hidden" name="url" value="{{ app.request.pathinfo }}">
+    <input type="hidden" name="scope_stones" value="{{ settings.stones ? settings.stones|join(',') : (settings.stone ? settings.stone.id : '') }}">
     <div class="filter-content">
         <div class="filter-content-inner">
             <div class="title">{{ 'frontend.filter.title'|trans([], 'AppBundle') }}</div>
@@ -30,7 +32,7 @@
             </div>
             {% endif %}
 
-            {% if stones is defined %}
+            {% if stones is defined and not settings.stone %}
                 <div class="filter-block">
                     <div class="filter-toggle"><span>{{ 'frontend.filter.stones'|trans([], 'AppBundle') }}</span><i></i></div>
                     <div class="filter-podmenu filter-stones">
@@ -41,6 +43,25 @@
                                         <input type="checkbox" name="stone" {{ is_constrain(stone.id, app.request.get('stone')) }} value="{{ stone.id }}">
                                         <i></i>
                                         <span>{{ stone.name}}</span>
+                                    </label>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if categories is defined and categories|length and not settings.category %}
+                <div class="filter-block">
+                    <div class="filter-toggle"><span>{{ 'frontend.filter.category'|trans([], 'AppBundle') }}</span><i></i></div>
+                    <div class="filter-podmenu filter-categories">
+                        <ul class="filter-podmenu-choose">
+                            {% for category in categories %}
+                                <li>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="category" {{ is_constrain(category.id, app.request.get('category')) }} value="{{ category.id }}">
+                                        <i></i>
+                                        <span>{{ category.name }}</span>
                                     </label>
                                 </li>
                             {% endfor %}

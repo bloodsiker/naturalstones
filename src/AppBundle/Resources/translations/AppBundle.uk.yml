@@ -234,6 +234,7 @@ frontend:
         title: Фільтри
         colour: Колір
         stones: Каміння
+        category: Категорія
         price: Ціна
         sort: Сортування
         sorts:

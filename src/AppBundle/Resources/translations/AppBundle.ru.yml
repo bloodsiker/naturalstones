@@ -234,6 +234,7 @@ frontend:
         title: Фильтры
         colour: Цвет
         stones: Камни
+        category: Категория
         price: Цена
         sort: Сортировка
         sorts:

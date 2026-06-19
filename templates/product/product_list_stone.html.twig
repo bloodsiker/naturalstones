@@ -106,8 +106,10 @@
                     'items_count' : 20,
                     'page': app.request.get('page') ? app.request.get('page') : 1,
                     'stone': stone,
+                    'filter': true,
                     'title': 'frontend.stone_commercial.h1'|trans({'%STONE%': stone.name}, 'AppBundle'),
-                    'show_paginator': true
+                    'show_paginator': true,
+                    'ajax_paginator': true
                 }
             )
         }}

@@ -230,13 +230,17 @@ class ListProductBlockService extends AbstractEditableBlockService
         }
 
         // On ajax filter requests the block is rebuilt with only its id/type, so the
-        // `category` setting is lost. Apply the category scope from the request before
-        // building the available filter options below so they stay category-scoped.
+        // scope settings (`category`, `stone`) are lost. Re-apply the scope from the
+        // request before building the available filter options below so they stay scoped.
         if ($request->get('category_slug')) {
             $category = $repositoryCategory->findOneBy(['slug' => $request->get('category_slug')]);
             if ($category) {
                 $repository->filterByCategory($qb, $category);
             }
+        }
+
+        if ($request->get('scope_stones')) {
+            $repository->filterByStones($qb, explode(',', $request->get('scope_stones')));
         }
 
         // The `filter` setting is also lost on ajax requests, so build the filter data
@@ -249,6 +253,12 @@ class ListProductBlockService extends AbstractEditableBlockService
 
             $stoneArray = $repository->findAvailableStones($qb);
             $colourArray = $repository->findAvailableColours($qb);
+
+            // The category filter only makes sense when the list is not already scoped
+            // to a single category (e.g. on a stone page).
+            if (!$blockContext->getSetting('category') && !$request->get('category_slug')) {
+                $categoryArray = $repository->findAvailableCategories($qb);
+            }
         }
 
         if ($request->get('min_price')) {
@@ -271,6 +281,10 @@ class ListProductBlockService extends AbstractEditableBlockService
             $repository->filterByColours($qb, explode(',', $request->get('colour')));
         }
 
+        if ($request->get('category')) {
+            $repository->filterByCategories($qb, explode(',', $request->get('category')));
+        }
+
         $paginator = new Pagerfanta(new QueryAdapter($qb, true, false));
         $paginator->setAllowOutOfRangePages(true);
         $paginator->setMaxPerPage((int) $limit);
@@ -283,7 +297,7 @@ class ListProductBlockService extends AbstractEditableBlockService
 
         if ($isAjax && $request->get('ajax_filter')) {
             $selectedFilterQuery = $request->request->all();
-            foreach (['ajax_filter', 'url', 'route', 'route_params', 'category_slug', 'show_paginator'] as $key) {
+            foreach (['ajax_filter', 'url', 'route', 'route_params', 'category_slug', 'scope_stones', 'load_more', 'show_paginator'] as $key) {
                 unset($selectedFilterQuery[$key]);
             }
             $selectedFilterQuery = array_filter($selectedFilterQuery, static fn ($value) => null !== $value && '' !== $value);
@@ -299,30 +313,24 @@ class ListProductBlockService extends AbstractEditableBlockService
                 'settings' => $settings,
             ], new Response());
 
-            $responsePagination = $this->renderResponse(self::TEMPLATE_PAGINATION, [
-                '_route_params' => $routeParams,
-                '_route' => $request->get('route'),
-                'products' => $paginator,
-                'block' => $block,
-                'settings' => $settings,
-            ], new Response());
-
             $responseSelectedFilters = $this->renderResponse(self::TEMPLATE_SELECTED_FILTERS, [
                 'maxPrice' => $maxPrice ?? 0,
                 'minPrice' => $minPrice ?? 0,
                 'stones' => $stoneArray ?? [],
                 'colours' => $colourArray ?? [],
+                'categories' => $categoryArray ?? [],
                 'filterBaseUrl' => $request->get('url', ''),
                 'selectedFilterQuery' => $selectedFilterQuery,
                 'selectedStones' => isset($selectedFilterQuery['stone']) ? explode(',', (string) $selectedFilterQuery['stone']) : [],
                 'selectedColours' => isset($selectedFilterQuery['colour']) ? explode(',', (string) $selectedFilterQuery['colour']) : [],
+                'selectedCategories' => isset($selectedFilterQuery['category']) ? explode(',', (string) $selectedFilterQuery['category']) : [],
                 'selectedMinPrice' => $selectedFilterQuery['min_price'] ?? null,
                 'selectedMaxPrice' => $selectedFilterQuery['max_price'] ?? null,
             ], new Response());
 
             return new JsonResponse([
                 'view' => $responseProducts->getContent(),
-                'pagination' => $responsePagination->getContent(),
+                'pagination' => $this->renderPagination($paginator, $block, $settings, $routeParams, $request->get('route')),
                 'selected_filters' => $responseSelectedFilters->getContent(),
                 'next_page' => $paginator->hasNextPage(),
                 'next_page_number' => $paginator->hasNextPage() ? $paginator->getNextPage() : null,
@@ -336,17 +344,9 @@ class ListProductBlockService extends AbstractEditableBlockService
                 'settings' => $settings,
             ], new Response());
 
-            $responsePagination = $this->renderResponse(self::TEMPLATE_PAGINATION, [
-                '_route_params' => $request->get('route_params'),
-                '_route' => $request->get('route'),
-                'products' => $paginator,
-                'block' => $block,
-                'settings' => $settings,
-            ], new Response());
-
             return new JsonResponse([
                 'view' => $responseProducts->getContent(),
-                'pagination' => $responsePagination->getContent(),
+                'pagination' => $this->renderPagination($paginator, $block, $settings, $request->get('route_params'), $request->get('route')),
                 'next_page' => $paginator->hasNextPage(),
             ]);
         }
@@ -357,8 +357,34 @@ class ListProductBlockService extends AbstractEditableBlockService
             'minPrice' => $minPrice ?? 0,
             'stones' => $stoneArray ?? [],
             'colours' => $colourArray ?? [],
+            'categories' => $categoryArray ?? [],
             'block' => $block,
             'settings' => $settings,
         ], $response);
+    }
+
+    /**
+     * Renders the paginator template, degrading to an empty string if the route params
+     * sent by the client are incomplete (e.g. a stale script omitting the route slug),
+     * so a pagination failure never empties the whole ajax response.
+     */
+    private function renderPagination(
+        Pagerfanta $paginator,
+        BlockInterface $block,
+        array $settings,
+        mixed $routeParams,
+        ?string $route,
+    ): string {
+        try {
+            return $this->renderResponse(self::TEMPLATE_PAGINATION, [
+                '_route_params' => is_array($routeParams) ? $routeParams : [],
+                '_route' => $route,
+                'products' => $paginator,
+                'block' => $block,
+                'settings' => $settings,
+            ], new Response())->getContent();
+        } catch (\Throwable) {
+            return '';
+        }
     }
 }

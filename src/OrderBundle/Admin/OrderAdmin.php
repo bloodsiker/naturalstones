@@ -55,10 +55,8 @@ class OrderAdmin extends Admin
             ->add('orderSum', null, [
                 'label' => 'order.fields.order_sum',
             ])
-            ->add('type', 'choice', [
-                'label' => 'order.fields.type',
-                'choices' => array_flip($this->getTypes()),
-                'catalogue' => $this->getTranslationDomain(),
+            ->add('totalSum', null, [
+                'label' => 'order.fields.total_sum',
             ])
             ->add('status', 'choice', [
                 'label' => 'order.fields.status',
@@ -192,16 +190,24 @@ class OrderAdmin extends Admin
                         'label' => 'order.fields.instagram',
                         'required' => false,
                     ])
-                    ->add('totalSum', TextType::class, [
-                        'label' => 'order.fields.total_sum',
+                    ->add('orderSum', TextType::class, [
+                        'label' => 'order.fields.order_sum',
                         'attr' => ['readonly' => true],
                     ])
                     ->add('discountPromo', TextType::class, [
                         'label' => 'order.fields.discount_promo',
                         'attr' => ['readonly' => true],
                     ])
-                    ->add('orderSum', TextType::class, [
-                        'label' => 'order.fields.order_sum',
+                    ->add('promoCode', ModelListType::class, [
+                        'label' => 'order.fields.promo_code',
+                        'required' => false,
+                        'btn_add' => false,
+                        'btn_edit' => 'btn_edit',
+                        'btn_delete' => false,
+                        'btn_catalogue' => false,
+                    ])
+                    ->add('totalSum', TextType::class, [
+                        'label' => 'order.fields.total_sum',
                         'attr' => ['readonly' => true],
                     ])
                     ->add('isSpin', null, [

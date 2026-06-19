@@ -83,8 +83,18 @@
                 <ul class="order-form-calculate">
                     <li>
                         <span>{{ 'frontend.order.order_sum'|trans([], 'AppBundle') }}</span>
-                        <span class="total-price">{{ order.totalSum|number_format(2, ',') }} грн</span>
+                        <span class="total-price">{{ order.orderSum|number_format(2, ',') }} грн</span>
                     </li>
+                    {% if order.promoCode %}
+                        <li style="color:#27ae60;">
+                            <span>{{ 'frontend.cabinet.promo_code'|trans([], 'AppBundle') }} {{ order.promoCode.code }}</span>
+                            <span>-{{ order.discountPromo|number_format(2, ',') }} грн</span>
+                        </li>
+                        <li>
+                            <span>{{ 'frontend.cabinet.total_sum'|trans([], 'AppBundle') }}</span>
+                            <span class="total-price">{{ order.totalSum|number_format(2, ',') }} грн</span>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

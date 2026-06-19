@@ -1,3 +1,9 @@
+apply_promo:
+    path: /cart/apply-promo
+    defaults:
+        _controller: OrderBundle\Controller\OrderController::applyPromoAction
+    methods: [POST]
+
 quick_order:
     path: /quick-order
     defaults:

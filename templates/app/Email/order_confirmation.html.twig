@@ -47,6 +47,16 @@
                         <td style="padding:8px 0;color:#6b6b6b;">Сума замовлення</td>
                         <td style="padding:8px 0;font-weight:700;">{{ order.orderSum|number_format(2, ',', ' ') }} грн</td>
                     </tr>
+                    {% if order.promoCode %}
+                    <tr>
+                        <td style="padding:8px 0;color:#6b6b6b;">Промокод</td>
+                        <td style="padding:8px 0;font-weight:700;color:#27ae60;">{{ order.promoCode.code }} (-{{ order.discountPromo|number_format(2, ',', ' ') }} грн)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:8px 0;color:#6b6b6b;">Разом до сплати</td>
+                        <td style="padding:8px 0;font-weight:700;font-size:17px;">{{ order.totalSum|number_format(2, ',', ' ') }} грн</td>
+                    </tr>
+                    {% endif %}
                     {% if order.fio %}
                         <tr>
                             <td style="padding:8px 0;color:#6b6b6b;">Ім'я</td>

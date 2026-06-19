@@ -3,6 +3,8 @@
 namespace AppBundle\Block;
 
 use AppBundle\Services\Cart;
+use Doctrine\ORM\EntityManagerInterface;
+use OrderBundle\Entity\PromoCode;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -31,6 +33,7 @@ class CartBlockService extends AbstractEditableBlockService
         Environment $twig,
         private readonly Cart $cart,
         private readonly RequestStack $request,
+        private readonly EntityManagerInterface $entityManager,
     ) {
         parent::__construct($twig);
     }
@@ -100,6 +103,18 @@ class CartBlockService extends AbstractEditableBlockService
             }
         }
 
+        $appliedPromo = null;
+        $promoDiscount = 0.0;
+        $session = $this->request->getSession();
+        $promoCodeId = $session->get('promo_code_id');
+        if ($promoCodeId) {
+            $promo = $this->entityManager->getRepository(PromoCode::class)->find($promoCodeId);
+            if ($promo && $promo->isValid()) {
+                $appliedPromo = $promo;
+                $promoDiscount = $promo->calculateDiscount($this->cart->getTotalPrice());
+            }
+        }
+
         return $this->renderResponse($blockContext->getTemplate(), [
             'countItems' => $this->cart->countItems(),
             'cart' => $this->cart,
@@ -108,6 +123,8 @@ class CartBlockService extends AbstractEditableBlockService
             'item' => $item,
             'settings' => $blockContext->getSettings(),
             'block' => $blockContext->getBlock(),
+            'appliedPromo' => $appliedPromo,
+            'promoDiscount' => $promoDiscount,
         ]);
     }
 

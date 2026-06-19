@@ -89,5 +89,6 @@ services:
             - '@twig'
             - '@app.cart'
             - '@request_stack'
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: sonata.block }

@@ -5,6 +5,7 @@ namespace AppBundle\Services;
 use Doctrine\ORM\EntityManagerInterface;
 use OrderBundle\Entity\Order;
 use OrderBundle\Entity\OrderHasItem;
+use OrderBundle\Entity\PromoCode;
 use ProductBundle\Entity\Product;
 use ShareBundle\Entity\Colour;
 use Symfony\Component\HttpFoundation\Request;
@@ -116,6 +117,15 @@ class Cart
         return $productsInfo;
     }
 
+    public function getTotalPrice(): float
+    {
+        $total = 0.0;
+        foreach ($this->getProductsInfo()[self::TYPE_PRODUCT] ?? [] as $item) {
+            $total += $item['totalPrice'];
+        }
+        return $total;
+    }
+
     public function recalculateCart(string $type, string $key, int $count): bool
     {
         $productsInCart = $this->getProductInCart() ?: [];
@@ -126,10 +136,6 @@ class Cart
         return true;
     }
 
-    /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
     public function orderCart(Request $request, int $orderType = Order::TYPE_ORDER_QUICK): Order
     {
         $option = $request->get('option');
@@ -193,13 +199,28 @@ class Cart
             $this->entityManager->persist($orderHasItem);
         }
 
+        $discountPromo = 0.0;
+        $promoCodeId = $this->session()->get('promo_code_id');
+        if ($promoCodeId) {
+            /** @var PromoCode|null $promo */
+            $promo = $this->entityManager->getRepository(PromoCode::class)->find($promoCodeId);
+            if ($promo && $promo->isValid()) {
+                $discountPromo = $promo->calculateDiscount($totalPrice);
+                $promo->setUsageCount($promo->getUsageCount() + 1);
+                $order->setPromoCode($promo);
+                $order->setDiscountPromo($discountPromo);
+                $this->entityManager->persist($promo);
+            }
+        }
+
         $order->setOrderSum($totalPrice);
-        $order->setTotalSum($totalPrice);
+        $order->setTotalSum(max(0, $totalPrice - $discountPromo));
         $this->entityManager->persist($order);
         $this->entityManager->flush();
 
         $this->clear();
         $this->session()->remove('infoCart');
+        $this->session()->remove('promo_code_id');
 
         return $order;
     }
@@ -217,21 +238,6 @@ class Cart
         }
 
         return $count;
-    }
-
-    public function getTotalPrice(): float
-    {
-        $productsInCart = $this->getProductsInfo();
-        if (!array_key_exists(self::TYPE_PRODUCT, $productsInCart)) {
-            return 0.0;
-        }
-
-        $totalPrice = 0.0;
-        foreach ($productsInCart[self::TYPE_PRODUCT] as $data) {
-            $totalPrice += $data['totalPrice'];
-        }
-
-        return $totalPrice;
     }
 
     public function deleteProduct(string $type, string $key): int

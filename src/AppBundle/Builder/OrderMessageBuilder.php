@@ -149,7 +149,14 @@ class OrderMessageBuilder implements BuilderMessage
 
     public function getTotalSum(): self
     {
-        $this->message .= '<b>Сумма заказа:</b> ' . number_format($this->order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
+        if ($this->order->getPromoCode()) {
+            $this->message .= '<b>Сумма товаров:</b> ' . number_format($this->order->getOrderSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
+            $this->message .= '<b>Промокод:</b> ' . $this->escape($this->order->getPromoCode()->getCode())
+                . ' (-' . number_format($this->order->getDiscountPromo(), 2, ',', ' ') . ' грн)' . PHP_EOL;
+            $this->message .= '<b>Итого:</b> ' . number_format($this->order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
+        } else {
+            $this->message .= '<b>Сумма заказа:</b> ' . number_format($this->order->getTotalSum(), 2, ',', ' ') . ' грн' . PHP_EOL;
+        }
 
         return $this;
     }

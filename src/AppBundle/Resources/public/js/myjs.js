@@ -1408,3 +1408,42 @@ window.addEventListener('resize', () => {
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 });
+
+/* Promo code =================================================================*/
+$(document).on('click', '#promo-code-apply', function () {
+    var code = $.trim($('#promo-code-input').val());
+    var $msg = $('#promo-code-message');
+    var $row = $('.promo-discount-row');
+
+    $.ajax({
+        url: '/cart/apply-promo',
+        method: 'POST',
+        data: { code: code },
+        dataType: 'json',
+        success: function (res) {
+            $msg.removeClass('promo-success promo-error').show();
+            if (res.type === 'success') {
+                var discount = parseFloat(res.discount).toFixed(2).replace('.', ',');
+                var total    = parseFloat(res.total_after).toFixed(2).replace('.', ',');
+                $msg.addClass('promo-success').text('✓ Промокод «' + res.code + '» застосовано');
+                $('#cart-promo-discount').text('-' + discount + ' грн');
+                $('#cart-total').text(total + ' грн');
+                $row.show();
+            } else if (res.type === 'removed') {
+                $msg.hide();
+                $row.hide();
+                var subtotal = $('#cart-subtotal').text();
+                $('#cart-total').text(subtotal);
+            } else {
+                $msg.addClass('promo-error').text(res.message || 'Помилка');
+                $row.hide();
+                var subtotal2 = $('#cart-subtotal').text();
+                $('#cart-total').text(subtotal2);
+            }
+        }
+    });
+});
+
+$('#promo-code-input').on('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); $('#promo-code-apply').trigger('click'); }
+});

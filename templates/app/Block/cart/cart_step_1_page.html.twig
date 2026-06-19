@@ -68,24 +68,29 @@
                 </div>
             </div>
         {% endfor %}
-{#        <div class="order-form-promokod">#}
-{#            <div class="promokod-block">#}
-{#                <input type="text" placeholder="Введите промокод">#}
-{#                <button class="button white-button">Применить</button>#}
-{#            </div>#}
-{#        </div>#}
+        {% set subtotal = cart.getTotalPrice() %}
+        {% set totalAfterPromo = appliedPromo ? max(0, subtotal - promoDiscount) : subtotal %}
+        <div class="order-form-promokod">
+            <div class="promokod-block">
+                <input type="text" id="promo-code-input" placeholder="{{ 'frontend.cart.promo_placeholder'|trans([], 'AppBundle') }}" autocomplete="off" value="{{ appliedPromo ? appliedPromo.code : '' }}">
+                <button type="button" class="button white-button" id="promo-code-apply">{{ 'frontend.cart.promo_apply'|trans([], 'AppBundle') }}</button>
+            </div>
+            <div class="promokod-message promo-success" id="promo-code-message" style="{{ appliedPromo ? '' : 'display:none' }}">
+                {% if appliedPromo %}✓ Промокод «{{ appliedPromo.code }}» застосовано{% endif %}
+            </div>
+        </div>
         <ul class="order-form-calculate">
             <li>
                 <span>{{ 'frontend.cart.total_order'|trans([], 'AppBundle') }}: </span>
-                <span>{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>
+                <span id="cart-subtotal">{{ subtotal|number_format(2, ',') }} грн</span>
             </li>
-{#            <li>#}
-{#                <span>Скидка по промокоду: </span>#}
-{#                <span>0 грн</span>#}
-{#            </li>#}
+            <li class="promo-discount-row" style="{{ appliedPromo ? '' : 'display:none' }} color:#c0392b;">
+                <span>{{ 'frontend.cart.promo_discount'|trans([], 'AppBundle') }}: </span>
+                <span id="cart-promo-discount">{% if appliedPromo %}-{{ promoDiscount|number_format(2, ',') }}{% else %}0{% endif %} грн</span>
+            </li>
             <li>
                 <span>{{ 'frontend.cart.total'|trans([], 'AppBundle') }}:</span>
-                <span class="total-price">{{ cart.getTotalPrice()|number_format(2, ',') }} грн</span>
+                <span class="total-price" id="cart-total">{{ totalAfterPromo|number_format(2, ',') }} грн</span>
             </li>
         </ul>
     </div>

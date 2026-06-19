@@ -141,6 +141,13 @@ class Order
     protected $user;
 
     /**
+     * @var PromoCode|null
+     */
+    #[ORM\JoinColumn(name: 'promo_code_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: \OrderBundle\Entity\PromoCode::class)]
+    protected $promoCode = null;
+
+    /**
      * @var string|null
      */
     #[ORM\Column(name: 'telegram_chat_id', type: 'string', length: 100, nullable: true)]
@@ -517,6 +524,17 @@ class Order
     {
         $this->discountPromo = $discountPromo;
 
+        return $this;
+    }
+
+    public function getPromoCode(): ?PromoCode
+    {
+        return $this->promoCode;
+    }
+
+    public function setPromoCode(?PromoCode $promoCode): self
+    {
+        $this->promoCode = $promoCode;
         return $this;
     }
 

@@ -8,6 +8,7 @@ use AppBundle\Services\OrderEmailService;
 use AppBundle\Services\SendTelegramService;
 use Doctrine\ORM\EntityManagerInterface;
 use OrderBundle\Entity\Order;
+use OrderBundle\Entity\PromoCode;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,6 +65,38 @@ class OrderController extends BaseController
         }
 
         return $this->createOrderAndRespond($request, Order::TYPE_ORDER_CART, useCartMessage: true);
+    }
+
+    public function applyPromoAction(Request $request): JsonResponse
+    {
+        $code = trim((string) $request->get('code'));
+        $session = $request->getSession();
+
+        if ($code === '') {
+            $session->remove('promo_code_id');
+            return new JsonResponse(['type' => 'removed']);
+        }
+
+        /** @var PromoCode|null $promo */
+        $promo = $this->entityManager->getRepository(PromoCode::class)->findValidByCode($code);
+
+        if (!$promo) {
+            return new JsonResponse(['type' => 'error', 'message' => 'Промокод недійсний або вже не активний']);
+        }
+
+        $session->set('promo_code_id', $promo->getId());
+
+        $total = $this->cartService->getTotalPrice();
+        $discount = $promo->calculateDiscount($total);
+
+        return new JsonResponse([
+            'type'          => 'success',
+            'code'          => $promo->getCode(),
+            'discount_type' => $promo->getType(),
+            'discount_value' => (float) $promo->getValue(),
+            'discount'      => $discount,
+            'total_after'   => max(0, $total - $discount),
+        ]);
     }
 
     public function successAction(Request $request): Response

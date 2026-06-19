@@ -15,6 +15,7 @@ group:
     order_editor: Заказы
     order_status_editor: Статусы
     order_has_item_editor: Товары в заказе
+    promo_code_editor: Промокоды
 
 order:
     fields:
@@ -23,9 +24,10 @@ order:
         phone: Телефон
         status: Статус
         type: Как оформлен заказ
-        total_sum: Сумма заказа
+        order_sum: Сумма товаров
         discount_promo: Скидка по промокоду
-        order_sum: Итог
+        promo_code: Промокод
+        total_sum: К оплате
         messenger: Мессенджер
         instagram: Instagram
         comment: Комментарий
@@ -57,3 +59,22 @@ order_has_item:
         price: Цена
         discount: Цена со скидкой
         option: Параметры
+
+promo_code:
+    fields:
+        id: ID
+        code: Код
+        code_help: 'Только латинские буквы и цифры. Сохраняется в верхнем регистре.'
+        type: Тип скидки
+        value: Значение скидки
+        value_help: 'Сумма в грн (для фиксированного типа) или процент 1-100 (для процентного типа)'
+        expires_at: Срок действия до
+        expires_at_help: 'Оставьте пустым если промокод бессрочный'
+        usage_limit: Лимит использований
+        usage_limit_help: 'Оставьте пустым если лимит неограничен'
+        usage_count: Использовано раз
+        is_active: Активный
+        created_at: Дата создания
+    type:
+        fixed: Фиксированная сумма (грн)
+        percent: Процент (%)

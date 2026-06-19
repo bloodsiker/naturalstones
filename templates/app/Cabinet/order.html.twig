@@ -26,6 +26,16 @@
                             <span>{{ 'frontend.cabinet.order_sum'|trans([], 'AppBundle') }}</span>
                             <strong>{{ order.orderSum|number_format(2, ',', ' ') }} грн</strong>
                         </div>
+                        {% if order.promoCode %}
+                            <div class="cabinet-order-detail__meta">
+                                <span>{{ 'frontend.cabinet.promo_code'|trans([], 'AppBundle') }}</span>
+                                <strong style="color:#27ae60;">{{ order.promoCode.code }} (-{{ order.discountPromo|number_format(2, ',', ' ') }} грн)</strong>
+                            </div>
+                            <div class="cabinet-order-detail__meta">
+                                <span>{{ 'frontend.cabinet.total_sum'|trans([], 'AppBundle') }}</span>
+                                <strong>{{ order.totalSum|number_format(2, ',', ' ') }} грн</strong>
+                            </div>
+                        {% endif %}
                         <div class="cabinet-order-detail__meta">
                             <span>{{ 'frontend.cabinet.items_count'|trans([], 'AppBundle') }}</span>
                             <strong>{{ order.orderHasItems|length }}</strong>

@@ -15,6 +15,7 @@ group:
     order_editor: Замовлення
     order_status_editor: Статуси
     order_has_item_editor: Товари в замовленні
+    promo_code_editor: Промокоди
 
 order:
     fields:
@@ -23,9 +24,10 @@ order:
         phone: Телефон
         status: Статус
         type: Як оформлено замовлення
-        total_sum: Сума замовлення
+        order_sum: Сума товарів
         discount_promo: Знижка за промокодом
-        order_sum: Підсумок
+        promo_code: Промокод
+        total_sum: До сплати
         messenger: Месенджер
         instagram: Instagram
         comment: Коментар
@@ -57,3 +59,22 @@ order_has_item:
         price: Ціна
         discount: Ціна зі знижкою
         option: Параметри
+
+promo_code:
+    fields:
+        id: ID
+        code: Код
+        code_help: 'Тільки латинські букви та цифри. Зберігається у верхньому регістрі.'
+        type: Тип знижки
+        value: Значення знижки
+        value_help: 'Сума в грн (для фіксованого типу) або відсоток 1-100 (для відсоткового типу)'
+        expires_at: Термін дії до
+        expires_at_help: 'Залиште порожнім якщо промокод безстроковий'
+        usage_limit: Ліміт використань
+        usage_limit_help: 'Залиште порожнім якщо ліміт необмежений'
+        usage_count: Використано разів
+        is_active: Активний
+        created_at: Дата створення
+    type:
+        fixed: Фіксована сума (грн)
+        percent: Відсоток (%)

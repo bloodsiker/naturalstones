@@ -94,6 +94,9 @@ frontend:
         your_order: Ваш заказ
         edit_order: Редактировать
         total_order: Сумма заказа
+        promo_placeholder: Введите промокод
+        promo_apply: Применить
+        promo_discount: Скидка по промокоду
         ordering: Оформление заказа
         you_info: Ваши данные
         check_info: Проверка данных и заказ
@@ -329,6 +332,8 @@ frontend:
         items_count: Количество
         view_order: Просмотреть заказ
         back_to_orders: Вернуться к заказам
+        promo_code: Промокод
+        total_sum: Итого к оплате
         status_new: Новый
         status_completed: Выполнен
         status_cancelled: Отменён

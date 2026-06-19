@@ -6575,6 +6575,14 @@ article.article:hover .img-relative img {
   padding: 5px 22px;
 }
 
+.promokod-message {
+  margin-top: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.promokod-message.promo-success { color: #27ae60; }
+.promokod-message.promo-error   { color: #c0392b; }
+
 .order-form-calculate {
   padding: 18px 22px 20px;
   font-size: 15px;

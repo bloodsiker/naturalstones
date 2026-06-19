@@ -4,6 +4,8 @@ namespace ProductBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use ShareBundle\Entity\Colour;
+use ShareBundle\Entity\Stone;
 use ShareBundle\Entity\Tag;
 
 /**
@@ -127,6 +129,67 @@ class ProductRepository extends EntityRepository
     public function filterExclude(QueryBuilder $qb, $excludeIds): QueryBuilder
     {
         return $qb->andWhere('p.id not in (:exclude_ids)')->setParameter('exclude_ids', $excludeIds);
+    }
+
+    /**
+     * Min/max product price within the given scope, in a single aggregate query.
+     *
+     * @return array{minPrice: ?string, maxPrice: ?string}
+     */
+    public function getPriceBounds(QueryBuilder $scopeQb): array
+    {
+        return (clone $scopeQb)
+            ->resetDQLPart('select')
+            ->resetDQLPart('orderBy')
+            ->select('MIN(p.price) AS minPrice, MAX(p.price) AS maxPrice')
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    /**
+     * Distinct stones available for the products in the given scope.
+     *
+     * @return Stone[]
+     */
+    public function findAvailableStones(QueryBuilder $scopeQb): array
+    {
+        $ids = $this->distinctRelationIds($scopeQb, 'p.stones');
+
+        return $ids ? $this->getEntityManager()->getRepository(Stone::class)->findBy(['id' => $ids]) : [];
+    }
+
+    /**
+     * Distinct colours available for the products in the given scope.
+     *
+     * @return Colour[]
+     */
+    public function findAvailableColours(QueryBuilder $scopeQb): array
+    {
+        $ids = $this->distinctRelationIds($scopeQb, 'p.colours');
+
+        return $ids ? $this->getEntityManager()->getRepository(Colour::class)->findBy(['id' => $ids]) : [];
+    }
+
+    /**
+     * Distinct related entity ids (e.g. stones, colours) for the products in the given scope.
+     *
+     * A joined entity cannot be selected directly through DQL while Product is the root,
+     * so we collect the ids here and hydrate the entities separately.
+     *
+     * @return int[]
+     */
+    private function distinctRelationIds(QueryBuilder $scopeQb, string $relation): array
+    {
+        $rows = (clone $scopeQb)
+            ->resetDQLPart('select')
+            ->resetDQLPart('orderBy')
+            ->select('rel.id')
+            ->distinct()
+            ->innerJoin($relation, 'rel')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_map('intval', array_column($rows, 'id'));
     }
 
     /**

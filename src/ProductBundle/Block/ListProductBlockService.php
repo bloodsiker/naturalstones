@@ -27,9 +27,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
-/**
- * Class ListProductBlockService
- */
 class ListProductBlockService extends AbstractEditableBlockService
 {
     use StrictRelationSonataAdminTrait;
@@ -241,28 +238,12 @@ class ListProductBlockService extends AbstractEditableBlockService
         // whenever it is an ajax filter request as well, otherwise the selected filter
         // chips can never be resolved.
         if (($blockContext->getSetting('filter') || ($isAjax && $request->get('ajax_filter'))) && !$loadMore) {
-            $maxPriceQb = $minPriceQb = clone $qb;
-            $maxPrice = $maxPriceQb->resetDQLPart('select')->select('MAX(p.price) as max')->getQuery()->getSingleResult();
-            $minPrice = $minPriceQb->resetDQLPart('select')->select('MIN(p.price) as min')->getQuery()->getSingleResult();
+            $priceBounds = $repository->getPriceBounds($qb);
+            $minPrice = $priceBounds['minPrice'];
+            $maxPrice = $priceBounds['maxPrice'];
 
-            $stonesQb = clone $qb;
-            $productStones = $stonesQb->getQuery()->getResult();
-            $stoneArray = [];
-            $colourArray = [];
-            foreach ($productStones as $productStone) {
-                $stones = $productStone->getStones()->getValues();
-                $colours = $productStone->getColours()->getValues();
-                foreach ($stones as $stone) {
-                    if (!array_key_exists($stone->getId(), $stoneArray)) {
-                        $stoneArray[$stone->getId()] = $stone;
-                    }
-                }
-                foreach ($colours as $colour) {
-                    if (!array_key_exists($colour->getId(), $colourArray)) {
-                        $colourArray[$colour->getId()] = $colour;
-                    }
-                }
-            }
+            $stoneArray = $repository->findAvailableStones($qb);
+            $colourArray = $repository->findAvailableColours($qb);
         }
 
         if ($request->get('min_price')) {
@@ -322,8 +303,8 @@ class ListProductBlockService extends AbstractEditableBlockService
             ], new Response());
 
             $responseSelectedFilters = $this->renderResponse(self::TEMPLATE_SELECTED_FILTERS, [
-                'maxPrice' => $maxPrice['max'] ?? 0,
-                'minPrice' => $minPrice['min'] ?? 0,
+                'maxPrice' => $maxPrice ?? 0,
+                'minPrice' => $minPrice ?? 0,
                 'stones' => $stoneArray ?? [],
                 'colours' => $colourArray ?? [],
                 'filterBaseUrl' => $request->get('url', ''),
@@ -367,8 +348,8 @@ class ListProductBlockService extends AbstractEditableBlockService
 
         return $this->renderResponse($isAjax ? self::TEMPLATE_AJAX : $template, [
             'products' => $paginator,
-            'maxPrice' => $maxPrice['max'] ?? 0,
-            'minPrice' => $minPrice['min'] ?? 0,
+            'maxPrice' => $maxPrice ?? 0,
+            'minPrice' => $minPrice ?? 0,
             'stones' => $stoneArray ?? [],
             'colours' => $colourArray ?? [],
             'block' => $block,

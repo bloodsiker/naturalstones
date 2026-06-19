@@ -33,5 +33,23 @@
                 <a href="{{ path('admin_product_product_edit', { 'id': product.id }) }}" class="product_link_edit" target="_blank">Edit</a>
             {% endif %}
         </div>
+    {% else %}
+        <div class="catalog-empty">
+            <div class="catalog-empty-icon">
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="27" cy="27" r="18" stroke="currentColor" stroke-width="3"/>
+                    <path d="M40 40L55 55" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M21 27h12M27 21v12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="catalog-empty-title">
+                {{ app.request.locale == 'ru' ? 'Товары не найдены' : 'Товари не знайдено' }}
+            </div>
+            <div class="catalog-empty-text">
+                {{ app.request.locale == 'ru'
+                    ? 'Попробуйте изменить параметры фильтра или сбросить его.'
+                    : 'Спробуйте змінити параметри фільтра або скинути його.' }}
+            </div>
+        </div>
     {% endfor %}
 {% endif %}

@@ -1,4 +1,4 @@
-{% if products.count %}
+{% if products.count or settings.filter %}
     <div class="filter-outer">
         {% if settings.title_url %}
             <h1><a href="{{ settings.title_url }}">{{ settings.title }}</a></h1>

@@ -31,7 +31,6 @@ final class Version20260620000000 extends AbstractMigration
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 
         $this->addSql('ALTER TABLE order_order
-            ADD discount_promo DECIMAL(12,2) NOT NULL DEFAULT \'0.00\',
             ADD promo_code_id INT UNSIGNED DEFAULT NULL');
 
         $this->addSql('ALTER TABLE order_order
@@ -45,7 +44,7 @@ final class Version20260620000000 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE order_order DROP FOREIGN KEY FK_order_promo_code');
         $this->addSql('DROP INDEX IDX_order_order_promo_code ON order_order');
-        $this->addSql('ALTER TABLE order_order DROP COLUMN discount_promo, DROP COLUMN promo_code_id');
+        $this->addSql('ALTER TABLE order_order DROP COLUMN promo_code_id');
         $this->addSql('DROP TABLE order_promo_code');
     }
 }

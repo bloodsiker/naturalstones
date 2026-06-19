@@ -69,6 +69,7 @@ class ListProductBlockService extends AbstractEditableBlockService
             'tag' => null,
             'colour' => null,
             'stone' => null,
+            'stones' => null,
             'who' => null,
             'discount' => false,
             'random' => false,
@@ -210,6 +211,10 @@ class ListProductBlockService extends AbstractEditableBlockService
 
         if ($blockContext->getSetting('stone')) {
             $repository->filterByStone($qb, $blockContext->getSetting('stone'));
+        }
+
+        if ($blockContext->getSetting('stones')) {
+            $repository->filterByStones($qb, $blockContext->getSetting('stones'));
         }
 
         if ($blockContext->getSetting('exclude_ids')) {

@@ -27,5 +27,20 @@
                 }
             )
         }}
+
+        {% if zodiac.stones|length %}
+            {{
+                sonata_block_render(
+                    { 'type': 'product.block.list' },
+                    {
+                        'items_count': 20,
+                        'page': app.request.get('page') ? app.request.get('page') : 1,
+                        'stones': zodiac.stones|map(stone => stone.id),
+                        'title': 'frontend.products_zodiac'|trans({'%ZODIAC%': zodiac.name}, 'ShareBundle'),
+                        'show_paginator': true
+                    }
+                )
+            }}
+        {% endif %}
     </div>
 </section>

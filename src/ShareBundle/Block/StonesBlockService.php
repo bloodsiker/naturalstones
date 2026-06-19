@@ -53,7 +53,7 @@ class StonesBlockService extends AbstractEditableBlockService
             $repository->filterByShowMain($qb);
         }
         if ($zodiac = $blockContext->getSetting('zodiac')) {
-            $repository->filterByZodiac($qb, $zodiac);
+            $repository->filterByZodiac($qb, is_object($zodiac) ? $zodiac->getId() : $zodiac);
         }
         if ($letter = $blockContext->getSetting('letter')) {
             $repository->filterByLetter($qb, $letter);

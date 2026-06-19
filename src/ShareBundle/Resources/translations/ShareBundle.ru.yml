@@ -107,6 +107,7 @@ tag:
 frontend:
     stone_letter: Камни на букву
     stone_zodiac: Камни для знака зодиака
+    products_zodiac: 'Украшения для знака зодиака %ZODIAC%'
     all_stone: Все камни
     constructor:
         stone: "Камень:"

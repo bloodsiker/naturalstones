@@ -1670,8 +1670,115 @@ footer {
 
 .filter-outer h1 {
   margin-bottom: 0;
-  color: #000000;
+  text-transform: uppercase;
+  color: #000;
   margin-right: 10px;
+}
+
+.selected-filters {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 8px 12px;
+  margin: -16px 0 24px;
+  padding: 10px;
+  border: 1px solid #fbdfdf;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #fff 0%, #fff7f7 100%);
+}
+
+.selected-filter-group {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.selected-filter-label,
+.selected-filter-group-title {
+  display: block;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  color: #000;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 30px;
+  white-space: nowrap;
+}
+
+.selected-filter-group-items {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.selected-filter {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 6px 5px 12px;
+  border: 1px solid #fbdfdf;
+  border-radius: 99px;
+  background: #FFF7F7;
+  color: #F08383;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.selected-filter i {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin-left: 7px;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #fff;
+  transition: background .2s ease;
+}
+
+.selected-filter i:before,
+.selected-filter i:after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 6px;
+  width: 8px;
+  height: 1px;
+  background: currentColor;
+}
+
+.selected-filter i:before {
+  transform: rotate(45deg);
+}
+
+.selected-filter i:after {
+  transform: rotate(-45deg);
+}
+
+.selected-filter:hover {
+  background: #fbdfdf;
+  border-color: #F08383;
+  color: #140923;
+  text-decoration: none;
+}
+
+.selected-filter:hover i {
+  background: #FFF7F7;
 }
 
 .filter-form {
@@ -2356,7 +2463,7 @@ footer {
 
 .main-video-section {
   position: relative;
-  z-index: 10;
+  z-index: 4;
   height: 100vh;
   color: #fff;
   margin-bottom: 15px;

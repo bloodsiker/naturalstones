@@ -38,7 +38,8 @@
                         'stones': zodiac.stones|map(stone => stone.id),
                         'title': 'frontend.products_zodiac'|trans({'%ZODIAC%': zodiac.name}, 'ShareBundle'),
                         'show_paginator': true,
-                        'ajax_paginator': true
+                        'ajax_paginator': true,
+                        'filter': true
                     }
                 )
             }}

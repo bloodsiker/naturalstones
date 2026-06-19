@@ -1,11 +1,11 @@
 {% if products.count or settings.filter %}
-    <div class="filter-outer">
-        {% if settings.title_url %}
-            <h1><a href="{{ settings.title_url }}">{{ settings.title }}</a></h1>
-        {% else %}
-            <h1>{{ settings.title }}</h1>
-        {% endif %}
+    {% if settings.title_url %}
+        <h1 style="text-align: center"><a href="{{ settings.title_url }}">{{ settings.title }}</a></h1>
+    {% else %}
+        <h1 style="text-align: center">{{ settings.title }}</h1>
+    {% endif %}
 
+    <div class="filter-outer">
         {% if settings.filter %}
             {% include '@App/Block/filter.html.twig' %}
         {% endif %}

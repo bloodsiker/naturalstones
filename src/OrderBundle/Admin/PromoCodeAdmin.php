@@ -41,6 +41,7 @@ class PromoCodeAdmin extends Admin
                 'catalogue' => $this->getTranslationDomain(),
             ])
             ->add('value', null, ['label' => 'promo_code.fields.value'])
+
             ->add('expiresAt', null, ['label' => 'promo_code.fields.expires_at'])
             ->add('usageLimit', null, ['label' => 'promo_code.fields.usage_limit'])
             ->add('usageCount', null, ['label' => 'promo_code.fields.usage_count'])

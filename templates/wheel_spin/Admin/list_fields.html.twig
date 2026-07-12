@@ -2,8 +2,8 @@
 
 {% block field %}
     {% if object is instanceof('\\WheelSpinBundle\\Entity\\WheelSpinOption') %}
-        {% if field_description.name == 'image' %}
-            {% set v = asset('bundles/admin/images/default_game.png') %}
+        {% if field_description.name == 'image' and value and value.path %}
+            {% set v = asset('bundles/admin/images/preview_placeholder.png') %}
             {% set image_preview_path = value ? value.path : null %}
             <img src="{{ image_preview_path|default(v) }}?{{ random() }}" style="max-height: 100px;"/>
         {% elseif field_description.name == 'colour' %}

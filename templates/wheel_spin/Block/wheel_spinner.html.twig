@@ -22,9 +22,22 @@
         </div>
         <div class="wheel_prize_container">
             {% for spinValue in spinValuesTable.WheelSpinHasOption %}
+                {% set isWinner = order.isSpin and order.wheelSpinOption.id == spinValue.wheelSpinOption.id %}
                 <div id="{{ spinValue.id }}"
-                     class="wheel_prize {{ order.isSpin and order.wheelSpinOption.id == spinValue.wheelSpinOption.id ? 'active' : '' }}">
+                     class="wheel_prize {{ isWinner ? 'active' : '' }}">
                     {{ spinValue.label }}. {{ spinValue.wheelSpinOption.getPrizeName }}
+                    {% if isWinner and order.spinPromoCode %}
+                        <div class="wheel_prize_promo">
+                            <span class="wheel_prize_promo__code">{{ order.spinPromoCode.code }}</span>
+                            <span class="wheel_prize_promo__value">
+                                {% if order.spinPromoCode.type == 'fixed' %}
+                                    -{{ order.spinPromoCode.value }}грн
+                                {% else %}
+                                    -{{ order.spinPromoCode.value }}%
+                                {% endif %}
+                            </span>
+                        </div>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
@@ -65,6 +78,9 @@
          /* --------------- Minimum And Maximum Angle For A value  --------------------- */
          const spinValues = {{ spinValues|raw }};
          const spinValuesJson = {{ spinValuesJson|raw }};
+         /* --------------- Pending promo code from server response  --------------------- */
+         let pendingPromoCode = null;
+         let pendingPromoLabel = null;
          /* --------------- Size Of Each Piece  --------------------- */
          const size = spinValues.map(item => item.size);
          /* --------------- Background Colors  --------------------- */
@@ -130,7 +146,14 @@
                  return;
              }
 
-             wheelPrizeModalValue.textContent = prize.value;
+             if (pendingPromoCode) {
+                 wheelPrizeModalValue.innerHTML =
+                     '<p>Promocode: <strong>' + pendingPromoCode + '</strong></p>' +
+                     '<p>Знижка: <strong>' + pendingPromoLabel.replace(/^-/, '') + '</strong></p>';
+             } else {
+                 wheelPrizeModalValue.textContent = prize.value;
+             }
+
              window.jQuery.magnificPopup.open({
                  items: {
                      src: '#wheelPrizeModal',
@@ -199,6 +222,11 @@
                      if (!response || typeof response.spin === 'undefined') {
                          spinBtn.disabled = hasSpun;
                          return;
+                     }
+
+                     if (response.promoCode) {
+                         pendingPromoCode = response.promoCode;
+                         pendingPromoLabel = response.promoLabel;
                      }
 
                      hasSpun = true;

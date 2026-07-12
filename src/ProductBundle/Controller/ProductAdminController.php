@@ -10,30 +10,27 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductAdminController extends Controller
 {
-    public function cloneAction(): RedirectResponse
+    public function cloneAction(Request $request): RedirectResponse
     {
-        $translator = $this->container->get('translator');
         $em = $this->container->get('doctrine.orm.default_entity_manager');
-        $id = $this->getRequest()->get($this->admin->getIdParameter());
-
-        $object = $this->admin->getObject($id);
+        $object = $this->admin->getObject($request->get($this->admin->getIdParameter()));
         $clone = clone $object;
 
         $em->persist($clone);
-        $em->flush();
 
         foreach ($object->getProductHasImage() as $image) {
             $productHasImage = new ProductHasImage();
             $productHasImage->setImage($image->getImage());
             $productHasImage->setProduct($clone);
             $clone->addProductHasImage($productHasImage);
-            $em->persist($clone);
-            $em->flush();
+            $em->persist($productHasImage);
         }
+
+        $em->flush();
 
         $this->addFlash(
             'sonata_flash_success',
-            $translator->trans('object_clone_success', [], 'SonataAdminBundle')
+            $this->container->get('translator')->trans('object_clone_success', [], 'SonataAdminBundle')
         );
 
         return new RedirectResponse($this->admin->generateUrl('edit', ['id' => $clone->getId()]));

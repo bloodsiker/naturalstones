@@ -83,4 +83,10 @@ class ProductTranslation implements TranslationInterface
 
         return $this;
     }
+
+    public function __clone()
+    {
+        $this->id = null;
+        $this->translatable = null;
+    }
 }

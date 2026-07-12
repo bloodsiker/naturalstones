@@ -76,6 +76,19 @@
                                 <strong>{{ order.spinPrize }}</strong>
                             </div>
                         {% endif %}
+                        {% if order.spinPromoCode %}
+                            <div class="cabinet-order-detail__meta cabinet-order-detail__meta--full">
+                                <span>{{ 'frontend.order.spin_promo_code'|trans([], 'AppBundle') }}</span>
+                                <strong style="color:#27ae60;">
+                                    {{ order.spinPromoCode.code }}
+                                    {% if order.spinPromoCode.type == 'fixed' %}
+                                        (-{{ order.spinPromoCode.value }} грн)
+                                    {% else %}
+                                        (-{{ order.spinPromoCode.value }}%)
+                                    {% endif %}
+                                </strong>
+                            </div>
+                        {% endif %}
                     </div>
 
                     <div class="cabinet-order-items">

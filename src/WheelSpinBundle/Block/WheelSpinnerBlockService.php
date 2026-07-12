@@ -6,6 +6,7 @@ use AppBundle\Block\AbstractEditableBlockService;
 use AppBundle\Services\SendTelegramService;
 use Doctrine\ORM\EntityManagerInterface;
 use OrderBundle\Entity\Order;
+use OrderBundle\Entity\PromoCode;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -162,8 +163,14 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
         $win = $this->findWinSection($spinValuesJson, $winningId);
         $spinOption = $this->findSpinOption($data, $winningId);
 
+        $promoCode = null;
+        $promoData = $this->parsePromoCodePrize($spinOption['spin_option']->getPromoCodeValue());
+        if ($promoData !== null) {
+            $promoCode = $this->createPromoCode($promoData['value'], $promoData['type']);
+        }
+
         try {
-            if (!$this->persistSpin($order, $spinOption)) {
+            if (!$this->persistSpin($order, $spinOption, $promoCode)) {
                 return new JsonResponse(['error' => 'already_spun'], Response::HTTP_CONFLICT);
             }
         } catch (\Throwable $e) {
@@ -180,7 +187,13 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
             ? random_int((int) $win['minDegree'], (int) $win['maxDegree'])
             : random_int(1, 359);
 
-        return new JsonResponse(['spin' => $rand]);
+        $responseData = ['spin' => $rand];
+        if ($promoCode !== null && $promoData !== null) {
+            $responseData['promoCode'] = $promoCode->getCode();
+            $responseData['promoLabel'] = $promoData['label'];
+        }
+
+        return new JsonResponse($responseData);
     }
 
     /**
@@ -236,7 +249,7 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
     /**
      * @param array<string, mixed> $spinOption
      */
-    private function persistSpin(Order $order, array $spinOption): bool
+    private function persistSpin(Order $order, array $spinOption, ?PromoCode $promoCode = null): bool
     {
         $connection = $this->em->getConnection();
         $connection->beginTransaction();
@@ -250,7 +263,13 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
 
             $order->setIsSpin(true);
             $order->setWheelSpinOption($spinOption['spin_option']);
-            $order->setSpinPrize($spinOption['spin_option']);
+            $order->setSpinPrize((string) $spinOption['spin_option']);
+
+            if ($promoCode !== null) {
+                $this->em->persist($promoCode);
+                $order->setSpinPromoCode($promoCode);
+            }
+
             $this->em->persist($order);
             $this->em->flush();
             $connection->commit();
@@ -263,6 +282,46 @@ class WheelSpinnerBlockService extends AbstractEditableBlockService
 
             throw $e;
         }
+    }
+
+    /**
+     * Parses a promo code value string like "100грн" or "5%".
+     *
+     * @return array{type: string, value: float, label: string}|null
+     */
+    private function parsePromoCodePrize(?string $promoCodeValue): ?array
+    {
+        if (!$promoCodeValue || !preg_match('/^(\d+(?:[.,]\d+)?)(грн|%)$/ui', trim($promoCodeValue), $m)) {
+            return null;
+        }
+
+        $value = (float) str_replace(',', '.', $m[1]);
+        $unit = mb_strtolower($m[2]);
+
+        return [
+            'type'  => $unit === '%' ? PromoCode::TYPE_PERCENT : PromoCode::TYPE_FIXED,
+            'value' => $value,
+            'label' => $unit === '%' ? sprintf('%s%%', $m[1]) : sprintf('%sгрн', $m[1]),
+        ];
+    }
+
+    private function createPromoCode(float $value, string $type): PromoCode
+    {
+        $repo = $this->em->getRepository(PromoCode::class);
+
+        do {
+            $code = 'NS-' . strtoupper(bin2hex(random_bytes(4)));
+        } while ($repo->findOneBy(['code' => $code]));
+
+        $promoCode = new PromoCode();
+        $promoCode->setCode($code);
+        $promoCode->setType($type);
+        $promoCode->setValue((string) $value);
+        $promoCode->setUsageLimit(1);
+        $promoCode->setExpiresAt(new \DateTime('+1 year'));
+        $promoCode->setIsActive(true);
+
+        return $promoCode;
     }
 
     /**

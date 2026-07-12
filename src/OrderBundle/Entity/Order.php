@@ -166,6 +166,13 @@ class Order
     protected $spinPrize;
 
     /**
+     * @var PromoCode|null
+     */
+    #[ORM\JoinColumn(name: 'spin_promo_code_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: \OrderBundle\Entity\PromoCode::class)]
+    protected ?PromoCode $spinPromoCode = null;
+
+    /**
      * @var ArrayCollection
      */
     #[ORM\OneToMany(targetEntity: \OrderBundle\Entity\OrderHasItem::class, mappedBy: 'order', cascade: ['all'], orphanRemoval: true)]
@@ -594,6 +601,18 @@ class Order
     public function setSpinPrize(?string $spinPrize = null)
     {
         $this->spinPrize = $spinPrize;
+
+        return $this;
+    }
+
+    public function getSpinPromoCode(): ?PromoCode
+    {
+        return $this->spinPromoCode;
+    }
+
+    public function setSpinPromoCode(?PromoCode $spinPromoCode): self
+    {
+        $this->spinPromoCode = $spinPromoCode;
 
         return $this;
     }

@@ -309,6 +309,19 @@ class Product implements TranslatableInterface
             $this->setDiscount(0);
             $this->setPercent(0);
             $this->setIsMainProduct(0);
+
+            $clonedTranslations = new ArrayCollection();
+            foreach ($this->translations as $translation) {
+                $clonedTranslation = clone $translation;
+                $clonedTranslation->setTranslatable($this);
+                $clonedTranslations->add($clonedTranslation);
+            }
+            $this->translations = $clonedTranslations;
+
+            $this->colours = new ArrayCollection($this->colours->toArray());
+            $this->metals  = new ArrayCollection($this->metals->toArray());
+            $this->tags    = new ArrayCollection($this->tags->toArray());
+            $this->stones  = new ArrayCollection($this->stones->toArray());
         }
     }
 

@@ -308,6 +308,7 @@
                 var activeIndex = -1;
                 var isOpen = false;
                 var suppressSearch = false;
+                var requestSequence = 0;
                 var fieldLocaleMatch = $input.attr('name').match(/\[translations]\[([^\]]+)]\[name]$/);
                 var fieldLocale = fieldLocaleMatch ? fieldLocaleMatch[1] : '{{ app.request.locale|e('js') }}';
                 var $dropdown = $('<div>', {
@@ -340,14 +341,41 @@
                 function closeDropdown() {
                     isOpen = false;
                     activeIndex = -1;
+                    items = [];
                     $dropdown.hide().empty();
                 }
 
                 function setActive(index) {
+                    if (!items.length) {
+                        activeIndex = -1;
+                        return;
+                    }
+
                     activeIndex = index;
-                    $dropdown.find('[data-product-item]').removeClass('active');
+                    var $items = $dropdown.find('[data-product-item]');
+                    $items
+                        .removeClass('active')
+                        .css({
+                            backgroundColor: '',
+                            color: '#333'
+                        });
                     if (index >= 0) {
-                        $dropdown.find('[data-product-item]').eq(index).addClass('active');
+                        var $activeItem = $items.eq(index)
+                            .addClass('active')
+                            .css({
+                                backgroundColor: '#337ab7',
+                                color: '#fff'
+                            });
+                        var itemTop = $activeItem.position().top;
+                        var itemBottom = itemTop + $activeItem.outerHeight();
+                        var dropdownScrollTop = $dropdown.scrollTop();
+                        var dropdownHeight = $dropdown.innerHeight();
+
+                        if (itemTop < 0) {
+                            $dropdown.scrollTop(dropdownScrollTop + itemTop);
+                        } else if (itemBottom > dropdownHeight) {
+                            $dropdown.scrollTop(dropdownScrollTop + itemBottom - dropdownHeight);
+                        }
                     }
                 }
 
@@ -356,9 +384,10 @@
                         return;
                     }
 
+                    var selectedItem = items[index];
                     closeDropdown();
                     suppressSearch = true;
-                    $input.val(items[index].value).trigger('change');
+                    $input.val(selectedItem.value).trigger('change');
                     window.setTimeout(function () {
                         suppressSearch = false;
                     }, 0);
@@ -366,7 +395,7 @@
 
                 function renderDropdown(data) {
                     items = data || [];
-                    activeIndex = items.length ? 0 : -1;
+                    activeIndex = -1;
                     $dropdown.empty();
 
                     if (!items.length) {
@@ -387,12 +416,9 @@
                             width: '100%',
                             padding: '6px 12px',
                             cursor: 'pointer',
-                            textDecoration: 'none'
+                            textDecoration: 'none',
+                            color: '#333'
                         });
-
-                        if (index === activeIndex) {
-                            $item.addClass('active');
-                        }
 
                         $item.on('mouseenter', function () {
                             setActive(index);
@@ -412,6 +438,8 @@
                 }
 
                 function search(term) {
+                    var currentRequestSequence = ++requestSequence;
+
                     if (pendingRequest) {
                         pendingRequest.abort();
                     }
@@ -424,6 +452,10 @@
                             locale: fieldLocale
                         }
                     }).done(function (data) {
+                        if (currentRequestSequence !== requestSequence) {
+                            return;
+                        }
+
                         renderDropdown((data.items || []).map(function (item) {
                             return {
                                 label: item.label,
@@ -431,8 +463,16 @@
                                 id: item.id
                             };
                         }));
-                    }).fail(function () {
+                    }).fail(function (xhr, status) {
+                        if ('abort' === status || currentRequestSequence !== requestSequence) {
+                            return;
+                        }
+
                         closeDropdown();
+                    }).always(function () {
+                        if (currentRequestSequence === requestSequence) {
+                            pendingRequest = null;
+                        }
                     });
                 }
 
@@ -465,10 +505,10 @@
 
                     if (event.which === 40) {
                         event.preventDefault();
-                        setActive(Math.min(activeIndex + 1, items.length - 1));
+                        setActive(activeIndex >= items.length - 1 ? 0 : activeIndex + 1);
                     } else if (event.which === 38) {
                         event.preventDefault();
-                        setActive(Math.max(activeIndex - 1, 0));
+                        setActive(activeIndex <= 0 ? items.length - 1 : activeIndex - 1);
                     } else if (event.which === 13) {
                         event.preventDefault();
                         chooseItem(activeIndex < 0 ? 0 : activeIndex);

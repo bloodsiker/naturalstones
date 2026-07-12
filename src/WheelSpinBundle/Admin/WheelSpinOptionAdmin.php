@@ -60,6 +60,11 @@ class WheelSpinOptionAdmin extends Admin
                     'label' => 'wheel_spin_option.fields.is_active',
                     'required' => false,
                 ])
+                ->add('promoCodeValue', TextType::class, [
+                    'label'    => 'wheel_spin_option.fields.promo_code_value',
+                    'required' => false,
+                    'help'     => 'wheel_spin_option.fields.promo_code_value_help',
+                ])
                 ->add('product', ModelListType::class, [
                     'label' => 'wheel_spin_option.fields.product',
                     'btn_edit' => 'btn_edit',
@@ -104,6 +109,9 @@ class WheelSpinOptionAdmin extends Admin
             ->addIdentifier('title', null, [
                 'label' => 'wheel_spin_option.fields.title',
                 'field' => 'name',
+            ])
+            ->add('promoCodeValue', null, [
+                'label' => 'wheel_spin_option.fields.promo_code_value',
             ])
             ->add('isActive', null, [
                 'label' => 'wheel_spin_option.fields.is_active',

@@ -129,6 +129,7 @@ frontend:
         client_delivery: Адреса доставки
         comment: Коментар
         spin_prize: Приз колеса
+        spin_promo_code: Промокод виграшу
         you_order: Ваше замовлення
         callback_text: "Найближчим часом з Вами зв'яжуться наші менеджери"
         order_sum: 'Сума замовлення:'

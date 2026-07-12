@@ -26,6 +26,8 @@ wheel_spin_option:
         image: Зображення
         is_active: Активно
         id: ID
+        promo_code_value: Промокод (значення)
+        promo_code_value_help: 'Вкажіть значення знижки: 100грн або 5%. Залиште порожнім якщо приз не є промокодом.'
 
 wheel_spin_has_option:
     fields:

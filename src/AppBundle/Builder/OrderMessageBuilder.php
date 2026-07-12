@@ -178,10 +178,16 @@ class OrderMessageBuilder implements BuilderMessage
                 $this->message .= ' Цвет: ' . $this->escape($orderItem->getColour()->getName());
             }
             if ($orderItem->getOptions()) {
-                $this->message .= ' Параметры : ' . $this->escape($orderItem->getOptions());
+                $this->message .= ' Параметры: ' . $this->escape($orderItem->getOptions());
             }
-            if ($orderItem->getDiscount()) {
-                $this->message .= ' (Скидка ' . $orderItem->getDiscount() . ' грн)' . PHP_EOL;
+
+            $discount = (float) $orderItem->getDiscount();
+            $unitPrice = $orderItem->getQuantity() > 0
+                ? (float) $orderItem->getPrice() / $orderItem->getQuantity()
+                : (float) $orderItem->getPrice();
+
+            if ($discount > 0 && $discount < $unitPrice) {
+                $this->message .= ' (зі знижкою: ' . number_format($discount, 2, ',', ' ') . ' грн)' . PHP_EOL;
             } else {
                 $this->message .= PHP_EOL;
             }

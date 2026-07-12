@@ -46,6 +46,9 @@ class WheelSpinOption implements TranslatableInterface
     #[ORM\Column(type: 'boolean', nullable: false)]
     protected $isActive;
 
+    #[ORM\Column(name: 'promo_code_value', type: 'string', length: 20, nullable: true)]
+    protected ?string $promoCodeValue = null;
+
     /**
      * Constructor
      */
@@ -135,5 +138,16 @@ class WheelSpinOption implements TranslatableInterface
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    public function getPromoCodeValue(): ?string
+    {
+        return $this->promoCodeValue;
+    }
+
+    public function setPromoCodeValue(?string $promoCodeValue): self
+    {
+        $this->promoCodeValue = $promoCodeValue ? trim($promoCodeValue) : null;
+        return $this;
     }
 }

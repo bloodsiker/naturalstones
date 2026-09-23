@@ -63,6 +63,7 @@ services:
             - '@twig'
             - '@request_stack'
             - '@app.send_telegram'
+            - '@cache.app'
         tags:
             - { name: sonata.block }
 

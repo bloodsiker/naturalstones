@@ -48,7 +48,7 @@ class FeedbackBlockService extends AbstractEditableBlockService
                 return new JsonResponse(['type' => 'success']);
             }
 
-            $this->sendTelegramService->sendFeedback($request);
+//            $this->sendTelegramService->sendFeedback($request);
 
             return new JsonResponse(['type' => 'success']);
         }

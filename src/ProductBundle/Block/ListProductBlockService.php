@@ -261,28 +261,32 @@ class ListProductBlockService extends AbstractEditableBlockService
             }
         }
 
-        if ($request->get('min_price')) {
-            $qb->andWhere('p.price >= :minPrice')->setParameter('minPrice', $request->get('min_price'));
-        }
+        // Request params (`category` is also a route param on the product page) must only
+        // narrow filterable lists and ajax requests, not unrelated blocks like "similar products".
+        if ($blockContext->getSetting('filter') || $isAjax) {
+            if ($request->get('min_price')) {
+                $qb->andWhere('p.price >= :minPrice')->setParameter('minPrice', $request->get('min_price'));
+            }
 
-        if ($request->get('max_price')) {
-            $qb->andWhere('p.price <= :maxPrice')->setParameter('maxPrice', $request->get('max_price'));
-        }
+            if ($request->get('max_price')) {
+                $qb->andWhere('p.price <= :maxPrice')->setParameter('maxPrice', $request->get('max_price'));
+            }
 
-        if ($request->get('sort')) {
-            $qb->resetDQLPart('orderBy')->orderBy('p.price', $request->get('sort'));
-        }
+            if ($request->get('sort')) {
+                $qb->resetDQLPart('orderBy')->orderBy('p.price', $request->get('sort'));
+            }
 
-        if ($request->get('stone')) {
-            $repository->filterByStones($qb, explode(',', $request->get('stone')));
-        }
+            if ($request->get('stone')) {
+                $repository->filterByStones($qb, explode(',', $request->get('stone')));
+            }
 
-        if ($request->get('colour')) {
-            $repository->filterByColours($qb, explode(',', $request->get('colour')));
-        }
+            if ($request->get('colour')) {
+                $repository->filterByColours($qb, explode(',', $request->get('colour')));
+            }
 
-        if ($request->get('category')) {
-            $repository->filterByCategories($qb, explode(',', $request->get('category')));
+            if ($request->get('category')) {
+                $repository->filterByCategories($qb, explode(',', $request->get('category')));
+            }
         }
 
         $paginator = new Pagerfanta(new QueryAdapter($qb, true, false));

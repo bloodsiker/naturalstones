@@ -35,8 +35,12 @@ class ShortcodeExtension extends AbstractExtension
      *
      * @throws \Throwable
      */
-    public function shortcodeFilter(string $content, bool|array $enabled = true, string $mode = ''): string
+    public function shortcodeFilter(?string $content, bool|array $enabled = true, string $mode = ''): string
     {
+        if (null === $content || '' === $content) {
+            return '';
+        }
+
         return $this->helper->renderShortcodes($content, $enabled, $mode);
     }
 
@@ -45,8 +49,12 @@ class ShortcodeExtension extends AbstractExtension
      *
      * @throws \Throwable
      */
-    public function shortcodeOnlyFilter(string $content, array $names = [], string $mode = ''): string
+    public function shortcodeOnlyFilter(?string $content, array $names = [], string $mode = ''): string
     {
+        if (null === $content || '' === $content) {
+            return '';
+        }
+
         return $this->helper->renderShortcodesOnly($content, $names, $mode);
     }
 

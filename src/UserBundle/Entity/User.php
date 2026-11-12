@@ -45,7 +45,6 @@ class User extends BaseUser implements TimezoneAwareInterface
 
     public function __construct()
     {
-        parent::__construct();
         $this->favorites = new ArrayCollection();
     }
 

@@ -86,6 +86,10 @@ class ProductController extends BaseController
     public function listTagAction(Request $request): Response
     {
         $tag = $this->em->getRepository(Tag::class)->findOneBy(['slug' => $request->get('slug')]);
+        if (!$tag instanceof Tag) {
+            throw $this->createNotFoundException();
+        }
+
         $this->breadcrumb->addBreadcrumb([
             'title' => $this->translator->trans('frontend.breadcrumb.tag', [], 'AppBundle') . $tag->getName(),
         ]);
@@ -104,6 +108,10 @@ class ProductController extends BaseController
     public function listColourAction(Request $request): Response
     {
         $colour = $this->em->getRepository(Colour::class)->findOneBy(['slug' => $request->get('slug')]);
+        if (!$colour instanceof Colour) {
+            throw $this->createNotFoundException();
+        }
+
         $this->breadcrumb->addBreadcrumb([
             'title' => $this->translator->trans('frontend.breadcrumb.colour', [], 'AppBundle') . $colour->getName(),
         ]);
@@ -122,6 +130,10 @@ class ProductController extends BaseController
     public function listStoneAction(Request $request): Response
     {
         $stone = $this->em->getRepository(Stone::class)->findOneBy(['slug' => $request->get('slug')]);
+        if (!$stone instanceof Stone) {
+            throw $this->createNotFoundException();
+        }
+
         $this->breadcrumb->addBreadcrumb([
             'title' => $this->translator->trans('frontend.breadcrumb.stones', [], 'AppBundle'),
             'href' => $this->router->generate('stone_list'),
